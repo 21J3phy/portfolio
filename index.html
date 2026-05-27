@@ -98,7 +98,8 @@
 
 /* ---------- Reset-ish ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0; height: 0; display: none; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
@@ -517,6 +518,17 @@ image-slot {
   font-size: 11px;
 }
 image-slot:hover { border-color: var(--accent); }
+/* The slot's drag-to-reframe JS sizes the inner <img> with absolute pixel
+   math that mis-scales on narrow/responsive layouts (it was blowing the image
+   far past its box on mobile). For baked-in src images we only ever want a
+   plain cover fit, so force it and let the slot's frame clip cleanly. */
+image-slot::part(image) {
+  position: absolute !important;
+  left: 0 !important; top: 0 !important;
+  width: 100% !important; height: 100% !important;
+  transform: none !important;
+  object-fit: cover !important;
+}
 
 /* About: face + text two-col */
 .about-grid {
@@ -531,7 +543,7 @@ image-slot:hover { border-color: var(--accent); }
 }
 @media (max-width: 760px) {
   .about-grid { grid-template-columns: 1fr; gap: 28px; }
-  .about-face { width: 160px; height: 190px; position: static; }
+  .about-face { width: 160px; height: 190px; position: relative; top: 0; }
 }
 
 /* Project screenshot */
@@ -582,12 +594,6 @@ image-slot:hover { border-color: var(--accent); }
       <a href="#work" class="hide-sm">Work</a>
       <a href="#about" class="hide-sm">About</a>
       <a href="#contact">Contact</a>
-      <button class="theme-btn" id="themeBtn" aria-label="Toggle color theme" title="Toggle theme">
-        <!-- moon -->
-        <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        <!-- sun -->
-        <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      </button>
     </nav>
   </div>
 </header>
@@ -621,7 +627,7 @@ image-slot:hover { border-color: var(--accent); }
         </span>
       </h1>
       <p class="hero-lede"><strong style="color:var(--text);font-weight:600">Software:</strong> founder of <a href="#work" style="color:var(--accent)">Chad vs. Chud</a> (10K users) and <a href="#work" style="color:var(--accent)">b2alpha.io</a> (2K business users). <strong style="color:var(--text);font-weight:600">Mechanical:</strong> built a wind tunnel from scratch, published the paper in IEEE.</p>
-      <p class="hero-sub">Brambleton, VA <span class="sep">/</span> Independence HS '26 <span class="sep">/</span> Purdue ME '30</p>
+      <p class="hero-sub">18 <span class="sep">/</span> Brambleton, VA <span class="sep">/</span> Independence HS '26 <span class="sep">/</span> Purdue ME '30</p>
       <div class="cta-row">
         <a href="#work" class="btn primary">
           See what I've built
@@ -648,9 +654,9 @@ image-slot:hover { border-color: var(--accent); }
       <div class="about-grid">
         <image-slot id="face" src="img/ftc-robot.jpg" class="about-face" shape="rounded" radius="16" placeholder="Drop a photo of you"></image-slot>
         <div>
-          <p>I build in two halves: software and mechanical. They feed each other more than people expect — the wind-tunnel paper needed CFD and a CNN; the agent protocol needed an embedded-systems mindset.</p>
-          <p><strong style="color:var(--text);font-weight:600">Software side:</strong> a CNN image-scorer past 10K users (Chad vs. Chud), an agent-to-agent protocol used by 2K businesses (b2alpha), an analytics tool for prediction markets, a news app I submitted to YC.</p>
-          <p><strong style="color:var(--text);font-weight:600">Mechanical side:</strong> a wind tunnel I built from scratch, soldered the load cells, ran the fluid sims, and published the paper in IEEE. Four years of FTC robotics (captain) and Science Olympiad along the way — heading to Purdue ME in the fall.</p>
+          <p>Most of what I make starts as something in my own life that bugs me until I fix it. I work in two halves — software and mechanical — but they come from the same place: notice a problem, get a little obsessed, and build my way out of it.</p>
+          <p>Wanting my Honda Civic to be more efficient is what got me fixated on aerodynamic drag. To actually test a fix I built a wind tunnel from scratch — soldered the load cells, ran the fluid sims — and it ended up being the first demonstration of passive vortex propulsion in air, which I presented at an international conference.</p>
+          <p>Another one: I noticed how much time I was losing to TikTok, so instead of deleting it I decided the feed wasn't the problem — what it fed me was. I built a news app with the same addictive, swipe-through algorithm, except it strips the bias out of every story. That one became my first startup.</p>
           <div class="status-line" aria-label="Status">
             <span class="item"><span class="dot" aria-hidden="true"></span>Currently building Chad vs. Chud</span>
             <span class="sep">·</span>
@@ -663,11 +669,57 @@ image-slot:hover { border-color: var(--accent); }
     </div>
   </section>
 
+  <!-- ============ EXPERIENCE ============ -->
+  <section id="experience" aria-labelledby="exp-h">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="num">02 / experience</span>
+        <h2 id="exp-h">Where I've worked.</h2>
+      </div>
+      <ol class="timeline reveal" aria-label="Work history">
+
+        <li class="t-item">
+          <image-slot id="logo-ember" src="img/logo-ember.png" fit="contain" class="t-logo" shape="rounded" radius="8" placeholder="logo"></image-slot>
+          <div class="t-body">
+            <div class="t-head">
+              <h3 class="t-role">AI Engineer &amp; SWE Intern <span class="at">· Ember Learning (fmr. DeAP Learning Labs)</span></h3>
+              <span class="t-date">Feb 2021 → Present</span>
+            </div>
+            <p class="t-desc">Wrote the LLM prompts behind the AP tutor chatbots on their YouTube videos. Built AI auto-grading for AP DBQs and FRQs. Led UI/UX of the company site. The team picked up a Microsoft + OpenAI grant and crossed a $1M valuation along the way.</p>
+          </div>
+        </li>
+
+        <li class="t-item">
+          <image-slot id="logo-i3" src="img/logo-i3.png" fit="contain" class="t-logo" shape="rounded" radius="8" placeholder="logo"></image-slot>
+          <div class="t-body">
+            <div class="t-head">
+              <h3 class="t-role">CAD Intern <span class="at">· I3 Simulations</span></h3>
+              <span class="t-date">Jun 2025 → May 2026</span>
+            </div>
+            <p class="t-desc">3D models and haptic-feedback prototypes for medical-training simulators.</p>
+          </div>
+        </li>
+
+        <li class="t-item">
+          <image-slot id="logo-bikelane" src="img/logo-bikelane.png" fit="contain" class="t-logo" shape="rounded" radius="8" placeholder="logo"></image-slot>
+          <div class="t-body">
+            <div class="t-head">
+              <h3 class="t-role">Bike Mechanic <span class="at">· The Bike Lane, LLC</span></h3>
+              <span class="t-date">Jun 2021 → Aug 2025</span>
+            </div>
+            <p class="t-desc">Built bikes from the frame up. Ran safety checks on customer bikes before they left the shop. Started as an intern, moved to part-time.</p>
+          </div>
+        </li>
+
+      </ol>
+    </div>
+  </section>
+
   <!-- ============ SELECTED WORK ============ -->
   <section id="work" aria-labelledby="work-h">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="num">02 / selected work</span>
+        <span class="num">03 / selected work</span>
         <h2 id="work-h">Things I've shipped.</h2>
       </div>
 
@@ -796,52 +848,6 @@ image-slot:hover { border-color: var(--accent); }
         </article>
 
       </div>
-    </div>
-  </section>
-
-  <!-- ============ EXPERIENCE ============ -->
-  <section id="experience" aria-labelledby="exp-h">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="num">03 / experience</span>
-        <h2 id="exp-h">Where I've worked.</h2>
-      </div>
-      <ol class="timeline reveal" aria-label="Work history">
-
-        <li class="t-item">
-          <image-slot id="logo-ember" src="img/logo-ember.png" fit="contain" class="t-logo" shape="rounded" radius="8" placeholder="logo"></image-slot>
-          <div class="t-body">
-            <div class="t-head">
-              <h3 class="t-role">AI Engineer &amp; SWE Intern <span class="at">· Ember Learning (fmr. DeAP Learning Labs)</span></h3>
-              <span class="t-date">Feb 2021 → Present</span>
-            </div>
-            <p class="t-desc">Wrote the LLM prompts behind the AP tutor chatbots on their YouTube videos. Built AI auto-grading for AP DBQs and FRQs. Led UI/UX of the company site. The team picked up a Microsoft + OpenAI grant and crossed a $1M valuation along the way.</p>
-          </div>
-        </li>
-
-        <li class="t-item">
-          <image-slot id="logo-i3" src="img/logo-i3.png" fit="contain" class="t-logo" shape="rounded" radius="8" placeholder="logo"></image-slot>
-          <div class="t-body">
-            <div class="t-head">
-              <h3 class="t-role">CAD Intern <span class="at">· I3 Simulations</span></h3>
-              <span class="t-date">Jun 2025 → May 2026</span>
-            </div>
-            <p class="t-desc">3D models and haptic-feedback prototypes for medical-training simulators.</p>
-          </div>
-        </li>
-
-        <li class="t-item">
-          <image-slot id="logo-bikelane" src="img/logo-bikelane.png" fit="contain" class="t-logo" shape="rounded" radius="8" placeholder="logo"></image-slot>
-          <div class="t-body">
-            <div class="t-head">
-              <h3 class="t-role">Bike Mechanic <span class="at">· The Bike Lane, LLC</span></h3>
-              <span class="t-date">Jun 2021 → Aug 2025</span>
-            </div>
-            <p class="t-desc">Built bikes from the frame up. Ran safety checks on customer bikes before they left the shop. Started as an intern, moved to part-time.</p>
-          </div>
-        </li>
-
-      </ol>
     </div>
   </section>
 
@@ -994,26 +1000,6 @@ image-slot:hover { border-color: var(--accent); }
 
 <script>
 (function () {
-  // ----- Theme -----
-  var root = document.documentElement;
-  var iconMoon = document.getElementById('iconMoon');
-  var iconSun  = document.getElementById('iconSun');
-  var btn = document.getElementById('themeBtn');
-  function applyTheme(t) {
-    root.setAttribute('data-theme', t);
-    iconMoon.style.display = t === 'dark' ? '' : 'none';
-    iconSun.style.display  = t === 'dark' ? 'none' : '';
-    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-  }
-  var saved = null;
-  try { saved = localStorage.getItem('ns-theme'); } catch (e) {}
-  if (saved === 'light' || saved === 'dark') applyTheme(saved);
-  btn.addEventListener('click', function () {
-    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    applyTheme(next);
-    try { localStorage.setItem('ns-theme', next); } catch (e) {}
-  });
-
   // ----- Nav scrolled state -----
   var nav = document.getElementById('nav');
   var onScroll = function () {
