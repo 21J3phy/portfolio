@@ -175,6 +175,20 @@ section + section { border-top: 1px solid var(--border); }
 /* ---------- Hero ---------- */
 .hero { padding-block: clamp(96px, 14vw, 160px); overflow: hidden; }
 .hero-inner { position: relative; z-index: 1; }
+.hero-portrait {
+  float: right;
+  width: clamp(108px, 15vw, 176px);
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-2);
+  margin: 4px 0 18px 28px;
+  shape-outside: inset(0 round var(--r-xl));
+}
+@media (max-width: 520px) {
+  .hero-portrait { width: 88px; margin: 0 0 12px 16px; }
+}
 .hero h1 {
   font-size: clamp(44px, 7.5vw, 88px);
   line-height: 1.02; letter-spacing: -0.035em;
@@ -596,6 +610,7 @@ image-slot:hover { border-color: var(--accent); }
       </svg>
     </div>
     <div class="wrap hero-inner">
+      <img class="hero-portrait" src="img/face.jpg" alt="Nirav Surabhi" width="176" height="176" />
       <h1 id="hero-h">
         Nirav Surabhi.<br/>
         <span class="flip-line">
@@ -631,7 +646,7 @@ image-slot:hover { border-color: var(--accent); }
         <h2 id="about-h">A short version, in plain English.</h2>
       </div>
       <div class="about-grid">
-        <image-slot id="face" src="img/face.jpg" class="about-face" shape="rounded" radius="16" placeholder="Drop a photo of you"></image-slot>
+        <image-slot id="face" src="img/ftc-robot.jpg" class="about-face" shape="rounded" radius="16" placeholder="Drop a photo of you"></image-slot>
         <div>
           <p>I build in two halves: software and mechanical. They feed each other more than people expect — the wind-tunnel paper needed CFD and a CNN; the agent protocol needed an embedded-systems mindset.</p>
           <p><strong style="color:var(--text);font-weight:600">Software side:</strong> a CNN image-scorer past 10K users (Chad vs. Chud), an agent-to-agent protocol used by 2K businesses (b2alpha), an analytics tool for prediction markets, a news app I submitted to YC.</p>
