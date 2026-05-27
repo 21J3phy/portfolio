@@ -631,7 +631,7 @@ image-slot:hover { border-color: var(--accent); }
         <h2 id="about-h">A short version, in plain English.</h2>
       </div>
       <div class="about-grid">
-        <image-slot id="face" class="about-face" shape="rounded" radius="16" placeholder="Drop a photo of you"></image-slot>
+        <image-slot id="face" src="img/face.jpg" class="about-face" shape="rounded" radius="16" placeholder="Drop a photo of you"></image-slot>
         <div>
           <p>I build in two halves: software and mechanical. They feed each other more than people expect — the wind-tunnel paper needed CFD and a CNN; the agent protocol needed an embedded-systems mindset.</p>
           <p><strong style="color:var(--text);font-weight:600">Software side:</strong> a CNN image-scorer past 10K users (Chad vs. Chud), an agent-to-agent protocol used by 2K businesses (b2alpha), an analytics tool for prediction markets, a news app I submitted to YC.</p>
@@ -710,7 +710,7 @@ image-slot:hover { border-color: var(--accent); }
 
         <!-- 3. PredictionView -->
         <article class="card reveal" data-tilt>
-          <image-slot id="shot-pv" class="shot" shape="rounded" radius="10" placeholder="Drop a PredictionView screenshot"></image-slot>
+          <image-slot id="shot-pv" src="img/shot-pv.png" class="shot" shape="rounded" radius="10" placeholder="Drop a PredictionView screenshot"></image-slot>
           <div class="card-top">
             <h3 class="card-title">PredictionView</h3>
             <div class="card-meta">Mar 2026 →</div>
@@ -756,7 +756,7 @@ image-slot:hover { border-color: var(--accent); }
 
         <!-- 5. Passive Vortex Propulsion -->
         <article class="card reveal" data-tilt>
-          <image-slot id="shot-pvp" class="shot" shape="rounded" radius="10" placeholder="Drop a wind-tunnel / paper screenshot"></image-slot>
+          <image-slot id="shot-pvp" src="img/shot-pvp.png" class="shot" shape="rounded" radius="10" placeholder="Drop a wind-tunnel / paper screenshot"></image-slot>
           <div class="card-top">
             <h3 class="card-title">Passive Vortex Propulsion</h3>
             <div class="card-meta">Published in IEEE</div>
@@ -773,7 +773,10 @@ image-slot:hover { border-color: var(--accent); }
           </div>
           <div class="card-foot">
             <span class="card-role">Researcher</span>
-            <span class="card-link" style="color:var(--muted);cursor:default">Paper on request</span>
+            <span style="display:inline-flex; gap:16px; align-items:center">
+              <a href="conference-certificate.pdf" target="_blank" rel="noopener noreferrer" class="card-link" style="color:var(--muted)">Certificate ↗</a>
+              <a href="paper.pdf" target="_blank" rel="noopener noreferrer" class="card-link">Read the paper →</a>
+            </span>
           </div>
         </article>
 
