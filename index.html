@@ -388,6 +388,52 @@ section + section { border-top: 1px solid var(--border); }
   font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
 }
 
+/* ---------- FTC CAD gallery (horizontal story rail) ---------- */
+#cad .section-head { flex-wrap: wrap; row-gap: 16px; align-items: center; }
+.cad-sub {
+  font-size: 15px; color: var(--text-2); max-width: 60ch;
+  margin: -28px 0 28px; line-height: 1.55;
+}
+.cad-nav { margin-left: auto; display: flex; gap: 8px; }
+.cad-nav button {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--border-strong); background: var(--surface);
+  color: var(--text); cursor: pointer; display: grid; place-items: center;
+  transition: background var(--t-fast), border-color var(--t-fast), opacity var(--t-fast);
+}
+.cad-nav button:hover { background: var(--surface-2); border-color: var(--text-2); }
+.cad-nav svg { width: 17px; height: 17px; }
+.cad-rail {
+  display: flex; gap: 18px;
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  padding-bottom: 6px; margin: 0 calc(var(--pad) * -1);
+  padding-inline: var(--pad);
+  scrollbar-width: none; -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+.cad-rail::-webkit-scrollbar { display: none; }
+.cad-card {
+  flex: 0 0 auto; width: min(360px, 82vw);
+  scroll-snap-align: start;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform var(--t-med), border-color var(--t-med);
+}
+.cad-card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+.cad-media { aspect-ratio: 4 / 3; background: #0b0e14; overflow: hidden; }
+.cad-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cad-card.contain .cad-media img { object-fit: contain; }
+.cad-body { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 7px; }
+.cad-step { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.04em; }
+.cad-title { font-size: 16px; font-weight: 600; margin: 0; letter-spacing: -0.012em; }
+.cad-desc { font-size: 13.5px; color: var(--text-2); line-height: 1.5; margin: 0; }
+.cad-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;
+}
+@media (max-width: 640px) { .cad-nav { display: none; } }
+
 /* ---------- Timeline ---------- */
 .timeline { position: relative; padding-left: 24px; }
 .timeline::before {
@@ -901,7 +947,7 @@ image-slot::part(image) {
 
         <!-- 3. Science Olympiad — Electric Vehicle -->
         <article class="card reveal" data-tilt>
-          <image-slot id="shot-ev" class="shot" shape="rounded" radius="10" placeholder="Drop an Electric Vehicle photo"></image-slot>
+          <image-slot id="shot-ev" src="img/shot-ev.jpg" class="shot" shape="rounded" radius="10" placeholder="Drop an Electric Vehicle photo"></image-slot>
           <div class="card-top">
             <h3 class="card-title">Electric Vehicle</h3>
             <div class="card-meta">Science Olympiad</div>
@@ -946,11 +992,154 @@ image-slot::part(image) {
     </div>
   </section>
 
+  <!-- ============ FTC CAD ============ -->
+  <section id="cad" aria-labelledby="cad-h">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="num">04 / robotics cad</span>
+        <h2 id="cad-h">A season of FTC, part by part.</h2>
+        <div class="cad-nav">
+          <button type="button" data-cad="prev" aria-label="Scroll to previous">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button type="button" data-cad="next" aria-label="Scroll to next">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+      <p class="cad-sub reveal">Last season's robot — team 12096 — modeled in Fusion 360. These are the subsystems I designed, iterated on, broke, and rebuilt on the way to the Chesapeake championship. Drag, swipe, or use the arrows.</p>
+
+      <div class="cad-rail reveal" tabindex="0" aria-label="FTC CAD designs (scrollable)">
+
+        <article class="cad-card">
+          <div class="cad-media"><img src="img/ftc/ftc-final.jpg" alt="Assembled robot 12096 in the shop" loading="lazy" /></div>
+          <div class="cad-body">
+            <span class="cad-step">01</span>
+            <h3 class="cad-title">Robot 12096, assembled</h3>
+            <p class="cad-desc">Where a whole season of CAD ended up. Every subsystem below started as a part I modeled, printed, or machined — then bolted onto this frame. Shown here with the v1 bumpers.</p>
+            <span class="cad-tag">Real build</span>
+          </div>
+        </article>
+
+        <article class="cad-card contain">
+          <div class="cad-media"><img src="img/ftc/ftc-chassis.jpg" alt="Custom aluminum chassis CAD" loading="lazy" /></div>
+          <div class="cad-body">
+            <span class="cad-step">02</span>
+            <h3 class="cad-title">Custom chassis</h3>
+            <p class="cad-desc">Designed the frame from scratch instead of running a kit — a compact footprint machined from 1/8-inch aluminum to stay light without flexing under load.</p>
+            <span class="cad-tag">Fusion 360</span>
+          </div>
+        </article>
+
+        <article class="cad-card">
+          <div class="cad-media"><img src="img/ftc/ftc-bumper-v1.jpg" alt="Bumper version 1 CAD" loading="lazy" /></div>
+          <div class="cad-body">
+            <span class="cad-step">03</span>
+            <h3 class="cad-title">Bumpers — v1</h3>
+            <p class="cad-desc">The first bumper revision: one sculpted piece. It looked clean, but it was a pain to mount and to repair after contact —</p>
+            <span class="cad-tag">Fusion 360</span>
+          </div>
+        </article>
+
+        <article class="cad-card">
+          <div class="cad-media"><img src="img/ftc/ftc-bumper-v2.jpg" alt="Bumper version 2 CAD on robot" loading="lazy" /></div>
+          <div class="cad-body">
+            <span class="cad-step">04</span>
+            <h3 class="cad-title">Bumpers — v2</h3>
+            <p class="cad-desc">— so I redesigned them. Wraparound geometry that's quicker to swap and shrugs off hits better. v1 → v2 was the loop the whole season ran on.</p>
+            <span class="cad-tag">Fusion 360</span>
+          </div>
+        </article>
+
+        <article class="cad-card">
+          <div class="cad-media"><img src="img/ftc/ftc-intake-ground.jpg" alt="Ground intake with chain drive CAD" loading="lazy" /></div>
+          <div class="cad-body">
+            <span class="cad-step">05</span>
+            <h3 class="cad-title">Ground intake — one motor</h3>
+            <p class="cad-desc">Chained every roller to a single motor, so one drive spins the whole intake. Fewer motors means less weight, less wiring, and less current to budget.</p>
+            <span class="cad-tag">Fusion 360</span>
+          </div>
+        </article>
+
+        <article class="cad-card">
+          <div class="cad-media"><img src="img/ftc/ftc-intake-2dof.jpg" alt="Two-degree-of-freedom intake CAD" loading="lazy" /></div>
+          <div class="cad-body">
+            <span class="cad-step">06</span>
+            <h3 class="cad-title">Intake — two degrees of freedom</h3>
+            <p class="cad-desc">The next intake gained a second axis of motion and 3D-printed TPU rollers — grippy enough to grab a game piece without crushing it.</p>
+            <span class="cad-tag">Fusion 360</span>
+          </div>
+        </article>
+
+        <article class="cad-card contain">
+          <div class="cad-media"><img src="img/ftc/ftc-roller.jpg" alt="Dual-filament roller CAD" loading="lazy" /></div>
+          <div class="cad-body">
+            <span class="cad-step">07</span>
+            <h3 class="cad-title">Dual-filament roller</h3>
+            <p class="cad-desc">Printed the rollers in two materials in one job: a rigid PLA core for the shaft, a soft TPU skin for traction. One part doing two jobs.</p>
+            <span class="cad-tag">Fusion 360</span>
+          </div>
+        </article>
+
+        <article class="cad-card">
+          <div class="cad-media"><img src="img/ftc/ftc-slides.jpg" alt="Motorized linear slides CAD" loading="lazy" /></div>
+          <div class="cad-body">
+            <span class="cad-step">08</span>
+            <h3 class="cad-title">Powered linear slides</h3>
+            <p class="cad-desc">A motorized extension braced by unpowered perpendicular slides — the cross-bracing kills the wobble when it's reached out under load.</p>
+            <span class="cad-tag">Fusion 360</span>
+          </div>
+        </article>
+
+        <article class="cad-card">
+          <div class="cad-media"><img src="img/ftc/ftc-slides-dual.jpg" alt="Dual-slide extension CAD" loading="lazy" /></div>
+          <div class="cad-body">
+            <span class="cad-step">09</span>
+            <h3 class="cad-title">Dual-slide extension</h3>
+            <p class="cad-desc">Two-stage slides with a 180° servo-driven pivot on the intake at the tip — it can reach out and flip orientation at the end of travel.</p>
+            <span class="cad-tag">Fusion 360</span>
+          </div>
+        </article>
+
+        <article class="cad-card contain">
+          <div class="cad-media"><img src="img/ftc/ftc-intake-ramp.jpg" alt="Jointed intake and ramp CAD" loading="lazy" /></div>
+          <div class="cad-body">
+            <span class="cad-step">10</span>
+            <h3 class="cad-title">Intake + ramp, jointed</h3>
+            <p class="cad-desc">Modeled the full intake-to-ramp path as one jointed assembly, so I could play the motion in CAD and catch collisions before cutting any metal.</p>
+            <span class="cad-tag">Fusion 360</span>
+          </div>
+        </article>
+
+        <article class="cad-card">
+          <div class="cad-media"><img src="img/ftc/ftc-shooter.jpg" alt="Hood shooter on a turret CAD" loading="lazy" /></div>
+          <div class="cad-body">
+            <span class="cad-step">11</span>
+            <h3 class="cad-title">Hood shooter, 360° turret</h3>
+            <p class="cad-desc">A flywheel hood shooter on a full 360° turret — it can aim and fire from anywhere on the field without turning the whole robot.</p>
+            <span class="cad-tag">Fusion 360</span>
+          </div>
+        </article>
+
+        <article class="cad-card">
+          <div class="cad-media"><img src="img/ftc/ftc-semis.jpg" alt="Nirav at the field during semifinals" loading="lazy" /></div>
+          <div class="cad-body">
+            <span class="cad-step">12</span>
+            <h3 class="cad-title">Semifinals — Chesapeake Championship</h3>
+            <p class="cad-desc">All of it together, on the field — tethering up before a semifinal match.</p>
+            <span class="cad-tag">Real build</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ============ SKILLS ============ -->
   <section id="skills" aria-labelledby="skills-h">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="num">04 / skills</span>
+        <span class="num">05 / skills</span>
         <h2 id="skills-h">What I reach for.</h2>
       </div>
       <div class="skill-grid reveal">
@@ -1002,7 +1191,7 @@ image-slot::part(image) {
   <section id="beyond" aria-labelledby="beyond-h">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="num">05 / leadership &amp; beyond</span>
+        <span class="num">06 / leadership &amp; beyond</span>
         <h2 id="beyond-h">The other stuff.</h2>
       </div>
       <div class="lead-grid reveal">
@@ -1063,7 +1252,7 @@ image-slot::part(image) {
   <section id="contact" class="contact" aria-labelledby="contact-h">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="num">06 / contact</span>
+        <span class="num">07 / contact</span>
         <h2 id="contact-h" style="display:none">Contact</h2>
       </div>
       <p class="contact-h reveal">If you're working on something interesting,<br/><a href="mailto:niravsurabhi@gmail.com" data-copy-email><span data-copy-label>say hello →</span></a></p>
@@ -1149,6 +1338,19 @@ image-slot::part(image) {
       var mb = workToggle.querySelector('button[data-view="mechanical"]');
       if (mb) mb.click();
     }
+  }
+
+  // ----- FTC CAD rail arrows -----
+  var cadRail = document.querySelector('.cad-rail');
+  var cadNav = document.querySelector('.cad-nav');
+  if (cadRail && cadNav) {
+    cadNav.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-cad]');
+      if (!b) return;
+      var card = cadRail.querySelector('.cad-card');
+      var step = card ? card.getBoundingClientRect().width + 18 : 360;
+      cadRail.scrollBy({ left: b.getAttribute('data-cad') === 'next' ? step : -step, behavior: 'smooth' });
+    });
   }
 
   // ----- Easter egg -----
