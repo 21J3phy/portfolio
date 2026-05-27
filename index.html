@@ -1,0 +1,1245 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0a0c10" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)" />
+<title>Nirav Surabhi — Software + Mechanical Engineering</title>
+<meta name="description" content="Nirav Surabhi — 18. Half on a screen, half on a workbench. Founder of Chad vs. Chud (10K+ users) and b2alpha.io. IEEE-published wind-tunnel research. Senior at Independence HS, incoming Purdue ME." />
+<link rel="canonical" href="https://niravsurabhi.com/" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Nirav Surabhi — Engineer, founder, occasional guitarist" />
+<meta property="og:description" content="Half on a screen, half on a workbench. Software + mechanical engineering." />
+<meta property="og:url" content="https://niravsurabhi.com/" />
+<meta property="og:image" content="/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Nirav Surabhi" />
+<meta name="twitter:description" content="Half on a screen, half on a workbench. Software + mechanical engineering." />
+<meta name="twitter:image" content="/og.png" />
+
+<!-- Favicon: inline SVG, no extra request -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0c10'/%3E%3Ctext x='32' y='42' font-family='ui-sans-serif,system-ui,Inter' font-weight='700' font-size='30' fill='%237c9eff' text-anchor='middle'%3Ens%3C/text%3E%3C/svg%3E" />
+
+<!-- Fonts: Inter + JetBrains Mono, with swap -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="image-slot.js"></script>
+
+<!-- JSON-LD Person -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Nirav Surabhi",
+  "url": "https://niravsurabhi.com/",
+  "email": "mailto:niravsurabhi@gmail.com",
+  "address": { "@type": "PostalAddress", "addressLocality": "Brambleton", "addressRegion": "VA", "addressCountry": "US" },
+  "sameAs": [
+    "https://www.linkedin.com/in/niravss",
+    "https://github.com/21J3phy"
+  ],
+  "jobTitle": "Engineer",
+  "alumniOf": { "@type": "EducationalOrganization", "name": "Independence High School" }
+}
+</script>
+
+<style>
+/* ---------- Tokens ---------- */
+:root {
+  --bg: #0a0c10;
+  --surface: #11141a;
+  --surface-2: #161a22;
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.14);
+  --text: #e8eaed;
+  --text-2: #a8aeb8;
+  --muted: #6b7280;
+  --accent: #7c9eff;
+  --accent-2: #5a7fd8;
+  --accent-soft: rgba(124,158,255,0.12);
+
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+
+  --max: 1100px;
+  --pad: clamp(20px, 4vw, 40px);
+
+  --t-fast: 160ms cubic-bezier(.2,.7,.2,1);
+  --t-med: 320ms cubic-bezier(.2,.7,.2,1);
+
+  --shadow-1: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px rgba(0,0,0,0.25);
+  --shadow-2: 0 1px 0 rgba(255,255,255,0.05) inset, 0 16px 48px rgba(0,0,0,0.38);
+}
+[data-theme="light"] {
+  --bg: #fafaf8;
+  --surface: #ffffff;
+  --surface-2: #f4f4f1;
+  --border: rgba(10,12,16,0.10);
+  --border-strong: rgba(10,12,16,0.18);
+  --text: #0a0c10;
+  --text-2: #444a55;
+  --muted: #6b7280;
+  --accent: #3a5cd6;
+  --accent-2: #1f3aa8;
+  --accent-soft: rgba(58,92,214,0.10);
+  --shadow-1: 0 1px 0 rgba(0,0,0,0.02) inset, 0 8px 20px rgba(20,24,40,0.06);
+  --shadow-2: 0 1px 0 rgba(0,0,0,0.03) inset, 0 16px 40px rgba(20,24,40,0.10);
+}
+
+/* ---------- Reset-ish ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: "ss02","calt"; }
+
+/* ---------- Layout ---------- */
+.wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--pad); }
+section { padding-block: clamp(72px, 10vw, 120px); position: relative; }
+section + section { border-top: 1px solid var(--border); }
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: saturate(1.2) blur(10px);
+  -webkit-backdrop-filter: saturate(1.2) blur(10px);
+  background: color-mix(in oklab, var(--bg) 78%, transparent);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+.nav.scrolled { border-bottom-color: var(--border); }
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px; max-width: var(--max); margin: 0 auto; padding-inline: var(--pad);
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-weight: 600; letter-spacing: -0.01em;
+}
+.brand-mark {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  display: grid; place-items: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent);
+  font-weight: 600;
+}
+.nav-links { display: flex; gap: 22px; align-items: center; }
+.nav-links a {
+  color: var(--text-2); font-size: 14px; font-weight: 500;
+  transition: color var(--t-fast);
+}
+.nav-links a:hover { color: var(--text); }
+.nav-links a.cta {
+  color: var(--text); border: 1px solid var(--border-strong);
+  padding: 6px 12px; border-radius: 999px; font-size: 13px;
+}
+.nav-links a.cta:hover { background: var(--surface); }
+.theme-btn {
+  background: transparent; border: 1px solid var(--border); color: var(--text-2);
+  width: 34px; height: 34px; border-radius: 8px; cursor: pointer;
+  display: grid; place-items: center;
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+}
+.theme-btn:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface); }
+.theme-btn svg { width: 16px; height: 16px; }
+@media (max-width: 640px) {
+  .nav-links .hide-sm { display: none; }
+}
+
+/* ---------- Hero ---------- */
+.hero { padding-block: clamp(96px, 14vw, 160px); overflow: hidden; }
+.hero-inner { position: relative; z-index: 1; }
+.hero h1 {
+  font-size: clamp(44px, 7.5vw, 88px);
+  line-height: 1.02; letter-spacing: -0.035em;
+  font-weight: 700; margin: 0 0 22px;
+  text-wrap: balance;
+}
+.hero h1 .accent { color: var(--accent); }
+.role-line {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  color: var(--text-2); margin-bottom: 28px;
+  padding: 6px 12px; border: 1px solid var(--border);
+  border-radius: 999px; background: var(--surface);
+}
+.role-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 4px rgba(74,222,128,0.15); animation: pulse 2.4s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+.typewriter { color: var(--text); min-width: 5ch; }
+.cursor { display: inline-block; width: 7px; height: 1em; background: var(--accent); transform: translateY(2px); margin-left: 2px; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.hero-lede {
+  font-size: clamp(18px, 2vw, 22px); color: var(--text-2);
+  max-width: 640px; margin: 0 0 16px;
+  text-wrap: pretty;
+}
+.hero-sub {
+  font-size: 15px; color: var(--muted); margin: 0 0 40px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.hero-sub .sep { color: var(--border-strong); margin-inline: 10px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 18px; border-radius: 10px;
+  border: 1px solid var(--border-strong); background: var(--surface);
+  color: var(--text); font-size: 14px; font-weight: 500;
+  transition: transform var(--t-fast), background var(--t-fast), border-color var(--t-fast);
+}
+.btn:hover { background: var(--surface-2); border-color: var(--text-2); transform: translateY(-1px); }
+.btn svg { width: 15px; height: 15px; }
+.btn.primary { background: var(--accent); color: #0a0c10; border-color: var(--accent); }
+.btn.primary:hover { background: var(--accent-2); border-color: var(--accent-2); color: white; }
+[data-theme="light"] .btn.primary { color: white; }
+
+/* Hero flow-line backdrop (subtle wind-tunnel reference) */
+.flow {
+  position: absolute; inset: 0; pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse 80% 60% at 70% 40%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 70% 40%, black 30%, transparent 80%);
+}
+.flow svg { width: 100%; height: 100%; display: block; }
+.flow path {
+  fill: none; stroke: var(--accent); stroke-width: 1; opacity: 0.18;
+  stroke-dasharray: 6 14;
+  animation: drift 14s linear infinite;
+}
+.flow path:nth-child(2n) { animation-duration: 18s; opacity: 0.10; }
+.flow path:nth-child(3n) { animation-duration: 22s; opacity: 0.14; }
+@keyframes drift { to { stroke-dashoffset: -200; } }
+[data-theme="light"] .flow path { opacity: 0.22; }
+[data-theme="light"] .flow path:nth-child(2n) { opacity: 0.12; }
+
+/* ---------- Section heading ---------- */
+.section-head {
+  display: flex; align-items: baseline; gap: 14px;
+  margin-bottom: 48px;
+}
+.section-head .num {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent);
+}
+.section-head h2 {
+  font-size: clamp(28px, 4vw, 40px); margin: 0;
+  font-weight: 600; letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+/* ---------- About ---------- */
+.about p {
+  font-size: clamp(18px, 1.8vw, 21px);
+  color: var(--text);
+  max-width: 720px; margin: 0 0 18px;
+  text-wrap: pretty;
+  line-height: 1.6;
+}
+.about p + p { color: var(--text-2); }
+.status-line {
+  display: inline-flex; flex-wrap: wrap; gap: 0; margin-top: 28px;
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  color: var(--text-2);
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface); padding: 12px 16px;
+}
+.status-line .item { display: inline-flex; align-items: center; gap: 8px; }
+.status-line .sep { color: var(--border-strong); margin-inline: 14px; }
+.status-line .dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; }
+@media (max-width: 560px) {
+  .status-line { flex-direction: column; gap: 8px; align-items: flex-start; }
+  .status-line .sep { display: none; }
+}
+
+/* ---------- Work cards ---------- */
+.work-grid {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px;
+}
+.card {
+  grid-column: span 3;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 28px;
+  display: flex; flex-direction: column;
+  position: relative;
+  transition: transform var(--t-med), border-color var(--t-med), background var(--t-med);
+  overflow: hidden;
+  isolation: isolate;
+}
+.card::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(600px circle at var(--mx,50%) var(--my,0%), var(--accent-soft), transparent 50%);
+  opacity: 0; transition: opacity var(--t-med); z-index: -1;
+}
+.card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+.card:hover::before { opacity: 1; }
+.card.featured { grid-column: span 6; padding: 36px; }
+@media (max-width: 880px) { .card, .card.featured { grid-column: span 6; padding: 26px; } }
+
+.card-top {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+  margin-bottom: 14px;
+}
+.card-title {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 22px; font-weight: 600; letter-spacing: -0.018em;
+  margin: 0;
+}
+.card.featured .card-title { font-size: 28px; }
+.now-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--accent); background: var(--accent-soft);
+  padding: 4px 8px; border-radius: 999px; letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.card-meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
+  text-align: right; white-space: nowrap; flex-shrink: 0;
+}
+.card-desc {
+  color: var(--text-2); font-size: 15.5px; margin: 0 0 20px;
+  max-width: 60ch; line-height: 1.55;
+}
+.card.featured .card-desc { font-size: 17px; max-width: 70ch; }
+.metric {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  color: var(--text); margin-bottom: 18px;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.metric .big { font-size: 22px; font-weight: 500; color: var(--accent); letter-spacing: -0.02em; }
+.metric .label { color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+.chip {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--text-2); background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 4px 9px; border-radius: 6px;
+}
+.card-foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+.card-link {
+  color: var(--accent); font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; display: inline-flex; align-items: center; gap: 6px;
+  transition: gap var(--t-fast);
+}
+.card-link:hover { gap: 10px; }
+.card-role {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
+}
+
+/* ---------- Timeline ---------- */
+.timeline { position: relative; padding-left: 24px; }
+.timeline::before {
+  content: ""; position: absolute; left: 6px; top: 8px; bottom: 8px;
+  width: 1px; background: var(--border);
+}
+.t-item { position: relative; padding-block: 18px; padding-left: 16px; }
+.t-item::before {
+  content: ""; position: absolute; left: -23px; top: 26px;
+  width: 13px; height: 13px; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--border-strong);
+  transition: border-color var(--t-fast);
+}
+.t-item:hover::before { border-color: var(--accent); }
+.t-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  margin-bottom: 6px; flex-wrap: wrap;
+}
+.t-role { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; margin: 0; }
+.t-role .at { color: var(--text-2); font-weight: 400; }
+.t-date { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); }
+.t-desc { color: var(--text-2); font-size: 14.5px; margin: 0; max-width: 65ch; line-height: 1.55; }
+
+/* ---------- Skills ---------- */
+.skill-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+@media (max-width: 720px) { .skill-grid { grid-template-columns: 1fr; } }
+.skill-group {
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  background: var(--surface); padding: 22px 24px;
+}
+.skill-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--muted); margin-bottom: 14px;
+  text-transform: lowercase; letter-spacing: 0.02em;
+}
+.skill-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-chips .chip { font-size: 12px; padding: 5px 10px; }
+.skill-chips .chip.k { color: var(--text); border-color: var(--border-strong); }
+
+/* ---------- Leadership ---------- */
+.lead-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+}
+@media (max-width: 720px) { .lead-grid { grid-template-columns: 1fr; } }
+.lead-item {
+  border: 1px solid var(--border); border-radius: var(--r-md);
+  background: var(--surface); padding: 20px 22px;
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+.lead-item:hover { border-color: var(--border-strong); background: var(--surface-2); }
+.lead-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 14px;
+  margin-bottom: 6px; flex-wrap: wrap;
+}
+.lead-title { font-size: 15.5px; font-weight: 600; margin: 0; letter-spacing: -0.012em; }
+.lead-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); }
+.lead-desc { color: var(--text-2); font-size: 14px; margin: 0; line-height: 1.5; }
+
+/* ---------- Contact ---------- */
+.contact {
+  text-align: left;
+}
+.contact-h {
+  font-size: clamp(36px, 6vw, 60px);
+  font-weight: 700; letter-spacing: -0.035em;
+  line-height: 1.05; margin: 0 0 24px;
+  text-wrap: balance;
+}
+.contact-h a {
+  color: var(--accent);
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--t-fast);
+}
+.contact-h a:hover { border-bottom-color: var(--accent); }
+.contact-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+  margin-top: 36px; max-width: 720px;
+}
+@media (max-width: 600px) { .contact-grid { grid-template-columns: 1fr; } }
+.contact-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px; border: 1px solid var(--border);
+  border-radius: var(--r-md); background: var(--surface);
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+.contact-item:hover { border-color: var(--border-strong); background: var(--surface-2); }
+.contact-item .k {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
+}
+.contact-item .v { font-size: 15px; color: var(--text); }
+.contact-item .arrow { color: var(--muted); transition: color var(--t-fast), transform var(--t-fast); }
+.contact-item:hover .arrow { color: var(--accent); transform: translate(2px, -2px); }
+.contact-item .left { display: flex; flex-direction: column; gap: 4px; }
+
+/* ---------- Footer ---------- */
+footer {
+  padding-block: 32px;
+  border-top: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--muted);
+}
+.foot-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; max-width: var(--max); margin: 0 auto; padding-inline: var(--pad); }
+
+/* ---------- Reveal-on-scroll ---------- */
+.reveal {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 600ms cubic-bezier(.2,.7,.2,1), transform 600ms cubic-bezier(.2,.7,.2,1);
+  will-change: opacity, transform;
+}
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* ---------- 3D pill (Software / Mechanical) — Three.js ---------- */
+.flip-line {
+  display: inline-flex; align-items: center; gap: 0.14em;
+  flex-wrap: wrap;
+  font-weight: 600; color: var(--text);
+  letter-spacing: -0.035em;
+}
+.pill3d {
+  display: inline-block;
+  align-self: center;
+  vertical-align: middle;
+  width: clamp(176px, 30vw, 272px);
+  aspect-ratio: 272 / 116;
+  line-height: 0;
+  position: relative;
+  /* a faint CSS halo under the canvas; the in-scene plane is the real shadow */
+  margin: -0.15em 0;
+}
+.pill3d canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ---------- Image slots ---------- */
+image-slot {
+  display: block;
+  background: var(--surface-2);
+  border: 1px dashed var(--border-strong);
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+image-slot:hover { border-color: var(--accent); }
+
+/* About: face + text two-col */
+.about-grid {
+  display: grid; grid-template-columns: 220px 1fr; gap: 44px;
+  align-items: start;
+}
+.about-face {
+  width: 220px; height: 260px;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  position: sticky; top: 92px;
+}
+@media (max-width: 760px) {
+  .about-grid { grid-template-columns: 1fr; gap: 28px; }
+  .about-face { width: 160px; height: 190px; position: static; }
+}
+
+/* Project screenshot */
+.shot {
+  width: 100%;
+  height: 240px;
+  margin-bottom: 22px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+.card.featured .shot { height: 360px; margin-bottom: 28px; }
+@media (max-width: 880px) {
+  .shot { height: 200px; }
+  .card.featured .shot { height: 240px; }
+}
+
+/* Timeline logos */
+.t-item { display: grid; grid-template-columns: 48px 1fr; gap: 18px; align-items: start; }
+.t-item::before { display: none; }
+.timeline::before { left: 30px; }
+.t-logo {
+  width: 48px; height: 48px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 14px;
+}
+.t-body { min-width: 0; }
+@media (max-width: 560px) {
+  .timeline { padding-left: 0; }
+  .timeline::before { display: none; }
+  .t-item { grid-template-columns: 40px 1fr; gap: 14px; }
+  .t-logo { width: 40px; height: 40px; }
+}
+
+/* ---------- Selection ---------- */
+::selection { background: var(--accent); color: #0a0c10; }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand" aria-label="Nirav Surabhi — home">
+      <span class="brand-mark">ns</span>
+      <span>Nirav Surabhi</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#work" class="hide-sm">Work</a>
+      <a href="#about" class="hide-sm">About</a>
+      <a href="#contact">Contact</a>
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle color theme" title="Toggle theme">
+        <!-- moon -->
+        <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <!-- sun -->
+        <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="flow" aria-hidden="true">
+      <svg viewBox="0 0 1200 600" preserveAspectRatio="none">
+        <!-- streamlines: gentle curves left→right, hinting at the wind-tunnel research -->
+        <path d="M -50 80   C 300 70, 700 100, 1300 60" />
+        <path d="M -50 130  C 300 120, 700 160, 1300 130" />
+        <path d="M -50 180  C 300 175, 700 220, 1300 200" />
+        <path d="M -50 240  C 300 235, 700 290, 1300 270" />
+        <path d="M -50 310  C 300 305, 700 360, 1300 340" />
+        <path d="M -50 380  C 300 375, 700 420, 1300 410" />
+        <path d="M -50 450  C 300 445, 700 480, 1300 480" />
+        <path d="M -50 520  C 300 515, 700 540, 1300 550" />
+      </svg>
+    </div>
+    <div class="wrap hero-inner">
+      <h1 id="hero-h">
+        Nirav Surabhi.<br/>
+        <span class="flip-line">
+          <span class="pill3d" role="img" aria-label="Software and mechanical">
+            <canvas id="pill-canvas"></canvas>
+          </span>
+          Engineer.
+        </span>
+      </h1>
+      <p class="hero-lede"><strong style="color:var(--text);font-weight:600">Software:</strong> founder of <a href="#work" style="color:var(--accent)">Chad vs. Chud</a> (10K users) and <a href="#work" style="color:var(--accent)">b2alpha.io</a> (2K business users). <strong style="color:var(--text);font-weight:600">Mechanical:</strong> built a wind tunnel from scratch, published the paper in IEEE.</p>
+      <p class="hero-sub">Brambleton, VA <span class="sep">/</span> Independence HS '26 <span class="sep">/</span> Purdue ME '30</p>
+      <div class="cta-row">
+        <a href="#work" class="btn primary">
+          See what I've built
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </a>
+        <a href="Resume.pdf" class="btn" download>
+          Resume
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        </a>
+        <a href="mailto:niravsurabhi@gmail.com" class="btn" data-copy-email><span data-copy-label>Email</span></a>
+        <a href="https://www.linkedin.com/in/niravss" class="btn" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+        <a href="https://github.com/21J3phy" class="btn" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="about reveal" aria-labelledby="about-h">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="num">01 / about</span>
+        <h2 id="about-h">A short version, in plain English.</h2>
+      </div>
+      <div class="about-grid">
+        <image-slot id="face" class="about-face" shape="rounded" radius="16" placeholder="Drop a photo of you"></image-slot>
+        <div>
+          <p>I build in two halves: software and mechanical. They feed each other more than people expect — the wind-tunnel paper needed CFD and a CNN; the agent protocol needed an embedded-systems mindset.</p>
+          <p><strong style="color:var(--text);font-weight:600">Software side:</strong> a CNN image-scorer past 10K users (Chad vs. Chud), an agent-to-agent protocol used by 2K businesses (b2alpha), an analytics tool for prediction markets, a news app I submitted to YC.</p>
+          <p><strong style="color:var(--text);font-weight:600">Mechanical side:</strong> a wind tunnel I built from scratch, soldered the load cells, ran the fluid sims, and published the paper in IEEE. Four years of FTC robotics (captain) and Science Olympiad along the way — heading to Purdue ME in the fall.</p>
+          <div class="status-line" aria-label="Status">
+            <span class="item"><span class="dot" aria-hidden="true"></span>Currently building Chad vs. Chud</span>
+            <span class="sep">·</span>
+            <span class="item">Senior at Independence HS</span>
+            <span class="sep">·</span>
+            <span class="item">Incoming Purdue ME, Fall 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SELECTED WORK ============ -->
+  <section id="work" aria-labelledby="work-h">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="num">02 / selected work</span>
+        <h2 id="work-h">Things I've shipped.</h2>
+      </div>
+
+      <div class="work-grid">
+
+        <!-- 1. Chad vs Chud — featured -->
+        <article class="card featured reveal" data-tilt>
+          <image-slot id="shot-chad" src="img/shot-chad.png" class="shot" shape="rounded" radius="10" placeholder="Drop a Chad vs. Chud screenshot"></image-slot>
+          <div class="card-top">
+            <h3 class="card-title">Chad vs. Chud <span class="now-pill">Current focus</span></h3>
+            <div class="card-meta">2025 — Now</div>
+          </div>
+          <p class="card-desc">An image-analysis web app with a custom CNN behind it. Users upload a photo, the model scores it in real time. Deployed on Fly.io.</p>
+          <div class="metric">
+            <span class="big">10,000+</span><span class="label">registered users</span>
+            <span style="color:var(--border-strong); margin:0 4px">·</span>
+            <span class="big">100+</span><span class="label">daily actives</span>
+          </div>
+          <div class="chips">
+            <span class="chip">Python</span>
+            <span class="chip">PyTorch / CNN</span>
+            <span class="chip">Fly.io</span>
+            <span class="chip">JavaScript</span>
+            <span class="chip">Computer Vision</span>
+          </div>
+          <div class="card-foot">
+            <span class="card-role">Co-Founder &amp; CEO</span>
+            <a href="https://chadvschud.com" target="_blank" rel="noopener noreferrer" class="card-link">chadvschud.com →</a>
+          </div>
+        </article>
+
+        <!-- 2. b2alpha -->
+        <article class="card reveal" data-tilt>
+          <image-slot id="shot-b2a" src="img/shot-b2a.png" class="shot" shape="rounded" radius="10" placeholder="Drop a b2alpha.io screenshot"></image-slot>
+          <div class="card-top">
+            <h3 class="card-title">b2alpha.io</h3>
+            <div class="card-meta">Jan 2026 →</div>
+          </div>
+          <p class="card-desc">An open protocol so agents can talk to other agents — secure messaging plus DNS integration. A lot of the work is prompt engineering: getting models to produce structured output another agent can actually parse.</p>
+          <div class="metric">
+            <span class="big">2,000+</span><span class="label">business users</span>
+          </div>
+          <div class="chips">
+            <span class="chip">LLMs</span>
+            <span class="chip">Agents</span>
+            <span class="chip">DNS</span>
+            <span class="chip">Python</span>
+            <span class="chip">Prompt Engineering</span>
+          </div>
+          <div class="card-foot">
+            <span class="card-role">Co-Founder &amp; CEO</span>
+            <a href="https://b2alpha.io" target="_blank" rel="noopener noreferrer" class="card-link">b2alpha.io →</a>
+          </div>
+        </article>
+
+        <!-- 3. PredictionView -->
+        <article class="card reveal" data-tilt>
+          <image-slot id="shot-pv" class="shot" shape="rounded" radius="10" placeholder="Drop a PredictionView screenshot"></image-slot>
+          <div class="card-top">
+            <h3 class="card-title">PredictionView</h3>
+            <div class="card-meta">Mar 2026 →</div>
+          </div>
+          <p class="card-desc">Analytics for prediction markets — charts, signals, comparisons. I own the backend, the test suite, and most of the debugging.</p>
+          <div class="metric">
+            <span class="big">Launched</span><span class="label">March 2026</span>
+          </div>
+          <div class="chips">
+            <span class="chip">Python</span>
+            <span class="chip">APIs</span>
+            <span class="chip">Data</span>
+            <span class="chip">Testing</span>
+          </div>
+          <div class="card-foot">
+            <span class="card-role">Co-Founder &amp; CEO</span>
+            <a href="https://predictionview.app" target="_blank" rel="noopener noreferrer" class="card-link">predictionview.app →</a>
+          </div>
+        </article>
+
+        <!-- 4. Khali -->
+        <article class="card reveal" data-tilt>
+          <image-slot id="shot-khali" src="img/shot-khali.png" class="shot" shape="rounded" radius="10" placeholder="Drop a Khali screenshot"></image-slot>
+          <div class="card-top">
+            <h3 class="card-title">Khali</h3>
+            <div class="card-meta">2025 — 2026</div>
+          </div>
+          <p class="card-desc">Full-stack news aggregator with a short-form-video feed (think Reels, but news). Goal: get past the spin and show what actually happened.</p>
+          <div class="metric">
+            <span class="big">YC S26</span><span class="label">application submitted</span>
+          </div>
+          <div class="chips">
+            <span class="chip">Full Stack</span>
+            <span class="chip">LLMs</span>
+            <span class="chip">Video</span>
+            <span class="chip">News APIs</span>
+          </div>
+          <div class="card-foot">
+            <span class="card-role">Co-Founder &amp; CEO</span>
+            <a href="https://khali.info" target="_blank" rel="noopener noreferrer" class="card-link">khali.info →</a>
+          </div>
+        </article>
+
+        <!-- 5. Passive Vortex Propulsion -->
+        <article class="card reveal" data-tilt>
+          <image-slot id="shot-pvp" class="shot" shape="rounded" radius="10" placeholder="Drop a wind-tunnel / paper screenshot"></image-slot>
+          <div class="card-top">
+            <h3 class="card-title">Passive Vortex Propulsion</h3>
+            <div class="card-meta">Published in IEEE</div>
+          </div>
+          <p class="card-desc">First demonstration of passive vortex propulsion in air. I built the wind tunnel from scratch to run the experiment — soldered and calibrated the load cells with an Arduino, ran the fluid sims in Fusion 360, published the paper in IEEE.</p>
+          <div class="metric">
+            <span class="big">IEEE</span><span class="label">first author · AIAA Award</span>
+          </div>
+          <div class="chips">
+            <span class="chip">Arduino</span>
+            <span class="chip">Load Cells</span>
+            <span class="chip">Fusion 360</span>
+            <span class="chip">CFD</span>
+          </div>
+          <div class="card-foot">
+            <span class="card-role">Researcher</span>
+            <span class="card-link" style="color:var(--muted);cursor:default">Paper on request</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXPERIENCE ============ -->
+  <section id="experience" aria-labelledby="exp-h">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="num">03 / experience</span>
+        <h2 id="exp-h">Where I've worked.</h2>
+      </div>
+      <ol class="timeline reveal" aria-label="Work history">
+
+        <li class="t-item">
+          <image-slot id="logo-ember" src="img/logo-ember.png" fit="contain" class="t-logo" shape="rounded" radius="8" placeholder="logo"></image-slot>
+          <div class="t-body">
+            <div class="t-head">
+              <h3 class="t-role">AI Engineer &amp; SWE Intern <span class="at">· Ember Learning (fmr. DeAP Learning Labs)</span></h3>
+              <span class="t-date">Feb 2021 → Present</span>
+            </div>
+            <p class="t-desc">Wrote the LLM prompts behind the AP tutor chatbots on their YouTube videos. Built AI auto-grading for AP DBQs and FRQs. Led UI/UX of the company site. The team picked up a Microsoft + OpenAI grant and crossed a $1M valuation along the way.</p>
+          </div>
+        </li>
+
+        <li class="t-item">
+          <image-slot id="logo-i3" src="img/logo-i3.png" fit="contain" class="t-logo" shape="rounded" radius="8" placeholder="logo"></image-slot>
+          <div class="t-body">
+            <div class="t-head">
+              <h3 class="t-role">CAD Intern <span class="at">· I3 Simulations</span></h3>
+              <span class="t-date">Jun 2025 → May 2026</span>
+            </div>
+            <p class="t-desc">3D models and haptic-feedback prototypes for medical-training simulators.</p>
+          </div>
+        </li>
+
+        <li class="t-item">
+          <image-slot id="logo-bikelane" src="img/logo-bikelane.png" fit="contain" class="t-logo" shape="rounded" radius="8" placeholder="logo"></image-slot>
+          <div class="t-body">
+            <div class="t-head">
+              <h3 class="t-role">Bike Mechanic <span class="at">· The Bike Lane, LLC</span></h3>
+              <span class="t-date">Jun 2021 → Aug 2025</span>
+            </div>
+            <p class="t-desc">Built bikes from the frame up. Ran safety checks on customer bikes before they left the shop. Started as an intern, moved to part-time.</p>
+          </div>
+        </li>
+
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section id="skills" aria-labelledby="skills-h">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="num">04 / skills</span>
+        <h2 id="skills-h">What I reach for.</h2>
+      </div>
+      <div class="skill-grid reveal">
+        <div class="skill-group">
+          <div class="skill-label">// languages</div>
+          <div class="skill-chips">
+            <span class="chip k">Java</span>
+            <span class="chip k">Python</span>
+            <span class="chip k">JavaScript</span>
+            <span class="chip k">HTML</span>
+            <span class="chip k">CSS</span>
+            <span class="chip k">Git</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-label">// cloud &amp; deploy</div>
+          <div class="skill-chips">
+            <span class="chip k">Fly.io</span>
+            <span class="chip k">Railway</span>
+            <span class="chip k">Supabase</span>
+            <span class="chip k">Vercel</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-label">// hardware &amp; cad</div>
+          <div class="skill-chips">
+            <span class="chip k">Autodesk Fusion 360</span>
+            <span class="chip k">Arduino</span>
+            <span class="chip k">Load Cells</span>
+            <span class="chip k">Soldering Iron</span>
+            <span class="chip k">Multimeter</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-label">// methods</div>
+          <div class="skill-chips">
+            <span class="chip k">PID Control</span>
+            <span class="chip k">Sensor Fusion</span>
+            <span class="chip k">CFD</span>
+            <span class="chip k">Prompt Engineering</span>
+            <span class="chip k">Agile</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LEADERSHIP & BEYOND ============ -->
+  <section id="beyond" aria-labelledby="beyond-h">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="num">05 / leadership &amp; beyond</span>
+        <h2 id="beyond-h">The other stuff.</h2>
+      </div>
+      <div class="lead-grid reveal">
+
+        <div class="lead-item">
+          <div class="lead-head">
+            <h3 class="lead-title">Captain · Science Olympiad</h3>
+            <span class="lead-tag">leadership</span>
+          </div>
+          <p class="lead-desc">Built an Arduino device that measures salt concentration in water. Also engineered a PID-controlled electric vehicle for fast, accurate distance runs.</p>
+        </div>
+
+        <div class="lead-item">
+          <div class="lead-head">
+            <h3 class="lead-title">Captain · First Tech Challenge, Team Absolute Zero</h3>
+            <span class="lead-tag">robotics</span>
+          </div>
+          <p class="lead-desc">Autonomous + tele-op Java. PID control loops. Sensor fusion.</p>
+        </div>
+
+        <div class="lead-item">
+          <div class="lead-head">
+            <h3 class="lead-title">AIAA Aerospace Award · RSEF</h3>
+            <span class="lead-tag">honor</span>
+          </div>
+          <p class="lead-desc">Special honor at the regional fair, plus an invitation to NASA Goddard.</p>
+        </div>
+
+        <div class="lead-item">
+          <div class="lead-head">
+            <h3 class="lead-title">Presidential Volunteer Service Award · Silver</h3>
+            <span class="lead-tag">service</span>
+          </div>
+          <p class="lead-desc">Awarded for sustained volunteer hours.</p>
+        </div>
+
+        <div class="lead-item">
+          <div class="lead-head">
+            <h3 class="lead-title">1st Place · Agaudo Guitar Competition</h3>
+            <span class="lead-tag">guitar</span>
+          </div>
+          <p class="lead-desc">Classical guitar. Member of the All-Virginia Guitar Ensemble. I also organize concerts at local senior centers — small rooms, attentive audiences, no microphones.</p>
+        </div>
+
+        <div class="lead-item">
+          <div class="lead-head">
+            <h3 class="lead-title">Central Virginia Governor's School Scholar</h3>
+            <span class="lead-tag">mathematics</span>
+          </div>
+          <p class="lead-desc">Mathematics track, summer 2024.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="contact" aria-labelledby="contact-h">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="num">06 / contact</span>
+        <h2 id="contact-h" style="display:none">Contact</h2>
+      </div>
+      <p class="contact-h reveal">If you're working on something interesting,<br/><a href="mailto:niravsurabhi@gmail.com" data-copy-email><span data-copy-label>say hello →</span></a></p>
+
+      <div class="contact-grid reveal">
+        <a class="contact-item" href="mailto:niravsurabhi@gmail.com" data-copy-email>
+          <span class="left"><span class="k">// email — click to copy</span><span class="v" data-copy-label>niravsurabhi@gmail.com</span></span>
+          <span class="arrow" aria-hidden="true">⧉</span>
+        </a>
+        <a class="contact-item" href="https://www.linkedin.com/in/niravss" target="_blank" rel="noopener noreferrer">
+          <span class="left"><span class="k">// linkedin</span><span class="v">linkedin.com/in/niravss</span></span>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-item" href="https://github.com/21J3phy" target="_blank" rel="noopener noreferrer">
+          <span class="left"><span class="k">// github</span><span class="v">github.com/21J3phy</span></span>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <span>© 2026 Nirav Surabhi</span>
+    <span>Built in a single HTML file. <a href="https://github.com/21J3phy" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">source soon</a>.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // ----- Theme -----
+  var root = document.documentElement;
+  var iconMoon = document.getElementById('iconMoon');
+  var iconSun  = document.getElementById('iconSun');
+  var btn = document.getElementById('themeBtn');
+  function applyTheme(t) {
+    root.setAttribute('data-theme', t);
+    iconMoon.style.display = t === 'dark' ? '' : 'none';
+    iconSun.style.display  = t === 'dark' ? 'none' : '';
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('ns-theme'); } catch (e) {}
+  if (saved === 'light' || saved === 'dark') applyTheme(saved);
+  btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('ns-theme', next); } catch (e) {}
+  });
+
+  // ----- Nav scrolled state -----
+  var nav = document.getElementById('nav');
+  var onScroll = function () {
+    if (window.scrollY > 8) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ----- Reveal on scroll -----
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+  }
+
+  // ----- Card cursor-glow (cheap, no library) -----
+  document.querySelectorAll('.card').forEach(function (card) {
+    card.addEventListener('pointermove', function (e) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  // ----- Easter egg -----
+  console.log(
+    '%c hi. %cyou\'re reading the console. respect.\n%c if you want to work on something, niravsurabhi@gmail.com',
+    'background:#7c9eff;color:#0a0c10;padding:2px 8px;border-radius:4px;font-weight:700',
+    'color:#a8aeb8;font-family:monospace',
+    'color:#7c9eff;font-family:monospace'
+  );
+
+  // ----- Email: copy to clipboard on click -----
+  var EMAIL = 'niravsurabhi@gmail.com';
+  document.querySelectorAll('[data-copy-email]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      // allow right-click / cmd-click / middle-click to use mailto: normally
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
+      e.preventDefault();
+      var label = el.querySelector('[data-copy-label]');
+      if (!label) return;
+      var prev = label.textContent;
+      var done = function () {
+        label.textContent = 'Copied \u2713';
+        setTimeout(function () { label.textContent = prev; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(EMAIL).then(done, function () { window.location.href = 'mailto:' + EMAIL; });
+      } else {
+        // fallback
+        var ta = document.createElement('textarea'); ta.value = EMAIL; ta.setAttribute('readonly','');
+        ta.style.position = 'absolute'; ta.style.left = '-9999px';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (err) { window.location.href = 'mailto:' + EMAIL; }
+        document.body.removeChild(ta);
+      }
+    });
+  });
+})();
+</script>
+
+<!-- ============ 3D Software/Mechanical pill (Three.js) ============ -->
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+(function () {
+  const canvas = document.getElementById('pill-canvas');
+  if (!canvas) return;
+  const wrap = canvas.parentElement;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Static freeze for screenshots / inspection: ?pill=front | ?pill=back
+  const freeze = new URLSearchParams(location.search).get('pill');
+
+  // ---- Renderer (transparent so the page shows through) ----
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setClearColor(0x000000, 0);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(32, 272 / 116, 0.1, 100);
+  camera.position.set(0, 0, 2.6);
+
+  // ---- Lighting: warm key (above-right), cool fill (below-left), ambient ----
+  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+  const key = new THREE.DirectionalLight(0xfff0dc, 1.2);
+  key.position.set(2.5, 3, 2.5);
+  scene.add(key);
+  const fill = new THREE.DirectionalLight(0xbcd2ff, 0.55);
+  fill.position.set(-3, -2.5, 1.5);
+  scene.add(fill);
+
+  // ---- Capsule colour: panoramic CanvasTexture, two 50% zones around the
+  //      circumference (u). Left half blue (front), right half amber (back).
+  //      The cap-distorted v of CapsuleGeometry is irrelevant here since each
+  //      zone is a flat vertical colour band.
+  function makeColorTexture() {
+    const c = document.createElement('canvas');
+    c.width = 1024; c.height = 128;
+    const x = c.getContext('2d');
+    const half = c.width / 2;
+    let g = x.createLinearGradient(0, 0, half, 0);
+    g.addColorStop(0, '#7e9cff'); g.addColorStop(0.5, '#6c8eff'); g.addColorStop(1, '#4d6ed6');
+    x.fillStyle = g; x.fillRect(0, 0, half, c.height);
+    g = x.createLinearGradient(half, 0, c.width, 0);
+    g.addColorStop(0, '#f4ac6c'); g.addColorStop(0.5, '#ec9550'); g.addColorStop(1, '#c47730');
+    x.fillStyle = g; x.fillRect(half, 0, half, c.height);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    return tex;
+  }
+
+  const mat = new THREE.MeshStandardMaterial({ map: makeColorTexture(), roughness: 0.42, metalness: 0.0 });
+  const geo = new THREE.CapsuleGeometry(0.5, 1.6, 28, 96);
+  geo.rotateZ(Math.PI / 2);            // long axis: Y -> X (horizontal on screen)
+  const pill = new THREE.Mesh(geo, mat);
+  scene.add(pill);
+
+  // ---- Labels: baked into a transparent CanvasTexture wrapped on a thin
+  //      open-ended cylinder shell that hugs the straight section. A plain
+  //      cylinder has a LINEAR v (no caps), so the text maps cleanly instead
+  //      of smearing onto the rounded ends like it would on the capsule. u is
+  //      the circumference: "Software" centred at u=0.25 (over the blue zone),
+  //      "Mechanical" at u=0.75 (over the amber zone). The back word is rolled
+  //      the opposite way so it reads upright after the 180deg flip.
+  function makeTextTexture() {
+    const c = document.createElement('canvas');
+    c.width = 1024; c.height = 512;
+    const x = c.getContext('2d');
+    const half = c.width / 2;
+    x.clearRect(0, 0, c.width, c.height);
+    x.fillStyle = 'rgba(9,11,17,0.96)';
+    x.textAlign = 'center';
+    x.textBaseline = 'middle';
+    function label(text, cx, ang) {
+      let fs = 240;
+      const maxLen = c.height * 0.9;
+      x.font = '700 ' + fs + 'px Inter, system-ui, sans-serif';
+      while (x.measureText(text).width > maxLen && fs > 24) {
+        fs -= 4; x.font = '700 ' + fs + 'px Inter, system-ui, sans-serif';
+      }
+      x.save(); x.translate(cx, c.height / 2); x.rotate(ang);
+      x.fillText(text, 0, 0); x.restore();
+    }
+    label('Software', half * 0.5, Math.PI / 2);
+    label('Mechanical', half + half * 0.5, Math.PI / 2);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    return tex;
+  }
+
+  const textMat = new THREE.MeshBasicMaterial({ map: makeTextTexture(), transparent: true, depthWrite: false });
+  const textGeo = new THREE.CylinderGeometry(0.505, 0.505, 1.5, 96, 1, true);
+  textGeo.rotateZ(Math.PI / 2);
+  const decal = new THREE.Mesh(textGeo, textMat);
+  pill.add(decal);                      // inherits the pill's roll
+
+  // Roll about the long (X) axis. Offset so a label centre faces the camera.
+  const FACE_OFFSET = Math.PI / 2;
+
+  // ---- Soft contact shadow: camera-facing radial-gradient plane below ----
+  function makeShadowTex() {
+    const c = document.createElement('canvas');
+    c.width = c.height = 256;
+    const x = c.getContext('2d');
+    const g = x.createRadialGradient(128, 128, 0, 128, 128, 128);
+    g.addColorStop(0, 'rgba(0,0,0,0.45)');
+    g.addColorStop(0.55, 'rgba(0,0,0,0.18)');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    x.fillStyle = g; x.fillRect(0, 0, 256, 256);
+    return new THREE.CanvasTexture(c);
+  }
+  const shadow = new THREE.Mesh(
+    new THREE.PlaneGeometry(3.0, 0.8),
+    new THREE.MeshBasicMaterial({ map: makeShadowTex(), transparent: true, depthWrite: false })
+  );
+  shadow.position.set(0, -0.62, -0.4);
+  scene.add(shadow);
+
+  // ---- Keep renderer sized to the element's CSS box (retina via DPR) ----
+  function resize() {
+    const w = wrap.clientWidth || 272, h = wrap.clientHeight || 116;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  new ResizeObserver(resize).observe(wrap);
+
+  // ---- Animation: hold front 1.7s, ease 180 over 1.1s, hold back 1.7s,
+  //      ease another 180 in the same direction back to start. Loop. ----
+  const HOLD = 1.7, TURN = 1.1, CYCLE = 2 * (HOLD + TURN);
+  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  function angleAt(t) {
+    let p = t % CYCLE;
+    if (p < HOLD) return 0;                          p -= HOLD;
+    if (p < TURN) return Math.PI * ease(p / TURN);   p -= TURN;
+    if (p < HOLD) return Math.PI;                    p -= HOLD;
+    return Math.PI + Math.PI * ease(p / TURN);
+  }
+
+  const t0 = performance.now();
+  let raf = 0;
+  function frame(now) {
+    pill.rotation.x = FACE_OFFSET + angleAt((now - t0) / 1000);
+    renderer.render(scene, camera);
+    raf = requestAnimationFrame(frame);
+  }
+  function renderStatic() {
+    pill.rotation.x = FACE_OFFSET + (freeze === 'back' ? Math.PI : 0);
+    renderer.render(scene, camera);
+  }
+
+  const animate = !reduce && !freeze;
+
+  // Rebuild the label texture once Inter has loaded so words aren't baked in a
+  // fallback font (CanvasTexture is captured at draw time).
+  const fontReady = (document.fonts && document.fonts.load)
+    ? document.fonts.load('700 160px Inter').catch(() => {})
+    : Promise.resolve();
+  fontReady.then(() => {
+    const fresh = makeTextTexture();
+    if (textMat.map) textMat.map.dispose();
+    textMat.map = fresh;
+    textMat.needsUpdate = true;
+    if (!animate) renderStatic();
+  });
+
+  if (animate) raf = requestAnimationFrame(frame);
+  else renderStatic();
+})();
+</script>
+
+</body>
+</html>
