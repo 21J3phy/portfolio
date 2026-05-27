@@ -295,6 +295,27 @@ section + section { border-top: 1px solid var(--border); }
 .work-grid {
   display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px;
 }
+.work-grid[hidden] { display: none; }
+/* Software / Mechanical toggle */
+#work .section-head { flex-wrap: wrap; row-gap: 16px; }
+.work-toggle {
+  margin-left: auto; align-self: center;
+  display: inline-flex; gap: 4px; padding: 4px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.work-toggle button {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  color: var(--text-2); background: transparent; border: 0;
+  padding: 7px 15px; border-radius: 999px; cursor: pointer;
+  transition: color var(--t-fast), background var(--t-fast);
+}
+.work-toggle button:hover { color: var(--text); }
+.work-toggle button.active { color: #0a0c10; background: var(--accent); }
+@media (max-width: 520px) {
+  .work-toggle { width: 100%; }
+  .work-toggle button { flex: 1; }
+}
 .card {
   grid-column: span 3;
   background: var(--surface);
@@ -721,9 +742,13 @@ image-slot::part(image) {
       <div class="section-head reveal">
         <span class="num">03 / selected work</span>
         <h2 id="work-h">Things I've shipped.</h2>
+        <div class="work-toggle" role="tablist" aria-label="Filter projects by discipline">
+          <button type="button" class="active" data-view="software" role="tab" aria-selected="true">Software</button>
+          <button type="button" data-view="mechanical" role="tab" aria-selected="false">Mechanical</button>
+        </div>
       </div>
 
-      <div class="work-grid">
+      <div class="work-grid" data-grid="software">
 
         <!-- 1. Chad vs Chud — featured -->
         <article class="card featured reveal" data-tilt>
@@ -821,14 +846,18 @@ image-slot::part(image) {
           </div>
         </article>
 
-        <!-- 5. Passive Vortex Propulsion -->
-        <article class="card reveal" data-tilt>
+      </div>
+
+      <div class="work-grid" data-grid="mechanical" hidden>
+
+        <!-- 1. Passive Vortex Propulsion — featured -->
+        <article class="card featured reveal" data-tilt>
           <image-slot id="shot-pvp" src="img/shot-pvp.png" class="shot" shape="rounded" radius="10" placeholder="Drop a wind-tunnel / paper screenshot"></image-slot>
           <div class="card-top">
             <h3 class="card-title">Passive Vortex Propulsion</h3>
             <div class="card-meta">Published in IEEE</div>
           </div>
-          <p class="card-desc">First demonstration of passive vortex propulsion in air. I built the wind tunnel from scratch to run the experiment — soldered and calibrated the load cells with an Arduino, ran the fluid sims in Fusion 360, published the paper in IEEE.</p>
+          <p class="card-desc">First demonstration of passive vortex propulsion in air. I built the wind tunnel from scratch to run the experiment — soldered and calibrated the load cells with an Arduino, ran the fluid sims in Fusion 360, and published the paper in IEEE.</p>
           <div class="metric">
             <span class="big">IEEE</span><span class="label">first author · AIAA Award</span>
           </div>
@@ -844,6 +873,72 @@ image-slot::part(image) {
               <a href="conference-certificate.pdf" target="_blank" rel="noopener noreferrer" class="card-link" style="color:var(--muted)">Certificate ↗</a>
               <a href="paper.pdf" target="_blank" rel="noopener noreferrer" class="card-link">Read the paper →</a>
             </span>
+          </div>
+        </article>
+
+        <!-- 2. FTC Robotics -->
+        <article class="card reveal" data-tilt>
+          <image-slot id="shot-ftc" src="img/ftc-robot.jpg" class="shot" shape="rounded" radius="10" placeholder="Drop an FTC photo"></image-slot>
+          <div class="card-top">
+            <h3 class="card-title">FTC Robotics — Absolute Zero</h3>
+            <div class="card-meta">2022 — 2026</div>
+          </div>
+          <p class="card-desc">Four years on FIRST Tech Challenge team Absolute Zero, the last as captain and lead programmer. Wrote the autonomous and tele-op in Java — PID loops, sensor fusion, and odometry — and ran build and competition logistics.</p>
+          <div class="metric">
+            <span class="big">4 yrs</span><span class="label">captain · lead programmer</span>
+          </div>
+          <div class="chips">
+            <span class="chip">Java</span>
+            <span class="chip">PID Control</span>
+            <span class="chip">Sensor Fusion</span>
+            <span class="chip">Odometry</span>
+          </div>
+          <div class="card-foot">
+            <span class="card-role">Captain &amp; Lead Programmer</span>
+            <span class="card-link" style="color:var(--muted);cursor:default">FIRST Tech Challenge</span>
+          </div>
+        </article>
+
+        <!-- 3. Science Olympiad — Electric Vehicle -->
+        <article class="card reveal" data-tilt>
+          <image-slot id="shot-ev" class="shot" shape="rounded" radius="10" placeholder="Drop an Electric Vehicle photo"></image-slot>
+          <div class="card-top">
+            <h3 class="card-title">Electric Vehicle</h3>
+            <div class="card-meta">Science Olympiad</div>
+          </div>
+          <p class="card-desc">An autonomous vehicle for the Science Olympiad Electric Vehicle event — it accelerates and then brakes to stop on a target distance. Arduino driving a goBILDA motor with a quadrature encoder, tuned with a PID loop for fast, repeatable runs.</p>
+          <div class="metric">
+            <span class="big">PID</span><span class="label">closed-loop distance control</span>
+          </div>
+          <div class="chips">
+            <span class="chip">Arduino</span>
+            <span class="chip">goBILDA Motor</span>
+            <span class="chip">Encoder</span>
+            <span class="chip">PID Control</span>
+          </div>
+          <div class="card-foot">
+            <span class="card-role">Builder · Science Olympiad</span>
+          </div>
+        </article>
+
+        <!-- 4. Science Olympiad — Salinity Sensor -->
+        <article class="card reveal" data-tilt>
+          <image-slot id="shot-salt" class="shot" shape="rounded" radius="10" placeholder="Drop a photo of the device"></image-slot>
+          <div class="card-top">
+            <h3 class="card-title">Salt-Water Salinity Sensor</h3>
+            <div class="card-meta">Science Olympiad</div>
+          </div>
+          <p class="card-desc">An Arduino device that measures the salt concentration of a water sample in real time — it reads conductivity across a probe and converts it to concentration. Built for a Science Olympiad event.</p>
+          <div class="metric">
+            <span class="big">Arduino</span><span class="label">conductivity → concentration</span>
+          </div>
+          <div class="chips">
+            <span class="chip">Arduino</span>
+            <span class="chip">Sensors</span>
+            <span class="chip">C++</span>
+          </div>
+          <div class="card-foot">
+            <span class="card-role">Builder · Science Olympiad</span>
           </div>
         </article>
 
@@ -1029,6 +1124,32 @@ image-slot::part(image) {
       card.style.setProperty('--my', (e.clientY - r.top) + 'px');
     });
   });
+
+  // ----- Work view toggle (Software / Mechanical) -----
+  var workToggle = document.querySelector('.work-toggle');
+  if (workToggle) {
+    var grids = document.querySelectorAll('[data-grid]');
+    workToggle.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-view]');
+      if (!b) return;
+      var view = b.getAttribute('data-view');
+      workToggle.querySelectorAll('button').forEach(function (x) {
+        var on = x === b;
+        x.classList.toggle('active', on);
+        x.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      grids.forEach(function (g) {
+        var show = g.getAttribute('data-grid') === view;
+        g.hidden = !show;
+        // hidden cards never trip the scroll observer, so reveal them on show
+        if (show) g.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+      });
+    });
+    if (new URLSearchParams(location.search).get('view') === 'mechanical') {
+      var mb = workToggle.querySelector('button[data-view="mechanical"]');
+      if (mb) mb.click();
+    }
+  }
 
   // ----- Easter egg -----
   console.log(
