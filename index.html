@@ -162,16 +162,16 @@ section + section { border-top: 1px solid var(--border); }
 
 /* ---------- Floating "viewing: [pill]" bar at the top middle ---------- */
 .top-pill-bar {
-  position: fixed; top: 18px; left: 50%;
-  transform: translate(-50%, -140%);
+  position: fixed; top: 14px; left: 50%;
+  transform: translate(-50%, -130%);
   z-index: 70;
-  display: inline-flex; align-items: center; gap: 16px;
-  padding: 12px 22px 12px 20px;
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 8px 16px 8px 14px;
   background: color-mix(in oklab, var(--surface) 86%, transparent);
   border: 1px solid var(--border);
   border-radius: 999px;
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  font-family: 'JetBrains Mono', monospace; font-size: 15px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
   color: var(--text-2);
   opacity: 0; visibility: hidden;
   transition: opacity .35s ease, transform .35s cubic-bezier(.2,.7,.2,1), visibility 0s linear .35s, border-color var(--t-fast);
@@ -184,13 +184,13 @@ section + section { border-top: 1px solid var(--border); }
 }
 .top-pill-bar:hover { border-color: var(--border-strong); }
 .top-pill-bar .tp-label { letter-spacing: 0.06em; color: var(--muted); }
-.top-pill-bar .tp-pill { display: inline-block; height: 44px; aspect-ratio: 2.55 / 1; line-height: 0; }
+.top-pill-bar .tp-pill { display: inline-block; height: 28px; aspect-ratio: 2.55 / 1; line-height: 0; }
 .top-pill-bar .tp-pill canvas { width: 100%; height: 100%; display: block; }
-.top-pill-bar .tp-tip { color: var(--muted); opacity: .85; }
+.top-pill-bar .tp-tip { color: var(--muted); opacity: .8; }
 .top-pill-bar:hover .tp-tip { color: var(--text-2); opacity: 1; }
-@media (max-width: 600px) {
-  .top-pill-bar { font-size: 13px; gap: 12px; padding: 10px 18px 10px 16px; }
-  .top-pill-bar .tp-pill { height: 36px; }
+@media (max-width: 520px) {
+  .top-pill-bar { font-size: 11px; gap: 8px; padding: 6px 12px 6px 10px; }
+  .top-pill-bar .tp-pill { height: 22px; }
   .top-pill-bar .tp-tip { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1667,20 +1667,23 @@ function mountPill(canvas, opts) {
   //      the opposite way so it reads upright after the 180deg flip.
   function makeTextTexture() {
     const c = document.createElement('canvas');
-    c.width = 1024; c.height = 512;
+    c.width = 1024; c.height = 2560;
     const x = c.getContext('2d');
     const half = c.width / 2;
     x.clearRect(0, 0, c.width, c.height);
     x.fillStyle = 'rgba(9,11,17,0.96)';
     x.textAlign = 'center';
     x.textBaseline = 'middle';
+    // Pick one font size that fits the LONGEST word, then use it for both
+    // labels — keeps "Software" and "Mechanical" rendered at the same height.
+    const maxLen = c.height * 0.94;
+    const setFont = (n) => { x.font = '700 ' + n + 'px Inter, system-ui, sans-serif'; };
+    let fs = 760;
+    setFont(fs);
+    while (fs > 24 && Math.max(x.measureText('Mechanical').width, x.measureText('Software').width) > maxLen) {
+      fs -= 6; setFont(fs);
+    }
     function label(text, cx, ang) {
-      let fs = 240;
-      const maxLen = c.height * 0.62;
-      x.font = '700 ' + fs + 'px Inter, system-ui, sans-serif';
-      while (x.measureText(text).width > maxLen && fs > 24) {
-        fs -= 4; x.font = '700 ' + fs + 'px Inter, system-ui, sans-serif';
-      }
       x.save(); x.translate(cx, c.height / 2); x.rotate(ang);
       x.fillText(text, 0, 0); x.restore();
     }
