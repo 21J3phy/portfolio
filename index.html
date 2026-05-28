@@ -173,6 +173,45 @@ section + section { border-top: 1px solid var(--border); }
   .nav-links .hide-sm { display: none; }
 }
 
+/* ---------- Discipline lens (All / Software / Mechanical) ---------- */
+.lens-switch {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 3px; padding-left: 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.lens-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); margin-right: 4px; letter-spacing: 0.02em;
+}
+.lens-switch button {
+  font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+  color: var(--text-2); background: transparent; border: 0;
+  padding: 6px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+  transition: color var(--t-fast), background var(--t-fast);
+}
+.lens-switch button:hover { color: var(--text); }
+.lens-switch button.active { color: #0a0c10; background: var(--accent); }
+
+/* What each lens hides (Work Experience is deliberately untagged → never changes) */
+body[data-lens="software"]   [data-lens="mechanical"],
+body[data-lens="mechanical"] [data-lens="software"] { display: none !important; }
+
+/* Elegant crossfade while switching */
+.lens-anim { transition: opacity .34s ease, transform .34s ease; }
+body.lens-switching .lens-anim { opacity: 0; transform: translateY(8px); transition: opacity .3s ease, transform .3s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .lens-anim { transition: none; }
+  body.lens-switching .lens-anim { opacity: 1; transform: none; }
+}
+
+@media (max-width: 760px) {
+  .brand .brand-name { display: none; }
+  .lens-label { display: none; }
+  .lens-switch { padding-left: 3px; }
+  .lens-switch button { padding: 6px 10px; font-size: 12px; }
+}
+
 /* ---------- Hero ---------- */
 .hero { padding-block: clamp(96px, 14vw, 160px); overflow: hidden; }
 .hero-inner { position: relative; z-index: 1; }
@@ -294,27 +333,6 @@ section + section { border-top: 1px solid var(--border); }
 /* ---------- Work cards ---------- */
 .work-grid {
   display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px;
-}
-.work-grid[hidden] { display: none; }
-/* Software / Mechanical toggle */
-#work .section-head { flex-wrap: wrap; row-gap: 16px; }
-.work-toggle {
-  margin-left: auto; align-self: center;
-  display: inline-flex; gap: 4px; padding: 4px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 999px;
-}
-.work-toggle button {
-  font-family: 'JetBrains Mono', monospace; font-size: 13px;
-  color: var(--text-2); background: transparent; border: 0;
-  padding: 7px 15px; border-radius: 999px; cursor: pointer;
-  transition: color var(--t-fast), background var(--t-fast);
-}
-.work-toggle button:hover { color: var(--text); }
-.work-toggle button.active { color: #0a0c10; background: var(--accent); }
-@media (max-width: 520px) {
-  .work-toggle { width: 100%; }
-  .work-toggle button { flex: 1; }
 }
 .card {
   grid-column: span 3;
@@ -655,12 +673,18 @@ image-slot::part(image) {
   <div class="nav-inner">
     <a href="#top" class="brand" aria-label="Nirav Surabhi — home">
       <span class="brand-mark">ns</span>
-      <span>Nirav Surabhi</span>
+      <span class="brand-name">Nirav Surabhi</span>
     </a>
+    <div class="lens-switch" role="group" aria-label="Tailor this portfolio for a discipline">
+      <span class="lens-label" aria-hidden="true">view as</span>
+      <button type="button" class="active" data-lens-btn="all">All</button>
+      <button type="button" data-lens-btn="software">Software</button>
+      <button type="button" data-lens-btn="mechanical">Mechanical</button>
+    </div>
     <nav class="nav-links" aria-label="Primary">
       <a href="#work" class="hide-sm">Work</a>
       <a href="#about" class="hide-sm">About</a>
-      <a href="#contact">Contact</a>
+      <a href="#contact" class="hide-sm">Contact</a>
     </nav>
   </div>
 </header>
@@ -693,7 +717,7 @@ image-slot::part(image) {
           Engineer.
         </span>
       </h1>
-      <p class="hero-lede"><strong style="color:var(--text);font-weight:600">Software:</strong> founder of <a href="#work" style="color:var(--accent)">Chad vs. Chud</a> (10K users) and <a href="#work" style="color:var(--accent)">b2alpha.io</a> (2K business users). <strong style="color:var(--text);font-weight:600">Mechanical:</strong> built a wind tunnel from scratch, published the paper in IEEE.</p>
+      <p class="hero-lede lens-anim"><span data-lens="software"><strong style="color:var(--text);font-weight:600">Software:</strong> founder of <a href="#work" style="color:var(--accent)">Chad vs. Chud</a> (10K users) and <a href="#work" style="color:var(--accent)">b2alpha.io</a> (2K business users). </span><span data-lens="mechanical"><strong style="color:var(--text);font-weight:600">Mechanical:</strong> built a wind tunnel from scratch and published the paper in IEEE.</span></p>
       <p class="hero-sub">18 <span class="sep">/</span> Brambleton, VA <span class="sep">/</span> Independence HS '26 <span class="sep">/</span> Purdue ME '30</p>
       <div class="cta-row">
         <a href="#work" class="btn primary">
@@ -722,8 +746,8 @@ image-slot::part(image) {
         <image-slot id="face" src="img/ftc-robot.jpg" class="about-face" shape="rounded" radius="16" placeholder="Drop a photo of you"></image-slot>
         <div>
           <p>Most of what I make starts as something in my own life that bugs me until I fix it. I work in two halves — software and mechanical — but they come from the same place: notice a problem, get a little obsessed, and build my way out of it.</p>
-          <p>Wanting my Honda Civic to be more efficient is what got me fixated on aerodynamic drag. To actually test a fix I built a wind tunnel from scratch — soldered the load cells, ran the fluid sims — and it ended up being the first demonstration of passive vortex propulsion in air, which I presented at an international conference.</p>
-          <p>Another one: I noticed how much time I was losing to TikTok, so instead of deleting it I decided the feed wasn't the problem — what it fed me was. I built a news app with the same addictive, swipe-through algorithm, except it strips the bias out of every story. That one became my first startup.</p>
+          <p data-lens="mechanical" class="lens-anim">Take the mechanical stuff: wanting my Honda Civic to be more efficient got me fixated on aerodynamic drag. To actually test a fix, I built a wind tunnel from scratch — soldered the load cells, ran the fluid sims — and it ended up being the first demonstration of passive vortex propulsion in air, which I presented at an international conference.</p>
+          <p data-lens="software" class="lens-anim">On the software side, I was losing hours to TikTok. Instead of deleting it, I decided the feed wasn't the problem — what it fed me was. So I built a news app with the same addictive, swipe-through algorithm, except it strips the bias out of every story. That one became my first startup.</p>
           <div class="status-line" aria-label="Status">
             <span class="item"><span class="dot" aria-hidden="true"></span>Currently building Chad vs. Chud</span>
             <span class="sep">·</span>
@@ -788,16 +812,12 @@ image-slot::part(image) {
       <div class="section-head reveal">
         <span class="num">03 / selected work</span>
         <h2 id="work-h">Things I've shipped.</h2>
-        <div class="work-toggle" role="tablist" aria-label="Filter projects by discipline">
-          <button type="button" class="active" data-view="software" role="tab" aria-selected="true">Software</button>
-          <button type="button" data-view="mechanical" role="tab" aria-selected="false">Mechanical</button>
-        </div>
       </div>
 
-      <div class="work-grid" data-grid="software">
+      <div class="work-grid lens-anim">
 
         <!-- 1. Chad vs Chud — featured -->
-        <article class="card featured reveal" data-tilt>
+        <article class="card featured reveal" data-lens="software" data-tilt>
           <image-slot id="shot-chad" src="img/shot-chad.png" class="shot" shape="rounded" radius="10" placeholder="Drop a Chad vs. Chud screenshot"></image-slot>
           <div class="card-top">
             <h3 class="card-title">Chad vs. Chud <span class="now-pill">Current focus</span></h3>
@@ -823,7 +843,7 @@ image-slot::part(image) {
         </article>
 
         <!-- 2. b2alpha -->
-        <article class="card reveal" data-tilt>
+        <article class="card reveal" data-lens="software" data-tilt>
           <image-slot id="shot-b2a" src="img/shot-b2a.png" class="shot" shape="rounded" radius="10" placeholder="Drop a b2alpha.io screenshot"></image-slot>
           <div class="card-top">
             <h3 class="card-title">b2alpha.io</h3>
@@ -847,7 +867,7 @@ image-slot::part(image) {
         </article>
 
         <!-- 3. PredictionView -->
-        <article class="card reveal" data-tilt>
+        <article class="card reveal" data-lens="software" data-tilt>
           <image-slot id="shot-pv" src="img/shot-pv.png" class="shot" shape="rounded" radius="10" placeholder="Drop a PredictionView screenshot"></image-slot>
           <div class="card-top">
             <h3 class="card-title">PredictionView</h3>
@@ -870,7 +890,7 @@ image-slot::part(image) {
         </article>
 
         <!-- 4. Khali -->
-        <article class="card reveal" data-tilt>
+        <article class="card reveal" data-lens="software" data-tilt>
           <image-slot id="shot-khali" src="img/shot-khali.png" class="shot" shape="rounded" radius="10" placeholder="Drop a Khali screenshot"></image-slot>
           <div class="card-top">
             <h3 class="card-title">Khali</h3>
@@ -892,12 +912,8 @@ image-slot::part(image) {
           </div>
         </article>
 
-      </div>
-
-      <div class="work-grid" data-grid="mechanical" hidden>
-
         <!-- 1. Passive Vortex Propulsion — featured -->
-        <article class="card featured reveal" data-tilt>
+        <article class="card featured reveal" data-lens="mechanical" data-tilt>
           <image-slot id="shot-pvp" src="img/shot-pvp.png" class="shot" shape="rounded" radius="10" placeholder="Drop a wind-tunnel / paper screenshot"></image-slot>
           <div class="card-top">
             <h3 class="card-title">Passive Vortex Propulsion</h3>
@@ -923,7 +939,7 @@ image-slot::part(image) {
         </article>
 
         <!-- 2. FTC Robotics -->
-        <article class="card reveal" data-tilt>
+        <article class="card reveal" data-lens="mechanical" data-tilt>
           <image-slot id="shot-ftc" src="img/ftc-robot.jpg" class="shot" shape="rounded" radius="10" placeholder="Drop an FTC photo"></image-slot>
           <div class="card-top">
             <h3 class="card-title">FTC Robotics — Absolute Zero</h3>
@@ -946,7 +962,7 @@ image-slot::part(image) {
         </article>
 
         <!-- 3. Science Olympiad — Electric Vehicle -->
-        <article class="card reveal" data-tilt>
+        <article class="card reveal" data-lens="mechanical" data-tilt>
           <image-slot id="shot-ev" src="img/shot-ev.jpg" class="shot" shape="rounded" radius="10" placeholder="Drop an Electric Vehicle photo"></image-slot>
           <div class="card-top">
             <h3 class="card-title">Electric Vehicle</h3>
@@ -968,7 +984,7 @@ image-slot::part(image) {
         </article>
 
         <!-- 4. Science Olympiad — Salinity Sensor -->
-        <article class="card reveal" data-tilt>
+        <article class="card reveal" data-lens="mechanical" data-tilt>
           <image-slot id="shot-salt" class="shot" shape="rounded" radius="10" placeholder="Drop a photo of the device"></image-slot>
           <div class="card-top">
             <h3 class="card-title">Salt-Water Salinity Sensor</h3>
@@ -993,7 +1009,7 @@ image-slot::part(image) {
   </section>
 
   <!-- ============ FTC CAD ============ -->
-  <section id="cad" aria-labelledby="cad-h">
+  <section id="cad" class="lens-anim" data-lens="mechanical" aria-labelledby="cad-h">
     <div class="wrap">
       <div class="section-head reveal">
         <span class="num">04 / robotics cad</span>
@@ -1142,8 +1158,8 @@ image-slot::part(image) {
         <span class="num">05 / skills</span>
         <h2 id="skills-h">What I reach for.</h2>
       </div>
-      <div class="skill-grid reveal">
-        <div class="skill-group">
+      <div class="skill-grid reveal lens-anim">
+        <div class="skill-group" data-lens="software">
           <div class="skill-label">// languages</div>
           <div class="skill-chips">
             <span class="chip k">Java</span>
@@ -1154,7 +1170,7 @@ image-slot::part(image) {
             <span class="chip k">Git</span>
           </div>
         </div>
-        <div class="skill-group">
+        <div class="skill-group" data-lens="software">
           <div class="skill-label">// cloud &amp; deploy</div>
           <div class="skill-chips">
             <span class="chip k">Fly.io</span>
@@ -1163,7 +1179,7 @@ image-slot::part(image) {
             <span class="chip k">Vercel</span>
           </div>
         </div>
-        <div class="skill-group">
+        <div class="skill-group" data-lens="mechanical">
           <div class="skill-label">// hardware &amp; cad</div>
           <div class="skill-chips">
             <span class="chip k">Autodesk Fusion 360</span>
@@ -1194,9 +1210,9 @@ image-slot::part(image) {
         <span class="num">06 / leadership &amp; beyond</span>
         <h2 id="beyond-h">The other stuff.</h2>
       </div>
-      <div class="lead-grid reveal">
+      <div class="lead-grid reveal lens-anim">
 
-        <div class="lead-item">
+        <div class="lead-item" data-lens="mechanical">
           <div class="lead-head">
             <h3 class="lead-title">Captain · Science Olympiad</h3>
             <span class="lead-tag">leadership</span>
@@ -1212,7 +1228,7 @@ image-slot::part(image) {
           <p class="lead-desc">Autonomous + tele-op Java. PID control loops. Sensor fusion.</p>
         </div>
 
-        <div class="lead-item">
+        <div class="lead-item" data-lens="mechanical">
           <div class="lead-head">
             <h3 class="lead-title">AIAA Aerospace Award · RSEF</h3>
             <span class="lead-tag">honor</span>
@@ -1314,30 +1330,39 @@ image-slot::part(image) {
     });
   });
 
-  // ----- Work view toggle (Software / Mechanical) -----
-  var workToggle = document.querySelector('.work-toggle');
-  if (workToggle) {
-    var grids = document.querySelectorAll('[data-grid]');
-    workToggle.addEventListener('click', function (e) {
-      var b = e.target.closest('button[data-view]');
-      if (!b) return;
-      var view = b.getAttribute('data-view');
-      workToggle.querySelectorAll('button').forEach(function (x) {
-        var on = x === b;
-        x.classList.toggle('active', on);
-        x.setAttribute('aria-selected', on ? 'true' : 'false');
+  // ----- Discipline lens (All / Software / Mechanical) -----
+  // Re-tailors the whole page (everything tagged data-lens) with a crossfade.
+  // Work Experience is untagged on purpose, so it never changes.
+  var lensSwitch = document.querySelector('.lens-switch');
+  if (lensSwitch) {
+    var lensBtns = lensSwitch.querySelectorAll('button[data-lens-btn]');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function commitLens(lens) {
+      document.body.setAttribute('data-lens', lens);
+      lensBtns.forEach(function (b) {
+        var on = b.getAttribute('data-lens-btn') === lens;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
-      grids.forEach(function (g) {
-        var show = g.getAttribute('data-grid') === view;
-        g.hidden = !show;
-        // hidden cards never trip the scroll observer, so reveal them on show
-        if (show) g.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
-      });
-    });
-    if (new URLSearchParams(location.search).get('view') === 'mechanical') {
-      var mb = workToggle.querySelector('button[data-view="mechanical"]');
-      if (mb) mb.click();
+      // any cards/groups that just became visible should bypass the scroll-reveal
+      document.querySelectorAll('.lens-anim .reveal, .lens-anim.reveal').forEach(function (el) { el.classList.add('in'); });
+      if (window.__pillLens) window.__pillLens(lens);
     }
+    function setLens(lens, animate) {
+      if (document.body.getAttribute('data-lens') === lens) return;
+      if (!animate || reduceMotion) { commitLens(lens); return; }
+      document.body.classList.add('lens-switching');
+      window.setTimeout(function () {
+        commitLens(lens);
+        requestAnimationFrame(function () { document.body.classList.remove('lens-switching'); });
+      }, 340);
+    }
+    lensSwitch.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-lens-btn]');
+      if (b) setLens(b.getAttribute('data-lens-btn'), true);
+    });
+    var startLens = new URLSearchParams(location.search).get('lens');
+    commitLens(startLens === 'software' || startLens === 'mechanical' ? startLens : 'all');
   }
 
   // ----- FTC CAD rail arrows -----
@@ -1535,19 +1560,59 @@ import * as THREE from 'three';
     return Math.PI + Math.PI * ease(p / TURN);
   }
 
-  const t0 = performance.now();
-  let raf = 0;
+  let autoBase = performance.now();
+  let raf = 0, frameRunning = false;
+  let lensTarget = null;          // null = free-running flip; number = ease/hold to this angle
+  let lensResume = false;         // after the ease, hand control back to the flip?
+  let lensFrom = 0, lensStart = 0;
+  const LENS_MS = 750;
+
+  function render() { renderer.render(scene, camera); }
+
   function frame(now) {
-    pill.rotation.x = FACE_OFFSET + angleAt((now - t0) / 1000);
-    renderer.render(scene, camera);
-    raf = requestAnimationFrame(frame);
+    let angle, cont = true;
+    if (lensTarget !== null) {
+      const p = Math.min(1, (now - lensStart) / LENS_MS);
+      let diff = lensTarget - lensFrom;                  // take the short way round
+      diff = ((diff % (2 * Math.PI)) + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
+      angle = lensFrom + diff * ease(p);
+      if (p >= 1) {
+        if (lensResume) { autoBase = now; lensTarget = null; }  // resume the flip from the front hold
+        else { angle = lensTarget; cont = false; }              // settle on a face and idle
+      }
+    } else {
+      angle = FACE_OFFSET + angleAt((now - autoBase) / 1000);
+    }
+    pill.rotation.x = angle;
+    render();
+    if (cont) raf = requestAnimationFrame(frame); else frameRunning = false;
   }
+  function startLoop() { if (!frameRunning) { frameRunning = true; raf = requestAnimationFrame(frame); } }
+
   function renderStatic() {
     pill.rotation.x = FACE_OFFSET + (freeze === 'back' ? Math.PI : 0);
-    renderer.render(scene, camera);
+    render();
   }
 
   const animate = !reduce && !freeze;
+
+  // The page calls this when a discipline is chosen: settle the pill on that
+  // face ('all' eases to the front, then resumes the flip).
+  window.__pillLens = function (mode) {
+    if (reduce || freeze) {
+      lensTarget = null; frameRunning = false;
+      pill.rotation.x = FACE_OFFSET + (mode === 'mechanical' ? Math.PI : 0);
+      render();
+      return;
+    }
+    var auto = (mode !== 'software' && mode !== 'mechanical');
+    if (auto && lensTarget === null && frameRunning) return;   // already free-running
+    lensFrom = pill.rotation.x;
+    lensStart = performance.now();
+    lensResume = auto;
+    lensTarget = (mode === 'mechanical') ? FACE_OFFSET + Math.PI : FACE_OFFSET;
+    startLoop();
+  };
 
   // Rebuild the label texture once Inter has loaded so words aren't baked in a
   // fallback font (CanvasTexture is captured at draw time).
@@ -1559,11 +1624,15 @@ import * as THREE from 'three';
     if (textMat.map) textMat.map.dispose();
     textMat.map = fresh;
     textMat.needsUpdate = true;
-    if (!animate) renderStatic();
+    if (!frameRunning) render();
   });
 
-  if (animate) raf = requestAnimationFrame(frame);
+  if (animate) startLoop();
   else renderStatic();
+
+  // Sync to whatever discipline the page loaded in (e.g. ?lens=mechanical).
+  var initLens = document.body.getAttribute('data-lens');
+  if (initLens === 'software' || initLens === 'mechanical') window.__pillLens(initLens);
 })();
 </script>
 
