@@ -681,24 +681,49 @@ footer {
   .reveal { opacity: 1; transform: none; }
 }
 
-/* ---------- 3D pill (Software / Mechanical) — Three.js ---------- */
-/* Flows as inline text so the pill wraps like any other word. */
-.flip-line { display: inline-block; font-weight: 600; color: var(--text); letter-spacing: -0.035em; white-space: nowrap; }
-/* The pill sits inline like another word in the H1, sized so the word
-   rendered inside the capsule matches the surrounding text. */
-.pill3d {
+/* ---------- Discipline pill (Software / Mechanical) ----------
+   A real-text pill whose label slides up to swap. The hidden .disc-sizer
+   reserves the width of the longest word ("Mechanical") so the pill stays
+   the same width when the label flips. Its background colour transitions
+   blue → amber along with the swap. */
+.flip-line { display: inline; font-weight: 600; color: var(--text); letter-spacing: -0.035em; }
+.disc-pill {
   display: inline-block;
-  vertical-align: -0.22em;
-  width: auto;
-  height: 1.15em;
-  aspect-ratio: 2.55 / 1;
-  line-height: 0;
   position: relative;
+  vertical-align: -0.05em;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #0a0c10;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  overflow: hidden;
+  line-height: 1.08;
+  transition: background-color .55s ease;
 }
-.pill3d canvas {
-  width: 100%;
-  height: 100%;
+.disc-pill.is-mechanical { background: #ec9550; }
+.disc-sizer {
   display: block;
+  padding: 0.05em 0.45em;
+  white-space: nowrap;
+  visibility: hidden;
+}
+.disc-roll {
+  position: absolute; left: 0; right: 0; top: 0;
+  display: flex; flex-direction: column;
+  transition: transform .55s cubic-bezier(.7, 0, .3, 1);
+  will-change: transform;
+}
+.disc-pill.is-mechanical .disc-roll { transform: translateY(-50%); }
+.disc-word {
+  display: block;
+  padding: 0.05em 0.45em;
+  white-space: nowrap;
+  text-align: center;
+}
+/* Smaller variant used inside the top floating bar. */
+.disc-pill--mini { letter-spacing: 0; font-size: inherit; }
+@media (prefers-reduced-motion: reduce) {
+  .disc-pill, .disc-roll { transition: none; }
 }
 
 /* ---------- Image slots ---------- */
@@ -782,7 +807,13 @@ image-slot::part(image) {
      Click to jump to the *other* discipline section. -->
 <button type="button" class="top-pill-bar" id="top-pill-bar" aria-label="Click to switch discipline">
   <span class="tp-label">viewing</span>
-  <span class="tp-pill"><canvas id="pill-canvas-top"></canvas></span>
+  <span class="disc-pill disc-pill--mini" id="disc-pill-top">
+    <span class="disc-sizer" aria-hidden="true">Mechanical</span>
+    <span class="disc-roll" aria-hidden="true">
+      <span class="disc-word">Software</span>
+      <span class="disc-word">Mechanical</span>
+    </span>
+  </span>
   <span class="tp-tip">click to switch</span>
 </button>
 
@@ -819,8 +850,12 @@ image-slot::part(image) {
         Nirav Surabhi.<br/>
         <span class="flip-line lens-anim">
           I'm a
-          <span class="pill3d" role="img" aria-label="Software and mechanical">
-            <canvas id="pill-canvas"></canvas>
+          <span class="disc-pill" id="disc-pill-hero" role="img" aria-label="Software and mechanical">
+            <span class="disc-sizer" aria-hidden="true">Mechanical</span>
+            <span class="disc-roll" aria-hidden="true">
+              <span class="disc-word">Software</span>
+              <span class="disc-word">Mechanical</span>
+            </span>
           </span>
           Engineer.
         </span>
@@ -1422,7 +1457,20 @@ image-slot::part(image) {
 (function () {
   // ----- Top pill bar: show after the hero pill scrolls out of view -----
   var topBar = document.getElementById('top-pill-bar');
-  var heroPillEl = document.querySelector('#hero .pill3d');
+  var heroPillEl = document.querySelector('#hero .disc-pill');
+  var heroDiscPill = document.getElementById('disc-pill-hero');
+  var topDiscPill = document.getElementById('disc-pill-top');
+
+  // Hero pill: cycle Software ⇄ Mechanical on a slow loop, like the old 3D
+  // version. Holds each side, slides to the next. Respects reduced-motion.
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (heroDiscPill && !reduce) {
+    var heroFace = 'software';
+    setInterval(function () {
+      heroFace = (heroFace === 'software') ? 'mechanical' : 'software';
+      heroDiscPill.classList.toggle('is-mechanical', heroFace === 'mechanical');
+    }, 2200);
+  }
   if (topBar && heroPillEl && 'IntersectionObserver' in window) {
     var heroObs = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { topBar.classList.toggle('show', !e.isIntersecting); });
@@ -1463,12 +1511,12 @@ image-slot::part(image) {
           a.style.setProperty('--d', Math.abs(s));
         });
       }
-      // Drive the top pill's face from the active section.
+      // Drive the top disc-pill's face from the active section.
       var face = null;
       if (id === 'mechanical') face = 'mechanical';
       else if (id === 'software') face = 'software';
-      if (face && window.__pills && window.__pills.top) {
-        window.__pills.top.setLens(face);
+      if (face) {
+        if (topDiscPill) topDiscPill.classList.toggle('is-mechanical', face === 'mechanical');
         if (topBar) topBar.dataset.face = face;
       }
     };
@@ -1597,235 +1645,6 @@ image-slot::part(image) {
 })();
 </script>
 
-<!-- ============ 3D Software/Mechanical pill (Three.js) ============ -->
-<script type="importmap">
-{ "imports": { "three": "/img/three.module.js" } }
-</script>
-<script type="module">
-import * as THREE from 'three';
-
-function mountPill(canvas, opts) {
-  if (!canvas) return null;
-  opts = opts || {};
-  const wrap = canvas.parentElement;
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // Static freeze for screenshots / inspection: ?pill=front | ?pill=back
-  const freeze = opts.freeze || new URLSearchParams(location.search).get('pill');
-  const autoFlip = opts.autoFlip !== false;   // hero pill flips; top pill holds
-
-  // ---- Renderer (transparent so the page shows through) ----
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setClearColor(0x000000, 0);
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(32, 272 / 116, 0.1, 100);
-  camera.position.set(0, 0, 2.6);
-
-  // ---- Lighting: warm key (above-right), cool fill (below-left), ambient ----
-  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-  const key = new THREE.DirectionalLight(0xfff0dc, 1.2);
-  key.position.set(2.5, 3, 2.5);
-  scene.add(key);
-  const fill = new THREE.DirectionalLight(0xbcd2ff, 0.55);
-  fill.position.set(-3, -2.5, 1.5);
-  scene.add(fill);
-
-  // ---- Capsule colour: panoramic CanvasTexture, two 50% zones around the
-  //      circumference (u). Left half blue (front), right half amber (back).
-  //      The cap-distorted v of CapsuleGeometry is irrelevant here since each
-  //      zone is a flat vertical colour band.
-  function makeColorTexture() {
-    const c = document.createElement('canvas');
-    c.width = 1024; c.height = 128;
-    const x = c.getContext('2d');
-    const half = c.width / 2;
-    let g = x.createLinearGradient(0, 0, half, 0);
-    g.addColorStop(0, '#7e9cff'); g.addColorStop(0.5, '#6c8eff'); g.addColorStop(1, '#4d6ed6');
-    x.fillStyle = g; x.fillRect(0, 0, half, c.height);
-    g = x.createLinearGradient(half, 0, c.width, 0);
-    g.addColorStop(0, '#f4ac6c'); g.addColorStop(0.5, '#ec9550'); g.addColorStop(1, '#c47730');
-    x.fillStyle = g; x.fillRect(half, 0, half, c.height);
-    const tex = new THREE.CanvasTexture(c);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
-    return tex;
-  }
-
-  const mat = new THREE.MeshStandardMaterial({ map: makeColorTexture(), roughness: 0.42, metalness: 0.0 });
-  const geo = new THREE.CapsuleGeometry(0.5, 1.6, 28, 96);
-  geo.rotateZ(Math.PI / 2);            // long axis: Y -> X (horizontal on screen)
-  const pill = new THREE.Mesh(geo, mat);
-  scene.add(pill);
-
-  // ---- Labels: baked into a transparent CanvasTexture wrapped on a thin
-  //      open-ended cylinder shell that hugs the straight section. A plain
-  //      cylinder has a LINEAR v (no caps), so the text maps cleanly instead
-  //      of smearing onto the rounded ends like it would on the capsule. u is
-  //      the circumference: "Software" centred at u=0.25 (over the blue zone),
-  //      "Mechanical" at u=0.75 (over the amber zone). The back word is rolled
-  //      the opposite way so it reads upright after the 180deg flip.
-  function makeTextTexture() {
-    const c = document.createElement('canvas');
-    c.width = 1024; c.height = 2560;
-    const x = c.getContext('2d');
-    const half = c.width / 2;
-    x.clearRect(0, 0, c.width, c.height);
-    x.fillStyle = 'rgba(9,11,17,0.96)';
-    x.textAlign = 'center';
-    x.textBaseline = 'middle';
-    // Pick one font size that fits the LONGEST word, then use it for both
-    // labels — keeps "Software" and "Mechanical" rendered at the same height.
-    const maxLen = c.height * 0.94;
-    const setFont = (n) => { x.font = '700 ' + n + 'px Inter, system-ui, sans-serif'; };
-    let fs = 760;
-    setFont(fs);
-    while (fs > 24 && Math.max(x.measureText('Mechanical').width, x.measureText('Software').width) > maxLen) {
-      fs -= 6; setFont(fs);
-    }
-    function label(text, cx, ang) {
-      x.save(); x.translate(cx, c.height / 2); x.rotate(ang);
-      x.fillText(text, 0, 0); x.restore();
-    }
-    label('Software', half * 0.5, Math.PI / 2);
-    label('Mechanical', half + half * 0.5, Math.PI / 2);
-    const tex = new THREE.CanvasTexture(c);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
-    return tex;
-  }
-
-  const textMat = new THREE.MeshBasicMaterial({ map: makeTextTexture(), transparent: true, depthWrite: false });
-  const textGeo = new THREE.CylinderGeometry(0.505, 0.505, 1.5, 96, 1, true);
-  textGeo.rotateZ(Math.PI / 2);
-  const decal = new THREE.Mesh(textGeo, textMat);
-  pill.add(decal);                      // inherits the pill's roll
-
-  // Roll about the long (X) axis. Offset so a label centre faces the camera.
-  const FACE_OFFSET = Math.PI / 2;
-
-  // ---- Soft contact shadow: camera-facing radial-gradient plane below ----
-  function makeShadowTex() {
-    const c = document.createElement('canvas');
-    c.width = c.height = 256;
-    const x = c.getContext('2d');
-    const g = x.createRadialGradient(128, 128, 0, 128, 128, 128);
-    g.addColorStop(0, 'rgba(0,0,0,0.22)');
-    g.addColorStop(0.55, 'rgba(0,0,0,0.08)');
-    g.addColorStop(1, 'rgba(0,0,0,0)');
-    x.fillStyle = g; x.fillRect(0, 0, 256, 256);
-    return new THREE.CanvasTexture(c);
-  }
-  const shadow = new THREE.Mesh(
-    new THREE.PlaneGeometry(2.8, 0.55),
-    new THREE.MeshBasicMaterial({ map: makeShadowTex(), transparent: true, depthWrite: false })
-  );
-  shadow.position.set(0, -0.55, -0.4);
-  scene.add(shadow);
-
-  // ---- Keep renderer sized to the element's CSS box (retina via DPR) ----
-  function resize() {
-    const w = wrap.clientWidth || 272, h = wrap.clientHeight || 116;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-  }
-  resize();
-  new ResizeObserver(resize).observe(wrap);
-
-  // ---- Animation: hold front 1.7s, ease 180 over 1.1s, hold back 1.7s,
-  //      ease another 180 in the same direction back to start. Loop. ----
-  const HOLD = 1.7, TURN = 1.1, CYCLE = 2 * (HOLD + TURN);
-  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-  function angleAt(t) {
-    let p = t % CYCLE;
-    if (p < HOLD) return 0;                          p -= HOLD;
-    if (p < TURN) return Math.PI * ease(p / TURN);   p -= TURN;
-    if (p < HOLD) return Math.PI;                    p -= HOLD;
-    return Math.PI + Math.PI * ease(p / TURN);
-  }
-
-  let autoBase = performance.now();
-  let raf = 0, frameRunning = false;
-  let lensTarget = null;          // null = free-running flip; number = ease/hold to this angle
-  let lensResume = false;         // after the ease, hand control back to the flip?
-  let lensFrom = 0, lensStart = 0;
-  const LENS_MS = 750;
-
-  function render() { renderer.render(scene, camera); }
-
-  function frame(now) {
-    let angle, cont = true;
-    if (lensTarget !== null) {
-      const p = Math.min(1, (now - lensStart) / LENS_MS);
-      let diff = lensTarget - lensFrom;                  // take the short way round
-      diff = ((diff % (2 * Math.PI)) + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
-      angle = lensFrom + diff * ease(p);
-      if (p >= 1) {
-        if (lensResume) { autoBase = now; lensTarget = null; }  // resume the flip from the front hold
-        else { angle = lensTarget; cont = false; }              // settle on a face and idle
-      }
-    } else {
-      angle = FACE_OFFSET + angleAt((now - autoBase) / 1000);
-    }
-    pill.rotation.x = angle;
-    render();
-    if (cont) raf = requestAnimationFrame(frame); else frameRunning = false;
-  }
-  function startLoop() { if (!frameRunning) { frameRunning = true; raf = requestAnimationFrame(frame); } }
-
-  function renderStatic() {
-    pill.rotation.x = FACE_OFFSET + (freeze === 'back' ? Math.PI : 0);
-    render();
-  }
-
-  // Returned as `controller.setLens(mode)` — settle the pill on a face
-  // ('software' / 'mechanical') or resume the auto flip ('all').
-  function setLens(mode) {
-    if (reduce || freeze) {
-      lensTarget = null; frameRunning = false;
-      pill.rotation.x = FACE_OFFSET + (mode === 'mechanical' ? Math.PI : 0);
-      render();
-      return;
-    }
-    var auto = (mode !== 'software' && mode !== 'mechanical') && autoFlip;
-    if (auto && lensTarget === null && frameRunning) return;   // already free-running
-    lensFrom = pill.rotation.x;
-    lensStart = performance.now();
-    lensResume = auto;
-    lensTarget = (mode === 'mechanical') ? FACE_OFFSET + Math.PI : FACE_OFFSET;
-    startLoop();
-  }
-
-  // Rebuild the label texture once Inter has loaded so words aren't baked in a
-  // fallback font (CanvasTexture is captured at draw time).
-  const fontReady = (document.fonts && document.fonts.load)
-    ? document.fonts.load('700 160px Inter').catch(() => {})
-    : Promise.resolve();
-  fontReady.then(() => {
-    const fresh = makeTextTexture();
-    if (textMat.map) textMat.map.dispose();
-    textMat.map = fresh;
-    textMat.needsUpdate = true;
-    if (!frameRunning) render();
-  });
-
-  const animate = !reduce && !freeze && autoFlip;
-  if (animate) startLoop();
-  else {
-    // Top pill defaults to the requested initial face (or front).
-    pill.rotation.x = FACE_OFFSET + (opts.initialFace === 'mechanical' ? Math.PI : 0);
-    render();
-  }
-
-  return { setLens, render };
-}
-
-const heroPill = mountPill(document.getElementById('pill-canvas'), { autoFlip: true });
-const topPill  = mountPill(document.getElementById('pill-canvas-top'), { autoFlip: false, initialFace: 'software' });
-window.__pills = { hero: heroPill, top: topPill };
-</script>
 
 </body>
 </html>
