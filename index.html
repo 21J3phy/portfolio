@@ -124,62 +124,46 @@ a { color: inherit; text-decoration: none; }
 section { padding-block: clamp(72px, 10vw, 120px); position: relative; }
 section + section { border-top: 1px solid var(--border); }
 
-/* ---------- Floating chapter navigator + scroll progress ----------
-   A right-side rail of dots, one per section. Click to jump; expands to show
-   the section name on hover. A vertical line behind the dots fills up as the
-   page scrolls — so it doubles as a progress indicator. */
+/* ---------- Floating chapter navigator (wheel-style list) ----------
+   A right-side column of section names. The section in view is large; the
+   others fall back in size, opacity, and a hint of perspective tilt — like
+   the rows of an iOS picker wheel. Click any name to jump there. */
 .chapters {
-  position: fixed; right: 22px; top: 50%; transform: translateY(-50%);
+  position: fixed; right: 28px; top: 50%; transform: translateY(-50%);
   z-index: 60;
-  display: flex; flex-direction: column; gap: 14px;
-  padding: 16px 14px;
-  background: color-mix(in oklab, var(--surface) 70%, transparent);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-}
-.chapters::before, .chapters::after {
-  content: ""; position: absolute; left: 50%; transform: translateX(-50%);
-  width: 1px; top: 22px; bottom: 22px; pointer-events: none;
-}
-.chapters::before { background: var(--border-strong); opacity: 0.55; }
-/* Filled portion = current scroll progress (JS sets --p as 0..1). */
-.chapters::after {
-  background: var(--accent);
-  height: calc((100% - 44px) * var(--p, 0));
-  bottom: auto;
-  transition: height 90ms linear;
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 6px;
+  perspective: 360px; perspective-origin: 100% 50%;
 }
 .chapters a {
-  position: relative; z-index: 1;
-  display: inline-flex; align-items: center; gap: 12px;
-  text-decoration: none; color: var(--text-2);
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.04em;
+  --s: 0; --d: 0;            /* signed offset + abs distance from active */
+  text-decoration: none;
+  color: var(--text-2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; line-height: 1.25; letter-spacing: 0.05em;
+  white-space: nowrap; text-align: right;
+  transform-origin: 100% 50%;
+  transform: rotateX(calc(var(--s) * -16deg)) translateX(calc(var(--d) * 5px));
+  opacity: calc(max(0.25, 1 - var(--d) * 0.22));
+  transition: font-size .32s cubic-bezier(.2,.7,.2,1),
+              transform  .32s cubic-bezier(.2,.7,.2,1),
+              opacity    .32s ease,
+              color      .15s ease,
+              font-weight .15s ease;
 }
-.chapters a .dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--bg);
-  border: 1.5px solid var(--border-strong);
-  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+.chapters a:hover { color: var(--text); }
+.chapters a.active {
+  --s: 0; --d: 0;
+  color: var(--text);
+  font-size: 22px; font-weight: 700;
+  letter-spacing: -0.005em;
+  opacity: 1;
 }
-.chapters a .lbl {
-  opacity: 0; transform: translateX(6px);
-  transition: opacity .18s ease, transform .18s ease;
-  white-space: nowrap; pointer-events: none;
-  order: -1; text-align: right;
-}
-.chapters:hover a .lbl,
-.chapters a.active .lbl { opacity: 1; transform: none; }
-.chapters a:hover .dot { border-color: var(--text-2); background: var(--surface-2); }
-.chapters a.active .dot {
-  background: var(--accent); border-color: var(--accent);
-  transform: scale(1.25);
-  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 22%, transparent);
-}
-.chapters a.active { color: var(--text); }
-@media (max-width: 1100px) { .chapters { right: 12px; padding: 14px 10px; gap: 12px; } }
+@media (max-width: 1100px) { .chapters { right: 14px; } }
 @media (max-width: 880px)  { .chapters { display: none; } }
-@media (prefers-reduced-motion: reduce) { .chapters::after { transition: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .chapters a { transform: none; transition: opacity .15s ease, color .15s ease, font-size .15s ease; }
+}
 
 /* ---------- Nav ---------- */
 .nav {
@@ -275,8 +259,8 @@ body.lens-switching .lens-anim { opacity: 0; transform: translateY(8px); transit
 .hero-inner {
   position: relative; z-index: 1;
   display: grid;
-  grid-template-columns: 1fr minmax(280px, 380px);
-  gap: clamp(28px, 4.5vw, 60px);
+  grid-template-columns: 1fr minmax(240px, 300px);
+  gap: clamp(24px, 3.6vw, 48px);
   align-items: center;
 }
 .hero-text { min-width: 0; }
@@ -659,13 +643,13 @@ footer {
 /* ---------- 3D pill (Software / Mechanical) — Three.js ---------- */
 /* Flows as inline text so the pill wraps like any other word. */
 .flip-line { display: inline-block; font-weight: 600; color: var(--text); letter-spacing: -0.035em; white-space: nowrap; }
-/* The pill sits inline like another word in the H1 — sized close to the
-   font's cap-height so it reads as part of "I'm a … Engineer." */
+/* The pill sits inline like another word in the H1, sized so the word
+   rendered inside the capsule matches the surrounding text. */
 .pill3d {
   display: inline-block;
-  vertical-align: -0.1em;
+  vertical-align: -0.22em;
   width: auto;
-  height: 0.78em;
+  height: 1.15em;
   aspect-ratio: 2.55 / 1;
   line-height: 0;
   position: relative;
@@ -773,14 +757,14 @@ image-slot::part(image) {
 </header>
 
 <nav class="chapters" id="chapters" aria-label="Sections">
-  <a href="#top"        data-chapter><span class="dot"></span><span class="lbl">Intro</span></a>
-  <a href="#about"      data-chapter><span class="dot"></span><span class="lbl">About</span></a>
-  <a href="#experience" data-chapter><span class="dot"></span><span class="lbl">Experience</span></a>
-  <a href="#work"       data-chapter><span class="dot"></span><span class="lbl">Work</span></a>
-  <a href="#cad"        data-chapter data-lens="mechanical"><span class="dot"></span><span class="lbl">CAD</span></a>
-  <a href="#skills"     data-chapter><span class="dot"></span><span class="lbl">Skills</span></a>
-  <a href="#beyond"     data-chapter><span class="dot"></span><span class="lbl">Beyond</span></a>
-  <a href="#contact"    data-chapter><span class="dot"></span><span class="lbl">Contact</span></a>
+  <a href="#top"        data-chapter>Intro</a>
+  <a href="#about"      data-chapter>About</a>
+  <a href="#experience" data-chapter>Experience</a>
+  <a href="#work"       data-chapter>Work</a>
+  <a href="#cad"        data-chapter data-lens="mechanical">CAD</a>
+  <a href="#skills"     data-chapter>Skills</a>
+  <a href="#beyond"     data-chapter>Beyond</a>
+  <a href="#contact"    data-chapter>Contact</a>
 </nav>
 
 <main id="top">
@@ -1432,9 +1416,19 @@ image-slot::part(image) {
       if (el) sectionFor[id] = a;
     });
     var setActive = function (id) {
-      chLinks.forEach(function (a) {
-        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      var activeIdx = -1;
+      chLinks.forEach(function (a, i) {
+        var on = a.getAttribute('href') === '#' + id;
+        a.classList.toggle('active', on);
+        if (on) activeIdx = i;
       });
+      if (activeIdx >= 0) {
+        chLinks.forEach(function (a, i) {
+          var s = i - activeIdx;
+          a.style.setProperty('--s', s);
+          a.style.setProperty('--d', Math.abs(s));
+        });
+      }
     };
     var seen = {};
     var io = new IntersectionObserver(function (entries) {
@@ -1639,7 +1633,7 @@ import * as THREE from 'three';
     x.textBaseline = 'middle';
     function label(text, cx, ang) {
       let fs = 240;
-      const maxLen = c.height * 0.9;
+      const maxLen = c.height * 0.62;
       x.font = '700 ' + fs + 'px Inter, system-ui, sans-serif';
       while (x.measureText(text).width > maxLen && fs > 24) {
         fs -= 4; x.font = '700 ' + fs + 'px Inter, system-ui, sans-serif';
