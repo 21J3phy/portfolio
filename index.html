@@ -208,6 +208,17 @@ section + section { border-top: 1px solid var(--border); }
 body[data-lens="software"]   [data-lens="mechanical"],
 body[data-lens="mechanical"] [data-lens="software"] { display: none !important; }
 
+/* H1 discipline slot — 3D pill on "All", plain title-weight text on a lens
+   (so it reads "Nirav Surabhi. Software Engineer." not "… [chip] Engineer."). */
+body[data-lens="all"]        .title-only-sw,
+body[data-lens="all"]        .title-only-mech,
+body[data-lens="software"]   .title-only-all,
+body[data-lens="software"]   .title-only-mech,
+body[data-lens="mechanical"] .title-only-all,
+body[data-lens="mechanical"] .title-only-sw { display: none !important; }
+.disc-word { color: var(--accent); letter-spacing: -0.035em; }
+.disc-word[data-disc="mechanical"] { color: #ec9550; }
+
 /* Elegant crossfade while switching */
 .lens-anim { transition: opacity .34s ease, transform .34s ease; }
 body.lens-switching .lens-anim { opacity: 0; transform: translateY(8px); transition: opacity .3s ease, transform .3s ease; }
@@ -752,10 +763,12 @@ image-slot::part(image) {
       <div class="hero-text">
       <h1 id="hero-h">
         Nirav Surabhi.<br/>
-        <span class="flip-line">
-          <span class="pill3d" role="img" aria-label="Software and mechanical">
+        <span class="flip-line lens-anim">
+          <span class="pill3d title-only-all" role="img" aria-label="Software and mechanical">
             <canvas id="pill-canvas"></canvas>
           </span>
+          <span class="disc-word title-only-sw" data-disc="software">Software</span>
+          <span class="disc-word title-only-mech" data-disc="mechanical">Mechanical</span>
           Engineer.
         </span>
       </h1>
