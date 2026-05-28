@@ -165,6 +165,44 @@ section + section { border-top: 1px solid var(--border); }
   .chapters a { transform: none; transition: opacity .15s ease, color .15s ease, font-size .15s ease; }
 }
 
+/* ---------- Floating "viewing: [pill]" bar at the top middle ---------- */
+.top-pill-bar {
+  position: fixed; top: 14px; left: 50%;
+  transform: translate(-50%, -130%);
+  z-index: 70;
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 8px 16px 8px 14px;
+  background: color-mix(in oklab, var(--surface) 86%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--text-2);
+  opacity: 0; visibility: hidden;
+  transition: opacity .35s ease, transform .35s cubic-bezier(.2,.7,.2,1), visibility 0s linear .35s, border-color var(--t-fast);
+  cursor: pointer;
+}
+.top-pill-bar.show {
+  opacity: 1; visibility: visible;
+  transform: translate(-50%, 0);
+  transition-delay: 0s;
+}
+.top-pill-bar:hover { border-color: var(--border-strong); }
+.top-pill-bar .tp-label { letter-spacing: 0.06em; color: var(--muted); }
+.top-pill-bar .tp-pill { display: inline-block; height: 26px; aspect-ratio: 2.55 / 1; line-height: 0; }
+.top-pill-bar .tp-pill canvas { width: 100%; height: 100%; display: block; }
+.top-pill-bar .tp-tip { color: var(--muted); opacity: .8; }
+.top-pill-bar:hover .tp-tip { color: var(--text-2); opacity: 1; }
+@media (max-width: 520px) {
+  .top-pill-bar { font-size: 11px; gap: 8px; padding: 6px 12px 6px 10px; }
+  .top-pill-bar .tp-pill { height: 22px; }
+  .top-pill-bar .tp-tip { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .top-pill-bar { transition: opacity .2s ease, visibility 0s linear .2s; }
+  .top-pill-bar.show { transform: translate(-50%, 0); }
+}
+
 /* ---------- Nav ---------- */
 .nav {
   position: sticky; top: 0; z-index: 50;
@@ -545,6 +583,14 @@ body.lens-switching .lens-anim { opacity: 0; transform: translateY(8px); transit
 .skill-chips .chip { font-size: 12px; padding: 5px 10px; }
 .skill-chips .chip.k { color: var(--text); border-color: var(--border-strong); }
 
+/* Misc section sub-headings (over the skills grid and the leadership grid). */
+.misc-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;
+  color: var(--text-2); letter-spacing: 0.02em;
+  margin: 56px 0 18px;
+}
+.misc-sub:first-of-type { margin-top: 8px; }
+
 /* ---------- Leadership ---------- */
 .lead-grid {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
@@ -736,41 +782,29 @@ image-slot::part(image) {
 </head>
 <body>
 
-<header class="nav" id="nav">
-  <div class="nav-inner">
-    <a href="#top" class="brand" aria-label="Nirav Surabhi — home">
-      <span class="brand-mark">ns</span>
-      <span class="brand-name">Nirav Surabhi</span>
-    </a>
-    <div class="lens-switch" role="group" aria-label="Tailor this portfolio for a discipline">
-      <span class="lens-label" aria-hidden="true">view as</span>
-      <button type="button" class="active" data-lens-btn="all">All</button>
-      <button type="button" data-lens-btn="software">Software</button>
-      <button type="button" data-lens-btn="mechanical">Mechanical</button>
-    </div>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="#work" class="hide-sm">Work</a>
-      <a href="#about" class="hide-sm">About</a>
-      <a href="#contact" class="hide-sm">Contact</a>
-    </nav>
-  </div>
-</header>
+<!-- Floating "viewing" pill that replaces the old top bar. Hidden while the
+     hero pill is in view; fades in when the user has scrolled past the hero.
+     Click to jump to the *other* discipline section. -->
+<button type="button" class="top-pill-bar" id="top-pill-bar" aria-label="Click to switch discipline">
+  <span class="tp-label">viewing</span>
+  <span class="tp-pill"><canvas id="pill-canvas-top"></canvas></span>
+  <span class="tp-tip">click to switch</span>
+</button>
 
 <nav class="chapters" id="chapters" aria-label="Sections">
-  <a href="#top"        data-chapter>Intro</a>
-  <a href="#about"      data-chapter>About</a>
-  <a href="#experience" data-chapter>Experience</a>
-  <a href="#work"       data-chapter>Work</a>
-  <a href="#cad"        data-chapter data-lens="mechanical">CAD</a>
-  <a href="#skills"     data-chapter>Skills</a>
-  <a href="#beyond"     data-chapter>Beyond</a>
-  <a href="#contact"    data-chapter>Contact</a>
+  <a href="#hero"       data-chapter>Who am I?</a>
+  <a href="#experience" data-chapter>Work experience</a>
+  <a href="#mechanical" data-chapter>Mechanical projects</a>
+  <a href="#software"   data-chapter>Software portfolio</a>
+  <a href="#guitar"     data-chapter>Guitar portfolio</a>
+  <a href="#misc"       data-chapter>Misc</a>
+  <a href="#contact"    data-chapter>Contact me</a>
 </nav>
 
 <main id="top">
 
   <!-- ============ HERO ============ -->
-  <section class="hero" aria-labelledby="hero-h">
+  <section id="hero" class="hero" aria-labelledby="hero-h">
     <div class="flow" aria-hidden="true">
       <svg viewBox="0 0 1200 600" preserveAspectRatio="none">
         <!-- streamlines: gentle curves left→right, hinting at the wind-tunnel research -->
@@ -796,10 +830,10 @@ image-slot::part(image) {
           Engineer.
         </span>
       </h1>
-      <p class="hero-lede lens-anim"><span data-lens="software"><strong style="color:var(--text);font-weight:600">Software:</strong> founder of <a href="#work" style="color:var(--accent)">Chad vs. Chud</a> (10K users) and <a href="#work" style="color:var(--accent)">b2alpha.io</a> (2K business users). </span><span data-lens="mechanical"><strong style="color:var(--text);font-weight:600">Mechanical:</strong> built a wind tunnel from scratch and published the paper in IEEE.</span></p>
+      <p class="hero-lede lens-anim"><span data-lens="software"><strong style="color:var(--text);font-weight:600">Software:</strong> founder of <a href="#software" style="color:var(--accent)">Chad vs. Chud</a> (10K users) and <a href="#software" style="color:var(--accent)">b2alpha.io</a> (2K business users). </span><span data-lens="mechanical"><strong style="color:var(--text);font-weight:600">Mechanical:</strong> built a wind tunnel from scratch and published the paper in IEEE.</span></p>
       <p class="hero-sub">18 <span class="sep">/</span> Brambleton, VA <span class="sep">/</span> Independence HS '26 <span class="sep">/</span> Purdue ME '30</p>
       <div class="cta-row">
-        <a href="#work" class="btn primary">
+        <a href="#mechanical" class="btn primary">
           See what I've built
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
         </a>
@@ -887,111 +921,15 @@ image-slot::part(image) {
     </div>
   </section>
 
-  <!-- ============ SELECTED WORK ============ -->
-  <section id="work" aria-labelledby="work-h">
+  <!-- ============ MECHANICAL PROJECTS ============ -->
+  <section id="mechanical" aria-labelledby="mech-h">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="num">03 / selected work</span>
-        <h2 id="work-h">Things I've shipped.</h2>
+        <span class="num">03 / mechanical portfolio</span>
+        <h2 id="mech-h">Mechanical projects.</h2>
       </div>
 
-      <div class="work-grid lens-anim">
-
-        <!-- 1. Chad vs Chud — featured -->
-        <article class="card featured reveal" data-lens="software" data-tilt>
-          <image-slot id="shot-chad" src="img/shot-chad.png" class="shot" shape="rounded" radius="10" placeholder="Drop a Chad vs. Chud screenshot"></image-slot>
-          <div class="card-top">
-            <h3 class="card-title">Chad vs. Chud <span class="now-pill">Current focus</span></h3>
-            <div class="card-meta">2025 — Now</div>
-          </div>
-          <p class="card-desc">An image-analysis web app with a custom CNN behind it. Users upload a photo, the model scores it in real time. Deployed on Fly.io.</p>
-          <div class="metric">
-            <span class="big">10,000+</span><span class="label">registered users</span>
-            <span style="color:var(--border-strong); margin:0 4px">·</span>
-            <span class="big">100+</span><span class="label">daily actives</span>
-          </div>
-          <div class="chips">
-            <span class="chip">Python</span>
-            <span class="chip">PyTorch / CNN</span>
-            <span class="chip">Fly.io</span>
-            <span class="chip">JavaScript</span>
-            <span class="chip">Computer Vision</span>
-          </div>
-          <div class="card-foot">
-            <span class="card-role">Co-Founder &amp; CEO</span>
-            <a href="https://chadvschud.com" target="_blank" rel="noopener noreferrer" class="card-link">chadvschud.com →</a>
-          </div>
-        </article>
-
-        <!-- 2. b2alpha -->
-        <article class="card reveal" data-lens="software" data-tilt>
-          <image-slot id="shot-b2a" src="img/shot-b2a.png" class="shot" shape="rounded" radius="10" placeholder="Drop a b2alpha.io screenshot"></image-slot>
-          <div class="card-top">
-            <h3 class="card-title">b2alpha.io</h3>
-            <div class="card-meta">Jan 2026 →</div>
-          </div>
-          <p class="card-desc">An open protocol so agents can talk to other agents — secure messaging plus DNS integration. A lot of the work is prompt engineering: getting models to produce structured output another agent can actually parse.</p>
-          <div class="metric">
-            <span class="big">2,000+</span><span class="label">business users</span>
-          </div>
-          <div class="chips">
-            <span class="chip">LLMs</span>
-            <span class="chip">Agents</span>
-            <span class="chip">DNS</span>
-            <span class="chip">Python</span>
-            <span class="chip">Prompt Engineering</span>
-          </div>
-          <div class="card-foot">
-            <span class="card-role">Co-Founder &amp; CEO</span>
-            <a href="https://b2alpha.io" target="_blank" rel="noopener noreferrer" class="card-link">b2alpha.io →</a>
-          </div>
-        </article>
-
-        <!-- 3. PredictionView -->
-        <article class="card reveal" data-lens="software" data-tilt>
-          <image-slot id="shot-pv" src="img/shot-pv.png" class="shot" shape="rounded" radius="10" placeholder="Drop a PredictionView screenshot"></image-slot>
-          <div class="card-top">
-            <h3 class="card-title">PredictionView</h3>
-            <div class="card-meta">Mar 2026 →</div>
-          </div>
-          <p class="card-desc">Analytics for prediction markets — charts, signals, comparisons. I own the backend, the test suite, and most of the debugging.</p>
-          <div class="metric">
-            <span class="big">Launched</span><span class="label">March 2026</span>
-          </div>
-          <div class="chips">
-            <span class="chip">Python</span>
-            <span class="chip">APIs</span>
-            <span class="chip">Data</span>
-            <span class="chip">Testing</span>
-          </div>
-          <div class="card-foot">
-            <span class="card-role">Co-Founder &amp; CEO</span>
-            <a href="https://predictionview.app" target="_blank" rel="noopener noreferrer" class="card-link">predictionview.app →</a>
-          </div>
-        </article>
-
-        <!-- 4. Khali -->
-        <article class="card reveal" data-lens="software" data-tilt>
-          <image-slot id="shot-khali" src="img/shot-khali.png" class="shot" shape="rounded" radius="10" placeholder="Drop a Khali screenshot"></image-slot>
-          <div class="card-top">
-            <h3 class="card-title">Khali</h3>
-            <div class="card-meta">2025 — 2026</div>
-          </div>
-          <p class="card-desc">Full-stack news aggregator with a short-form-video feed (think Reels, but news). Goal: get past the spin and show what actually happened.</p>
-          <div class="metric">
-            <span class="big">YC S26</span><span class="label">application submitted</span>
-          </div>
-          <div class="chips">
-            <span class="chip">Full Stack</span>
-            <span class="chip">LLMs</span>
-            <span class="chip">Video</span>
-            <span class="chip">News APIs</span>
-          </div>
-          <div class="card-foot">
-            <span class="card-role">Co-Founder &amp; CEO</span>
-            <a href="https://khali.info" target="_blank" rel="noopener noreferrer" class="card-link">khali.info →</a>
-          </div>
-        </article>
+      <div class="work-grid">
 
         <!-- 1. Passive Vortex Propulsion — featured -->
         <article class="card featured reveal" data-lens="mechanical" data-tilt>
@@ -1093,7 +1031,7 @@ image-slot::part(image) {
   <section id="cad" class="lens-anim" data-lens="mechanical" aria-labelledby="cad-h">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="num">04 / robotics cad</span>
+        <span class="num">// robotics cad</span>
         <h2 id="cad-h">A season of FTC, part by part.</h2>
         <div class="cad-nav">
           <button type="button" data-cad="prev" aria-label="Scroll to previous">
@@ -1232,15 +1170,145 @@ image-slot::part(image) {
     </div>
   </section>
 
-  <!-- ============ SKILLS ============ -->
-  <section id="skills" aria-labelledby="skills-h">
+  <!-- ============ SOFTWARE PORTFOLIO ============ -->
+  <section id="software" aria-labelledby="sw-h">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="num">05 / skills</span>
-        <h2 id="skills-h">What I reach for.</h2>
+        <span class="num">04 / software portfolio</span>
+        <h2 id="sw-h">Software portfolio.</h2>
       </div>
-      <div class="skill-grid reveal lens-anim">
-        <div class="skill-group" data-lens="software">
+
+      <div class="work-grid">
+
+        <article class="card featured reveal" data-tilt>
+          <image-slot id="shot-chad" src="img/shot-chad.png" class="shot" shape="rounded" radius="10" placeholder="Drop a Chad vs. Chud screenshot"></image-slot>
+          <div class="card-top">
+            <h3 class="card-title">Chad vs. Chud <span class="now-pill">Current focus</span></h3>
+            <div class="card-meta">2025 — Now</div>
+          </div>
+          <p class="card-desc">An image-analysis web app with a custom CNN behind it. Users upload a photo, the model scores it in real time. Deployed on Fly.io.</p>
+          <div class="metric">
+            <span class="big">10,000+</span><span class="label">registered users</span>
+            <span style="color:var(--border-strong); margin:0 4px">·</span>
+            <span class="big">100+</span><span class="label">daily actives</span>
+          </div>
+          <div class="chips">
+            <span class="chip">Python</span>
+            <span class="chip">PyTorch / CNN</span>
+            <span class="chip">Fly.io</span>
+            <span class="chip">JavaScript</span>
+            <span class="chip">Computer Vision</span>
+          </div>
+          <div class="card-foot">
+            <span class="card-role">Co-Founder &amp; CEO</span>
+            <a href="https://chadvschud.com" target="_blank" rel="noopener noreferrer" class="card-link">chadvschud.com →</a>
+          </div>
+        </article>
+
+        <article class="card reveal" data-tilt>
+          <image-slot id="shot-b2a" src="img/shot-b2a.png" class="shot" shape="rounded" radius="10" placeholder="Drop a b2alpha.io screenshot"></image-slot>
+          <div class="card-top">
+            <h3 class="card-title">b2alpha.io</h3>
+            <div class="card-meta">Jan 2026 →</div>
+          </div>
+          <p class="card-desc">An open protocol so agents can talk to other agents — secure messaging plus DNS integration. A lot of the work is prompt engineering: getting models to produce structured output another agent can actually parse.</p>
+          <div class="metric">
+            <span class="big">2,000+</span><span class="label">business users</span>
+          </div>
+          <div class="chips">
+            <span class="chip">LLMs</span>
+            <span class="chip">Agents</span>
+            <span class="chip">DNS</span>
+            <span class="chip">Python</span>
+            <span class="chip">Prompt Engineering</span>
+          </div>
+          <div class="card-foot">
+            <span class="card-role">Co-Founder &amp; CEO</span>
+            <a href="https://b2alpha.io" target="_blank" rel="noopener noreferrer" class="card-link">b2alpha.io →</a>
+          </div>
+        </article>
+
+        <article class="card reveal" data-tilt>
+          <image-slot id="shot-pv" src="img/shot-pv.png" class="shot" shape="rounded" radius="10" placeholder="Drop a PredictionView screenshot"></image-slot>
+          <div class="card-top">
+            <h3 class="card-title">PredictionView</h3>
+            <div class="card-meta">Mar 2026 →</div>
+          </div>
+          <p class="card-desc">Analytics for prediction markets — charts, signals, comparisons. I own the backend, the test suite, and most of the debugging.</p>
+          <div class="metric">
+            <span class="big">Launched</span><span class="label">March 2026</span>
+          </div>
+          <div class="chips">
+            <span class="chip">Python</span>
+            <span class="chip">APIs</span>
+            <span class="chip">Data</span>
+            <span class="chip">Testing</span>
+          </div>
+          <div class="card-foot">
+            <span class="card-role">Co-Founder &amp; CEO</span>
+            <a href="https://predictionview.app" target="_blank" rel="noopener noreferrer" class="card-link">predictionview.app →</a>
+          </div>
+        </article>
+
+        <article class="card reveal" data-tilt>
+          <image-slot id="shot-khali" src="img/shot-khali.png" class="shot" shape="rounded" radius="10" placeholder="Drop a Khali screenshot"></image-slot>
+          <div class="card-top">
+            <h3 class="card-title">Khali</h3>
+            <div class="card-meta">2025 — 2026</div>
+          </div>
+          <p class="card-desc">Full-stack news aggregator with a short-form-video feed (think Reels, but news). Goal: get past the spin and show what actually happened.</p>
+          <div class="metric">
+            <span class="big">YC S26</span><span class="label">application submitted</span>
+          </div>
+          <div class="chips">
+            <span class="chip">Full Stack</span>
+            <span class="chip">LLMs</span>
+            <span class="chip">Video</span>
+            <span class="chip">News APIs</span>
+          </div>
+          <div class="card-foot">
+            <span class="card-role">Co-Founder &amp; CEO</span>
+            <a href="https://khali.info" target="_blank" rel="noopener noreferrer" class="card-link">khali.info →</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GUITAR PORTFOLIO ============ -->
+  <section id="guitar" aria-labelledby="guitar-h">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="num">05 / guitar</span>
+        <h2 id="guitar-h">On the guitar.</h2>
+      </div>
+      <p class="cad-sub reveal">1st place at the Agaudo Guitar Competition and member of the All-Virginia Guitar Ensemble. I also organize concerts at local senior centers — small rooms, attentive audiences, no microphones. A few clips from the pieces I've been playing.</p>
+      <div class="guitar-grid reveal">
+        <div class="guitar-vid"><video src="img/guitar/g1.mp4" poster="img/guitar/g1.jpg" controls preload="none" playsinline></video></div>
+        <div class="guitar-vid"><video src="img/guitar/g2.mp4" poster="img/guitar/g2.jpg" controls preload="none" playsinline></video></div>
+        <div class="guitar-vid"><video src="img/guitar/g3.mp4" poster="img/guitar/g3.jpg" controls preload="none" playsinline></video></div>
+        <div class="guitar-vid"><video src="img/guitar/g4.mp4" poster="img/guitar/g4.jpg" controls preload="none" playsinline></video></div>
+        <div class="guitar-vid"><video src="img/guitar/g5.mp4" poster="img/guitar/g5.jpg" controls preload="none" playsinline></video></div>
+        <div class="guitar-vid"><video src="img/guitar/g6.mp4" poster="img/guitar/g6.jpg" controls preload="none" playsinline></video></div>
+        <div class="guitar-vid"><video src="img/guitar/g7.mp4" poster="img/guitar/g7.jpg" controls preload="none" playsinline></video></div>
+        <div class="guitar-vid"><video src="img/guitar/g8.mp4" poster="img/guitar/g8.jpg" controls preload="none" playsinline></video></div>
+        <div class="guitar-vid"><video src="img/guitar/g9.mp4" poster="img/guitar/g9.jpg" controls preload="none" playsinline></video></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MISC ============ -->
+  <section id="misc" aria-labelledby="misc-h">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="num">06 / misc</span>
+        <h2 id="misc-h">A bit of everything else.</h2>
+      </div>
+
+      <h3 class="misc-sub reveal">// what I reach for</h3>
+      <div class="skill-grid reveal">
+        <div class="skill-group">
           <div class="skill-label">// languages</div>
           <div class="skill-chips">
             <span class="chip k">Java</span>
@@ -1251,7 +1319,7 @@ image-slot::part(image) {
             <span class="chip k">Git</span>
           </div>
         </div>
-        <div class="skill-group" data-lens="software">
+        <div class="skill-group">
           <div class="skill-label">// cloud &amp; deploy</div>
           <div class="skill-chips">
             <span class="chip k">Fly.io</span>
@@ -1260,7 +1328,7 @@ image-slot::part(image) {
             <span class="chip k">Vercel</span>
           </div>
         </div>
-        <div class="skill-group" data-lens="mechanical">
+        <div class="skill-group">
           <div class="skill-label">// hardware &amp; cad</div>
           <div class="skill-chips">
             <span class="chip k">Autodesk Fusion 360</span>
@@ -1281,19 +1349,11 @@ image-slot::part(image) {
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- ============ LEADERSHIP & BEYOND ============ -->
-  <section id="beyond" aria-labelledby="beyond-h">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="num">06 / leadership &amp; beyond</span>
-        <h2 id="beyond-h">The other stuff.</h2>
-      </div>
-      <div class="lead-grid reveal lens-anim">
+      <h3 class="misc-sub reveal">// the other stuff</h3>
+      <div class="lead-grid reveal">
 
-        <div class="lead-item" data-lens="mechanical">
+        <div class="lead-item">
           <div class="lead-head">
             <h3 class="lead-title">Captain · Science Olympiad</h3>
             <span class="lead-tag">leadership</span>
@@ -1301,7 +1361,7 @@ image-slot::part(image) {
           <p class="lead-desc">Built an Arduino device that measures salt concentration in water. Also engineered a PID-controlled electric vehicle for fast, accurate distance runs.</p>
         </div>
 
-        <div class="lead-item" data-lens="mechanical">
+        <div class="lead-item">
           <div class="lead-head">
             <h3 class="lead-title">AIAA Aerospace Award · RSEF</h3>
             <span class="lead-tag">honor</span>
@@ -1319,38 +1379,12 @@ image-slot::part(image) {
 
         <div class="lead-item">
           <div class="lead-head">
-            <h3 class="lead-title">1st Place · Agaudo Guitar Competition</h3>
-            <span class="lead-tag">guitar</span>
-          </div>
-          <p class="lead-desc">Classical guitar. Member of the All-Virginia Guitar Ensemble. I also organize concerts at local senior centers — small rooms, attentive audiences, no microphones.</p>
-        </div>
-
-        <div class="lead-item">
-          <div class="lead-head">
             <h3 class="lead-title">Central Virginia Governor's School Scholar</h3>
             <span class="lead-tag">mathematics</span>
           </div>
           <p class="lead-desc">Mathematics track, summer 2024.</p>
         </div>
 
-      </div>
-
-      <div class="guitar-block reveal">
-        <div class="guitar-head">
-          <h3>On the guitar</h3>
-          <span class="k">// classical · All-Virginia ensemble · senior-center sets</span>
-        </div>
-        <div class="guitar-grid">
-          <div class="guitar-vid"><video src="img/guitar/g1.mp4" poster="img/guitar/g1.jpg" controls preload="none" playsinline></video></div>
-          <div class="guitar-vid"><video src="img/guitar/g2.mp4" poster="img/guitar/g2.jpg" controls preload="none" playsinline></video></div>
-          <div class="guitar-vid"><video src="img/guitar/g3.mp4" poster="img/guitar/g3.jpg" controls preload="none" playsinline></video></div>
-          <div class="guitar-vid"><video src="img/guitar/g4.mp4" poster="img/guitar/g4.jpg" controls preload="none" playsinline></video></div>
-          <div class="guitar-vid"><video src="img/guitar/g5.mp4" poster="img/guitar/g5.jpg" controls preload="none" playsinline></video></div>
-          <div class="guitar-vid"><video src="img/guitar/g6.mp4" poster="img/guitar/g6.jpg" controls preload="none" playsinline></video></div>
-          <div class="guitar-vid"><video src="img/guitar/g7.mp4" poster="img/guitar/g7.jpg" controls preload="none" playsinline></video></div>
-          <div class="guitar-vid"><video src="img/guitar/g8.mp4" poster="img/guitar/g8.jpg" controls preload="none" playsinline></video></div>
-          <div class="guitar-vid"><video src="img/guitar/g9.mp4" poster="img/guitar/g9.jpg" controls preload="none" playsinline></video></div>
-        </div>
       </div>
     </div>
   </section>
@@ -1391,20 +1425,25 @@ image-slot::part(image) {
 
 <script>
 (function () {
-  // ----- Nav scrolled state + scroll progress (drives the chapter rail fill) -----
-  var nav = document.getElementById('nav');
-  var chapters = document.getElementById('chapters');
-  var onScroll = function () {
-    var y = window.scrollY || document.documentElement.scrollTop;
-    if (y > 8) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
-    var doc = document.documentElement;
-    var max = doc.scrollHeight - doc.clientHeight;
-    var p = (max > 0 ? Math.min(1, Math.max(0, y / max)) : 0);
-    if (chapters) chapters.style.setProperty('--p', p);
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
-  onScroll();
+  // ----- Top pill bar: show after the hero pill scrolls out of view -----
+  var topBar = document.getElementById('top-pill-bar');
+  var heroPillEl = document.querySelector('#hero .pill3d');
+  if (topBar && heroPillEl && 'IntersectionObserver' in window) {
+    var heroObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { topBar.classList.toggle('show', !e.isIntersecting); });
+    }, { rootMargin: '-20px 0px 0px 0px', threshold: 0 });
+    heroObs.observe(heroPillEl);
+  }
+  // The top pill bar's current discipline (set by section observer below).
+  // Clicking it jumps to the OTHER discipline's section.
+  if (topBar) {
+    topBar.dataset.face = 'software';   // initial
+    topBar.addEventListener('click', function () {
+      var goingTo = topBar.dataset.face === 'mechanical' ? 'software' : 'mechanical';
+      var dest = document.getElementById(goingTo);
+      if (dest) dest.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
 
   // ----- Chapter navigator: highlight the section in view -----
   if (chapters && 'IntersectionObserver' in window) {
@@ -1428,6 +1467,14 @@ image-slot::part(image) {
           a.style.setProperty('--s', s);
           a.style.setProperty('--d', Math.abs(s));
         });
+      }
+      // Drive the top pill's face from the active section.
+      var face = null;
+      if (id === 'mechanical') face = 'mechanical';
+      else if (id === 'software') face = 'software';
+      if (face && window.__pills && window.__pills.top) {
+        window.__pills.top.setLens(face);
+        if (topBar) topBar.dataset.face = face;
       }
     };
     var seen = {};
@@ -1562,13 +1609,14 @@ image-slot::part(image) {
 <script type="module">
 import * as THREE from 'three';
 
-(function () {
-  const canvas = document.getElementById('pill-canvas');
-  if (!canvas) return;
+function mountPill(canvas, opts) {
+  if (!canvas) return null;
+  opts = opts || {};
   const wrap = canvas.parentElement;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // Static freeze for screenshots / inspection: ?pill=front | ?pill=back
-  const freeze = new URLSearchParams(location.search).get('pill');
+  const freeze = opts.freeze || new URLSearchParams(location.search).get('pill');
+  const autoFlip = opts.autoFlip !== false;   // hero pill flips; top pill holds
 
   // ---- Renderer (transparent so the page shows through) ----
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -1734,25 +1782,23 @@ import * as THREE from 'three';
     render();
   }
 
-  const animate = !reduce && !freeze;
-
-  // The page calls this when a discipline is chosen: settle the pill on that
-  // face ('all' eases to the front, then resumes the flip).
-  window.__pillLens = function (mode) {
+  // Returned as `controller.setLens(mode)` — settle the pill on a face
+  // ('software' / 'mechanical') or resume the auto flip ('all').
+  function setLens(mode) {
     if (reduce || freeze) {
       lensTarget = null; frameRunning = false;
       pill.rotation.x = FACE_OFFSET + (mode === 'mechanical' ? Math.PI : 0);
       render();
       return;
     }
-    var auto = (mode !== 'software' && mode !== 'mechanical');
+    var auto = (mode !== 'software' && mode !== 'mechanical') && autoFlip;
     if (auto && lensTarget === null && frameRunning) return;   // already free-running
     lensFrom = pill.rotation.x;
     lensStart = performance.now();
     lensResume = auto;
     lensTarget = (mode === 'mechanical') ? FACE_OFFSET + Math.PI : FACE_OFFSET;
     startLoop();
-  };
+  }
 
   // Rebuild the label texture once Inter has loaded so words aren't baked in a
   // fallback font (CanvasTexture is captured at draw time).
@@ -1767,13 +1813,20 @@ import * as THREE from 'three';
     if (!frameRunning) render();
   });
 
+  const animate = !reduce && !freeze && autoFlip;
   if (animate) startLoop();
-  else renderStatic();
+  else {
+    // Top pill defaults to the requested initial face (or front).
+    pill.rotation.x = FACE_OFFSET + (opts.initialFace === 'mechanical' ? Math.PI : 0);
+    render();
+  }
 
-  // Sync to whatever discipline the page loaded in (e.g. ?lens=mechanical).
-  var initLens = document.body.getAttribute('data-lens');
-  if (initLens === 'software' || initLens === 'mechanical') window.__pillLens(initLens);
-})();
+  return { setLens, render };
+}
+
+const heroPill = mountPill(document.getElementById('pill-canvas'), { autoFlip: true });
+const topPill  = mountPill(document.getElementById('pill-canvas-top'), { autoFlip: false, initialFace: 'software' });
+window.__pills = { hero: heroPill, top: topPill };
 </script>
 
 </body>
