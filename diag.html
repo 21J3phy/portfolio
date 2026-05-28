@@ -658,7 +658,7 @@ footer {
 
 /* ---------- 3D pill (Software / Mechanical) — Three.js ---------- */
 /* Flows as inline text so the pill wraps like any other word. */
-.flip-line { display: inline-block; font-weight: 600; color: var(--text); letter-spacing: -0.035em; white-space: nowrap; }
+.flip-line { display: inline; font-weight: 600; color: var(--text); letter-spacing: -0.035em; }
 /* The pill sits inline like another word in the H1 — sized close to the
    font's cap-height so it reads as part of "I'm a … Engineer." */
 .pill3d {
@@ -1782,5 +1782,15 @@ import * as THREE from 'three';
 })();
 </script>
 
-</body>
+
+<script>window.addEventListener('load',function(){setTimeout(function(){
+ var ht=document.querySelector('.hero-text'),fl=document.querySelector('.flip-line'),p=document.querySelector('.pill3d'),h=document.querySelector('#hero-h');
+ var r=ht.getBoundingClientRect(),pr=p.getBoundingClientRect(),hr=h.getBoundingClientRect();
+ var m=document.createElement('span');m.style.cssText='visibility:hidden;font:inherit;white-space:nowrap;position:absolute';
+ fl.appendChild(m);
+ m.textContent=" Engineer.";var eng=m.getBoundingClientRect().width;
+ m.textContent="I'm a ";var ima=m.getBoundingClientRect().width;
+ m.remove();
+ document.title='col='+Math.round(r.width)+' h1='+Math.round(hr.width)+'x'+Math.round(hr.height)+' fontsz='+getComputedStyle(h).fontSize+' pill='+Math.round(pr.width)+' Ima='+Math.round(ima)+' Eng='+Math.round(eng)+' sum='+Math.round(ima+pr.width+eng);
+},1500);});</script></body>
 </html>
