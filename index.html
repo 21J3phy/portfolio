@@ -649,46 +649,36 @@ footer {
    settles on the target ("Mechanical" → "Software" → "Mechanical" …).
    The whole word is just coloured text — no pill background. */
 .flip-line { display: inline; font-weight: 600; color: var(--text); letter-spacing: -0.035em; }
+/* The word is plain inline text — each letter sits on its parent's baseline
+   like any other character. Animation is a 2D vertical squish (the letter
+   flattens then expands back, which reads as a flap settling) — no 3D,
+   no perspective, nothing that can bleed past the line. */
 .flap-word {
-  /* inline-flex eats the whitespace between slots so layout is stable */
-  display: inline-flex;
+  display: inline;
   color: #ec9550;                    /* amber: Mechanical (default) */
   font-weight: 700;
   letter-spacing: -0.02em;
   transition: color .6s ease;
   white-space: nowrap;
-  vertical-align: -0.04em;
 }
 .flap-word.is-software { color: var(--accent); }
-/* Each slot is fixed-width so blank/padding slots still take their place — no
-   stutter when the shorter word (Software) is shown. overflow:hidden clips
-   the spinning flap to its slot rectangle, giving the airport-board "window"
-   look and preventing mid-flip letters from bleeding into the line above. */
 .flap-word .ltr {
-  position: relative;
-  width: 0.62em; height: 1em;
-  line-height: 1;
-  perspective: 380px;
-  -webkit-perspective: 380px;
-  overflow: hidden;
+  display: inline-block;
+  width: 0.6em;
+  text-align: center;
+  vertical-align: baseline;
 }
-.flap-word .face { line-height: 1; }
-.flap-word .flap {
-  position: relative;
-  width: 100%; height: 100%;
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
-  transform: rotateX(0deg);
-  transition: transform .18s cubic-bezier(.4, 0, .55, 1);
+.flap-word .ltr .flap { display: inline; }
+.flap-word .ltr .face.b { display: none; }    /* only one face is needed for the 2D flap */
+.flap-word .ltr .face.a {
+  display: inline-block;
+  transform-origin: 50% 50%;
+  transition: transform 90ms cubic-bezier(.55, 0, .5, 1), opacity 80ms ease;
 }
-.flap-word .face {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+.flap-word .ltr.flipping .face.a { transform: scaleY(0.04); opacity: 0.4; }
+@media (prefers-reduced-motion: reduce) {
+  .flap-word .ltr .face.a { transition: none; }
 }
-.flap-word .face.b { transform: rotateX(180deg); }
-@media (prefers-reduced-motion: reduce) { .flap-word .flap { transition: none; } }
 
 /* ---------- Projects: prominent Mechanical / Software tabs ---------- */
 .proj-tabs {
@@ -1465,17 +1455,14 @@ image-slot::part(image) {
     var TARGETS = ['MECHANICAL', 'SOFTWARE  ']; // padded with spaces to N
     var idx = 0;
     if (reduce) return;
-    var angleFor = new WeakMap();
     function flipTo(slot, char) {
-      var flapEl = slot.querySelector('.flap');
-      var cur = slot.dataset.face || 'a';
-      var nxt = cur === 'a' ? 'b' : 'a';
       var glyph = (char === ' ') ? '\u00A0' : char;     // nbsp keeps the slot visually open
-      flapEl.querySelector('.face.' + nxt).textContent = glyph;
-      var ang = (angleFor.get(slot) || 0) - 180;          // keep rotating in one direction
-      angleFor.set(slot, ang);
-      slot.dataset.face = nxt;
-      flapEl.style.transform = 'rotateX(' + ang + 'deg)';
+      var face = slot.querySelector('.face.a');
+      slot.classList.add('flipping');                    // letter squishes flat
+      setTimeout(function () {
+        face.textContent = glyph;
+        slot.classList.remove('flipping');               // expands back as the new letter
+      }, 95);
     }
     function cycleLetter(slot, finalChar, delay, cyclesLeft, stepMs) {
       setTimeout(function step() {
