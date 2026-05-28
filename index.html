@@ -160,43 +160,6 @@ section + section { border-top: 1px solid var(--border); }
   .chapters a { transition: opacity .15s ease, color .15s ease, font-size .15s ease; }
 }
 
-/* ---------- Floating "viewing: [pill]" bar at the top middle ---------- */
-.top-pill-bar {
-  position: fixed; top: 14px; left: 50%;
-  transform: translate(-50%, -130%);
-  z-index: 70;
-  display: inline-flex; align-items: center; gap: 12px;
-  padding: 8px 16px 8px 14px;
-  background: color-mix(in oklab, var(--surface) 86%, transparent);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  font-family: 'JetBrains Mono', monospace; font-size: 12px;
-  color: var(--text-2);
-  opacity: 0; visibility: hidden;
-  transition: opacity .35s ease, transform .35s cubic-bezier(.2,.7,.2,1), visibility 0s linear .35s, border-color var(--t-fast);
-  cursor: pointer;
-}
-.top-pill-bar.show {
-  opacity: 1; visibility: visible;
-  transform: translate(-50%, 0);
-  transition-delay: 0s;
-}
-.top-pill-bar:hover { border-color: var(--border-strong); }
-.top-pill-bar .tp-label { letter-spacing: 0.06em; color: var(--muted); }
-.top-pill-bar .tp-pill { display: inline-block; height: 28px; aspect-ratio: 2.55 / 1; line-height: 0; }
-.top-pill-bar .tp-pill canvas { width: 100%; height: 100%; display: block; }
-.top-pill-bar .tp-tip { color: var(--muted); opacity: .8; }
-.top-pill-bar:hover .tp-tip { color: var(--text-2); opacity: 1; }
-@media (max-width: 520px) {
-  .top-pill-bar { font-size: 11px; gap: 8px; padding: 6px 12px 6px 10px; }
-  .top-pill-bar .tp-pill { height: 22px; }
-  .top-pill-bar .tp-tip { display: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .top-pill-bar { transition: opacity .2s ease, visibility 0s linear .2s; }
-  .top-pill-bar.show { transform: translate(-50%, 0); }
-}
 
 /* ---------- Nav ---------- */
 .nav {
@@ -681,49 +644,47 @@ footer {
   .reveal { opacity: 1; transform: none; }
 }
 
-/* ---------- Discipline pill (Software / Mechanical) ----------
-   A real-text pill whose label slides up to swap. The hidden .disc-sizer
-   reserves the width of the longest word ("Mechanical") so the pill stays
-   the same width when the label flips. Its background colour transitions
-   blue → amber along with the swap. */
+/* ---------- Discipline flap-board word ----------
+   Airport-board style: each letter cycles through random characters then
+   settles on the target ("Mechanical" → "Software" → "Mechanical" …).
+   The whole word is just coloured text — no pill background. */
 .flip-line { display: inline; font-weight: 600; color: var(--text); letter-spacing: -0.035em; }
-.disc-pill {
-  display: inline-block;
-  position: relative;
-  vertical-align: -0.05em;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #0a0c10;
+.flap-word {
+  color: #ec9550;                /* amber: Mechanical (default) */
   font-weight: 700;
   letter-spacing: -0.02em;
-  overflow: hidden;
-  line-height: 1.08;
-  transition: background-color .55s ease;
-}
-.disc-pill.is-mechanical { background: #ec9550; }
-.disc-sizer {
-  display: block;
-  padding: 0.05em 0.45em;
+  transition: color .6s ease;
   white-space: nowrap;
-  visibility: hidden;
 }
-.disc-roll {
-  position: absolute; left: 0; right: 0; top: 0;
-  display: flex; flex-direction: column;
-  transition: transform .55s cubic-bezier(.7, 0, .3, 1);
-  will-change: transform;
-}
-.disc-pill.is-mechanical .disc-roll { transform: translateY(-50%); }
-.disc-word {
-  display: block;
-  padding: 0.05em 0.45em;
-  white-space: nowrap;
+.flap-word.is-software { color: var(--accent); }
+.flap-word .ltr {
+  display: inline-block;
+  min-width: 0.58em;
   text-align: center;
 }
-/* Smaller variant used inside the top floating bar. */
-.disc-pill--mini { letter-spacing: 0; font-size: inherit; }
-@media (prefers-reduced-motion: reduce) {
-  .disc-pill, .disc-roll { transition: none; }
+
+/* ---------- Projects: Mechanical / Software tabs ---------- */
+#projects .section-head { flex-wrap: wrap; row-gap: 16px; align-items: center; }
+.proj-tabs {
+  margin-left: auto;
+  display: inline-flex; gap: 4px; padding: 4px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.proj-tabs button {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  color: var(--text-2); background: transparent; border: 0;
+  padding: 7px 16px; border-radius: 999px; cursor: pointer;
+  transition: color var(--t-fast), background var(--t-fast);
+}
+.proj-tabs button:hover { color: var(--text); }
+.proj-tabs button.active[data-tab="mechanical"] { color: #0a0c10; background: #ec9550; }
+.proj-tabs button.active[data-tab="software"]   { color: #0a0c10; background: var(--accent); }
+.proj-pane { margin-top: 8px; }
+.proj-pane[hidden] { display: none; }
+@media (max-width: 520px) {
+  .proj-tabs { width: 100%; }
+  .proj-tabs button { flex: 1; }
 }
 
 /* ---------- Image slots ---------- */
@@ -802,26 +763,10 @@ image-slot::part(image) {
 </head>
 <body>
 
-<!-- Floating "viewing" pill that replaces the old top bar. Hidden while the
-     hero pill is in view; fades in when the user has scrolled past the hero.
-     Click to jump to the *other* discipline section. -->
-<button type="button" class="top-pill-bar" id="top-pill-bar" aria-label="Click to switch discipline">
-  <span class="tp-label">viewing</span>
-  <span class="disc-pill disc-pill--mini" id="disc-pill-top">
-    <span class="disc-sizer" aria-hidden="true">Mechanical</span>
-    <span class="disc-roll" aria-hidden="true">
-      <span class="disc-word">Software</span>
-      <span class="disc-word">Mechanical</span>
-    </span>
-  </span>
-  <span class="tp-tip">click to switch</span>
-</button>
-
 <nav class="chapters" id="chapters" aria-label="Sections">
   <a href="#hero"       data-chapter>Who am I?</a>
   <a href="#experience" data-chapter>Work experience</a>
-  <a href="#mechanical" data-chapter>Mechanical projects</a>
-  <a href="#software"   data-chapter>Software portfolio</a>
+  <a href="#projects"   data-chapter>Projects</a>
   <a href="#guitar"     data-chapter>Guitar portfolio</a>
   <a href="#misc"       data-chapter>Misc</a>
   <a href="#contact"    data-chapter>Contact me</a>
@@ -848,22 +793,16 @@ image-slot::part(image) {
       <div class="hero-text">
       <h1 id="hero-h">
         Nirav Surabhi.<br/>
-        <span class="flip-line lens-anim">
+        <span class="flip-line">
           I'm a
-          <span class="disc-pill" id="disc-pill-hero" role="img" aria-label="Software and mechanical">
-            <span class="disc-sizer" aria-hidden="true">Mechanical</span>
-            <span class="disc-roll" aria-hidden="true">
-              <span class="disc-word">Software</span>
-              <span class="disc-word">Mechanical</span>
-            </span>
-          </span>
+          <span class="flap-word is-mechanical" id="flap-word" aria-label="Mechanical / Software"><span class="ltr">M</span><span class="ltr">E</span><span class="ltr">C</span><span class="ltr">H</span><span class="ltr">A</span><span class="ltr">N</span><span class="ltr">I</span><span class="ltr">C</span><span class="ltr">A</span><span class="ltr">L</span></span>
           Engineer.
         </span>
       </h1>
-      <p class="hero-lede lens-anim"><span data-lens="software"><strong style="color:var(--text);font-weight:600">Software:</strong> founder of <a href="#software" style="color:var(--accent)">Chad vs. Chud</a> (10K users) and <a href="#software" style="color:var(--accent)">b2alpha.io</a> (2K business users). </span><span data-lens="mechanical"><strong style="color:var(--text);font-weight:600">Mechanical:</strong> built a wind tunnel from scratch and published the paper in IEEE.</span></p>
+      <p class="hero-lede lens-anim"><span data-lens="software"><strong style="color:var(--text);font-weight:600">Software:</strong> founder of <a href="#projects" style="color:var(--accent)">Chad vs. Chud</a> (10K users) and <a href="#projects" style="color:var(--accent)">b2alpha.io</a> (2K business users). </span><span data-lens="mechanical"><strong style="color:var(--text);font-weight:600">Mechanical:</strong> built a wind tunnel from scratch and published the paper in IEEE.</span></p>
       <p class="hero-sub">18 <span class="sep">/</span> Brambleton, VA <span class="sep">/</span> Independence HS '26 <span class="sep">/</span> Purdue ME '30</p>
       <div class="cta-row">
-        <a href="#mechanical" class="btn primary">
+        <a href="#projects" class="btn primary">
           See what I've built
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
         </a>
@@ -951,15 +890,20 @@ image-slot::part(image) {
     </div>
   </section>
 
-  <!-- ============ MECHANICAL PROJECTS ============ -->
-  <section id="mechanical" aria-labelledby="mech-h">
+    <!-- ============ PROJECTS ============ -->
+  <section id="projects" aria-labelledby="proj-h">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="num">03 / mechanical portfolio</span>
-        <h2 id="mech-h">Mechanical projects.</h2>
+        <span class="num">03 / projects</span>
+        <h2 id="proj-h">Projects.</h2>
+        <div class="proj-tabs" role="tablist" aria-label="Switch between mechanical and software projects">
+          <button type="button" class="active" data-tab="mechanical" role="tab" aria-selected="true">Mechanical</button>
+          <button type="button" data-tab="software" role="tab" aria-selected="false">Software</button>
+        </div>
       </div>
 
-      <div class="work-grid">
+      <div class="proj-pane" data-tab="mechanical">
+<div class="work-grid">
 
         <!-- 1. Passive Vortex Propulsion — featured -->
         <article class="card featured reveal" data-lens="mechanical" data-tilt>
@@ -1054,13 +998,8 @@ image-slot::part(image) {
         </article>
 
       </div>
-    </div>
-  </section>
 
-  <!-- ============ FTC CAD ============ -->
-  <section id="cad" class="lens-anim" data-lens="mechanical" aria-labelledby="cad-h">
-    <div class="wrap">
-      <div class="section-head reveal">
+<div class="section-head reveal">
         <span class="num">// robotics cad</span>
         <h2 id="cad-h">A season of FTC, part by part.</h2>
         <div class="cad-nav">
@@ -1197,18 +1136,10 @@ image-slot::part(image) {
         </article>
 
       </div>
-    </div>
-  </section>
-
-  <!-- ============ SOFTWARE PORTFOLIO ============ -->
-  <section id="software" aria-labelledby="sw-h">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="num">04 / software portfolio</span>
-        <h2 id="sw-h">Software portfolio.</h2>
       </div>
 
-      <div class="work-grid">
+      <div class="proj-pane" data-tab="software" hidden>
+<div class="work-grid">
 
         <article class="card featured reveal" data-tilt>
           <image-slot id="shot-chad" src="img/shot-chad.png" class="shot" shape="rounded" radius="10" placeholder="Drop a Chad vs. Chud screenshot"></image-slot>
@@ -1303,14 +1234,15 @@ image-slot::part(image) {
         </article>
 
       </div>
+      </div>
     </div>
   </section>
 
-  <!-- ============ GUITAR PORTFOLIO ============ -->
+<!-- ============ GUITAR PORTFOLIO ============ -->
   <section id="guitar" aria-labelledby="guitar-h">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="num">05 / guitar</span>
+        <span class="num">04 / guitar</span>
         <h2 id="guitar-h">On the guitar.</h2>
       </div>
       <p class="cad-sub reveal">1st place at the Agaudo Guitar Competition and member of the All-Virginia Guitar Ensemble. I also organize concerts at local senior centers — small rooms, attentive audiences, no microphones. A few clips from the pieces I've been playing.</p>
@@ -1332,7 +1264,7 @@ image-slot::part(image) {
   <section id="misc" aria-labelledby="misc-h">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="num">06 / misc</span>
+        <span class="num">05 / misc</span>
         <h2 id="misc-h">A bit of everything else.</h2>
       </div>
 
@@ -1423,7 +1355,7 @@ image-slot::part(image) {
   <section id="contact" class="contact" aria-labelledby="contact-h">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="num">07 / contact</span>
+        <span class="num">06 / contact</span>
         <h2 id="contact-h" style="display:none">Contact</h2>
       </div>
       <p class="contact-h reveal">If you're working on something interesting,<br/><a href="mailto:niravsurabhi@gmail.com" data-copy-email><span data-copy-label>say hello →</span></a></p>
@@ -1455,38 +1387,71 @@ image-slot::part(image) {
 
 <script>
 (function () {
-  // ----- Top pill bar: show after the hero pill scrolls out of view -----
-  var topBar = document.getElementById('top-pill-bar');
-  var heroPillEl = document.querySelector('#hero .disc-pill');
-  var heroDiscPill = document.getElementById('disc-pill-hero');
-  var topDiscPill = document.getElementById('disc-pill-top');
-
-  // Hero pill: cycle Software ⇄ Mechanical on a slow loop, like the old 3D
-  // version. Holds each side, slides to the next. Respects reduced-motion.
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (heroDiscPill && !reduce) {
-    var heroFace = 'software';
-    setInterval(function () {
-      heroFace = (heroFace === 'software') ? 'mechanical' : 'software';
-      heroDiscPill.classList.toggle('is-mechanical', heroFace === 'mechanical');
-    }, 2200);
-  }
-  if (topBar && heroPillEl && 'IntersectionObserver' in window) {
-    var heroObs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { topBar.classList.toggle('show', !e.isIntersecting); });
-    }, { rootMargin: '-20px 0px 0px 0px', threshold: 0 });
-    heroObs.observe(heroPillEl);
-  }
-  // The top pill bar's current discipline (set by section observer below).
-  // Clicking it jumps to the OTHER discipline's section.
-  if (topBar) {
-    topBar.dataset.face = 'software';   // initial
-    topBar.addEventListener('click', function () {
-      var goingTo = topBar.dataset.face === 'mechanical' ? 'software' : 'mechanical';
-      var dest = document.getElementById(goingTo);
-      if (dest) dest.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // ----- Discipline flap-board word in the hero -----
+  // Cycles Mechanical → Software → Mechanical … letter-by-letter, like an
+  // airport split-flap board. Color of the word fades between amber/blue.
+  (function () {
+    var flap = document.getElementById('flap-word');
+    if (!flap) return;
+    var slots = Array.prototype.slice.call(flap.querySelectorAll('.ltr'));
+    var N = slots.length;
+    var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var TARGETS = ['MECHANICAL', 'SOFTWARE  ']; // padded to N
+    var idx = 0;
+    if (reduce) { return; } // honor reduced-motion: leave the static word.
+    function cycleLetter(el, finalChar, delay, cyclesLeft, stepMs) {
+      setTimeout(function step() {
+        if (cyclesLeft <= 0) {
+          el.textContent = finalChar === ' ' ? ' ' : finalChar;
+          return;
+        }
+        el.textContent = CHARS[(Math.random() * 26) | 0];
+        cyclesLeft--;
+        setTimeout(step, stepMs);
+      }, delay);
+    }
+    function flip() {
+      idx = 1 - idx;
+      var target = TARGETS[idx];
+      flap.classList.toggle('is-software', idx === 1);
+      flap.classList.toggle('is-mechanical', idx === 0);
+      var maxEnd = 0;
+      for (var i = 0; i < N; i++) {
+        var delay = i * 80;
+        var cycles = Math.round(5 + i * 1.4);
+        var endAt = delay + cycles * 55;
+        if (endAt > maxEnd) maxEnd = endAt;
+        cycleLetter(slots[i], target.charAt(i), delay, cycles, 55);
+      }
+      setTimeout(flip, maxEnd + 1700);
+    }
+    setTimeout(flip, 1700);   // first hold on Mechanical, then start cycling
+  })();
+
+  // ----- Projects: Mechanical / Software tabs -----
+  (function () {
+    var tabs = document.querySelector('.proj-tabs');
+    if (!tabs) return;
+    var panes = document.querySelectorAll('.proj-pane');
+    tabs.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-tab]');
+      if (!b) return;
+      var t = b.getAttribute('data-tab');
+      tabs.querySelectorAll('button').forEach(function (x) {
+        var on = x === b;
+        x.classList.toggle('active', on);
+        x.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      panes.forEach(function (p) {
+        var show = p.getAttribute('data-tab') === t;
+        p.hidden = !show;
+        // Cards in the just-revealed pane skipped scroll-reveal; force them in.
+        if (show) p.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+      });
     });
-  }
+  })();
 
   // ----- Chapter navigator: highlight the section in view -----
   if (chapters && 'IntersectionObserver' in window) {
@@ -1510,14 +1475,6 @@ image-slot::part(image) {
           a.style.setProperty('--s', s);
           a.style.setProperty('--d', Math.abs(s));
         });
-      }
-      // Drive the top disc-pill's face from the active section.
-      var face = null;
-      if (id === 'mechanical') face = 'mechanical';
-      else if (id === 'software') face = 'software';
-      if (face) {
-        if (topDiscPill) topDiscPill.classList.toggle('is-mechanical', face === 'mechanical');
-        if (topBar) topBar.dataset.face = face;
       }
     };
     var seen = {};
