@@ -1,37 +1,28 @@
-<!doctype html>
-<html lang="en" data-theme="dark">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<meta name="theme-color" content="#0a0c10" media="(prefers-color-scheme: dark)" />
-<meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Nirav Surabhi — Software + Mechanical Engineering</title>
-<meta name="description" content="Nirav Surabhi — 18. Half on a screen, half on a workbench. Founder of Chad vs. Chud (10K+ users) and b2alpha.io. IEEE-published wind-tunnel research. Senior at Independence HS, incoming Purdue ME." />
+<meta name="description" content="Nirav Surabhi — 18, Brambleton VA. Half on a screen, half on a workbench. Software and mechanical engineering: live CNN apps, an IEEE first-author paper, FIRST Tech Challenge, classical guitar." />
 <link rel="canonical" href="https://niravsurabhi.com/" />
+<meta name="theme-color" content="#ece6da" />
 
-<!-- Open Graph -->
+<!-- Open Graph / Twitter -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Nirav Surabhi — Engineer, founder, occasional guitarist" />
-<meta property="og:description" content="Half on a screen, half on a workbench. Software + mechanical engineering." />
+<meta property="og:title" content="Nirav Surabhi — Software + Mechanical Engineering" />
+<meta property="og:description" content="Half on a screen, half on a workbench. Chad vs. Chud (10K+ users), an IEEE-published wind tunnel, four years of FIRST Tech Challenge." />
 <meta property="og:url" content="https://niravsurabhi.com/" />
-<meta property="og:image" content="/og.png" />
+<meta property="og:image" content="https://niravsurabhi.com/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-
-<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Nirav Surabhi" />
-<meta name="twitter:description" content="Half on a screen, half on a workbench. Software + mechanical engineering." />
-<meta name="twitter:image" content="/og.png" />
+<meta name="twitter:title" content="Nirav Surabhi — Software + Mechanical Engineering" />
+<meta name="twitter:description" content="Half on a screen, half on a workbench." />
+<meta name="twitter:image" content="https://niravsurabhi.com/og.png" />
 
-<!-- Favicon: inline SVG, no extra request -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0c10'/%3E%3Ctext x='32' y='42' font-family='ui-sans-serif,system-ui,Inter' font-weight='700' font-size='30' fill='%237c9eff' text-anchor='middle'%3Ens%3C/text%3E%3C/svg%3E" />
-
-<!-- Fonts: Inter + JetBrains Mono, with swap -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<script src="image-slot.js"></script>
+<!-- Favicon: inline SVG, split blue/red mark -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23ece6da'/%3E%3Crect width='32' height='64' fill='%231b46c914'/%3E%3Crect x='32' width='32' height='64' fill='%23cb3a1714'/%3E%3Ctext x='32' y='44' font-family='Archivo,Arial,sans-serif' font-weight='900' font-size='28' fill='%23191510' text-anchor='middle'%3ENS%3C/text%3E%3C/svg%3E" />
 
 <!-- JSON-LD Person -->
 <script type="application/ld+json">
@@ -42,1626 +33,1130 @@
   "url": "https://niravsurabhi.com/",
   "email": "mailto:niravsurabhi@gmail.com",
   "address": { "@type": "PostalAddress", "addressLocality": "Brambleton", "addressRegion": "VA", "addressCountry": "US" },
-  "sameAs": [
-    "https://www.linkedin.com/in/niravss",
-    "https://github.com/21J3phy"
-  ],
+  "sameAs": ["https://www.linkedin.com/in/niravss", "https://github.com/21J3phy"],
   "jobTitle": "Engineer",
   "alumniOf": { "@type": "EducationalOrganization", "name": "Independence High School" }
 }
 </script>
 
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
-/* ---------- Tokens ---------- */
-:root {
-  --bg: #0a0c10;
-  --surface: #11141a;
-  --surface-2: #161a22;
-  --border: rgba(255,255,255,0.08);
-  --border-strong: rgba(255,255,255,0.14);
-  --text: #e8eaed;
-  --text-2: #a8aeb8;
-  --muted: #6b7280;
-  --accent: #7c9eff;
-  --accent-2: #5a7fd8;
-  --accent-soft: rgba(124,158,255,0.12);
+/* ============================ TOKENS ============================ */
+:root{
+  --paper:#ece6da; --paper-2:#e5dccb; --paper-3:#ddd2bd;
+  --ink:#191510; --ink-2:#4f463a; --ink-3:#80766654;
+  --blue:#1b46c9; --blue-deep:#11308f; --blue-wash:#1b46c914;
+  --red:#cb3a17; --red-deep:#9e2c0f; --red-wash:#cb3a1714;
+  --line:rgba(25,21,16,.18); --line-soft:rgba(25,21,16,.07); --line-mid:rgba(25,21,16,.12);
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+  --disp:'Archivo','IBM Plex Sans',sans-serif;
+  --maxw:1320px;
+  --hdr:54px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans); color:var(--ink); background-color:var(--paper);
+  line-height:1.5; font-size:17px; overflow-x:hidden;
+  background-image:
+    linear-gradient(var(--line-soft) 1px,transparent 1px),
+    linear-gradient(90deg,var(--line-soft) 1px,transparent 1px),
+    linear-gradient(rgba(25,21,16,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(25,21,16,.045) 1px,transparent 1px);
+  background-size:28px 28px,28px 28px,140px 140px,140px 140px;
+}
+::selection{background:var(--ink);color:var(--paper)}
+img{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:2px}
+.work :focus-visible,.theme-work :focus-visible{outline-color:var(--red)}
 
-  --r-sm: 6px;
-  --r-md: 10px;
-  --r-lg: 16px;
-  --r-xl: 22px;
+/* ============================ TYPE ============================ */
+.mono{font-family:var(--mono)}
+.tag{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2)}
+.disp{font-family:var(--disp);font-weight:900;line-height:.92;letter-spacing:-.02em}
+.measure{max-width:62ch}
 
-  --max: 1100px;
-  --pad: clamp(20px, 4vw, 40px);
+/* ============================ SHELL / GRID ============================ */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,5vw,64px)}
+.rule{height:0;border:0;border-top:1.5px solid var(--ink);opacity:.85}
+.rule-soft{height:0;border:0;border-top:1px solid var(--line)}
 
-  --t-fast: 160ms cubic-bezier(.2,.7,.2,1);
-  --t-med: 320ms cubic-bezier(.2,.7,.2,1);
+/* ============================ HEADER ============================ */
+header.bar{
+  position:fixed;top:0;left:0;right:0;height:var(--hdr);z-index:60;
+  display:flex;align-items:center;gap:16px;
+  padding:0 clamp(14px,4vw,28px);
+  background:rgba(236,230,218,.86);backdrop-filter:blur(8px);
+  border-bottom:1.5px solid var(--ink);
+}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex:0 0 auto}
+.brand .mk{
+  width:30px;height:30px;border:1.5px solid var(--ink);border-radius:50%;
+  display:grid;place-items:center;font-family:var(--disp);font-weight:900;font-size:13px;
+  position:relative;overflow:hidden;background:var(--paper);
+}
+.brand .mk::before{content:"";position:absolute;inset:0 50% 0 0;background:var(--blue-wash)}
+.brand .mk::after{content:"";position:absolute;inset:0 0 0 50%;background:var(--red-wash)}
+.brand .mk span{position:relative;z-index:1}
+.brand b{font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.04em;white-space:nowrap}
+nav.sheets{margin-left:auto;display:flex;align-items:center;gap:2px}
+nav.sheets a{
+  text-decoration:none;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.04em;
+  padding:7px 11px;color:var(--ink-2);border-radius:3px;display:inline-flex;gap:6px;align-items:center;
+  transition:color .15s,background .15s;
+}
+nav.sheets a .nn{color:var(--ink-3);font-weight:600}
+nav.sheets a:hover{color:var(--ink);background:rgba(25,21,16,.06)}
+nav.sheets a.cv{border:1.5px solid var(--ink);color:var(--ink);font-weight:600;padding:6px 12px;margin-left:6px}
+nav.sheets a.cv:hover{background:var(--ink);color:var(--paper)}
+.menu-btn{display:none;margin-left:auto;background:none;border:1.5px solid var(--ink);
+  font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.08em;padding:8px 12px;cursor:pointer;color:var(--ink)}
 
-  --shadow-1: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px rgba(0,0,0,0.25);
-  --shadow-2: 0 1px 0 rgba(255,255,255,0.05) inset, 0 16px 48px rgba(0,0,0,0.38);
+/* sheet indicator (CAD title-block tab) */
+.indicator{
+  position:fixed;left:clamp(14px,4vw,28px);bottom:18px;z-index:55;
+  border:1.5px solid var(--ink);background:var(--paper);
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;
+  display:flex;align-items:stretch;box-shadow:3px 3px 0 rgba(25,21,16,.12);
+  transition:transform .3s;
 }
-[data-theme="light"] {
-  --bg: #fafaf8;
-  --surface: #ffffff;
-  --surface-2: #f4f4f1;
-  --border: rgba(10,12,16,0.10);
-  --border-strong: rgba(10,12,16,0.18);
-  --text: #0a0c10;
-  --text-2: #444a55;
-  --muted: #6b7280;
-  --accent: #3a5cd6;
-  --accent-2: #1f3aa8;
-  --accent-soft: rgba(58,92,214,0.10);
-  --shadow-1: 0 1px 0 rgba(0,0,0,0.02) inset, 0 8px 20px rgba(20,24,40,0.06);
-  --shadow-2: 0 1px 0 rgba(0,0,0,0.03) inset, 0 16px 40px rgba(20,24,40,0.10);
-}
+.indicator div{padding:6px 10px;display:flex;flex-direction:column;gap:1px;justify-content:center}
+.indicator .k{font-size:8.5px;letter-spacing:.14em;color:var(--ink-2)}
+.indicator .v{font-size:12px;color:var(--ink)}
+.indicator .b{border-left:1.5px solid var(--ink)}
+.indicator .dot{width:9px;height:9px;border-radius:50%;background:var(--blue);align-self:center;transition:background .3s}
+body.is-work .indicator .dot{background:var(--red)}
 
-/* ---------- Reset-ish ---------- */
-*, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none; }
-html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0; height: 0; display: none; }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
-}
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  font-feature-settings: "ss01", "cv11";
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  line-height: 1.5;
-  overflow-x: hidden;
-}
-a { color: inherit; text-decoration: none; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
-.mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: "ss02","calt"; }
+/* ============================ SECTION SCAFFOLD ============================ */
+section{position:relative;scroll-margin-top:var(--hdr)}
+.sheet-head{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;padding-top:clamp(46px,7vw,86px)}
+.sheet-no{font-family:var(--disp);font-weight:900;font-size:clamp(40px,9vw,104px);line-height:.8;color:var(--ink);opacity:.13}
+.sheet-meta{flex:1;min-width:200px}
+.sheet-title{font-family:var(--disp);font-weight:800;font-size:clamp(26px,4.4vw,52px);line-height:1;letter-spacing:-.02em}
+.theme-soft .sheet-title em{font-style:normal;color:var(--blue)}
+.theme-work .sheet-title em{font-style:normal;color:var(--red)}
+.sheet-sub{margin-top:10px;color:var(--ink-2);max-width:60ch;font-size:15.5px}
 
-/* ---------- Layout ---------- */
-.wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--pad); }
-section { padding-block: clamp(72px, 10vw, 120px); position: relative; }
-section + section { border-top: 1px solid var(--border); }
+/* ============================ HERO ============================ */
+#index{padding-top:var(--hdr);position:relative}
+.hero{padding-top:clamp(34px,6vw,66px);padding-bottom:clamp(26px,4vw,46px)}
+.hero-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.hero-loc{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--ink-2)}
+.hero-loc b{color:var(--ink);font-weight:600}
+.hero-grid{display:grid;grid-template-columns:1.55fr .95fr;gap:clamp(22px,4vw,56px);align-items:end;margin-top:18px}
+.namewrap{position:relative}
+.hero-name{font-family:var(--disp);font-weight:900;font-size:clamp(58px,13.2vw,176px);line-height:.84;letter-spacing:-.035em;text-transform:uppercase}
+.hero-name .l2{display:block}
+.hero-name .amp{color:var(--blue)}
+.hero-tag{margin-top:22px;font-size:clamp(19px,2.5vw,30px);line-height:1.22;font-weight:500;max-width:20ch}
+.hero-tag .scr{color:var(--blue);font-weight:700}
+.hero-tag .wrk{color:var(--red);font-weight:700}
+.hero-disc{margin-top:14px;font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:var(--ink-2);max-width:46ch}
+.hero-cta{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.04em;text-decoration:none;
+  padding:12px 18px;border:1.5px solid var(--ink);display:inline-flex;align-items:center;gap:9px;
+  transition:transform .12s,background .15s,color .15s;background:var(--paper)}
+.btn .ar{transition:transform .15s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--ink)}
+.btn:hover .ar{transform:translate(3px,0)}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn.solid:hover{box-shadow:3px 3px 0 var(--blue)}
 
-/* ---------- Floating chapter navigator (left rail) ----------
-   The full table of contents lives in the left margin, all chapters always
-   visible so the user can see overall progress. The section currently in
-   view is highlighted and enlarged. Click any name to jump there. */
-.chapters {
-  position: fixed; left: 24px; top: 50%; transform: translateY(-50%);
-  z-index: 60;
-  display: flex; flex-direction: column;
-  align-items: flex-start; gap: 10px;
-}
-.chapters a {
-  text-decoration: none;
-  color: var(--text-2);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px; line-height: 1.25; letter-spacing: 0.05em;
-  white-space: nowrap; text-align: left;
-  opacity: 0.55;
-  transform-origin: 0 50%;
-  transition: font-size .28s cubic-bezier(.2,.7,.2,1),
-              opacity    .25s ease,
-              color      .15s ease,
-              font-weight .15s ease;
-}
-.chapters a:hover { color: var(--text); opacity: 1; }
-.chapters a.active {
-  color: var(--text);
-  font-size: 20px; font-weight: 700;
-  letter-spacing: -0.005em;
-  opacity: 1;
-}
-@media (max-width: 1100px) { .chapters { left: 12px; gap: 8px; } .chapters a { font-size: 12px; } .chapters a.active { font-size: 18px; } }
-@media (max-width: 880px)  { .chapters { display: none; } }
-@media (prefers-reduced-motion: reduce) {
-  .chapters a { transition: opacity .15s ease, color .15s ease, font-size .15s ease; }
-}
+/* split portrait */
+.portrait{position:relative;border:1.5px solid var(--ink);background:var(--paper-2);aspect-ratio:1/1;overflow:hidden}
+.portrait img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.04) brightness(1.02)}
+.portrait .tint{position:absolute;top:0;bottom:0;mix-blend-mode:color}
+.portrait .ts{left:0;right:50%;background:var(--blue)}
+.portrait .tw{left:50%;right:0;background:var(--red)}
+.portrait .seam{position:absolute;top:0;bottom:0;left:50%;width:1.5px;background:rgba(236,230,218,.7);transform:translateX(-50%)}
+.portrait .pcorn{position:absolute;width:18px;height:18px;border:1.5px solid var(--paper);opacity:.8}
+.portrait .pc1{top:8px;left:8px;border-right:0;border-bottom:0}
+.portrait .pc2{top:8px;right:8px;border-left:0;border-bottom:0}
+.portrait .pc3{bottom:8px;left:8px;border-right:0;border-top:0}
+.portrait .pc4{bottom:8px;right:8px;border-left:0;border-top:0}
+.plabel{position:absolute;bottom:8px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.14em;color:var(--paper);background:rgba(25,21,16,.55);padding:3px 7px}
+.plabel.ls{left:10px}.plabel.lw{right:10px}
 
+/* spec strip / stats */
+.specstrip{margin-top:clamp(30px,5vw,52px);border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink)}
+.specstrip .lead{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--ink-2);padding:9px 0 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);}
+.stat{padding:14px 18px 18px;border-left:1px dashed var(--line);position:relative}
+.stat:first-child{border-left:0;padding-left:0}
+.stat .num{font-family:var(--disp);font-weight:900;font-size:clamp(34px,5.2vw,62px);line-height:.9;letter-spacing:-.03em}
+.stat .num .u{font-size:.46em;vertical-align:top;font-weight:700;margin-left:2px}
+.stat:nth-child(odd) .num{color:var(--blue)}
+.stat:nth-child(even) .num{color:var(--red)}
+.stat .lab{margin-top:9px;font-size:13px;line-height:1.3;color:var(--ink-2)}
+.stat .lab b{color:var(--ink);font-weight:600}
 
-/* ---------- Nav ---------- */
-.nav {
-  position: sticky; top: 0; z-index: 50;
-  backdrop-filter: saturate(1.2) blur(10px);
-  -webkit-backdrop-filter: saturate(1.2) blur(10px);
-  background: color-mix(in oklab, var(--bg) 78%, transparent);
-  border-bottom: 1px solid transparent;
-  transition: border-color var(--t-fast), background var(--t-fast);
-}
-.nav.scrolled { border-bottom-color: var(--border); }
-.nav-inner {
-  display: flex; align-items: center; justify-content: space-between;
-  height: 60px; max-width: var(--max); margin: 0 auto; padding-inline: var(--pad);
-}
-.brand {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-weight: 600; letter-spacing: -0.01em;
-}
-.brand-mark {
-  width: 26px; height: 26px; border-radius: 7px;
-  background: var(--surface-2);
-  border: 1px solid var(--border-strong);
-  display: grid; place-items: center;
-  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent);
-  font-weight: 600;
-}
-.nav-links { display: flex; gap: 22px; align-items: center; }
-.nav-links a {
-  color: var(--text-2); font-size: 14px; font-weight: 500;
-  transition: color var(--t-fast);
-}
-.nav-links a:hover { color: var(--text); }
-.nav-links a.cta {
-  color: var(--text); border: 1px solid var(--border-strong);
-  padding: 6px 12px; border-radius: 999px; font-size: 13px;
-}
-.nav-links a.cta:hover { background: var(--surface); }
-.theme-btn {
-  background: transparent; border: 1px solid var(--border); color: var(--text-2);
-  width: 34px; height: 34px; border-radius: 8px; cursor: pointer;
-  display: grid; place-items: center;
-  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
-}
-.theme-btn:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface); }
-.theme-btn svg { width: 16px; height: 16px; }
-@media (max-width: 640px) {
-  .nav-links .hide-sm { display: none; }
-}
+/* ============================ PROJECT ROWS ============================ */
+.proj{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3.5vw,48px);align-items:center;
+  padding:clamp(30px,4.5vw,58px) 0;border-bottom:1px solid var(--line)}
+.proj.rev .figc{order:2}
+.proj.feat{grid-template-columns:1.15fr 1fr}
+.figc{position:relative}
+.fig{border:1.5px solid var(--ink);background:var(--paper-2);position:relative;overflow:hidden}
+.fig img{width:100%;height:100%;object-fit:cover}
+.fig .cap{position:absolute;left:0;bottom:0;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
+  background:var(--ink);color:var(--paper);padding:4px 9px}
+.theme-soft .fig{box-shadow:7px 7px 0 var(--blue-wash)}
+.theme-work .fig{box-shadow:7px 7px 0 var(--red-wash)}
+.pno{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--ink-2)}
+.theme-soft .pno b{color:var(--blue)}
+.theme-work .pno b{color:var(--red)}
+.ptitle{font-family:var(--disp);font-weight:800;font-size:clamp(28px,3.6vw,46px);line-height:.98;letter-spacing:-.02em;margin-top:8px}
+.prole{margin-top:8px;font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;color:var(--ink-2)}
+.pbody{margin-top:14px;font-size:16px;line-height:1.5;color:#2c261d;max-width:52ch}
+.pbody b{font-weight:600}
+.pmetrics{display:flex;gap:22px;flex-wrap:wrap;margin-top:16px}
+.pmetric .m-n{font-family:var(--disp);font-weight:900;font-size:26px;line-height:1}
+.theme-soft .pmetric .m-n{color:var(--blue)}
+.theme-work .pmetric .m-n{color:var(--red)}
+.pmetric .m-l{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--ink-2);margin-top:4px}
+.stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.chip{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.02em;padding:4px 9px;border:1px solid var(--line);
+  color:var(--ink-2);background:var(--paper)}
+.theme-soft .chip:hover{border-color:var(--blue);color:var(--blue)}
+.plinks{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
+.plink{font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.03em;text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;border-bottom:1.5px solid currentColor;padding-bottom:2px}
+.theme-soft .plink{color:var(--blue)}
+.theme-work .plink{color:var(--red)}
+.plink .ar{transition:transform .15s}
+.plink:hover .ar{transform:translate(3px,-3px)}
 
-/* ---------- Discipline lens (All / Software / Mechanical) ---------- */
-.lens-switch {
-  display: inline-flex; align-items: center; gap: 3px;
-  padding: 3px; padding-left: 12px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 999px;
-}
-.lens-label {
-  font-family: 'JetBrains Mono', monospace; font-size: 11px;
-  color: var(--muted); margin-right: 4px; letter-spacing: 0.02em;
-}
-.lens-switch button {
-  font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
-  color: var(--text-2); background: transparent; border: 0;
-  padding: 6px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap;
-  transition: color var(--t-fast), background var(--t-fast);
-}
-.lens-switch button:hover { color: var(--text); }
-.lens-switch button.active { color: #0a0c10; background: var(--accent); }
+/* ============================ VORTEX / WIND TUNNEL FEATURE ============================ */
+.vortex{padding:clamp(30px,4.5vw,56px) 0;border-bottom:1px solid var(--line)}
+.vortex-head{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}
+.stamprow{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.stamp{border:1.5px solid var(--red);color:var(--red-deep);font-family:var(--mono);font-size:10.5px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;padding:7px 11px;transform:rotate(-1.5deg);background:var(--red-wash);text-align:center;line-height:1.25}
+.stamp.b2{transform:rotate(1deg)}
+.stamp small{display:block;font-weight:500;color:var(--red);letter-spacing:.04em;font-size:9px;margin-top:2px}
+.tunnel{margin-top:24px;border:1.5px solid var(--ink);position:relative;background:var(--paper-2);overflow:hidden}
+.tunnel img{width:100%;height:100%;object-fit:cover}
+.tunnel .flow{position:absolute;inset:0;pointer-events:none}
+.tunnel .cap{position:absolute;left:0;bottom:0;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;background:var(--ink);color:var(--paper);padding:4px 9px}
 
-/* What each lens hides (Work Experience is deliberately untagged → never changes) */
-body[data-lens="software"]   [data-lens="mechanical"],
-body[data-lens="mechanical"] [data-lens="software"] { display: none !important; }
+/* ============================ FTC BUILD STORY ============================ */
+.ftc{padding:clamp(30px,4.5vw,56px) 0;border-bottom:1px solid var(--line)}
+.ftc-top{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3.5vw,48px);align-items:center}
+.buildseq{margin-top:clamp(26px,4vw,44px)}
+.buildseq .seqlab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-2);margin-bottom:14px}
+.seqgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.seqcell{position:relative;border:1.5px solid var(--ink);background:var(--paper-2);overflow:hidden;cursor:pointer;
+  padding:0;text-align:left;font:inherit;color:inherit;aspect-ratio:4/3}
+.seqcell img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.seqcell:hover img,.seqcell:focus-visible img{transform:scale(1.06)}
+.seqcell .sn{position:absolute;top:0;left:0;background:var(--red);color:#fff;font-family:var(--mono);font-weight:700;font-size:11px;padding:2px 7px;letter-spacing:.05em}
+.seqcell .sl{position:absolute;left:0;right:0;bottom:0;background:rgba(25,21,16,.78);color:var(--paper);
+  font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.06em;padding:4px 6px;text-transform:uppercase}
 
+/* ============================ SCIENCE OLYMPIAD PAIR ============================ */
+.solytwo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,40px);padding:clamp(26px,4vw,46px) 0;border-bottom:1px solid var(--line)}
+.solycard .fig{margin-bottom:14px}
+.solycard h4{font-family:var(--disp);font-weight:800;font-size:22px;letter-spacing:-.01em}
+.solycard .prole{margin-top:6px}
+.solycard .pbody{margin-top:10px;font-size:15px}
 
-/* Elegant crossfade while switching */
-.lens-anim { transition: opacity .34s ease, transform .34s ease; }
-body.lens-switching .lens-anim { opacity: 0; transform: translateY(8px); transition: opacity .3s ease, transform .3s ease; }
-@media (prefers-reduced-motion: reduce) {
-  .lens-anim { transition: none; }
-  body.lens-switching .lens-anim { opacity: 1; transform: none; }
-}
+/* ============================ EXPERIENCE ============================ */
+.exp{padding:clamp(10px,2vw,24px) 0}
+.exprow{display:grid;grid-template-columns:170px 1fr auto;gap:clamp(16px,3vw,40px);align-items:start;
+  padding:clamp(22px,3vw,34px) 0;border-bottom:1px solid var(--line)}
+.exprow .logo{border:1.5px solid var(--ink);background:var(--paper);padding:14px;display:grid;place-items:center}
+.exprow .logo img{max-height:42px;width:auto;filter:grayscale(1) contrast(1.05);mix-blend-mode:multiply}
+.exprow h4{font-family:var(--disp);font-weight:800;font-size:clamp(20px,2.4vw,28px);letter-spacing:-.01em}
+.exprow .role{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);margin-top:5px}
+.exprow .desc{margin-top:11px;font-size:15.5px;line-height:1.5;max-width:62ch}
+.exprow .desc b{font-weight:600}
+.exprow .when{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--ink-2);text-align:right;white-space:nowrap}
 
-@media (max-width: 760px) {
-  .brand .brand-name { display: none; }
-  .lens-label { display: none; }
-  .lens-switch { padding-left: 3px; }
-  .lens-switch button { padding: 6px 10px; font-size: 12px; }
-}
+/* ============================ GUITAR ============================ */
+#guitar{background:linear-gradient(180deg,transparent,rgba(25,21,16,.025))}
+.guitar-intro{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,52px);align-items:end}
+.guitar-cred{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.gline{display:flex;gap:12px;align-items:baseline;font-size:15.5px;border-top:1px solid var(--line);padding-top:12px}
+.gline .gk{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-2);min-width:84px;flex:0 0 auto}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:clamp(24px,4vw,42px)}
+.clip{position:relative;border:1.5px solid var(--ink);background:var(--ink);overflow:hidden;cursor:pointer;
+  padding:0;aspect-ratio:16/9;color:inherit;font:inherit}
+.clip img{width:100%;height:100%;object-fit:cover;opacity:.92;filter:grayscale(.2);transition:transform .4s,opacity .3s}
+.clip:hover img,.clip:focus-visible img{transform:scale(1.05);opacity:1}
+.clip .play{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.clip .play span{width:46px;height:46px;border-radius:50%;background:rgba(236,230,218,.92);display:grid;place-items:center;
+  border:1.5px solid var(--ink);transition:transform .2s}
+.clip:hover .play span{transform:scale(1.1)}
+.clip .play svg{margin-left:3px}
+.clip .cn{position:absolute;top:0;left:0;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em;
+  background:rgba(25,21,16,.7);color:var(--paper);padding:3px 7px}
 
-/* ---------- Hero ---------- */
-.hero { padding-block: clamp(96px, 14vw, 160px); overflow: hidden; }
-.hero-inner {
-  position: relative; z-index: 1;
-  display: grid;
-  grid-template-columns: 1fr minmax(240px, 300px);
-  gap: clamp(24px, 3.6vw, 48px);
-  align-items: center;
-}
-.hero-text { min-width: 0; }
-.hero-portrait {
-  width: 100%; justify-self: end;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border-radius: var(--r-xl);
-  border: 1px solid var(--border-strong);
-  box-shadow: var(--shadow-2);
-}
-@media (max-width: 860px) {
-  .hero-inner { grid-template-columns: 1fr; gap: 30px; }
-  .hero-portrait {
-    order: -1; justify-self: start;
-    width: clamp(132px, 40vw, 210px);
-    aspect-ratio: 1;
-  }
-}
-.hero h1 {
-  font-size: clamp(38px, 5.4vw, 68px);
-  line-height: 1.02; letter-spacing: -0.035em;
-  font-weight: 700; margin: 0 0 22px;
-  text-wrap: balance;
-}
-.hero h1 .accent { color: var(--accent); }
-.role-line {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: 'JetBrains Mono', monospace; font-size: 13px;
-  color: var(--text-2); margin-bottom: 28px;
-  padding: 6px 12px; border: 1px solid var(--border);
-  border-radius: 999px; background: var(--surface);
-}
-.role-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 4px rgba(74,222,128,0.15); animation: pulse 2.4s ease-in-out infinite; }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
-.typewriter { color: var(--text); min-width: 5ch; }
-.cursor { display: inline-block; width: 7px; height: 1em; background: var(--accent); transform: translateY(2px); margin-left: 2px; animation: blink 1s steps(1) infinite; }
-@keyframes blink { 50% { opacity: 0; } }
+/* ============================ GUITAR DECK ============================ */
+.deck-wrap{margin-top:clamp(24px,4vw,40px);max-width:460px}
+.deck{position:relative;width:100%;aspect-ratio:16/10;touch-action:pan-y;margin-bottom:46px}
+.gcard{position:absolute;inset:0;border:1.5px solid var(--ink);background:#000;overflow:hidden;padding:0;color:inherit;font:inherit;
+  transform-origin:center center;transition:transform .43s cubic-bezier(.2,.7,.2,1),opacity .35s;will-change:transform;
+  box-shadow:4px 5px 0 rgba(25,21,16,.14)}
+.gcard img{width:100%;height:100%;object-fit:cover;opacity:.95;filter:grayscale(.12);-webkit-user-drag:none;user-select:none}
+.gcard.front{cursor:grab}
+.gcard.dragging{transition:none!important;cursor:grabbing}
+.gcard .cn{position:absolute;top:0;left:0;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;
+  background:rgba(25,21,16,.72);color:var(--paper);padding:3px 8px}
+.gcard .play{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.gcard .play span{width:48px;height:48px;border-radius:50%;background:rgba(236,230,218,.92);display:grid;place-items:center;
+  border:1.5px solid var(--ink);transition:transform .2s}
+.gcard.front:hover .play span{transform:scale(1.1)}
+.gcard .play svg{margin-left:3px}
+.deck-foot{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.deck-btn{width:40px;height:40px;border:1.5px solid var(--ink);background:var(--paper);cursor:pointer;font-size:18px;line-height:1;color:var(--ink);
+  transition:background .15s,color .15s}
+.deck-btn:hover{background:var(--ink);color:var(--paper)}
+.deck-count{font-weight:600;letter-spacing:.08em;color:var(--ink);min-width:48px;text-align:center}
+.deck-hint{margin-left:auto;letter-spacing:.05em;opacity:.85}
+@media(max-width:480px){.deck-wrap{max-width:none}.deck-hint{display:none}}
+/* lightbox rich caption (FTC build notes) */
+.lb-cap{max-width:680px;margin-left:auto;margin-right:auto;line-height:1.5}
+.lb-cap b{display:block;color:#fff;letter-spacing:.08em;margin-bottom:8px;font-family:var(--mono);font-size:12px;font-weight:700}
+.lb-cap .lb-desc{display:block;font-family:var(--sans);font-size:14.5px;color:var(--paper);opacity:.94}
+.lb-cap .lb-credit{display:block;margin-top:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:rgba(236,230,218,.6)}
+/* in-site PDF viewer */
+.lb-docbar{display:flex;align-items:center;justify-content:space-between;gap:14px;background:rgba(25,21,16,.55);
+  border:1.5px solid rgba(236,230,218,.4);border-bottom:0;padding:9px 12px}
+.lb-docbar .lb-doc-t{font-family:var(--mono);font-size:11.5px;font-weight:600;letter-spacing:.08em;color:var(--paper)}
+.lb-dl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.06em;color:var(--ink);background:var(--paper);
+  border:1.5px solid var(--paper);padding:7px 13px;text-decoration:none;white-space:nowrap}
+.lb-dl:hover{background:#fff}
+.lb-inner iframe.lb-doc{width:100%;height:78vh;border:1.5px solid rgba(236,230,218,.4);background:#fff;display:block}
 
-.hero-lede {
-  font-size: clamp(18px, 2vw, 22px); color: var(--text-2);
-  max-width: 640px; margin: 0 0 16px;
-  text-wrap: pretty;
-}
-.hero-sub {
-  font-size: 15px; color: var(--muted); margin: 0 0 40px;
-  font-family: 'JetBrains Mono', monospace;
-}
-.hero-sub .sep { color: var(--border-strong); margin-inline: 10px; }
-.cta-row { display: flex; flex-wrap: wrap; gap: 10px; }
-.btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 18px; border-radius: 10px;
-  border: 1px solid var(--border-strong); background: var(--surface);
-  color: var(--text); font-size: 14px; font-weight: 500;
-  transition: transform var(--t-fast), background var(--t-fast), border-color var(--t-fast);
-}
-.btn:hover { background: var(--surface-2); border-color: var(--text-2); transform: translateY(-1px); }
-.btn svg { width: 15px; height: 15px; }
-.btn.primary { background: var(--accent); color: #0a0c10; border-color: var(--accent); }
-.btn.primary:hover { background: var(--accent-2); border-color: var(--accent-2); color: white; }
-[data-theme="light"] .btn.primary { color: white; }
+/* ============================ SKILLS ============================ */
+.skills{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1.5px solid var(--ink);margin-top:clamp(24px,4vw,42px)}
+.skillcol{padding:18px 18px 22px;border-left:1px solid var(--line)}
+.skillcol:first-child{border-left:0;padding-left:0}
+.skillcol h5{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin-bottom:12px}
+.skillcol ul{list-style:none}
+.skillcol li{font-family:var(--mono);font-size:13px;padding:5px 0;border-bottom:1px dotted var(--line);color:var(--ink)}
 
-/* Hero flow-line backdrop (subtle wind-tunnel reference) */
-.flow {
-  position: absolute; inset: 0; pointer-events: none;
-  z-index: 0;
-  mask-image: radial-gradient(ellipse 80% 60% at 70% 40%, black 30%, transparent 80%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 70% 40%, black 30%, transparent 80%);
-}
-.flow svg { width: 100%; height: 100%; display: block; }
-.flow path {
-  fill: none; stroke: var(--accent); stroke-width: 1; opacity: 0.18;
-  stroke-dasharray: 6 14;
-  animation: drift 14s linear infinite;
-}
-.flow path:nth-child(2n) { animation-duration: 18s; opacity: 0.10; }
-.flow path:nth-child(3n) { animation-duration: 22s; opacity: 0.14; }
-@keyframes drift { to { stroke-dashoffset: -200; } }
-[data-theme="light"] .flow path { opacity: 0.22; }
-[data-theme="light"] .flow path:nth-child(2n) { opacity: 0.12; }
+/* ============================ HONORS ============================ */
+.honors{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:clamp(22px,3.5vw,38px)}
+.honor{border:1.5px solid var(--ink);padding:16px 14px;background:var(--paper);position:relative;min-height:120px;display:flex;flex-direction:column;justify-content:space-between}
+.honor .hseal{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+.honor .hseal i{width:18px;height:18px;border:1.5px solid var(--ink);border-radius:50%;display:inline-grid;place-items:center;font-style:normal;font-size:10px}
+.honor h6{font-family:var(--disp);font-weight:700;font-size:16px;line-height:1.1;letter-spacing:-.01em}
+.honor p{font-size:12.5px;color:var(--ink-2);line-height:1.35;margin-top:4px}
 
-/* ---------- Section heading ---------- */
-.section-head {
-  display: flex; align-items: baseline; gap: 14px;
-  margin-bottom: 48px;
-}
-.section-head .num {
-  font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent);
-}
-.section-head h2 {
-  font-size: clamp(28px, 4vw, 40px); margin: 0;
-  font-weight: 600; letter-spacing: -0.025em;
-  text-wrap: balance;
-}
+/* ============================ TITLE BLOCK FOOTER ============================ */
+#contact{padding-bottom:clamp(80px,10vw,120px)}
+.titleblock{border:2px solid var(--ink);margin-top:clamp(24px,4vw,40px);background:var(--paper)}
+.tb-top{display:grid;grid-template-columns:1.4fr 1fr;border-bottom:1.5px solid var(--ink)}
+.tb-name{padding:clamp(22px,3.5vw,38px)}
+.tb-name .big{font-family:var(--disp);font-weight:900;font-size:clamp(34px,6vw,76px);line-height:.86;letter-spacing:-.03em;text-transform:uppercase}
+.tb-name .big .amp{color:var(--blue)}
+.tb-name p{margin-top:14px;font-size:16px;max-width:40ch;color:#2c261d}
+.tb-contactlinks{display:flex;flex-direction:column;border-left:1.5px solid var(--ink)}
+.tbc{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px clamp(18px,3vw,28px);
+  border-bottom:1px solid var(--line);text-decoration:none;transition:background .15s}
+.tbc:last-child{border-bottom:0}
+.tbc:hover{background:rgba(25,21,16,.05)}
+.tbc .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--ink-2)}
+.tbc .v{font-family:var(--mono);font-size:14px;font-weight:600}
+.tbc .ar{font-family:var(--mono)}
+.tb-grid{display:grid;grid-template-columns:repeat(6,1fr)}
+.tb-cell{padding:12px 14px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:3px}
+.tb-cell:first-child{border-left:0}
+.tb-cell .k{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--ink-2)}
+.tb-cell .v{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--ink)}
 
-/* ---------- About ---------- */
-.about p {
-  font-size: clamp(18px, 1.8vw, 21px);
-  color: var(--text);
-  max-width: 720px; margin: 0 0 18px;
-  text-wrap: pretty;
-  line-height: 1.6;
-}
-.about p + p { color: var(--text-2); }
-.status-line {
-  display: inline-flex; flex-wrap: wrap; gap: 0; margin-top: 28px;
-  font-family: 'JetBrains Mono', monospace; font-size: 13px;
-  color: var(--text-2);
-  border: 1px solid var(--border); border-radius: 10px;
-  background: var(--surface); padding: 12px 16px;
-}
-.status-line .item { display: inline-flex; align-items: center; gap: 8px; }
-.status-line .sep { color: var(--border-strong); margin-inline: 14px; }
-.status-line .dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; }
-@media (max-width: 560px) {
-  .status-line { flex-direction: column; gap: 8px; align-items: flex-start; }
-  .status-line .sep { display: none; }
-}
+/* ============================ LIGHTBOX ============================ */
+.lb{position:fixed;inset:0;z-index:120;background:rgba(20,17,12,.9);display:none;align-items:center;justify-content:center;padding:24px}
+.lb.open{display:flex}
+.lb-inner{position:relative;max-width:min(1000px,94vw);max-height:90vh;width:100%}
+.lb-inner img,.lb-inner video{width:100%;max-height:72vh;object-fit:contain;border:1.5px solid rgba(236,230,218,.4);background:#000}
+.lb-cap{font-family:var(--mono);font-size:12px;color:var(--paper);letter-spacing:.06em;margin-top:10px;text-align:center}
+.lb-close{position:absolute;top:-46px;right:0;background:none;border:1.5px solid rgba(236,230,218,.6);color:var(--paper);
+  font-family:var(--mono);font-size:12px;font-weight:600;padding:7px 12px;cursor:pointer;letter-spacing:.06em}
+.lb-close:hover{background:rgba(236,230,218,.15)}
 
-/* ---------- Work cards ---------- */
-.work-grid {
-  display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px;
+/* ============================ RESPONSIVE ============================ */
+@media(max-width:1080px){
+  nav.sheets a:not(.cv) .lbl{display:none}
 }
-.card {
-  grid-column: span 3;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 28px;
-  display: flex; flex-direction: column;
-  position: relative;
-  transition: transform var(--t-med), border-color var(--t-med), background var(--t-med);
-  overflow: hidden;
-  isolation: isolate;
+@media(max-width:860px){
+  body{font-size:16px}
+  .menu-btn{display:inline-block}
+  nav.sheets{position:fixed;top:var(--hdr);left:0;right:0;flex-direction:column;align-items:stretch;
+    background:var(--paper);border-bottom:1.5px solid var(--ink);padding:6px;gap:2px;
+    transform:translateY(-130%);transition:transform .3s;z-index:59;box-shadow:0 14px 24px rgba(25,21,16,.12)}
+  nav.sheets.open{transform:translateY(0)}
+  nav.sheets a{padding:12px 14px}
+  nav.sheets a:not(.cv) .lbl{display:inline}
+  nav.sheets a.cv{margin-left:0;margin-top:4px;justify-content:center}
+  .hero-grid{grid-template-columns:1fr;gap:26px}
+  .namewrap{order:1}.portrait-wrap{order:0}
+  .portrait{max-width:340px}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat{border-top:1px dashed var(--line)}
+  .stat:nth-child(1),.stat:nth-child(2){border-top:0}
+  .stat:nth-child(odd){border-left:0;padding-left:0}
+  .stat:nth-child(even){border-left:1px dashed var(--line)}
+  .proj,.proj.feat{grid-template-columns:1fr;gap:18px}
+  .proj.rev .figc{order:0}
+  .ftc-top{grid-template-columns:1fr}
+  .seqgrid{grid-template-columns:repeat(3,1fr)}
+  .vortex-head{grid-template-columns:1fr}
+  .solytwo{grid-template-columns:1fr}
+  .exprow{grid-template-columns:1fr;gap:10px}
+  .exprow .logo{justify-self:start;padding:10px 16px}
+  .exprow .when{text-align:left}
+  .guitar-intro{grid-template-columns:1fr;gap:18px}
+  .gallery{grid-template-columns:repeat(2,1fr)}
+  .skills{grid-template-columns:1fr 1fr}
+  .skillcol{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-right:0}
+  .skillcol:nth-child(even){padding-left:16px;border-left:1px solid var(--line)}
+  .skillcol:nth-child(1),.skillcol:nth-child(2){border-top:0}
+  .honors{grid-template-columns:1fr 1fr}
+  .tb-top{grid-template-columns:1fr}
+  .tb-contactlinks{border-left:0;border-top:1.5px solid var(--ink)}
+  .tb-grid{grid-template-columns:repeat(3,1fr)}
+  .tb-cell:nth-child(4){border-left:0}
+  .indicator{font-size:10px;bottom:12px}
 }
-.card::before {
-  content: ""; position: absolute; inset: 0;
-  background: radial-gradient(600px circle at var(--mx,50%) var(--my,0%), var(--accent-soft), transparent 50%);
-  opacity: 0; transition: opacity var(--t-med); z-index: -1;
-}
-.card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
-.card:hover::before { opacity: 1; }
-.card.featured { grid-column: span 6; padding: 36px; }
-@media (max-width: 880px) { .card, .card.featured { grid-column: span 6; padding: 26px; } }
-
-.card-top {
-  display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
-  margin-bottom: 14px;
-}
-.card-title {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 22px; font-weight: 600; letter-spacing: -0.018em;
-  margin: 0;
-}
-.card.featured .card-title { font-size: 28px; }
-.now-pill {
-  font-family: 'JetBrains Mono', monospace; font-size: 11px;
-  color: var(--accent); background: var(--accent-soft);
-  padding: 4px 8px; border-radius: 999px; letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-.card-meta {
-  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
-  text-align: right; white-space: nowrap; flex-shrink: 0;
-}
-.card-desc {
-  color: var(--text-2); font-size: 15.5px; margin: 0 0 20px;
-  max-width: 60ch; line-height: 1.55;
-}
-.card.featured .card-desc { font-size: 17px; max-width: 70ch; }
-.metric {
-  font-family: 'JetBrains Mono', monospace; font-size: 13px;
-  color: var(--text); margin-bottom: 18px;
-  display: inline-flex; align-items: center; gap: 8px;
-}
-.metric .big { font-size: 22px; font-weight: 500; color: var(--accent); letter-spacing: -0.02em; }
-.metric .label { color: var(--muted); }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
-.chip {
-  font-family: 'JetBrains Mono', monospace; font-size: 11px;
-  color: var(--text-2); background: var(--surface-2);
-  border: 1px solid var(--border);
-  padding: 4px 9px; border-radius: 6px;
-}
-.card-foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 14px; }
-.card-link {
-  color: var(--accent); font-family: 'JetBrains Mono', monospace;
-  font-size: 13px; display: inline-flex; align-items: center; gap: 6px;
-  transition: gap var(--t-fast);
-}
-.card-link:hover { gap: 10px; }
-.card-role {
-  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
+@media(max-width:480px){
+  .gallery{grid-template-columns:1fr}
+  .seqgrid{grid-template-columns:repeat(2,1fr)}
+  .honors{grid-template-columns:1fr}
+  .tb-grid{grid-template-columns:repeat(2,1fr)}
+  .tb-cell:nth-child(3){border-left:0}
+  .indicator .b:last-child{display:none}
 }
 
-/* ---------- FTC CAD gallery (horizontal story rail) ---------- */
-#cad .section-head { flex-wrap: wrap; row-gap: 16px; align-items: center; }
-.cad-sub {
-  font-size: 15px; color: var(--text-2); max-width: 60ch;
-  margin: -28px 0 28px; line-height: 1.55;
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
 }
-.cad-nav { margin-left: auto; display: flex; gap: 8px; }
-.cad-nav button {
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid var(--border-strong); background: var(--surface);
-  color: var(--text); cursor: pointer; display: grid; place-items: center;
-  transition: background var(--t-fast), border-color var(--t-fast), opacity var(--t-fast);
-}
-.cad-nav button:hover { background: var(--surface-2); border-color: var(--text-2); }
-.cad-nav svg { width: 17px; height: 17px; }
-.cad-rail {
-  display: flex; gap: 18px;
-  overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
-  padding-bottom: 6px; margin: 0 calc(var(--pad) * -1);
-  padding-inline: var(--pad);
-  scrollbar-width: none; -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch;
-}
-.cad-rail::-webkit-scrollbar { display: none; }
-.cad-card {
-  flex: 0 0 auto; width: min(360px, 82vw);
-  scroll-snap-align: start;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r-lg); overflow: hidden;
-  display: flex; flex-direction: column;
-  transition: transform var(--t-med), border-color var(--t-med);
-}
-.cad-card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
-.cad-media { aspect-ratio: 4 / 3; background: #0b0e14; overflow: hidden; }
-.cad-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.cad-card.contain .cad-media img { object-fit: contain; }
-.cad-body { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 7px; }
-.cad-step { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.04em; }
-.cad-title { font-size: 16px; font-weight: 600; margin: 0; letter-spacing: -0.012em; }
-.cad-desc { font-size: 13.5px; color: var(--text-2); line-height: 1.5; margin: 0; }
-.cad-tag {
-  font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;
-}
-@media (max-width: 640px) { .cad-nav { display: none; } }
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
-/* ---------- Timeline ---------- */
-.timeline { position: relative; padding-left: 24px; }
-.timeline::before {
-  content: ""; position: absolute; left: 6px; top: 8px; bottom: 8px;
-  width: 1px; background: var(--border);
-}
-.t-item { position: relative; padding-block: 18px; padding-left: 16px; }
-.t-item::before {
-  content: ""; position: absolute; left: -23px; top: 26px;
-  width: 13px; height: 13px; border-radius: 50%;
-  background: var(--bg); border: 2px solid var(--border-strong);
-  transition: border-color var(--t-fast);
-}
-.t-item:hover::before { border-color: var(--accent); }
-.t-head {
-  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
-  margin-bottom: 6px; flex-wrap: wrap;
-}
-.t-role { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; margin: 0; }
-.t-role .at { color: var(--text-2); font-weight: 400; }
-.t-date { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); }
-.t-desc { color: var(--text-2); font-size: 14.5px; margin: 0; max-width: 65ch; line-height: 1.55; }
-
-/* ---------- Skills ---------- */
-.skill-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-@media (max-width: 720px) { .skill-grid { grid-template-columns: 1fr; } }
-.skill-group {
-  border: 1px solid var(--border); border-radius: var(--r-lg);
-  background: var(--surface); padding: 22px 24px;
-}
-.skill-label {
-  font-family: 'JetBrains Mono', monospace; font-size: 12px;
-  color: var(--muted); margin-bottom: 14px;
-  text-transform: lowercase; letter-spacing: 0.02em;
-}
-.skill-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.skill-chips .chip { font-size: 12px; padding: 5px 10px; }
-.skill-chips .chip.k { color: var(--text); border-color: var(--border-strong); }
-
-/* Misc section sub-headings (over the skills grid and the leadership grid). */
-.misc-sub {
-  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;
-  color: var(--text-2); letter-spacing: 0.02em;
-  margin: 56px 0 18px;
-}
-.misc-sub:first-of-type { margin-top: 8px; }
-
-/* ---------- Leadership ---------- */
-.lead-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
-}
-@media (max-width: 720px) { .lead-grid { grid-template-columns: 1fr; } }
-.lead-item {
-  border: 1px solid var(--border); border-radius: var(--r-md);
-  background: var(--surface); padding: 20px 22px;
-  transition: border-color var(--t-fast), background var(--t-fast);
-}
-.lead-item:hover { border-color: var(--border-strong); background: var(--surface-2); }
-.lead-head {
-  display: flex; align-items: baseline; justify-content: space-between; gap: 14px;
-  margin-bottom: 6px; flex-wrap: wrap;
-}
-.lead-title { font-size: 15.5px; font-weight: 600; margin: 0; letter-spacing: -0.012em; }
-.lead-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); }
-.lead-desc { color: var(--text-2); font-size: 14px; margin: 0; line-height: 1.5; }
-
-/* ---------- Guitar video wall ---------- */
-.guitar-block { margin-top: 40px; }
-.guitar-head {
-  display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; flex-wrap: wrap;
-}
-.guitar-head h3 { font-size: 18px; font-weight: 600; margin: 0; letter-spacing: -0.015em; }
-.guitar-head .k {
-  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
-}
-.guitar-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(248px, 1fr)); gap: 14px;
-}
-.guitar-vid {
-  position: relative; border: 1px solid var(--border); border-radius: var(--r-md);
-  overflow: hidden; background: #000; aspect-ratio: 16 / 9;
-  transition: border-color var(--t-fast), transform var(--t-fast);
-}
-.guitar-vid:hover { border-color: var(--border-strong); transform: translateY(-2px); }
-.guitar-vid video { width: 100%; height: 100%; display: block; object-fit: cover; background: #000; }
-
-/* ---------- Contact ---------- */
-.contact {
-  text-align: left;
-}
-.contact-h {
-  font-size: clamp(36px, 6vw, 60px);
-  font-weight: 700; letter-spacing: -0.035em;
-  line-height: 1.05; margin: 0 0 24px;
-  text-wrap: balance;
-}
-.contact-h a {
-  color: var(--accent);
-  border-bottom: 2px solid transparent;
-  transition: border-color var(--t-fast);
-}
-.contact-h a:hover { border-bottom-color: var(--accent); }
-.contact-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
-  margin-top: 36px; max-width: 720px;
-}
-@media (max-width: 600px) { .contact-grid { grid-template-columns: 1fr; } }
-.contact-item {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 18px 20px; border: 1px solid var(--border);
-  border-radius: var(--r-md); background: var(--surface);
-  transition: border-color var(--t-fast), background var(--t-fast);
-}
-.contact-item:hover { border-color: var(--border-strong); background: var(--surface-2); }
-.contact-item .k {
-  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
-}
-.contact-item .v { font-size: 15px; color: var(--text); }
-.contact-item .arrow { color: var(--muted); transition: color var(--t-fast), transform var(--t-fast); }
-.contact-item:hover .arrow { color: var(--accent); transform: translate(2px, -2px); }
-.contact-item .left { display: flex; flex-direction: column; gap: 4px; }
-
-/* ---------- Footer ---------- */
-footer {
-  padding-block: 32px;
-  border-top: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace; font-size: 12px;
-  color: var(--muted);
-}
-.foot-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; max-width: var(--max); margin: 0 auto; padding-inline: var(--pad); }
-
-/* ---------- Reveal-on-scroll ---------- */
-.reveal {
-  opacity: 0; transform: translateY(14px);
-  transition: opacity 600ms cubic-bezier(.2,.7,.2,1), transform 600ms cubic-bezier(.2,.7,.2,1);
-  will-change: opacity, transform;
-}
-.reveal.in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; }
-}
-
-/* ---------- Discipline flap-board word ----------
-   Airport-board style: each letter cycles through random characters then
-   settles on the target ("Mechanical" → "Software" → "Mechanical" …).
-   The whole word is just coloured text — no pill background. */
-.flip-line { display: inline; font-weight: 600; color: var(--text); letter-spacing: -0.035em; }
-/* The word is plain inline text — each letter sits on its parent's baseline
-   like any other character. Animation is a 2D vertical squish (the letter
-   flattens then expands back, which reads as a flap settling) — no 3D,
-   no perspective, nothing that can bleed past the line. */
-.flap-word {
-  display: inline;
-  color: #ec9550;                    /* amber: Mechanical (default) */
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  transition: color .6s ease;
-  white-space: nowrap;
-}
-.flap-word.is-software { color: var(--accent); }
-.flap-word .ltr {
-  display: inline-block;
-  width: 0.6em;
-  text-align: center;
-  vertical-align: baseline;
-}
-.flap-word .ltr .flap { display: inline; }
-.flap-word .ltr .face.b { display: none; }    /* only one face is needed for the 2D flap */
-.flap-word .ltr .face.a {
-  display: inline-block;
-  transform-origin: 50% 50%;
-  transition: transform 90ms cubic-bezier(.55, 0, .5, 1), opacity 80ms ease;
-}
-.flap-word .ltr.flipping .face.a { transform: scaleY(0.04); opacity: 0.4; }
-@media (prefers-reduced-motion: reduce) {
-  .flap-word .ltr .face.a { transition: none; }
-}
-
-/* ---------- Projects: prominent Mechanical / Software tabs ---------- */
-.proj-tabs {
-  display: flex;
-  margin: 4px 0 28px;
-  padding: 7px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  gap: 6px;
-  max-width: 520px;
-}
-.proj-tabs button {
-  flex: 1;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 17px; font-weight: 600;
-  color: var(--text-2); background: transparent; border: 0;
-  padding: 14px 24px; border-radius: 11px; cursor: pointer;
-  letter-spacing: 0.02em;
-  transition: color .15s ease, background .2s ease, transform .15s ease;
-}
-.proj-tabs button:hover { color: var(--text); }
-.proj-tabs button.active { transform: scale(1.01); }
-.proj-tabs button.active[data-tab="mechanical"] { color: #0a0c10; background: #ec9550; }
-.proj-tabs button.active[data-tab="software"]   { color: #0a0c10; background: var(--accent); }
-@media (max-width: 520px) {
-  .proj-tabs button { padding: 12px 16px; font-size: 15px; }
-}
-
-/* ---------- Projects pane: a self-contained scroll surface ----------
-   Each pane is a fixed-height frame; users scroll through every card in the
-   pane without scrolling the rest of the page. When the inner scroll hits
-   the end, mouse / touch scroll naturally bubbles up to the page. */
-.proj-pane {
-  max-height: 78vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 22px;
-  background: color-mix(in oklab, var(--bg) 80%, var(--surface));
-  /* Override the global "no scrollbar" so the pane gets a visible one. */
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-strong) transparent;
-}
-.proj-pane::-webkit-scrollbar { width: 8px; display: block; }
-.proj-pane::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
-.proj-pane::-webkit-scrollbar-thumb:hover { background: var(--text-2); }
-.proj-pane[hidden] { display: none; }
-/* Faint hint at the bottom that there's more inside the pane. */
-.proj-pane { position: relative; }
-.proj-pane::after {
-  content: "";
-  position: sticky; bottom: -22px; left: 0; right: 0;
-  display: block;
-  height: 48px; margin-top: -48px;
-  background: linear-gradient(to bottom, transparent, color-mix(in oklab, var(--bg) 75%, var(--surface)));
-  pointer-events: none;
-}
-
-/* ---------- Image slots ---------- */
-image-slot {
-  display: block;
-  background: var(--surface-2);
-  border: 1px dashed var(--border-strong);
-  color: var(--muted);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-}
-image-slot:hover { border-color: var(--accent); }
-/* The slot's drag-to-reframe JS sizes the inner <img> with absolute pixel
-   math that mis-scales on narrow/responsive layouts (it was blowing the image
-   far past its box on mobile). For baked-in src images we only ever want a
-   plain cover fit, so force it and let the slot's frame clip cleanly. */
-image-slot::part(image) {
-  position: absolute !important;
-  left: 0 !important; top: 0 !important;
-  width: 100% !important; height: 100% !important;
-  transform: none !important;
-  object-fit: cover !important;
-}
-
-/* About: face + text two-col */
-.about-grid {
-  display: grid; grid-template-columns: 220px 1fr; gap: 44px;
-  align-items: start;
-}
-.about-face {
-  width: 220px; height: 260px;
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  position: sticky; top: 92px;
-}
-@media (max-width: 760px) {
-  .about-grid { grid-template-columns: 1fr; gap: 28px; }
-  .about-face { width: 160px; height: 190px; position: relative; top: 0; }
-}
-
-/* Project screenshot */
-.shot {
-  width: 100%;
-  height: 240px;
-  margin-bottom: 22px;
-  border-radius: var(--r-md);
-  overflow: hidden;
-}
-.card.featured .shot { height: 360px; margin-bottom: 28px; }
-@media (max-width: 880px) {
-  .shot { height: 200px; }
-  .card.featured .shot { height: 240px; }
-}
-
-/* Timeline logos */
-.t-item { display: grid; grid-template-columns: 48px 1fr; gap: 18px; align-items: start; }
-.t-item::before { display: none; }
-.timeline::before { left: 30px; }
-.t-logo {
-  width: 48px; height: 48px;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-top: 14px;
-}
-.t-body { min-width: 0; }
-@media (max-width: 560px) {
-  .timeline { padding-left: 0; }
-  .timeline::before { display: none; }
-  .t-item { grid-template-columns: 40px 1fr; gap: 14px; }
-  .t-logo { width: 40px; height: 40px; }
-}
-
-/* ---------- Selection ---------- */
-::selection { background: var(--accent); color: #0a0c10; }
+/* hero leader-line draw */
+.leadline{stroke:var(--ink);stroke-width:1.4;fill:none}
+@keyframes draw{to{stroke-dashoffset:0}}
 </style>
 </head>
 <body>
 
-<nav class="chapters" id="chapters" aria-label="Sections">
-  <a href="#hero"       data-chapter>Who am I?</a>
-  <a href="#experience" data-chapter>Work experience</a>
-  <a href="#projects"   data-chapter>Projects</a>
-  <a href="#guitar"     data-chapter>Guitar portfolio</a>
-  <a href="#misc"       data-chapter>Misc</a>
-  <a href="#contact"    data-chapter>Contact me</a>
-</nav>
+<!-- ============================ HEADER ============================ -->
+<header class="bar">
+  <a class="brand" href="#index" aria-label="Nirav Surabhi — top of page">
+    <span class="mk"><span>NS</span></span>
+    <b>NIRAV&nbsp;SURABHI</b>
+  </a>
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="sheetnav">MENU</button>
+  <nav class="sheets" id="sheetnav" aria-label="Sheet index">
+    <a href="#software"><span class="nn">01</span> <span class="lbl">Software</span></a>
+    <a href="#hardware"><span class="nn">02</span> <span class="lbl">Hardware</span></a>
+    <a href="#work"><span class="nn">03</span> <span class="lbl">Experience</span></a>
+    <a href="#guitar"><span class="nn">04</span> <span class="lbl">Guitar</span></a>
+    <a href="#contact"><span class="nn">05</span> <span class="lbl">Contact</span></a>
+    <a class="cv" href="resume.html">RÉSUMÉ <span aria-hidden="true">↗</span></a>
+  </nav>
+</header>
 
-<main id="top">
+<!-- sheet indicator title-block tab -->
+<aside class="indicator" aria-hidden="true">
+  <div><span class="k">SHEET</span><span class="v"><span id="indSheet">00</span>/05</span></div>
+  <div class="b"><span class="k">SECTION</span><span class="v" id="indName">INDEX</span></div>
+  <div class="b"><span class="k">SCALE</span><span class="v">1:1</span></div>
+  <div class="b" style="padding-right:12px"><span class="dot"></span></div>
+</aside>
 
-  <!-- ============ HERO ============ -->
-  <section id="hero" class="hero" aria-labelledby="hero-h">
-    <div class="flow" aria-hidden="true">
-      <svg viewBox="0 0 1200 600" preserveAspectRatio="none">
-        <!-- streamlines: gentle curves left→right, hinting at the wind-tunnel research -->
-        <path d="M -50 80   C 300 70, 700 100, 1300 60" />
-        <path d="M -50 130  C 300 120, 700 160, 1300 130" />
-        <path d="M -50 180  C 300 175, 700 220, 1300 200" />
-        <path d="M -50 240  C 300 235, 700 290, 1300 270" />
-        <path d="M -50 310  C 300 305, 700 360, 1300 340" />
-        <path d="M -50 380  C 300 375, 700 420, 1300 410" />
-        <path d="M -50 450  C 300 445, 700 480, 1300 480" />
-        <path d="M -50 520  C 300 515, 700 540, 1300 550" />
-      </svg>
+<main>
+
+<!-- ============================ 00 — HERO ============================ -->
+<section id="index" aria-label="Introduction">
+  <div class="wrap hero">
+    <div class="hero-top">
+      <span class="tag">Drawing&nbsp;No. 00 — Index</span>
+      <span class="hero-loc"><b>Brambleton, VA</b> · Senior @ Independence HS → <b>Purdue ME</b>, Fall 2026</span>
     </div>
-    <div class="wrap hero-inner">
-      <div class="hero-text">
-      <h1 id="hero-h">
-        Nirav Surabhi.<br/>
-        <span class="flip-line">
-          I'm a
-          <span class="flap-word is-mechanical" id="flap-word" aria-label="Mechanical / Software"><span class="ltr" data-face="a"><span class="flap"><span class="face a">M</span><span class="face b"></span></span></span><span class="ltr" data-face="a"><span class="flap"><span class="face a">E</span><span class="face b"></span></span></span><span class="ltr" data-face="a"><span class="flap"><span class="face a">C</span><span class="face b"></span></span></span><span class="ltr" data-face="a"><span class="flap"><span class="face a">H</span><span class="face b"></span></span></span><span class="ltr" data-face="a"><span class="flap"><span class="face a">A</span><span class="face b"></span></span></span><span class="ltr" data-face="a"><span class="flap"><span class="face a">N</span><span class="face b"></span></span></span><span class="ltr" data-face="a"><span class="flap"><span class="face a">I</span><span class="face b"></span></span></span><span class="ltr" data-face="a"><span class="flap"><span class="face a">C</span><span class="face b"></span></span></span><span class="ltr" data-face="a"><span class="flap"><span class="face a">A</span><span class="face b"></span></span></span><span class="ltr" data-face="a"><span class="flap"><span class="face a">L</span><span class="face b"></span></span></span></span>
-          Engineer.
-        </span>
-      </h1>
-      <p class="hero-lede lens-anim"><span data-lens="software"><strong style="color:var(--text);font-weight:600">Software:</strong> founder of <a href="#projects" style="color:var(--accent)">Chad vs. Chud</a> (10K users) and <a href="#projects" style="color:var(--accent)">b2alpha.io</a> (2K business users). </span><span data-lens="mechanical"><strong style="color:var(--text);font-weight:600">Mechanical:</strong> built a wind tunnel from scratch and published the paper in IEEE.</span></p>
-      <p class="hero-sub">18 <span class="sep">/</span> Brambleton, VA <span class="sep">/</span> Independence HS '26 <span class="sep">/</span> Purdue ME '30</p>
-      <div class="cta-row">
-        <a href="#projects" class="btn primary">
-          See what I've built
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-        </a>
-        <a href="Resume.pdf" class="btn" download>
-          Resume
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-        </a>
-        <a href="mailto:niravsurabhi@gmail.com" class="btn" data-copy-email><span data-copy-label>Email</span></a>
-        <a href="https://www.linkedin.com/in/niravss" class="btn" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-        <a href="https://github.com/21J3phy" class="btn" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-      </div>
-      </div>
-      <img class="hero-portrait" src="img/face.jpg" alt="Nirav Surabhi" />
-    </div>
-  </section>
 
-  <!-- ============ ABOUT ============ -->
-  <section id="about" class="about reveal" aria-labelledby="about-h">
-    <div class="wrap">
-      <div class="section-head">
-        <span class="num">01 / about</span>
-        <h2 id="about-h">A short version, in plain English.</h2>
+    <div class="hero-grid">
+      <div class="namewrap">
+        <h1 class="hero-name">Nirav<span class="l2">Surabhi</span></h1>
+        <p class="hero-tag">Half on a <span class="scr">screen</span>, half on a <span class="wrk">workbench.</span></p>
+        <p class="hero-disc">// software + mechanical engineering — i train models &amp; ship apps, then go build the rig that tests the idea.</p>
+        <div class="hero-cta">
+          <a class="btn solid" href="#software">See the work <span class="ar" aria-hidden="true">↓</span></a>
+          <a class="btn" href="mailto:niravsurabhi@gmail.com" data-copy-email><span data-copy-label>Let's talk</span> <span class="ar" aria-hidden="true">→</span></a>
+        </div>
       </div>
-      <div class="about-grid">
-        <image-slot id="face" src="img/ftc-robot.jpg" class="about-face" shape="rounded" radius="16" placeholder="Drop a photo of you"></image-slot>
+      <div class="portrait-wrap">
+        <figure class="portrait">
+          <img src="img/face.webp" alt="Portrait of Nirav Surabhi, split-toned blue on the left and red on the right" width="600" height="600" />
+          <span class="tint ts"></span><span class="tint tw"></span>
+          <span class="seam"></span>
+          <span class="pcorn pc1"></span><span class="pcorn pc2"></span><span class="pcorn pc3"></span><span class="pcorn pc4"></span>
+          <figcaption class="plabel ls">SOFTWARE</figcaption>
+          <span class="plabel lw">MECHANICAL</span>
+        </figure>
+      </div>
+    </div>
+
+    <!-- spec strip -->
+    <div class="specstrip">
+      <div class="lead">— SELECTED FIGURES, AT A GLANCE —————————————————————————</div>
+      <div class="stats">
+        <div class="stat">
+          <div class="num"><span data-count="10000">0</span><span class="u">+</span></div>
+          <div class="lab"><b>users</b> on Chad&nbsp;vs.&nbsp;Chud — 100+ concurrent, live</div>
+        </div>
+        <div class="stat">
+          <div class="num"><span data-count="1">0</span><span class="u">st</span></div>
+          <div class="lab"><b>first-author</b> research paper, published in IEEE</div>
+        </div>
+        <div class="stat">
+          <div class="num"><span data-count="2000">0</span><span class="u">+</span></div>
+          <div class="lab"><b>business users</b> on the b2alpha.io agent protocol</div>
+        </div>
+        <div class="stat">
+          <div class="num"><span data-count="4">0</span><span class="u">yr</span></div>
+          <div class="lab"><b>FIRST Tech Challenge</b> captain &amp; lead engineer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 01 — SOFTWARE ============================ -->
+<section id="software" class="theme-soft" aria-label="Software projects">
+  <div class="wrap">
+    <div class="sheet-head">
+      <div class="sheet-no">01</div>
+      <div class="sheet-meta">
+        <span class="tag">The Screen</span>
+        <h2 class="sheet-title">Software <em>/ shipped &amp; live</em></h2>
+        <p class="sheet-sub">Four products I co-founded and run as CEO — models trained, backends written, deployed to real users.</p>
+      </div>
+    </div>
+
+    <!-- Chad vs Chud (featured) -->
+    <article class="proj feat">
+      <div class="figc">
+        <div class="fig" style="aspect-ratio:3/2">
+          <img src="img/shot-chad.webp" alt="Screenshot of Chad vs. Chud, a live face-ranking web app" width="1200" height="800" />
+          <span class="cap">FIG. 01 — chadvschud.com</span>
+        </div>
+      </div>
+      <div>
+        <div class="pno">PROJ <b>01.A</b> · 2026–NOW · CO-FOUNDER &amp; CEO</div>
+        <h3 class="ptitle">Chad vs. Chud</h3>
+        <div class="prole">Real-time computer vision · trained &amp; shipped solo</div>
+        <p class="pbody">A live web app where people join real-time sessions and a <b>custom CNN ranks faces from live video</b>, instantly. I trained the model, wrote the backend, and shipped it on Fly.io.</p>
+        <div class="pmetrics">
+          <div class="pmetric"><div class="m-n">10,000+</div><div class="m-l">TOTAL USERS</div></div>
+          <div class="pmetric"><div class="m-n">100+</div><div class="m-l">CONCURRENT</div></div>
+        </div>
+        <div class="stack">
+          <span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">FastAPI</span><span class="chip">Next.js</span><span class="chip">Tailwind</span><span class="chip">Fly.io</span>
+        </div>
+        <div class="plinks">
+          <a class="plink" href="https://chadvschud.com" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- b2alpha -->
+    <article class="proj rev">
+      <div class="figc">
+        <div class="fig" style="aspect-ratio:3/2">
+          <img src="img/shot-b2a.webp" alt="Screenshot of b2alpha.io, an agent-to-agent protocol dashboard" width="1200" height="800" />
+          <span class="cap">FIG. 02 — b2alpha.io</span>
+        </div>
+      </div>
+      <div>
+        <div class="pno">PROJ <b>01.B</b> · 2026–NOW · CO-FOUNDER &amp; CEO</div>
+        <h3 class="ptitle">b2alpha.io</h3>
+        <div class="prole">Open agent-to-agent protocol</div>
+        <p class="pbody">Secure messaging plus DNS integration so autonomous agents can find and talk to each other. Heavy <b>prompt engineering</b> to make models emit structured output other agents can reliably parse.</p>
+        <div class="pmetrics">
+          <div class="pmetric"><div class="m-n">2,000+</div><div class="m-l">BUSINESS USERS</div></div>
+        </div>
+        <div class="stack">
+          <span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">OpenAI API</span><span class="chip">Vercel</span><span class="chip">Supabase</span><span class="chip">DNS</span>
+        </div>
+        <div class="plinks">
+          <a class="plink" href="https://b2alpha.io" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- PredictionView -->
+    <article class="proj">
+      <div class="figc">
+        <div class="fig" style="aspect-ratio:3/2">
+          <img src="img/shot-pv.webp" alt="Screenshot of PredictionView analytics charts for prediction markets" width="1200" height="800" />
+          <span class="cap">FIG. 03 — predictionview.app</span>
+        </div>
+      </div>
+      <div>
+        <div class="pno">PROJ <b>01.C</b> · 2026–NOW · CO-FOUNDER &amp; CEO</div>
+        <h3 class="ptitle">PredictionView</h3>
+        <div class="prole">Analytics for prediction markets</div>
+        <p class="pbody">Charts, signals, and comparisons across prediction markets. I own the <b>backend, the tests, and most of the debugging</b>.</p>
+        <div class="stack">
+          <span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">Supabase</span><span class="chip">Recharts</span>
+        </div>
+        <div class="plinks">
+          <a class="plink" href="https://predictionview.app" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Khali -->
+    <article class="proj rev">
+      <div class="figc">
+        <div class="fig" style="aspect-ratio:3/2">
+          <img src="img/shot-khali.webp" alt="Screenshot of Khali, a short-form news video feed app" width="1200" height="800" />
+          <span class="cap">FIG. 04 — khali.info</span>
+        </div>
+      </div>
+      <div>
+        <div class="pno">PROJ <b>01.D</b> · 2025–2026 · CO-FOUNDER &amp; CEO</div>
+        <h3 class="ptitle">Khali</h3>
+        <div class="prole">Short-form news feed · YC S26 applicant</div>
+        <p class="pbody">A news app with a Reels-style short-form video feed, built to <b>get past the spin</b>. Submitted to Y&nbsp;Combinator's Spring 2026 batch.</p>
+        <div class="stack">
+          <span class="chip">React Native</span><span class="chip">Expo</span><span class="chip">Supabase</span><span class="chip">News APIs</span>
+        </div>
+        <div class="plinks">
+          <a class="plink" href="https://khali.info" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============================ 02 — HARDWARE ============================ -->
+<section id="hardware" class="theme-work" aria-label="Mechanical and hardware projects">
+  <div class="wrap">
+    <div class="sheet-head">
+      <div class="sheet-no">02</div>
+      <div class="sheet-meta">
+        <span class="tag">The Workbench</span>
+        <h2 class="sheet-title">Hardware <em>/ built from scratch</em></h2>
+        <p class="sheet-sub">Where the soldering iron lives. CAD, control loops, load cells, and a wind tunnel I built to test an idea.</p>
+      </div>
+    </div>
+
+    <!-- Vortex Propulsion feature -->
+    <div class="vortex">
+      <div class="vortex-head">
         <div>
-          <p>Most of what I make starts as something in my own life that bugs me until I fix it. I work in two halves — software and mechanical — but they come from the same place: notice a problem, get a little obsessed, and build my way out of it.</p>
-          <p data-lens="mechanical" class="lens-anim">Take the mechanical stuff: wanting my Honda Civic to be more efficient got me fixated on aerodynamic drag. To actually test a fix, I built a wind tunnel from scratch — soldered the load cells, ran the fluid sims — and it ended up being the first demonstration of passive vortex propulsion in air, which I presented at an international conference.</p>
-          <p data-lens="software" class="lens-anim">On the software side, I was losing hours to TikTok. Instead of deleting it, I decided the feed wasn't the problem — what it fed me was. So I built a news app with the same addictive, swipe-through algorithm, except it strips the bias out of every story. That one became my first startup.</p>
-          <div class="status-line" aria-label="Status">
-            <span class="item"><span class="dot" aria-hidden="true"></span>Currently building Chad vs. Chud</span>
-            <span class="sep">·</span>
-            <span class="item">Senior at Independence HS</span>
-            <span class="sep">·</span>
-            <span class="item">Incoming Purdue ME, Fall 2026</span>
+          <div class="pno">PROJ <b>02.A</b> · 2024–2025 · FIRST AUTHOR</div>
+          <h3 class="ptitle">Passive Vortex Propulsion</h3>
+          <div class="prole">Self-built wind tunnel · CFD · published research</div>
+          <p class="pbody">I built a wind tunnel from scratch to test an idea about aerodynamic drag — <b>soldered and calibrated the load cells</b> with an Arduino and ran the CFD in Fusion 360. It was the <b>first demonstration of passive vortex propulsion in air</b>.</p>
+          <div class="stack">
+            <span class="chip">Arduino</span><span class="chip">C++</span><span class="chip">Load cells</span><span class="chip">Fusion 360</span><span class="chip">CFD</span><span class="chip">Python</span>
           </div>
         </div>
+        <div>
+          <div class="stamprow">
+            <div class="stamp">AIAA Aerospace Award<small>RSEF special honor</small></div>
+            <div class="stamp b2">NASA Goddard<small>invitation</small></div>
+            <div class="stamp">IEEE<small>first-author paper</small></div>
+          </div>
+          <div class="plinks" style="margin-top:16px">
+            <a class="plink" href="paper.pdf" data-doc data-title="Passive Vortex Propulsion — paper (IEEE)" target="_blank" rel="noopener">Read the paper <span class="ar" aria-hidden="true">↗</span></a>
+            <a class="plink" href="conference-certificate.pdf" data-doc data-title="Conference certificate" target="_blank" rel="noopener">Certificate <span class="ar" aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+      <figure class="tunnel" style="aspect-ratio:16/7">
+        <img src="img/shot-pvp.webp" alt="Labeled diagram of the wind tunnel rig built to test passive vortex propulsion" width="1600" height="700" />
+        <svg class="flow" viewBox="0 0 1600 700" preserveAspectRatio="none" aria-hidden="true">
+          <g class="flowlines"></g>
+        </svg>
+        <figcaption class="cap">FIG. 05 — wind tunnel test rig, load-cell instrumented</figcaption>
+      </figure>
+    </div>
+
+    <!-- FTC build story -->
+    <div class="ftc">
+      <div class="ftc-top">
+        <div>
+          <div class="pno">PROJ <b>02.B</b> · 2022–2026 · CAPTAIN &amp; LEAD PROGRAMMER</div>
+          <h3 class="ptitle">FTC Robotics — Absolute Zero <span style="color:var(--red)">#12096</span></h3>
+          <div class="prole">Four seasons · every part CADded &amp; built · Chesapeake championship</div>
+          <p class="pbody">Four years leading team 12096. I <b>CADded and built every part in Fusion 360</b> and wrote the autonomous and tele-op in Java — <b>PID loops, sensor fusion, odometry</b>. We took it to the Chesapeake championship.</p>
+          <div class="pmetrics">
+            <div class="pmetric"><div class="m-n">4</div><div class="m-l">SEASONS AS CAPTAIN</div></div>
+            <div class="pmetric"><div class="m-n">12</div><div class="m-l">BUILD MILESTONES</div></div>
+          </div>
+        </div>
+        <div class="figc">
+          <div class="fig" style="aspect-ratio:1/1">
+            <img src="img/ftc-robot.webp" alt="The assembled FIRST Tech Challenge robot for team Absolute Zero 12096" width="1000" height="1000" />
+            <span class="cap">FIG. 06 — assembled competition robot</span>
+          </div>
+        </div>
+      </div>
+      <div class="buildseq">
+        <div class="seqlab">BUILD LOG — every part below was CADded, built &amp; iterated by me in Fusion 360. Tap any frame for the engineering story.</div>
+        <div class="seqgrid" id="seqgrid"></div>
       </div>
     </div>
-  </section>
 
-  <!-- ============ EXPERIENCE ============ -->
-  <section id="experience" aria-labelledby="exp-h">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="num">02 / experience</span>
-        <h2 id="exp-h">Where I've worked.</h2>
-      </div>
-      <ol class="timeline reveal" aria-label="Work history">
-
-        <li class="t-item">
-          <image-slot id="logo-ember" src="img/logo-ember.png" fit="contain" class="t-logo" shape="rounded" radius="8" placeholder="logo"></image-slot>
-          <div class="t-body">
-            <div class="t-head">
-              <h3 class="t-role">AI Engineer &amp; SWE Intern <span class="at">· Ember Learning (fmr. DeAP Learning Labs)</span></h3>
-              <span class="t-date">Feb 2021 → Present</span>
-            </div>
-            <p class="t-desc">Wrote the LLM prompts behind the AP tutor chatbots on their YouTube videos. Built AI auto-grading for AP DBQs and FRQs. Led UI/UX of the company site. The team picked up a Microsoft + OpenAI grant and crossed a $1M valuation along the way.</p>
-          </div>
-        </li>
-
-        <li class="t-item">
-          <image-slot id="logo-i3" src="img/logo-i3.png" fit="contain" class="t-logo" shape="rounded" radius="8" placeholder="logo"></image-slot>
-          <div class="t-body">
-            <div class="t-head">
-              <h3 class="t-role">CAD Intern <span class="at">· I3 Simulations</span></h3>
-              <span class="t-date">Jun 2025 → May 2026</span>
-            </div>
-            <p class="t-desc">3D models and haptic-feedback prototypes for medical-training simulators.</p>
-          </div>
-        </li>
-
-        <li class="t-item">
-          <image-slot id="logo-bikelane" src="img/logo-bikelane.png" fit="contain" class="t-logo" shape="rounded" radius="8" placeholder="logo"></image-slot>
-          <div class="t-body">
-            <div class="t-head">
-              <h3 class="t-role">Bike Mechanic <span class="at">· The Bike Lane, LLC</span></h3>
-              <span class="t-date">Jun 2021 → Aug 2025</span>
-            </div>
-            <p class="t-desc">Built bikes from the frame up. Ran safety checks on customer bikes before they left the shop. Started as an intern, moved to part-time.</p>
-          </div>
-        </li>
-
-      </ol>
-    </div>
-  </section>
-
-    <!-- ============ PROJECTS ============ -->
-  <section id="projects" aria-labelledby="proj-h">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="num">03 / projects</span>
-        <h2 id="proj-h">Projects.</h2>
-      </div>
-      <div class="proj-tabs reveal" role="tablist" aria-label="Switch between mechanical and software projects">
-        <button type="button" class="active" data-tab="mechanical" role="tab" aria-selected="true">Mechanical</button>
-        <button type="button" data-tab="software" role="tab" aria-selected="false">Software</button>
-      </div>
-
-      <div class="proj-pane" data-tab="mechanical">
-<div class="work-grid">
-
-        <!-- 1. Passive Vortex Propulsion — featured -->
-        <article class="card featured reveal" data-lens="mechanical" data-tilt>
-          <image-slot id="shot-pvp" src="img/shot-pvp.png" class="shot" shape="rounded" radius="10" placeholder="Drop a wind-tunnel / paper screenshot"></image-slot>
-          <div class="card-top">
-            <h3 class="card-title">Passive Vortex Propulsion</h3>
-            <div class="card-meta">Published in IEEE</div>
-          </div>
-          <p class="card-desc">First demonstration of passive vortex propulsion in air. I built the wind tunnel from scratch to run the experiment — soldered and calibrated the load cells with an Arduino, ran the fluid sims in Fusion 360, and published the paper in IEEE.</p>
-          <div class="metric">
-            <span class="big">IEEE</span><span class="label">first author · AIAA Award</span>
-          </div>
-          <div class="chips">
-            <span class="chip">Arduino</span>
-            <span class="chip">Load Cells</span>
-            <span class="chip">Fusion 360</span>
-            <span class="chip">CFD</span>
-          </div>
-          <div class="card-foot">
-            <span class="card-role">Researcher</span>
-            <span style="display:inline-flex; gap:16px; align-items:center">
-              <a href="conference-certificate.pdf" target="_blank" rel="noopener noreferrer" class="card-link" style="color:var(--muted)">Certificate ↗</a>
-              <a href="paper.pdf" target="_blank" rel="noopener noreferrer" class="card-link">Read the paper →</a>
-            </span>
-          </div>
-        </article>
-
-        <!-- 2. FTC Robotics -->
-        <article class="card reveal" data-lens="mechanical" data-tilt>
-          <image-slot id="shot-ftc" src="img/ftc-robot.jpg" class="shot" shape="rounded" radius="10" placeholder="Drop an FTC photo"></image-slot>
-          <div class="card-top">
-            <h3 class="card-title">FTC Robotics — Absolute Zero</h3>
-            <div class="card-meta">2022 — 2026</div>
-          </div>
-          <p class="card-desc">Four years on FIRST Tech Challenge team Absolute Zero — captain, lead engineer, and lead programmer. Every part on the robot was CADded and built by me, and I wrote the autonomous + tele-op in Java (PID loops, sensor fusion, odometry).</p>
-          <div class="metric">
-            <span class="big">4 yrs</span><span class="label">captain · lead engineer + programmer</span>
-          </div>
-          <div class="chips">
-            <span class="chip">Java</span>
-            <span class="chip">PID Control</span>
-            <span class="chip">Sensor Fusion</span>
-            <span class="chip">Odometry</span>
-          </div>
-          <div class="card-foot">
-            <span class="card-role">Captain · Lead Engineer &amp; Programmer</span>
-            <span class="card-link" style="color:var(--muted);cursor:default">FIRST Tech Challenge</span>
-          </div>
-        </article>
-
-        <!-- 3. Science Olympiad — Electric Vehicle -->
-        <article class="card reveal" data-lens="mechanical" data-tilt>
-          <image-slot id="shot-ev" src="img/shot-ev.jpg" class="shot" shape="rounded" radius="10" placeholder="Drop an Electric Vehicle photo"></image-slot>
-          <div class="card-top">
-            <h3 class="card-title">Electric Vehicle</h3>
-            <div class="card-meta">Science Olympiad</div>
-          </div>
-          <p class="card-desc">An autonomous vehicle for the Science Olympiad Electric Vehicle event — it accelerates and then brakes to stop on a target distance. Arduino driving a goBILDA motor with a quadrature encoder, tuned with a PID loop for fast, repeatable runs.</p>
-          <div class="metric">
-            <span class="big">PID</span><span class="label">closed-loop distance control</span>
-          </div>
-          <div class="chips">
-            <span class="chip">Arduino</span>
-            <span class="chip">goBILDA Motor</span>
-            <span class="chip">Encoder</span>
-            <span class="chip">PID Control</span>
-          </div>
-          <div class="card-foot">
-            <span class="card-role">Builder · Science Olympiad</span>
-          </div>
-        </article>
-
-        <!-- 4. Science Olympiad — Salinity Sensor -->
-        <article class="card reveal" data-lens="mechanical" data-tilt>
-          <image-slot id="shot-salt" class="shot" shape="rounded" radius="10" placeholder="Drop a photo of the device"></image-slot>
-          <div class="card-top">
-            <h3 class="card-title">Salt-Water Salinity Sensor</h3>
-            <div class="card-meta">Science Olympiad</div>
-          </div>
-          <p class="card-desc">An Arduino device that measures the salt concentration of a water sample in real time — it reads conductivity across a probe and converts it to concentration. Built for a Science Olympiad event.</p>
-          <div class="metric">
-            <span class="big">Arduino</span><span class="label">conductivity → concentration</span>
-          </div>
-          <div class="chips">
-            <span class="chip">Arduino</span>
-            <span class="chip">Sensors</span>
-            <span class="chip">C++</span>
-          </div>
-          <div class="card-foot">
-            <span class="card-role">Builder · Science Olympiad</span>
-          </div>
-        </article>
-
-      </div>
-
-<div class="section-head reveal">
-        <span class="num">// robotics cad</span>
-        <h2 id="cad-h">A season of FTC, part by part.</h2>
-        <div class="cad-nav">
-          <button type="button" data-cad="prev" aria-label="Scroll to previous">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button type="button" data-cad="next" aria-label="Scroll to next">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
-          </button>
+    <!-- Science Olympiad pair -->
+    <div class="solytwo">
+      <div class="solycard">
+        <div class="fig" style="aspect-ratio:3/2">
+          <img src="img/shot-ev.webp" alt="Autonomous electric vehicle built for Science Olympiad" width="1200" height="800" />
+          <span class="cap">FIG. 07 — electric vehicle</span>
         </div>
+        <div class="pno">PROJ <b>02.C</b> · SCIENCE OLYMPIAD</div>
+        <h4>Electric Vehicle</h4>
+        <div class="prole">Accelerate, then brake to a target distance</div>
+        <p class="pbody">An autonomous vehicle that accelerates then brakes to stop on a target distance — Arduino, a goBILDA motor, and a quadrature encoder, tuned with <b>PID</b>.</p>
+        <div class="stack"><span class="chip">Arduino</span><span class="chip">goBILDA</span><span class="chip">Quadrature encoder</span><span class="chip">PID</span></div>
       </div>
-      <p class="cad-sub reveal">Last season's robot — team 12096. As lead engineer I CADded and built every part on it in Fusion 360. These are the subsystems I designed, iterated on, broke, and rebuilt on the way to the Chesapeake championship. Drag, swipe, or use the arrows.</p>
-
-      <div class="cad-rail reveal" tabindex="0" aria-label="FTC CAD designs (scrollable)">
-
-        <article class="cad-card">
-          <div class="cad-media"><img src="img/ftc/ftc-final.jpg" alt="Assembled robot 12096 in the shop" loading="lazy" /></div>
-          <div class="cad-body">
-            <span class="cad-step">01</span>
-            <h3 class="cad-title">Robot 12096, assembled</h3>
-            <p class="cad-desc">Where a whole season of CAD ended up. Every subsystem below started as a part I modeled, printed, or machined — then bolted onto this frame. Shown here with the v1 bumpers.</p>
-            <span class="cad-tag">Real build</span>
+      <div class="solycard">
+        <div class="fig" style="aspect-ratio:3/2;display:grid;place-items:center">
+          <div style="font-family:var(--mono);font-size:12px;color:var(--ink-2);letter-spacing:.1em;text-align:center;padding:20px">
+            SALT-WATER SALINITY SENSOR<br /><span style="opacity:.6">conductivity probe · Arduino</span>
           </div>
-        </article>
-
-        <article class="cad-card contain">
-          <div class="cad-media"><img src="img/ftc/ftc-chassis.jpg" alt="Custom aluminum chassis CAD" loading="lazy" /></div>
-          <div class="cad-body">
-            <span class="cad-step">02</span>
-            <h3 class="cad-title">Custom chassis</h3>
-            <p class="cad-desc">Designed the frame from scratch instead of running a kit — a compact footprint machined from 1/8-inch aluminum to stay light without flexing under load.</p>
-            <span class="cad-tag">Fusion 360</span>
-          </div>
-        </article>
-
-        <article class="cad-card">
-          <div class="cad-media"><img src="img/ftc/ftc-bumper-v1.jpg" alt="Bumper version 1 CAD" loading="lazy" /></div>
-          <div class="cad-body">
-            <span class="cad-step">03</span>
-            <h3 class="cad-title">Bumpers — v1</h3>
-            <p class="cad-desc">The first bumper revision: one sculpted piece. It looked clean, but it was a pain to mount and to repair after contact —</p>
-            <span class="cad-tag">Fusion 360</span>
-          </div>
-        </article>
-
-        <article class="cad-card">
-          <div class="cad-media"><img src="img/ftc/ftc-bumper-v2.jpg" alt="Bumper version 2 CAD on robot" loading="lazy" /></div>
-          <div class="cad-body">
-            <span class="cad-step">04</span>
-            <h3 class="cad-title">Bumpers — v2</h3>
-            <p class="cad-desc">— so I redesigned them. Wraparound geometry that's quicker to swap and shrugs off hits better. v1 → v2 was the loop the whole season ran on.</p>
-            <span class="cad-tag">Fusion 360</span>
-          </div>
-        </article>
-
-        <article class="cad-card">
-          <div class="cad-media"><img src="img/ftc/ftc-intake-ground.jpg" alt="Ground intake with chain drive CAD" loading="lazy" /></div>
-          <div class="cad-body">
-            <span class="cad-step">05</span>
-            <h3 class="cad-title">Ground intake — one motor</h3>
-            <p class="cad-desc">Chained every roller to a single motor, so one drive spins the whole intake. Fewer motors means less weight, less wiring, and less current to budget.</p>
-            <span class="cad-tag">Fusion 360</span>
-          </div>
-        </article>
-
-        <article class="cad-card">
-          <div class="cad-media"><img src="img/ftc/ftc-intake-2dof.jpg" alt="Two-degree-of-freedom intake CAD" loading="lazy" /></div>
-          <div class="cad-body">
-            <span class="cad-step">06</span>
-            <h3 class="cad-title">Intake — two degrees of freedom</h3>
-            <p class="cad-desc">The next intake gained a second axis of motion and 3D-printed TPU rollers — grippy enough to grab a game piece without crushing it.</p>
-            <span class="cad-tag">Fusion 360</span>
-          </div>
-        </article>
-
-        <article class="cad-card contain">
-          <div class="cad-media"><img src="img/ftc/ftc-roller.jpg" alt="Dual-filament roller CAD" loading="lazy" /></div>
-          <div class="cad-body">
-            <span class="cad-step">07</span>
-            <h3 class="cad-title">Dual-filament roller</h3>
-            <p class="cad-desc">Printed the rollers in two materials in one job: a rigid PLA core for the shaft, a soft TPU skin for traction. One part doing two jobs.</p>
-            <span class="cad-tag">Fusion 360</span>
-          </div>
-        </article>
-
-        <article class="cad-card">
-          <div class="cad-media"><img src="img/ftc/ftc-slides.jpg" alt="Motorized linear slides CAD" loading="lazy" /></div>
-          <div class="cad-body">
-            <span class="cad-step">08</span>
-            <h3 class="cad-title">Powered linear slides</h3>
-            <p class="cad-desc">A motorized extension braced by unpowered perpendicular slides — the cross-bracing kills the wobble when it's reached out under load.</p>
-            <span class="cad-tag">Fusion 360</span>
-          </div>
-        </article>
-
-        <article class="cad-card">
-          <div class="cad-media"><img src="img/ftc/ftc-slides-dual.jpg" alt="Dual-slide extension CAD" loading="lazy" /></div>
-          <div class="cad-body">
-            <span class="cad-step">09</span>
-            <h3 class="cad-title">Dual-slide extension</h3>
-            <p class="cad-desc">Two-stage slides with a 180° servo-driven pivot on the intake at the tip — it can reach out and flip orientation at the end of travel.</p>
-            <span class="cad-tag">Fusion 360</span>
-          </div>
-        </article>
-
-        <article class="cad-card contain">
-          <div class="cad-media"><img src="img/ftc/ftc-intake-ramp.jpg" alt="Jointed intake and ramp CAD" loading="lazy" /></div>
-          <div class="cad-body">
-            <span class="cad-step">10</span>
-            <h3 class="cad-title">Intake + ramp, jointed</h3>
-            <p class="cad-desc">Modeled the full intake-to-ramp path as one jointed assembly, so I could play the motion in CAD and catch collisions before cutting any metal.</p>
-            <span class="cad-tag">Fusion 360</span>
-          </div>
-        </article>
-
-        <article class="cad-card">
-          <div class="cad-media"><img src="img/ftc/ftc-shooter.jpg" alt="Hood shooter on a turret CAD" loading="lazy" /></div>
-          <div class="cad-body">
-            <span class="cad-step">11</span>
-            <h3 class="cad-title">Hood shooter, 360° turret</h3>
-            <p class="cad-desc">A flywheel hood shooter on a full 360° turret — it can aim and fire from anywhere on the field without turning the whole robot.</p>
-            <span class="cad-tag">Fusion 360</span>
-          </div>
-        </article>
-
-        <article class="cad-card">
-          <div class="cad-media"><img src="img/ftc/ftc-semis.jpg" alt="Nirav at the field during semifinals" loading="lazy" /></div>
-          <div class="cad-body">
-            <span class="cad-step">12</span>
-            <h3 class="cad-title">Semifinals — Chesapeake Championship</h3>
-            <p class="cad-desc">All of it together, on the field — tethering up before a semifinal match.</p>
-            <span class="cad-tag">Real build</span>
-          </div>
-        </article>
-
-      </div>
-      </div>
-
-      <div class="proj-pane" data-tab="software" hidden>
-<div class="work-grid">
-
-        <article class="card featured reveal" data-tilt>
-          <image-slot id="shot-chad" src="img/shot-chad.png" class="shot" shape="rounded" radius="10" placeholder="Drop a Chad vs. Chud screenshot"></image-slot>
-          <div class="card-top">
-            <h3 class="card-title">Chad vs. Chud <span class="now-pill">Current focus</span></h3>
-            <div class="card-meta">2025 — Now</div>
-          </div>
-          <p class="card-desc">An image-analysis web app with a custom CNN behind it. Users upload a photo, the model scores it in real time. Deployed on Fly.io.</p>
-          <div class="metric">
-            <span class="big">10,000+</span><span class="label">registered users</span>
-            <span style="color:var(--border-strong); margin:0 4px">·</span>
-            <span class="big">100+</span><span class="label">daily actives</span>
-          </div>
-          <div class="chips">
-            <span class="chip">Python</span>
-            <span class="chip">PyTorch / CNN</span>
-            <span class="chip">Fly.io</span>
-            <span class="chip">JavaScript</span>
-            <span class="chip">Computer Vision</span>
-          </div>
-          <div class="card-foot">
-            <span class="card-role">Co-Founder &amp; CEO</span>
-            <a href="https://chadvschud.com" target="_blank" rel="noopener noreferrer" class="card-link">chadvschud.com →</a>
-          </div>
-        </article>
-
-        <article class="card reveal" data-tilt>
-          <image-slot id="shot-b2a" src="img/shot-b2a.png" class="shot" shape="rounded" radius="10" placeholder="Drop a b2alpha.io screenshot"></image-slot>
-          <div class="card-top">
-            <h3 class="card-title">b2alpha.io</h3>
-            <div class="card-meta">Jan 2026 →</div>
-          </div>
-          <p class="card-desc">An open protocol so agents can talk to other agents — secure messaging plus DNS integration. A lot of the work is prompt engineering: getting models to produce structured output another agent can actually parse.</p>
-          <div class="metric">
-            <span class="big">2,000+</span><span class="label">business users</span>
-          </div>
-          <div class="chips">
-            <span class="chip">LLMs</span>
-            <span class="chip">Agents</span>
-            <span class="chip">DNS</span>
-            <span class="chip">Python</span>
-            <span class="chip">Prompt Engineering</span>
-          </div>
-          <div class="card-foot">
-            <span class="card-role">Co-Founder &amp; CEO</span>
-            <a href="https://b2alpha.io" target="_blank" rel="noopener noreferrer" class="card-link">b2alpha.io →</a>
-          </div>
-        </article>
-
-        <article class="card reveal" data-tilt>
-          <image-slot id="shot-pv" src="img/shot-pv.png" class="shot" shape="rounded" radius="10" placeholder="Drop a PredictionView screenshot"></image-slot>
-          <div class="card-top">
-            <h3 class="card-title">PredictionView</h3>
-            <div class="card-meta">Mar 2026 →</div>
-          </div>
-          <p class="card-desc">Analytics for prediction markets — charts, signals, comparisons. I own the backend, the test suite, and most of the debugging.</p>
-          <div class="metric">
-            <span class="big">Launched</span><span class="label">March 2026</span>
-          </div>
-          <div class="chips">
-            <span class="chip">Python</span>
-            <span class="chip">APIs</span>
-            <span class="chip">Data</span>
-            <span class="chip">Testing</span>
-          </div>
-          <div class="card-foot">
-            <span class="card-role">Co-Founder &amp; CEO</span>
-            <a href="https://predictionview.app" target="_blank" rel="noopener noreferrer" class="card-link">predictionview.app →</a>
-          </div>
-        </article>
-
-        <article class="card reveal" data-tilt>
-          <image-slot id="shot-khali" src="img/shot-khali.png" class="shot" shape="rounded" radius="10" placeholder="Drop a Khali screenshot"></image-slot>
-          <div class="card-top">
-            <h3 class="card-title">Khali</h3>
-            <div class="card-meta">2025 — 2026</div>
-          </div>
-          <p class="card-desc">Full-stack news aggregator with a short-form-video feed (think Reels, but news). Goal: get past the spin and show what actually happened.</p>
-          <div class="metric">
-            <span class="big">YC S26</span><span class="label">application submitted</span>
-          </div>
-          <div class="chips">
-            <span class="chip">Full Stack</span>
-            <span class="chip">LLMs</span>
-            <span class="chip">Video</span>
-            <span class="chip">News APIs</span>
-          </div>
-          <div class="card-foot">
-            <span class="card-role">Co-Founder &amp; CEO</span>
-            <a href="https://khali.info" target="_blank" rel="noopener noreferrer" class="card-link">khali.info →</a>
-          </div>
-        </article>
-
-      </div>
+        </div>
+        <div class="pno">PROJ <b>02.D</b> · SCIENCE OLYMPIAD</div>
+        <h4>Salt-water Salinity Sensor</h4>
+        <div class="prole">Reads salinity from conductivity</div>
+        <p class="pbody">An Arduino device that reads the salinity of salt water — a calibrated conductivity probe feeding a microcontroller.</p>
+        <div class="stack"><span class="chip">Arduino</span><span class="chip">Conductivity</span><span class="chip">Sensor calibration</span></div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-<!-- ============ GUITAR PORTFOLIO ============ -->
-  <section id="guitar" aria-labelledby="guitar-h">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="num">04 / guitar</span>
-        <h2 id="guitar-h">On the guitar.</h2>
-      </div>
-      <p class="cad-sub reveal">1st place at the Agaudo Guitar Competition and member of the All-Virginia Guitar Ensemble. I also organize concerts at local senior centers — small rooms, attentive audiences, no microphones. A few clips from the pieces I've been playing.</p>
-      <div class="guitar-grid reveal">
-        <div class="guitar-vid"><video src="img/guitar/g1.mp4" poster="img/guitar/g1.jpg" controls preload="none" playsinline></video></div>
-        <div class="guitar-vid"><video src="img/guitar/g2.mp4" poster="img/guitar/g2.jpg" controls preload="none" playsinline></video></div>
-        <div class="guitar-vid"><video src="img/guitar/g3.mp4" poster="img/guitar/g3.jpg" controls preload="none" playsinline></video></div>
-        <div class="guitar-vid"><video src="img/guitar/g4.mp4" poster="img/guitar/g4.jpg" controls preload="none" playsinline></video></div>
-        <div class="guitar-vid"><video src="img/guitar/g5.mp4" poster="img/guitar/g5.jpg" controls preload="none" playsinline></video></div>
-        <div class="guitar-vid"><video src="img/guitar/g6.mp4" poster="img/guitar/g6.jpg" controls preload="none" playsinline></video></div>
-        <div class="guitar-vid"><video src="img/guitar/g7.mp4" poster="img/guitar/g7.jpg" controls preload="none" playsinline></video></div>
-        <div class="guitar-vid"><video src="img/guitar/g8.mp4" poster="img/guitar/g8.jpg" controls preload="none" playsinline></video></div>
-        <div class="guitar-vid"><video src="img/guitar/g9.mp4" poster="img/guitar/g9.jpg" controls preload="none" playsinline></video></div>
+<!-- ============================ 03 — EXPERIENCE ============================ -->
+<section id="work" aria-label="Work experience">
+  <div class="wrap">
+    <div class="sheet-head">
+      <div class="sheet-no">03</div>
+      <div class="sheet-meta">
+        <span class="tag">On the Job</span>
+        <h2 class="sheet-title">Experience</h2>
+        <p class="sheet-sub">From LLM prompts behind AP tutors to haptic medical sims to building bikes from the frame up.</p>
       </div>
     </div>
-  </section>
-
-  <!-- ============ MISC ============ -->
-  <section id="misc" aria-labelledby="misc-h">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="num">05 / misc</span>
-        <h2 id="misc-h">A bit of everything else.</h2>
+    <div class="exp">
+      <div class="exprow">
+        <div class="logo"><img src="img/logo-ember.png" alt="Ember Learning logo" width="280" height="90" /></div>
+        <div>
+          <h4>AI Engineer &amp; SWE Intern</h4>
+          <div class="role">Ember Learning (formerly DeAP Learning Labs)</div>
+          <p class="desc">Wrote the <b>LLM prompts behind their AP-tutor chatbots</b>; built automated AI grading for AP DBQs/FRQs against the official rubric; indexed lecture transcripts in a vector DB for timestamp-level search; led the company website. The team landed a <b>Microsoft &amp; OpenAI grant</b> and crossed a <b>$1M+ valuation</b>.</p>
+        </div>
+        <div class="when">FEB 2021<br />— NOW</div>
       </div>
-
-      <h3 class="misc-sub reveal">// what I reach for</h3>
-      <div class="skill-grid reveal">
-        <div class="skill-group">
-          <div class="skill-label">// languages</div>
-          <div class="skill-chips">
-            <span class="chip k">Java</span>
-            <span class="chip k">Python</span>
-            <span class="chip k">JavaScript</span>
-            <span class="chip k">HTML</span>
-            <span class="chip k">CSS</span>
-            <span class="chip k">Git</span>
-          </div>
+      <div class="exprow">
+        <div class="logo"><img src="img/logo-i3.png" alt="I3 Simulations logo" width="280" height="90" /></div>
+        <div>
+          <h4>CAD Intern</h4>
+          <div class="role">I3 Simulations</div>
+          <p class="desc">3D models and <b>haptic-feedback prototypes</b> for medical-training simulators.</p>
         </div>
-        <div class="skill-group">
-          <div class="skill-label">// cloud &amp; deploy</div>
-          <div class="skill-chips">
-            <span class="chip k">Fly.io</span>
-            <span class="chip k">Railway</span>
-            <span class="chip k">Supabase</span>
-            <span class="chip k">Vercel</span>
-          </div>
-        </div>
-        <div class="skill-group">
-          <div class="skill-label">// hardware &amp; cad</div>
-          <div class="skill-chips">
-            <span class="chip k">Autodesk Fusion 360</span>
-            <span class="chip k">Arduino</span>
-            <span class="chip k">Load Cells</span>
-            <span class="chip k">Soldering Iron</span>
-            <span class="chip k">Multimeter</span>
-          </div>
-        </div>
-        <div class="skill-group">
-          <div class="skill-label">// methods</div>
-          <div class="skill-chips">
-            <span class="chip k">PID Control</span>
-            <span class="chip k">Sensor Fusion</span>
-            <span class="chip k">CFD</span>
-            <span class="chip k">Prompt Engineering</span>
-            <span class="chip k">Agile</span>
-          </div>
-        </div>
+        <div class="when">JUN 2025<br />— MAY 2026</div>
       </div>
-
-      <h3 class="misc-sub reveal">// the other stuff</h3>
-      <div class="lead-grid reveal">
-
-        <div class="lead-item">
-          <div class="lead-head">
-            <h3 class="lead-title">Captain · Science Olympiad</h3>
-            <span class="lead-tag">leadership</span>
-          </div>
-          <p class="lead-desc">Built an Arduino device that measures salt concentration in water. Also engineered a PID-controlled electric vehicle for fast, accurate distance runs.</p>
+      <div class="exprow">
+        <div class="logo"><img src="img/logo-bikelane.png" alt="The Bike Lane logo" width="280" height="90" /></div>
+        <div>
+          <h4>Bike Mechanic</h4>
+          <div class="role">The Bike Lane · intern → part-time</div>
+          <p class="desc">Built bikes <b>from the frame up</b> and ran the final safety checks.</p>
         </div>
-
-        <div class="lead-item">
-          <div class="lead-head">
-            <h3 class="lead-title">AIAA Aerospace Award · RSEF</h3>
-            <span class="lead-tag">honor</span>
-          </div>
-          <p class="lead-desc">Special honor at the regional fair, plus an invitation to NASA Goddard.</p>
-        </div>
-
-        <div class="lead-item">
-          <div class="lead-head">
-            <h3 class="lead-title">Presidential Volunteer Service Award · Silver</h3>
-            <span class="lead-tag">service</span>
-          </div>
-          <p class="lead-desc">Awarded for sustained volunteer hours.</p>
-        </div>
-
-        <div class="lead-item">
-          <div class="lead-head">
-            <h3 class="lead-title">Central Virginia Governor's School Scholar</h3>
-            <span class="lead-tag">mathematics</span>
-          </div>
-          <p class="lead-desc">Mathematics track, summer 2024.</p>
-        </div>
-
+        <div class="when">JUN 2021<br />— AUG 2025</div>
       </div>
     </div>
-  </section>
 
-  <!-- ============ CONTACT ============ -->
-  <section id="contact" class="contact" aria-labelledby="contact-h">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="num">06 / contact</span>
-        <h2 id="contact-h" style="display:none">Contact</h2>
+    <!-- skills -->
+    <div class="skills">
+      <div class="skillcol">
+        <h5>Languages</h5>
+        <ul><li>Java</li><li>Python</li><li>JavaScript</li><li>TypeScript</li><li>HTML / CSS</li><li>Git</li></ul>
       </div>
-      <p class="contact-h reveal">If you're working on something interesting,<br/><a href="mailto:niravsurabhi@gmail.com" data-copy-email><span data-copy-label>say hello →</span></a></p>
-
-      <div class="contact-grid reveal">
-        <a class="contact-item" href="mailto:niravsurabhi@gmail.com" data-copy-email>
-          <span class="left"><span class="k">// email — click to copy</span><span class="v" data-copy-label>niravsurabhi@gmail.com</span></span>
-          <span class="arrow" aria-hidden="true">⧉</span>
-        </a>
-        <a class="contact-item" href="https://www.linkedin.com/in/niravss" target="_blank" rel="noopener noreferrer">
-          <span class="left"><span class="k">// linkedin</span><span class="v">linkedin.com/in/niravss</span></span>
-          <span class="arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="contact-item" href="https://github.com/21J3phy" target="_blank" rel="noopener noreferrer">
-          <span class="left"><span class="k">// github</span><span class="v">github.com/21J3phy</span></span>
-          <span class="arrow" aria-hidden="true">↗</span>
-        </a>
+      <div class="skillcol">
+        <h5>AI / ML</h5>
+        <ul><li>Prompt engineering</li><li>LLMs</li><li>CNNs</li><li>Computer vision</li><li>Agent architecture</li></ul>
+      </div>
+      <div class="skillcol">
+        <h5>Cloud &amp; Tools</h5>
+        <ul><li>Fly.io</li><li>Vercel</li><li>Supabase</li><li>Fusion 360</li></ul>
+      </div>
+      <div class="skillcol">
+        <h5>Hardware</h5>
+        <ul><li>Arduino</li><li>Load cells</li><li>Soldering</li><li>Multimeter</li><li>PID control</li></ul>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
+<!-- ============================ 04 — GUITAR ============================ -->
+<section id="guitar" aria-label="Classical guitar">
+  <div class="wrap">
+    <div class="sheet-head">
+      <div class="sheet-no">04</div>
+      <div class="sheet-meta">
+        <span class="tag">B-Side</span>
+        <h2 class="sheet-title">Classical Guitar</h2>
+        <p class="sheet-sub">The other half of the brain. Nylon strings, small rooms, no microphones.</p>
+      </div>
+    </div>
+    <div class="guitar-intro">
+      <p class="measure" style="font-size:18px;line-height:1.55">I'm a classical guitarist. When I'm not training a model or cutting a part in Fusion, I'm working a piece up to performance — and there's a discipline there that bleeds back into the engineering.</p>
+      <div class="guitar-cred">
+        <div class="gline"><span class="gk">AWARD</span><span><b>1st place</b>, the Agaudo competition</span></div>
+        <div class="gline"><span class="gk">ENSEMBLE</span><span>Member, the <b>All-Virginia Guitar Ensemble</b></span></div>
+        <div class="gline"><span class="gk">COMMUNITY</span><span>I <b>organize concerts at local senior centers</b> — small rooms, no microphones</span></div>
+      </div>
+    </div>
+    <div class="deck-wrap">
+      <div class="deck" id="deck" aria-roledescription="card deck" aria-label="Classical guitar performance clips — swipe the top clip, or use the arrows"></div>
+      <div class="deck-foot">
+        <button class="deck-btn" id="deckPrev" type="button" aria-label="Previous clip">‹</button>
+        <button class="deck-btn" id="deckNext" type="button" aria-label="Next clip">›</button>
+        <span class="deck-count"><span id="deckIdx">1</span> / 9</span>
+        <span class="deck-hint">swipe / drag the top clip · tap to play</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 05 — CONTACT / TITLE BLOCK ============================ -->
+<section id="contact" aria-label="Honors and contact">
+  <div class="wrap">
+    <div class="sheet-head">
+      <div class="sheet-no">05</div>
+      <div class="sheet-meta">
+        <span class="tag">For the Record</span>
+        <h2 class="sheet-title">Honors &amp; Contact</h2>
+      </div>
+    </div>
+
+    <div class="honors">
+      <div class="honor">
+        <div class="hseal"><i>★</i>AIAA</div>
+        <div><h6>Aerospace Award</h6><p>RSEF special honor → NASA Goddard invitation</p></div>
+      </div>
+      <div class="honor">
+        <div class="hseal"><i>✦</i>SCI-OLY</div>
+        <div><h6>Captain</h6><p>Science Olympiad</p></div>
+      </div>
+      <div class="honor">
+        <div class="hseal"><i>◆</i>PVSA</div>
+        <div><h6>Presidential Volunteer Service</h6><p>Silver Award</p></div>
+      </div>
+      <div class="honor">
+        <div class="hseal"><i>▲</i>GOV-SCH</div>
+        <div><h6>Governor's School</h6><p>Central VA, Science &amp; Tech — Mathematics, 2024</p></div>
+      </div>
+      <div class="honor">
+        <div class="hseal"><i>♪</i>MUSIC</div>
+        <div><h6>All-Virginia Guitar Ensemble</h6><p>Selected member</p></div>
+      </div>
+    </div>
+
+    <!-- title block -->
+    <div class="titleblock">
+      <div class="tb-top">
+        <div class="tb-name">
+          <div class="big">Let's<br />Build<br />Some<span class="amp">thing.</span></div>
+          <p>Recruiter, founder, or fellow builder — I read every message. I'm an incoming Purdue ME with a shipping track record on both sides of the screen.</p>
+        </div>
+        <div class="tb-contactlinks">
+          <a class="tbc" href="mailto:niravsurabhi@gmail.com" data-copy-email>
+            <span><span class="k">EMAIL — CLICK TO COPY</span><br /><span class="v" data-copy-label>niravsurabhi@gmail.com</span></span><span class="ar" aria-hidden="true">⧉</span>
+          </a>
+          <a class="tbc" href="https://niravsurabhi.com" target="_blank" rel="noopener">
+            <span><span class="k">SITE</span><br /><span class="v">niravsurabhi.com</span></span><span class="ar" aria-hidden="true">↗</span>
+          </a>
+          <a class="tbc" href="https://linkedin.com/in/niravss" target="_blank" rel="noopener">
+            <span><span class="k">LINKEDIN</span><br /><span class="v">/in/niravss</span></span><span class="ar" aria-hidden="true">↗</span>
+          </a>
+          <a class="tbc" href="https://github.com/21J3phy" target="_blank" rel="noopener">
+            <span><span class="k">GITHUB</span><br /><span class="v">/21J3phy</span></span><span class="ar" aria-hidden="true">↗</span>
+          </a>
+          <a class="tbc" href="resume.html">
+            <span><span class="k">DOCUMENT</span><br /><span class="v">Résumé — view in browser</span></span><span class="ar" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+      <div class="tb-grid">
+        <div class="tb-cell"><span class="k">DRAWN BY</span><span class="v">N. SURABHI</span></div>
+        <div class="tb-cell"><span class="k">TITLE</span><span class="v">PORTFOLIO</span></div>
+        <div class="tb-cell"><span class="k">DISCIPLINE</span><span class="v">SW + ME</span></div>
+        <div class="tb-cell"><span class="k">LOCATION</span><span class="v">BRAMBLETON, VA</span></div>
+        <div class="tb-cell"><span class="k">SHEET</span><span class="v">05 / 05</span></div>
+        <div class="tb-cell"><span class="k">REV</span><span class="v">2026.05 — A</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 </main>
 
-<footer>
-  <div class="foot-inner">
-    <span>© 2026 Nirav Surabhi</span>
+<!-- ============================ LIGHTBOX ============================ -->
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Media viewer">
+  <div class="lb-inner">
+    <button class="lb-close" id="lbClose">CLOSE ✕</button>
+    <div id="lbMedia"></div>
+    <div class="lb-cap" id="lbCap"></div>
   </div>
-</footer>
+</div>
 
 <script>
-(function () {
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ----- Discipline flap-board word in the hero -----
-  // Airport split-flap: each slot physically flips a card (two faces) every
-  // step; over a few flips it lands on the target letter. Slot count is
-  // fixed (10) so the shorter word (SOFTWARE) just has blank padding slots
-  // and there's no layout stutter when the words swap.
-  (function () {
-    var flap = document.getElementById('flap-word');
-    if (!flap) return;
-    var slots = Array.prototype.slice.call(flap.querySelectorAll('.ltr'));
-    var N = slots.length;
-    var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    var TARGETS = ['MECHANICAL', 'SOFTWARE  ']; // padded with spaces to N
-    var idx = 0;
-    if (reduce) return;
-    function flipTo(slot, char) {
-      var glyph = (char === ' ') ? '\u00A0' : char;     // nbsp keeps the slot visually open
-      var face = slot.querySelector('.face.a');
-      slot.classList.add('flipping');                    // letter squishes flat
-      setTimeout(function () {
-        face.textContent = glyph;
-        slot.classList.remove('flipping');               // expands back as the new letter
-      }, 95);
-    }
-    function cycleLetter(slot, finalChar, delay, cyclesLeft, stepMs) {
-      setTimeout(function step() {
-        if (cyclesLeft <= 0) { flipTo(slot, finalChar); return; }
-        flipTo(slot, CHARS[(Math.random() * 26) | 0]);
-        cyclesLeft--;
-        setTimeout(step, stepMs);
-      }, delay);
-    }
-    function run() {
-      idx = 1 - idx;
-      var target = TARGETS[idx];
-      flap.classList.toggle('is-software', idx === 1);
-      flap.classList.toggle('is-mechanical', idx === 0);
-      var maxEnd = 0;
-      for (var i = 0; i < N; i++) {
-        var delay = i * 95;
-        var cycles = Math.round(4 + i * 1.0);              // tail letters flip more
-        var endAt = delay + cycles * 130;
-        if (endAt > maxEnd) maxEnd = endAt;
-        cycleLetter(slots[i], target.charAt(i), delay, cycles, 130);
+  /* ---------- mobile menu ---------- */
+  var menuBtn = document.getElementById('menuBtn'), nav = document.getElementById('sheetnav');
+  menuBtn.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true':'false');
+  });
+  nav.addEventListener('click', function(e){
+    if(e.target.closest('a')){ nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); }
+  });
+
+  /* ---------- count up ---------- */
+  function fmt(n){ return n.toLocaleString('en-US'); }
+  var counted = false;
+  function runCount(){
+    if(counted) return; counted = true;
+    document.querySelectorAll('[data-count]').forEach(function(el){
+      var target = +el.getAttribute('data-count');
+      if(reduce){ el.textContent = fmt(target); return; }
+      var dur = 1100, t0 = null;
+      function step(ts){
+        if(!t0) t0 = ts;
+        var p = Math.min((ts - t0)/dur, 1);
+        var e = 1 - Math.pow(1-p, 3);
+        el.textContent = fmt(Math.round(target * e));
+        if(p < 1) requestAnimationFrame(step);
       }
-      setTimeout(run, maxEnd + 1700);
+      requestAnimationFrame(step);
+    });
+  }
+  var hero = document.getElementById('index');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting) runCount(); }); },{threshold:.2});
+    io.observe(hero);
+  }
+  // Robust fallbacks — the spec strip is above the fold, so the numbers must
+  // always reach their targets even if IO never fires in this context.
+  window.addEventListener('load', runCount);
+  setTimeout(runCount, 850);
+
+  /* ---------- FTC build sequence — slug, title, engineering note (all designed, built & iterated by me) ---------- */
+  var ftc = [
+    ['ftc-chassis','Chassis','Designed the frame from scratch instead of buying a kit — a compact footprint I machined from 1/8" aluminum to stay light without flexing under load.'],
+    ['ftc-bumper-v1','Bumper v1','My first bumper revision: one sculpted piece. It looked clean, but it was slow to mount and a pain to repair after a hard hit.'],
+    ['ftc-bumper-v2','Bumper v2','So I redesigned them — wraparound geometry that swaps fast and shrugs off contact. This v1 → v2 loop is how I ran the whole season: build, break, rebuild.'],
+    ['ftc-intake-ground','Intake · ground','Chained every roller to a single motor so one drive spins the whole intake — fewer motors means less weight, wiring, and current to budget.'],
+    ['ftc-intake-2dof','Intake · 2-DOF','The next intake I designed gained a second axis of motion and 3D-printed TPU rollers — grippy enough to grab a game piece without crushing it.'],
+    ['ftc-roller','Roller','Printed each roller in two materials in one job: a rigid PLA core for the shaft, a soft TPU skin for traction. One part doing two jobs.'],
+    ['ftc-slides','Linear slides','A motorized extension I braced with unpowered perpendicular slides — the cross-bracing kills the wobble when it reaches out under load.'],
+    ['ftc-slides-dual','Slides · dual','Two-stage slides with a 180° servo pivot on the intake at the tip — it reaches out and flips orientation at the end of travel.'],
+    ['ftc-intake-ramp','Intake · ramp','I modeled the full intake-to-ramp path as one jointed assembly so I could play the motion in CAD and catch collisions before cutting any metal.'],
+    ['ftc-shooter','Turret shooter','A flywheel hood shooter on a full 360° turret I designed — it can aim and fire from anywhere on the field without rotating the whole robot.'],
+    ['ftc-semis','Semifinals','All of it together, on the field — tethering up before a semifinal match at the Chesapeake championship.'],
+    ['ftc-final','Final build','Where a season of CAD ended up. Every subsystem here started as a part I modeled, printed or machined, then built and bolted on myself.']
+  ];
+  var seq = document.getElementById('seqgrid');
+  ftc.forEach(function(f, i){
+    var b = document.createElement('button');
+    b.className = 'seqcell';
+    var step = String(i+1).padStart(2,'0');
+    b.setAttribute('aria-label', 'Build step ' + step + ' of 12: ' + f[1] + '. ' + f[2]);
+    b.innerHTML = '<span class="sn">' + step + '</span>' +
+      '<img src="img/ftc/' + f[0] + '.webp" alt="FTC build step ' + step + ': ' + f[1] + '" width="800" height="600" loading="lazy" />' +
+      '<span class="sl">' + f[1] + '</span>';
+    b.addEventListener('click', function(){
+      openImg('img/ftc/' + f[0] + '.webp',
+        '<b>BUILD ' + step + ' / 12 — ' + f[1].toUpperCase() + '</b><span class="lb-desc">' + f[2] + '</span>' +
+        '<span class="lb-credit">Designed, built &amp; iterated by Nirav Surabhi · Fusion 360</span>');
+    });
+    seq.appendChild(b);
+  });
+
+  /* ---------- guitar deck (swipeable, fanned card stack) ---------- */
+  (function(){
+    var deck = document.getElementById('deck');
+    if(!deck) return;
+    var N = 9, order = [], animating = false, suppress = false;
+    for(var gi=1; gi<=N; gi++){
+      var c = document.createElement('button');
+      c.type = 'button'; c.className = 'gcard'; c.dataset.n = gi;
+      c.setAttribute('aria-label', 'Play guitar clip ' + gi + ' of ' + N);
+      c.innerHTML = '<img src="img/guitar/g' + gi + '.jpg" alt="Guitar performance clip ' + gi + '" width="800" height="450" loading="lazy" draggable="false" />' +
+        '<span class="cn">CLIP ' + String(gi).padStart(2,'0') + '</span>' +
+        '<span class="play"><span><svg width="15" height="17" viewBox="0 0 16 18" aria-hidden="true"><path d="M0 0 L16 9 L0 18 Z" fill="#191510"/></svg></span></span>';
+      deck.appendChild(c); order.push(c);
     }
-    setTimeout(run, 1800);
+    var idxEl = document.getElementById('deckIdx');
+    function place(card, d, anim){
+      card.style.transition = anim ? '' : 'none';
+      var x = d*6, y = d*5, rot = -d*1.2, sc = Math.max(0.7, 1 - 0.022*d), op = Math.max(0.4, 1 - 0.07*d);
+      card.style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + rot + 'deg) scale(' + sc + ')';
+      card.style.opacity = op; card.style.zIndex = String(100 - d);
+      var front = d === 0;
+      card.classList.toggle('front', front);
+      card.style.pointerEvents = front ? 'auto' : 'none';
+      card.tabIndex = front ? 0 : -1;
+      card.setAttribute('aria-hidden', front ? 'false' : 'true');
+    }
+    function layout(anim){ order.forEach(function(c,d){ place(c,d,anim); }); if(idxEl) idxEl.textContent = order[0].dataset.n; }
+    function playFront(){ var n = order[0].dataset.n; openVid('img/guitar/g'+n+'.mp4','img/guitar/g'+n+'.jpg','PERFORMANCE CLIP '+String(n).padStart(2,'0')+' / 09'); }
+    function next(dir){
+      if(animating) return; animating = true;
+      var front = order[0], sign = dir < 0 ? -1 : 1, k;
+      for(k=1; k<order.length; k++) place(order[k], k-1, true);
+      front.style.transition = ''; front.classList.remove('front'); front.style.pointerEvents = 'none';
+      front.style.transform = 'translateX(' + (sign*125) + '%) rotate(' + (sign*13) + 'deg) scale(1.03)';
+      front.style.opacity = '0';
+      setTimeout(function(){ order.push(order.shift()); place(front, order.length-1, false); animating = false; if(idxEl) idxEl.textContent = order[0].dataset.n; }, 430);
+    }
+    function prev(){
+      if(animating) return; animating = true;
+      var back = order[order.length-1];
+      place(back, 0, false); back.style.transition = 'none';
+      back.style.transform = 'translateX(-125%) rotate(-13deg) scale(1.03)'; back.style.opacity = '0';
+      void back.offsetWidth;
+      order.pop(); order.unshift(back);
+      requestAnimationFrame(function(){ layout(true); setTimeout(function(){ animating = false; }, 430); });
+    }
+    /* drag the top card */
+    var sx=0, sy=0, dragging=false, moved=0, t0=0;
+    deck.addEventListener('pointerdown', function(e){
+      var front = order[0];
+      if(animating || !e.target.closest('.gcard') || e.target.closest('.gcard') !== front) return;
+      dragging = true; suppress = false; moved = 0; sx = e.clientX; sy = e.clientY; t0 = Date.now();
+      front.classList.add('dragging');
+      try{ front.setPointerCapture(e.pointerId); }catch(_){}
+    });
+    deck.addEventListener('pointermove', function(e){
+      if(!dragging) return;
+      var dx = e.clientX - sx, dy = e.clientY - sy; moved = Math.max(moved, Math.abs(dx) + Math.abs(dy));
+      order[0].style.transition = 'none';
+      order[0].style.transform = 'translate(' + dx + 'px,' + (dy*0.22) + 'px) rotate(' + (dx*0.04) + 'deg)';
+    });
+    function endDrag(e){
+      if(!dragging) return; dragging = false;
+      var front = order[0]; front.classList.remove('dragging');
+      var dx = (e.clientX||sx) - sx;
+      if(moved >= 8){
+        suppress = true;
+        if(Math.abs(dx) >= 70){ front.style.transition=''; next(dx); }
+        else place(front, 0, true);
+      }
+    }
+    deck.addEventListener('pointerup', endDrag);
+    deck.addEventListener('pointercancel', function(){ if(dragging){ dragging=false; order[0].classList.remove('dragging'); place(order[0],0,true); } });
+    order.forEach(function(c){ c.addEventListener('click', function(){ if(suppress){ suppress=false; return; } if(order[0]===c) playFront(); }); });
+    deck.addEventListener('keydown', function(e){
+      if(e.key==='ArrowLeft'){ e.preventDefault(); prev(); }
+      else if(e.key==='ArrowRight'){ e.preventDefault(); next(1); }
+    });
+    var pb = document.getElementById('deckPrev'), nb = document.getElementById('deckNext');
+    if(nb) nb.addEventListener('click', function(){ next(1); });
+    if(pb) pb.addEventListener('click', prev);
+    layout(false);
   })();
 
-  // ----- Projects: Mechanical / Software tabs -----
-  (function () {
-    var tabs = document.querySelector('.proj-tabs');
-    if (!tabs) return;
-    var panes = document.querySelectorAll('.proj-pane');
-    tabs.addEventListener('click', function (e) {
-      var b = e.target.closest('button[data-tab]');
-      if (!b) return;
-      var t = b.getAttribute('data-tab');
-      tabs.querySelectorAll('button').forEach(function (x) {
-        var on = x === b;
-        x.classList.toggle('active', on);
-        x.setAttribute('aria-selected', on ? 'true' : 'false');
-      });
-      panes.forEach(function (p) {
-        var show = p.getAttribute('data-tab') === t;
-        p.hidden = !show;
-        // Cards in the just-revealed pane skipped scroll-reveal; force them in.
-        if (show) p.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
-      });
-    });
-  })();
-
-  // ----- Chapter navigator: highlight the section in view -----
-  if (chapters && 'IntersectionObserver' in window) {
-    var chLinks = chapters.querySelectorAll('a[data-chapter]');
-    var sectionFor = {};
-    chLinks.forEach(function (a) {
-      var id = a.getAttribute('href').slice(1);
-      var el = document.getElementById(id);
-      if (el) sectionFor[id] = a;
-    });
-    var setActive = function (id) {
-      var activeIdx = -1;
-      chLinks.forEach(function (a, i) {
-        var on = a.getAttribute('href') === '#' + id;
-        a.classList.toggle('active', on);
-        if (on) activeIdx = i;
-      });
-      if (activeIdx >= 0) {
-        chLinks.forEach(function (a, i) {
-          var s = i - activeIdx;
-          a.style.setProperty('--s', s);
-          a.style.setProperty('--d', Math.abs(s));
-        });
-      }
-    };
-    var seen = {};
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { seen[e.target.id] = e.intersectionRatio; });
-      // pick the section with the largest visible portion
-      var best = null, bestR = 0;
-      Object.keys(sectionFor).forEach(function (id) {
-        var r = seen[id] || 0;
-        if (r > bestR) { bestR = r; best = id; }
-      });
-      if (best) setActive(best);
-    }, { rootMargin: '-30% 0px -55% 0px', threshold: [0, 0.1, 0.3, 0.6, 1] });
-    Object.keys(sectionFor).forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) io.observe(el);
-    });
-    // initial highlight
-    setActive('top');
+  /* ---------- lightbox ---------- */
+  var lb = document.getElementById('lightbox'), lbMedia = document.getElementById('lbMedia'),
+      lbCap = document.getElementById('lbCap'), lbClose = document.getElementById('lbClose');
+  var lastFocus = null;
+  function open(html, cap){
+    lastFocus = document.activeElement;
+    lbMedia.innerHTML = html; lbCap.innerHTML = cap || '';
+    lb.classList.add('open'); document.body.style.overflow = 'hidden';
+    lbClose.focus();
   }
-
-  // ----- Reveal on scroll -----
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
-  } else {
-    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+  function openImg(src, cap){ open('<img src="'+src+'" alt="'+(cap||'Enlarged image')+'" />', cap); }
+  function openVid(src, poster, cap){
+    open('<video src="'+src+'" poster="'+poster+'" controls autoplay playsinline></video>', cap);
   }
+  function openDoc(src, title){
+    open('<div class="lb-docbar"><span class="lb-doc-t">'+title+'</span>' +
+         '<a class="lb-dl" href="'+src+'" download>Download PDF ↓</a></div>' +
+         '<iframe class="lb-doc" src="'+src+'" title="'+title+'"></iframe>', '');
+  }
+  function close(){
+    lb.classList.remove('open'); lbMedia.innerHTML = ''; document.body.style.overflow = '';
+    if(lastFocus) lastFocus.focus();
+  }
+  lbClose.addEventListener('click', close);
+  lb.addEventListener('click', function(e){ if(e.target === lb) close(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && lb.classList.contains('open')) close(); });
 
-  // ----- Card cursor-glow (cheap, no library) -----
-  document.querySelectorAll('.card').forEach(function (card) {
-    card.addEventListener('pointermove', function (e) {
-      var r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  /* ---------- PDFs (paper, certificate): open in-site with a download option ---------- */
+  document.querySelectorAll('[data-doc]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
+      e.preventDefault();
+      openDoc(a.getAttribute('href'), a.getAttribute('data-title') || 'Document');
     });
   });
 
-  // ----- Discipline lens (All / Software / Mechanical) -----
-  // Re-tailors the whole page (everything tagged data-lens) with a crossfade.
-  // Work Experience is untagged on purpose, so it never changes.
-  var lensSwitch = document.querySelector('.lens-switch');
-  if (lensSwitch) {
-    var lensBtns = lensSwitch.querySelectorAll('button[data-lens-btn]');
-    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function commitLens(lens) {
-      document.body.setAttribute('data-lens', lens);
-      lensBtns.forEach(function (b) {
-        var on = b.getAttribute('data-lens-btn') === lens;
-        b.classList.toggle('active', on);
-        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  /* ---------- sheet indicator ---------- */
+  var sections = [['index','INDEX','00'],['software','SOFTWARE','01'],['hardware','HARDWARE','02'],['work','EXPERIENCE','03'],['guitar','GUITAR','04'],['contact','CONTACT','05']];
+  var indSheet = document.getElementById('indSheet'), indName = document.getElementById('indName');
+  if('IntersectionObserver' in window){
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(en.isIntersecting){
+          var m = sections.filter(function(s){ return s[0] === en.target.id; })[0];
+          if(m){ indSheet.textContent = m[2]; indName.textContent = m[1];
+            document.body.classList.toggle('is-work', en.target.id==='hardware'); }
+        }
       });
-      // any cards/groups that just became visible should bypass the scroll-reveal
-      document.querySelectorAll('.lens-anim .reveal, .lens-anim.reveal').forEach(function (el) { el.classList.add('in'); });
-      if (window.__pillLens) window.__pillLens(lens);
-    }
-    function setLens(lens, animate) {
-      if (document.body.getAttribute('data-lens') === lens) return;
-      if (!animate || reduceMotion) { commitLens(lens); return; }
-      document.body.classList.add('lens-switching');
-      window.setTimeout(function () {
-        commitLens(lens);
-        requestAnimationFrame(function () { document.body.classList.remove('lens-switching'); });
-      }, 340);
-    }
-    lensSwitch.addEventListener('click', function (e) {
-      var b = e.target.closest('button[data-lens-btn]');
-      if (b) setLens(b.getAttribute('data-lens-btn'), true);
-    });
-    var startLens = new URLSearchParams(location.search).get('lens');
-    commitLens(startLens === 'software' || startLens === 'mechanical' ? startLens : 'all');
+    },{rootMargin:'-45% 0px -50% 0px'});
+    sections.forEach(function(s){ var el = document.getElementById(s[0]); if(el) io2.observe(el); });
   }
 
-  // ----- FTC CAD rail arrows -----
-  var cadRail = document.querySelector('.cad-rail');
-  var cadNav = document.querySelector('.cad-nav');
-  if (cadRail && cadNav) {
-    cadNav.addEventListener('click', function (e) {
-      var b = e.target.closest('button[data-cad]');
-      if (!b) return;
-      var card = cadRail.querySelector('.cad-card');
-      var step = card ? card.getBoundingClientRect().width + 18 : 360;
-      cadRail.scrollBy({ left: b.getAttribute('data-cad') === 'next' ? step : -step, behavior: 'smooth' });
-    });
-  }
-
-  // ----- Easter egg -----
-  console.log(
-    '%c hi. %cyou\'re reading the console. respect.\n%c if you want to work on something, niravsurabhi@gmail.com',
-    'background:#7c9eff;color:#0a0c10;padding:2px 8px;border-radius:4px;font-weight:700',
-    'color:#a8aeb8;font-family:monospace',
-    'color:#7c9eff;font-family:monospace'
-  );
-
-  // ----- Email: copy to clipboard on click -----
-  var EMAIL = 'niravsurabhi@gmail.com';
-  document.querySelectorAll('[data-copy-email]').forEach(function (el) {
-    el.addEventListener('click', function (e) {
-      // allow right-click / cmd-click / middle-click to use mailto: normally
-      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
-      e.preventDefault();
-      var label = el.querySelector('[data-copy-label]');
-      if (!label) return;
-      var prev = label.textContent;
-      var done = function () {
-        label.textContent = 'Copied \u2713';
-        setTimeout(function () { label.textContent = prev; }, 1600);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(EMAIL).then(done, function () { window.location.href = 'mailto:' + EMAIL; });
-      } else {
-        // fallback
-        var ta = document.createElement('textarea'); ta.value = EMAIL; ta.setAttribute('readonly','');
-        ta.style.position = 'absolute'; ta.style.left = '-9999px';
-        document.body.appendChild(ta); ta.select();
-        try { document.execCommand('copy'); done(); } catch (err) { window.location.href = 'mailto:' + EMAIL; }
-        document.body.removeChild(ta);
+  /* ---------- ambient airflow streamlines (decorative) ---------- */
+  if(!reduce){
+    var g = document.querySelector('.flowlines');
+    if(g){
+      var lines = '';
+      for(var k=0;k<7;k++){
+        var y = 90 + k*78, amp = 16 + (k%3)*10;
+        var d = 'M-40 '+y;
+        for(var x=0;x<=1640;x+=80){ d += ' Q '+(x+40)+' '+(y - (x/80%2?amp:-amp))+' '+(x+80)+' '+y; }
+        lines += '<path class="leadline" d="'+d+'" stroke="rgba(203,58,23,.5)" stroke-width="1.2" fill="none" stroke-dasharray="6 10"><animate attributeName="stroke-dashoffset" from="0" to="-160" dur="'+(3+k*0.4)+'s" repeatCount="indefinite"/></path>';
       }
+      g.innerHTML = lines;
+    }
+  }
+})();
+
+/* ---------- email links: click to copy (cmd/ctrl-click still opens mail) ---------- */
+(function(){
+  var EMAIL = 'niravsurabhi@gmail.com';
+  document.querySelectorAll('[data-copy-email]').forEach(function(el){
+    el.addEventListener('click', function(e){
+      if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
+      if(!navigator.clipboard){ return; }
+      e.preventDefault();
+      var lab = el.querySelector('[data-copy-label]'); if(!lab) return;
+      var prev = lab.textContent;
+      navigator.clipboard.writeText(EMAIL).then(function(){
+        lab.textContent = 'Copied ✓';
+        setTimeout(function(){ lab.textContent = prev; }, 1500);
+      }, function(){ window.location.href = 'mailto:' + EMAIL; });
     });
   });
 })();
 </script>
-
-
 </body>
 </html>

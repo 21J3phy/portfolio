@@ -1,18 +1,27 @@
-# Nirav Surabhi — Personal Portfolio
+# Nirav Surabhi — personal portfolio
 
-Single-file static portfolio. Dark-mode default with a light toggle, built with
-plain HTML/CSS/vanilla JS — deployable to Vercel with zero config.
+A small static site, written by hand. No framework, no build step.
 
-## Highlights
+## Files
 
-- **3D "Software ⇄ Mechanical" pill** in the hero, rendered with [Three.js](https://threejs.org/)
-  (loaded from a CDN). A real `CapsuleGeometry` rolls about its long axis: it holds on
-  "Software" (blue), eases 180° to "Mechanical" (amber), holds, and continues another
-  180° back to start. Labels are baked with `CanvasTexture`; respects
-  `prefers-reduced-motion`.
-- `image-slot.js` — drag-and-drop image placeholders. Project screenshots and company
-  logos are pre-filled via the `src` attribute; the face and a couple of slots are left
-  open to fill in later.
+- `index.html` — the whole site (HTML + CSS + a little vanilla JS, all inline).
+- `resume.html` — the résumé, viewable in the browser; `Cmd/Ctrl-P → Save as PDF` prints
+  cleanly to one page via a print stylesheet.
+- `og.png` — 1200×630 social-share card. Regenerate from `og.html`:
+  ```sh
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+    --window-size=1200,630 --default-background-color=00000000 --virtual-time-budget=5000 \
+    --screenshot="$PWD/og.png" "file://$PWD/og.html"
+  ```
+- `img/` — images (`.webp`, optimized with `cwebp`) and the guitar clips (`.mp4` + posters).
+- `paper.pdf`, `conference-certificate.pdf` — the passive-vortex paper and its certificate.
+
+## Design
+
+Warm-paper palette, Source Serif 4 for everything, a single brick-red accent reserved for
+links. The page paints on load — no scroll animations, no tilt, no hover effects on anything
+that isn't a link or button. Work comes first, strongest projects up top, the rest behind a
+"More projects" disclosure.
 
 ## Local preview
 
@@ -23,15 +32,4 @@ python3 -m http.server 8000
 
 ## Deploy
 
-Zero-config static deploy on Vercel — push to the connected repo, or:
-
-```sh
-vercel --prod
-```
-
-## TODO before going fully live
-
-- Real `og.png` (1200×630) and `Resume.pdf` at the project root.
-- Optional headshot in the About face slot, a PredictionView screenshot, and a
-  wind-tunnel / paper image for Passive Vortex Propulsion.
-- Confirm `niravsurabhi.com` canonical / OG URLs.
+Zero-config static deploy on Vercel — push to the connected repo, or `vercel --prod`.
