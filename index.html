@@ -297,11 +297,11 @@ section{position:relative;scroll-margin-top:var(--hdr)}
 
 /* ============================ GUITAR DECK ============================ */
 .deck-wrap{margin-top:clamp(24px,4vw,40px);max-width:460px}
-.deck{position:relative;width:100%;aspect-ratio:16/10;touch-action:pan-y;margin-bottom:46px}
+.deck{position:relative;width:100%;aspect-ratio:16/10;touch-action:pan-y;margin-bottom:46px;isolation:isolate}
 .gcard{position:absolute;inset:0;border:1.5px solid var(--ink);background:#000;overflow:hidden;padding:0;color:inherit;font:inherit;
   transform-origin:center center;transition:transform .43s cubic-bezier(.2,.7,.2,1),opacity .35s;will-change:transform;
   box-shadow:4px 5px 0 rgba(25,21,16,.14)}
-.gcard img{width:100%;height:100%;object-fit:cover;opacity:.95;filter:grayscale(.12);-webkit-user-drag:none;user-select:none}
+.gcard video{width:100%;height:100%;object-fit:cover;opacity:.96;filter:grayscale(.12);display:block;background:#000;-webkit-user-drag:none;user-select:none}
 .gcard.front{cursor:grab}
 .gcard.dragging{transition:none!important;cursor:grabbing}
 .gcard .cn{position:absolute;top:0;left:0;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;
@@ -311,6 +311,7 @@ section{position:relative;scroll-margin-top:var(--hdr)}
   border:1.5px solid var(--ink);transition:transform .2s}
 .gcard.front:hover .play span{transform:scale(1.1)}
 .gcard .play svg{margin-left:3px}
+.gcard:not(.front) .play,.gcard.playing .play{display:none}
 .deck-foot{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:12px;color:var(--ink-2)}
 .deck-btn{width:40px;height:40px;border:1.5px solid var(--ink);background:var(--paper);cursor:pointer;font-size:18px;line-height:1;color:var(--ink);
   transition:background .15s,color .15s}
@@ -331,6 +332,11 @@ section{position:relative;scroll-margin-top:var(--hdr)}
   border:1.5px solid var(--paper);padding:7px 13px;text-decoration:none;white-space:nowrap}
 .lb-dl:hover{background:#fff}
 .lb-inner iframe.lb-doc{width:100%;height:78vh;border:1.5px solid rgba(236,230,218,.4);background:#fff;display:block}
+/* clickable + paired figures (CAD renders) */
+.fig-btn{padding:0;cursor:zoom-in;color:inherit;font:inherit;display:block;width:100%}
+.fig-btn img{transition:transform .3s}
+.fig-btn:hover img,.fig-btn:focus-visible img{transform:scale(1.04)}
+.figpair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
 /* ============================ SKILLS ============================ */
 .skills{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1.5px solid var(--ink);margin-top:clamp(24px,4vw,42px)}
@@ -708,18 +714,72 @@ html{scroll-behavior:smooth}
       </div>
     </div>
 
+    <!-- Motor-Based Resistance System (RSEF 2025) -->
+    <article class="proj">
+      <div class="figc">
+        <button class="fig fig-btn" type="button" style="aspect-ratio:4/5" data-lightimg="img/motor-worn.webp" data-lightcap="Motor-based resistance device, worn on the arm">
+          <img src="img/motor-worn.webp" alt="The motor-based resistance device worn on the arm" width="450" height="600" loading="lazy" />
+          <span class="cap">FIG. 08 — device, worn</span>
+        </button>
+      </div>
+      <div>
+        <div class="pno">PROJ <b>02.C</b> · 2025 · RSEF · FIRST AUTHOR</div>
+        <h3 class="ptitle">Motor-Based Resistance System</h3>
+        <div class="prole">Portable strength trainer · designed, built &amp; tested by me</div>
+        <p class="pbody">A compact, battery-powered resistance trainer — no weights, no mounting, no wall power. A <b>188:1 geared motor</b> on drawer slides gives smooth, <b>PWM-controlled resistance</b> from an Arduino. I designed and built it through three prototypes — eddy-current → chain-driven → geared — and tested it to a <b>linear, repeatable force curve (R² = 0.993)</b>.</p>
+        <div class="pmetrics">
+          <div class="pmetric"><div class="m-n">$214.95</div><div class="m-l">VS $2–3K COMMERCIAL</div></div>
+          <div class="pmetric"><div class="m-n">R²=0.993</div><div class="m-l">FORCE vs PWM</div></div>
+        </div>
+        <div class="stack"><span class="chip">Arduino</span><span class="chip">RS-555 motor</span><span class="chip">188:1 planetary</span><span class="chip">PWM</span><span class="chip">Roboclaw</span><span class="chip">Fusion 360</span></div>
+        <div class="plinks">
+          <a class="plink" href="motor-resistance-poster.pdf" data-doc data-title="Motor-Based Resistance System — RSEF 2025 poster" target="_blank" rel="noopener">Read the poster <span class="ar" aria-hidden="true">↗</span></a>
+          <a class="plink" href="img/motor-sim.webp" data-lightimg="img/motor-sim.webp" data-lightcap="FEA — horizontal force on the drawer slides (Fusion 360)" target="_blank" rel="noopener">Stress analysis (FEA) <span class="ar" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Truss bridge (Science Olympiad, Bridge event) -->
+    <article class="proj rev">
+      <div class="figc">
+        <div class="figpair">
+          <button class="fig fig-btn" type="button" style="aspect-ratio:4/3" data-lightimg="img/bridge-v1.webp" data-lightcap="Truss bridge — V1 CAD (Fusion 360)">
+            <img src="img/bridge-v1.webp" alt="Truss bridge version 1 CAD in Fusion 360" width="1200" height="980" loading="lazy" />
+            <span class="cap">V1 CAD</span>
+          </button>
+          <button class="fig fig-btn" type="button" style="aspect-ratio:4/3" data-lightimg="img/bridge-v2.webp" data-lightcap="Truss bridge — V2 CAD, lighter arched top chord (Fusion 360)">
+            <img src="img/bridge-v2.webp" alt="Truss bridge version 2 CAD in Fusion 360" width="1200" height="843" loading="lazy" />
+            <span class="cap">V2 CAD</span>
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="pno">PROJ <b>02.D</b> · SCIENCE OLYMPIAD · BRIDGE EVENT</div>
+        <h3 class="ptitle">Truss Bridge</h3>
+        <div class="prole">CADded &amp; built by me · iterated v1 → v2 for strength-to-weight</div>
+        <p class="pbody">A wooden truss bridge for the Science Olympiad Bridge event, judged on load carried per gram. I CADded it in Fusion 360 and <b>iterated v1 → v2</b> — thinning members and reworking the top chord into an arch to shed weight while holding strength.</p>
+        <div class="stack"><span class="chip">Fusion 360</span><span class="chip">Truss design</span><span class="chip">Strength-to-weight</span></div>
+      </div>
+    </article>
+
     <!-- Science Olympiad pair -->
     <div class="solytwo">
       <div class="solycard">
-        <div class="fig" style="aspect-ratio:3/2">
-          <img src="img/shot-ev.webp" alt="Autonomous electric vehicle built for Science Olympiad" width="1200" height="800" />
-          <span class="cap">FIG. 07 — electric vehicle</span>
+        <div class="figpair" style="margin-bottom:14px">
+          <button class="fig fig-btn" type="button" style="aspect-ratio:3/2" data-lightimg="img/ev-cad.webp" data-lightcap="Electric Vehicle — Fusion 360 CAD (design)">
+            <img src="img/ev-cad.webp" alt="Electric vehicle CAD design in Fusion 360" width="1200" height="699" loading="lazy" />
+            <span class="cap">CAD</span>
+          </button>
+          <button class="fig fig-btn" type="button" style="aspect-ratio:3/2" data-lightimg="img/shot-ev.webp" data-lightcap="Electric Vehicle — the car I built (implementation)">
+            <img src="img/shot-ev.webp" alt="The built Science Olympiad electric vehicle" width="1200" height="800" loading="lazy" />
+            <span class="cap">BUILT</span>
+          </button>
         </div>
-        <div class="pno">PROJ <b>02.C</b> · SCIENCE OLYMPIAD</div>
+        <div class="pno">PROJ <b>02.E</b> · SCIENCE OLYMPIAD</div>
         <h4>Electric Vehicle</h4>
         <div class="prole">Accelerate, then brake to a target distance</div>
-        <p class="pbody">An autonomous vehicle that accelerates then brakes to stop on a target distance — Arduino, a goBILDA motor, and a quadrature encoder, tuned with <b>PID</b>.</p>
-        <div class="stack"><span class="chip">Arduino</span><span class="chip">goBILDA</span><span class="chip">Quadrature encoder</span><span class="chip">PID</span></div>
+        <p class="pbody">An autonomous vehicle that accelerates then brakes to stop on a target distance. I CADded it in Fusion 360 and built it — Arduino, a goBILDA motor, and a quadrature encoder, tuned with <b>PID</b>.</p>
+        <div class="stack"><span class="chip">Fusion 360</span><span class="chip">Arduino</span><span class="chip">goBILDA</span><span class="chip">Encoder</span><span class="chip">PID</span></div>
       </div>
       <div class="solycard">
         <div class="fig" style="aspect-ratio:3/2;display:grid;place-items:center">
@@ -727,7 +787,7 @@ html{scroll-behavior:smooth}
             SALT-WATER SALINITY SENSOR<br /><span style="opacity:.6">conductivity probe · Arduino</span>
           </div>
         </div>
-        <div class="pno">PROJ <b>02.D</b> · SCIENCE OLYMPIAD</div>
+        <div class="pno">PROJ <b>02.F</b> · SCIENCE OLYMPIAD</div>
         <h4>Salt-water Salinity Sensor</h4>
         <div class="prole">Reads salinity from conductivity</div>
         <p class="pbody">An Arduino device that reads the salinity of salt water — a calibrated conductivity probe feeding a microcontroller.</p>
@@ -988,7 +1048,7 @@ html{scroll-behavior:smooth}
     seq.appendChild(b);
   });
 
-  /* ---------- guitar deck (swipeable, fanned card stack) ---------- */
+  /* ---------- guitar deck (swipeable stack; clips play in place) ---------- */
   (function(){
     var deck = document.getElementById('deck');
     if(!deck) return;
@@ -997,7 +1057,7 @@ html{scroll-behavior:smooth}
       var c = document.createElement('button');
       c.type = 'button'; c.className = 'gcard'; c.dataset.n = gi;
       c.setAttribute('aria-label', 'Play guitar clip ' + gi + ' of ' + N);
-      c.innerHTML = '<img src="img/guitar/g' + gi + '.jpg" alt="Guitar performance clip ' + gi + '" width="800" height="450" loading="lazy" draggable="false" />' +
+      c.innerHTML = '<video class="gv" src="img/guitar/g' + gi + '.mp4" poster="img/guitar/g' + gi + '.jpg" preload="none" playsinline></video>' +
         '<span class="cn">CLIP ' + String(gi).padStart(2,'0') + '</span>' +
         '<span class="play"><span><svg width="15" height="17" viewBox="0 0 16 18" aria-hidden="true"><path d="M0 0 L16 9 L0 18 Z" fill="#191510"/></svg></span></span>';
       deck.appendChild(c); order.push(c);
@@ -1007,7 +1067,7 @@ html{scroll-behavior:smooth}
       card.style.transition = anim ? '' : 'none';
       var x = d*6, y = d*5, rot = -d*1.2, sc = Math.max(0.7, 1 - 0.022*d), op = Math.max(0.4, 1 - 0.07*d);
       card.style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + rot + 'deg) scale(' + sc + ')';
-      card.style.opacity = op; card.style.zIndex = String(100 - d);
+      card.style.opacity = op; card.style.zIndex = String(90 - d);
       var front = d === 0;
       card.classList.toggle('front', front);
       card.style.pointerEvents = front ? 'auto' : 'none';
@@ -1015,31 +1075,46 @@ html{scroll-behavior:smooth}
       card.setAttribute('aria-hidden', front ? 'false' : 'true');
     }
     function layout(anim){ order.forEach(function(c,d){ place(c,d,anim); }); if(idxEl) idxEl.textContent = order[0].dataset.n; }
-    function playFront(){ var n = order[0].dataset.n; openVid('img/guitar/g'+n+'.mp4','img/guitar/g'+n+'.jpg','PERFORMANCE CLIP '+String(n).padStart(2,'0')+' / 09'); }
-    function next(dir){
+    function vid(card){ return card.querySelector('video'); }
+    function resetCard(card){ var v = vid(card); if(!v) return; v.pause(); try{ v.currentTime = 0; }catch(_){} card.classList.remove('playing'); }
+    function togglePlay(card){
+      var v = vid(card); if(!v) return;
+      if(v.paused){ card.classList.add('playing'); var p = v.play(); if(p && p.catch) p.catch(function(){}); }
+      else { v.pause(); card.classList.remove('playing'); }
+    }
+    // Send the top card to the BACK of the stack — it visibly tucks behind the others
+    // (lifts off the top, then drops into the rear slot), rather than flying away.
+    function sendBack(useLift){
       if(animating) return; animating = true;
-      var front = order[0], sign = dir < 0 ? -1 : 1, k;
-      for(k=1; k<order.length; k++) place(order[k], k-1, true);
-      front.style.transition = ''; front.classList.remove('front'); front.style.pointerEvents = 'none';
-      front.style.transform = 'translateX(' + (sign*125) + '%) rotate(' + (sign*13) + 'deg) scale(1.03)';
-      front.style.opacity = '0';
-      setTimeout(function(){ order.push(order.shift()); place(front, order.length-1, false); animating = false; if(idxEl) idxEl.textContent = order[0].dataset.n; }, 430);
+      var leaving = order[0], k;
+      resetCard(leaving);
+      leaving.classList.remove('front'); leaving.style.pointerEvents = 'none';
+      for(k = 1; k < order.length; k++) place(order[k], k-1, true);   // the rest slide forward one slot
+      function tuck(){
+        order.push(order.shift());
+        place(leaving, order.length - 1, true);                      // drops behind into the rear slot
+        setTimeout(function(){ animating = false; if(idxEl) idxEl.textContent = order[0].dataset.n; }, 400);
+      }
+      if(useLift){
+        leaving.style.zIndex = '200';
+        leaving.style.transition = 'transform .2s cubic-bezier(.4,0,.2,1)';
+        leaving.style.transform = 'translate(0,-30px) scale(1.05)';
+        setTimeout(tuck, 200);
+      } else { tuck(); }                                             // a swipe already supplied the visible motion
     }
     function prev(){
       if(animating) return; animating = true;
-      var back = order[order.length-1];
-      place(back, 0, false); back.style.transition = 'none';
-      back.style.transform = 'translateX(-125%) rotate(-13deg) scale(1.03)'; back.style.opacity = '0';
-      void back.offsetWidth;
-      order.pop(); order.unshift(back);
-      requestAnimationFrame(function(){ layout(true); setTimeout(function(){ animating = false; }, 430); });
+      resetCard(order[0]);
+      var coming = order.pop(); order.unshift(coming);               // rear card rises to the front
+      layout(true);
+      setTimeout(function(){ animating = false; if(idxEl) idxEl.textContent = order[0].dataset.n; }, 430);
     }
     /* drag the top card */
-    var sx=0, sy=0, dragging=false, moved=0, t0=0;
+    var sx=0, sy=0, dragging=false, moved=0;
     deck.addEventListener('pointerdown', function(e){
       var front = order[0];
-      if(animating || !e.target.closest('.gcard') || e.target.closest('.gcard') !== front) return;
-      dragging = true; suppress = false; moved = 0; sx = e.clientX; sy = e.clientY; t0 = Date.now();
+      if(animating || e.target.closest('.gcard') !== front) return;
+      dragging = true; suppress = false; moved = 0; sx = e.clientX; sy = e.clientY;
       front.classList.add('dragging');
       try{ front.setPointerCapture(e.pointerId); }catch(_){}
     });
@@ -1052,22 +1127,22 @@ html{scroll-behavior:smooth}
     function endDrag(e){
       if(!dragging) return; dragging = false;
       var front = order[0]; front.classList.remove('dragging');
-      var dx = (e.clientX||sx) - sx;
+      var dx = (e.clientX || sx) - sx;
       if(moved >= 8){
         suppress = true;
-        if(Math.abs(dx) >= 70){ front.style.transition=''; next(dx); }
-        else place(front, 0, true);
+        if(Math.abs(dx) >= 70) sendBack(false);   // swept far enough → tuck to the back from here
+        else place(front, 0, true);               // not far → snap back to front
       }
     }
     deck.addEventListener('pointerup', endDrag);
     deck.addEventListener('pointercancel', function(){ if(dragging){ dragging=false; order[0].classList.remove('dragging'); place(order[0],0,true); } });
-    order.forEach(function(c){ c.addEventListener('click', function(){ if(suppress){ suppress=false; return; } if(order[0]===c) playFront(); }); });
+    order.forEach(function(c){ c.addEventListener('click', function(){ if(suppress){ suppress = false; return; } if(order[0] === c) togglePlay(c); }); });
     deck.addEventListener('keydown', function(e){
-      if(e.key==='ArrowLeft'){ e.preventDefault(); prev(); }
-      else if(e.key==='ArrowRight'){ e.preventDefault(); next(1); }
+      if(e.key === 'ArrowLeft'){ e.preventDefault(); prev(); }
+      else if(e.key === 'ArrowRight'){ e.preventDefault(); sendBack(true); }
     });
     var pb = document.getElementById('deckPrev'), nb = document.getElementById('deckNext');
-    if(nb) nb.addEventListener('click', function(){ next(1); });
+    if(nb) nb.addEventListener('click', function(){ sendBack(true); });
     if(pb) pb.addEventListener('click', prev);
     layout(false);
   })();
@@ -1105,6 +1180,15 @@ html{scroll-behavior:smooth}
       if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
       e.preventDefault();
       openDoc(a.getAttribute('href'), a.getAttribute('data-title') || 'Document');
+    });
+  });
+
+  /* ---------- enlarge any [data-lightimg] (CAD renders, sims) ---------- */
+  document.querySelectorAll('[data-lightimg]').forEach(function(el){
+    el.addEventListener('click', function(e){
+      if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
+      e.preventDefault();
+      openImg(el.getAttribute('data-lightimg'), el.getAttribute('data-lightcap') || '');
     });
   });
 
