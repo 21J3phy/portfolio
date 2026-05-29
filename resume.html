@@ -18,62 +18,98 @@
   --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;--disp:'Archivo',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:15px;line-height:1.5;
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:13px;line-height:1.42;
   background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
-  background-size:26px 26px;padding:28px 16px 70px}
+  background-size:26px 26px;padding:24px 16px 56px}
 a{color:var(--blue);text-decoration:none}
 a:hover{text-decoration:underline}
 :focus-visible{outline:3px solid var(--blue);outline-offset:2px}
-.page{max-width:880px;margin:0 auto;background:#f2ede3;border:2px solid var(--ink);box-shadow:6px 6px 0 rgba(25,21,16,.12)}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;border-bottom:1.5px solid var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-2)}
+.page{max-width:920px;margin:0 auto;background:#f2ede3;border:2px solid var(--ink);box-shadow:6px 6px 0 rgba(25,21,16,.12)}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-bottom:1.5px solid var(--ink);font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink-2)}
 .topbar a{font-weight:600}
-.head{padding:30px clamp(20px,4vw,44px) 24px;border-bottom:2px solid var(--ink)}
-.head .nm{font-family:var(--disp);font-weight:900;font-size:clamp(38px,8vw,72px);line-height:.86;letter-spacing:-.03em;text-transform:uppercase}
-.head .tg{margin-top:12px;font-size:17px;font-weight:500}
+
+/* ---- header ---- */
+.head{padding:20px clamp(18px,3.5vw,34px) 16px;border-bottom:2px solid var(--ink);
+  display:grid;grid-template-columns:1fr auto;gap:6px 24px;align-items:end}
+.head .nm{font-family:var(--disp);font-weight:900;font-size:clamp(34px,6.5vw,58px);line-height:.84;letter-spacing:-.03em;text-transform:uppercase}
+.head .tg{margin-top:9px;font-size:14.5px;font-weight:500;max-width:46ch}
 .head .tg .s{color:var(--blue);font-weight:700}.head .tg .w{color:var(--red);font-weight:700}
-.head .meta{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--mono);font-size:12.5px;color:var(--ink-2)}
-.body{padding:8px clamp(20px,4vw,44px) 36px}
-section{padding:22px 0;border-bottom:1px solid var(--line)}
-section:last-child{border-bottom:0}
-h2{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red);
-  display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.head .meta{font-family:var(--mono);font-size:11px;color:var(--ink-2);text-align:right;display:flex;flex-direction:column;gap:3px;white-space:nowrap}
+.head .meta span:first-child{color:var(--ink);font-weight:600}
+
+/* ---- two-column body ---- */
+.body{padding:14px clamp(18px,3.5vw,34px) 22px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 30px}
+.col{display:flex;flex-direction:column}
+section{padding:11px 0;border-bottom:1px solid var(--line)}
+section.flush{padding-top:2px}
+.col>section:last-child{border-bottom:0}
+h2{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--red);
+  display:flex;align-items:center;gap:10px;margin-bottom:10px}
 h2::after{content:"";flex:1;height:0;border-top:1px solid var(--line)}
-.entry{margin-bottom:18px}
+
+.entry{margin-bottom:11px}
 .entry:last-child{margin-bottom:0}
-.entry .r1{display:flex;justify-content:space-between;gap:14px;align-items:baseline;flex-wrap:wrap}
-.entry .ti{font-family:var(--disp);font-weight:800;font-size:18px;letter-spacing:-.01em}
-.entry .wh{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);white-space:nowrap}
-.entry .org{font-family:var(--mono);font-size:12.5px;color:var(--blue);font-weight:600;margin-top:2px}
-.entry ul{margin:9px 0 0;padding-left:18px}
-.entry li{margin-bottom:4px}
-.entry li::marker{color:var(--red)}
-.stack{font-family:var(--mono);font-size:11px;color:var(--ink-2);margin-top:7px;letter-spacing:.02em}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:0 30px}
-.skl{display:grid;grid-template-columns:120px 1fr;gap:6px 14px;font-size:14px}
-.skl dt{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding-top:2px}
-.skl dd{font-family:var(--mono);font-size:12.5px}
-.hon{list-style:none;display:grid;gap:7px}
-.hon li{padding-left:18px;position:relative;font-size:14px}
+.entry .r1{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.entry .ti{font-family:var(--disp);font-weight:800;font-size:15px;letter-spacing:-.01em;line-height:1.1}
+.entry .wh{font-family:var(--mono);font-size:9.5px;color:var(--ink-2);white-space:nowrap;letter-spacing:.02em}
+.entry .org{font-family:var(--mono);font-size:11px;color:var(--blue);font-weight:600;margin-top:1px}
+.entry .desc{margin-top:4px;font-size:12px;line-height:1.4}
+.entry .desc strong{font-weight:600}
+.entry .desc .met{color:var(--red);font-weight:600}
+.stack{font-family:var(--mono);font-size:9.5px;color:var(--ink-2);margin-top:4px;letter-spacing:.01em}
+
+.skl{display:grid;grid-template-columns:78px 1fr;gap:5px 12px}
+.skl dt{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);padding-top:1px}
+.skl dd{font-family:var(--mono);font-size:11px;line-height:1.35}
+.hon{list-style:none;display:grid;gap:5px}
+.hon li{padding-left:15px;position:relative;font-size:11.5px;line-height:1.35}
 .hon li::before{content:"▪";position:absolute;left:0;color:var(--red)}
-@media(max-width:620px){.two{grid-template-columns:1fr}.skl{grid-template-columns:1fr}}
+
+@media(max-width:680px){
+  .head{grid-template-columns:1fr}
+  .head .meta{text-align:left;align-items:flex-start;margin-top:6px}
+  .cols{grid-template-columns:1fr;gap:0}
+  .col>section:last-child{border-bottom:1px solid var(--line)}
+  .body section:last-child{border-bottom:0}
+}
+
+@page{size:Letter;margin:0.3in}
 @media print{
-  body{background:#fff;padding:0}
-  .page{border:0;box-shadow:none;max-width:none;background:#fff}
+  html,body{background:#fff}
+  body{padding:0;font-size:9pt;line-height:1.3;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{border:0;box-shadow:none;max-width:none;width:100%;background:#fff}
   .topbar{display:none}
   a{color:var(--ink)}
+  .head{padding:12px 0 9px}
+  .head .nm{font-size:30pt}
+  .head .tg{font-size:11.5pt;margin-top:5px}
+  .head .meta{font-size:8.4pt}
+  .body{padding:8px 0 4px}
+  .cols{gap:0 22px}
+  section{padding:6px 0;break-inside:avoid}
+  h2{margin-bottom:7px;font-size:9.5pt}
+  .entry{margin-bottom:7px;break-inside:avoid}
+  .entry .ti{font-size:11pt}
+  .entry .desc{font-size:9pt;margin-top:3px}
+  .stack{font-size:8pt;margin-top:3px}
+  .skl dd,.hon li{font-size:8.6pt}
+  .hon{gap:4px}
 }
 </style>
 </head>
 <body>
 <div class="page">
   <div class="topbar">
-    <span>RÉSUMÉ · REV 2026.05</span>
+    <span>RÉSUMÉ · REV 2026.05 · SHEET 1/1</span>
     <span><a href="index.html">← portfolio</a> &nbsp;·&nbsp; <a href="Resume.pdf" target="_blank" rel="noopener">download PDF ↓</a></span>
   </div>
 
   <header class="head">
-    <div class="nm">Nirav Surabhi</div>
-    <p class="tg">Half on a <span class="s">screen</span>, half on a <span class="w">workbench</span> — software + mechanical engineering.</p>
+    <div>
+      <div class="nm">Nirav Surabhi</div>
+      <p class="tg">Half on a <span class="s">screen</span>, half on a <span class="w">workbench</span> — software + mechanical engineering.</p>
+    </div>
     <div class="meta">
       <span>Brambleton, VA</span>
       <a href="mailto:niravsurabhi@gmail.com" data-copy-email title="Click to copy"><span data-copy-label>niravsurabhi@gmail.com</span></a>
@@ -84,128 +120,117 @@ h2::after{content:"";flex:1;height:0;border-top:1px solid var(--line)}
   </header>
 
   <div class="body">
-    <section>
-      <h2>Education</h2>
-      <div class="entry">
-        <div class="r1"><span class="ti">Purdue University</span><span class="wh">FALL 2026 (INCOMING)</span></div>
-        <div class="org">B.S. Mechanical Engineering</div>
-      </div>
-      <div class="entry">
-        <div class="r1"><span class="ti">Independence High School</span><span class="wh">GRADUATING JUN 2026</span></div>
-        <div class="org">Brambleton, VA · Senior</div>
-      </div>
-    </section>
+    <div class="cols">
 
-    <section>
-      <h2>Software — Founder Projects</h2>
-      <div class="entry">
-        <div class="r1"><span class="ti">Chad vs. Chud</span><span class="wh">2026–NOW · CO-FOUNDER &amp; CEO</span></div>
-        <div class="org">chadvschud.com</div>
-        <ul>
-          <li>Live web app where people join real-time sessions and a custom CNN ranks faces from live video.</li>
-          <li>Trained the model, wrote the backend, shipped on Fly.io. <strong>10,000+ users, 100+ concurrent.</strong></li>
-        </ul>
-        <div class="stack">Python · PyTorch · FastAPI · Next.js · Tailwind · Fly.io</div>
-      </div>
-      <div class="entry">
-        <div class="r1"><span class="ti">b2alpha.io</span><span class="wh">2026–NOW · CO-FOUNDER &amp; CEO</span></div>
-        <div class="org">b2alpha.io</div>
-        <ul>
-          <li>Open agent-to-agent protocol: secure messaging + DNS integration.</li>
-          <li>Prompt engineering to make models emit structured output other agents can parse. <strong>2,000+ business users.</strong></li>
-        </ul>
-        <div class="stack">TypeScript · Node.js · OpenAI API · Vercel · Supabase · DNS</div>
-      </div>
-      <div class="entry">
-        <div class="r1"><span class="ti">PredictionView</span><span class="wh">2026–NOW · CO-FOUNDER &amp; CEO</span></div>
-        <div class="org">predictionview.app</div>
-        <ul>
-          <li>Analytics for prediction markets — charts, signals, comparisons.</li>
-          <li>Own the backend, tests, and most of the debugging.</li>
-        </ul>
-        <div class="stack">Next.js · TypeScript · Supabase · Recharts</div>
-      </div>
-      <div class="entry">
-        <div class="r1"><span class="ti">Khali</span><span class="wh">2025–2026 · CO-FOUNDER &amp; CEO</span></div>
-        <div class="org">khali.info</div>
-        <ul>
-          <li>News app with a short-form (Reels-style) video feed, built to get past the spin.</li>
-          <li>Submitted to Y Combinator's Spring 2026 batch.</li>
-        </ul>
-        <div class="stack">React Native · Expo · Supabase · News APIs</div>
-      </div>
-    </section>
+      <!-- ============ COLUMN A ============ -->
+      <div class="col">
+        <section class="flush">
+          <h2>Education</h2>
+          <div class="entry">
+            <div class="r1"><span class="ti">Purdue University</span><span class="wh">FALL 2026 · INCOMING</span></div>
+            <div class="org">B.S. Mechanical Engineering</div>
+          </div>
+          <div class="entry">
+            <div class="r1"><span class="ti">Independence High School</span><span class="wh">GRAD. JUN 2026</span></div>
+            <div class="org">Loudoun County, VA · Senior</div>
+            <div class="desc">Coursework: AP Computer Science A, AP Physics C, Multivariable Calculus.</div>
+          </div>
+          <div class="entry">
+            <div class="r1"><span class="ti">Central Virginia Governor's School</span><span class="wh">JUN–JUL 2024</span></div>
+            <div class="org">Science &amp; Technology · Mathematics scholar</div>
+          </div>
+        </section>
 
-    <section>
-      <h2>Mechanical / Hardware</h2>
-      <div class="entry">
-        <div class="r1"><span class="ti">Passive Vortex Propulsion</span><span class="wh">2024–2025 · FIRST AUTHOR</span></div>
-        <ul>
-          <li>Built a wind tunnel from scratch; soldered and calibrated the load cells with an Arduino; ran CFD in Fusion 360.</li>
-          <li>First demonstration of passive vortex propulsion in air — published first-author paper; AIAA award &amp; NASA Goddard invitation.</li>
-        </ul>
-        <div class="stack">Arduino · C++ · load cells · Fusion 360 · CFD · Python</div>
-      </div>
-      <div class="entry">
-        <div class="r1"><span class="ti">FTC Robotics — Absolute Zero (12096)</span><span class="wh">2022–2026 · CAPTAIN &amp; LEAD PROGRAMMER</span></div>
-        <ul>
-          <li>Four years; CADded and built every part in Fusion 360.</li>
-          <li>Wrote autonomous and tele-op in Java — PID loops, sensor fusion, odometry. Reached the Chesapeake championship.</li>
-        </ul>
-      </div>
-      <div class="entry">
-        <div class="r1"><span class="ti">Electric Vehicle &amp; Salinity Sensor</span><span class="wh">SCIENCE OLYMPIAD</span></div>
-        <ul>
-          <li>Autonomous EV that accelerates then brakes to a target distance — Arduino, goBILDA motor, quadrature encoder, PID.</li>
-          <li>Arduino salt-water salinity sensor reading conductivity.</li>
-        </ul>
-      </div>
-    </section>
+        <section>
+          <h2>Software — Founder Projects</h2>
+          <div class="entry">
+            <div class="r1"><span class="ti">Chad vs. Chud</span><span class="wh">2026–NOW · CO-FOUNDER/CEO</span></div>
+            <div class="org">chadvschud.com</div>
+            <div class="desc">Live web app; a custom CNN ranks faces from live video in real time. Trained the model, wrote the backend, shipped on Fly.io. <span class="met">10,000+ users, 100+ concurrent.</span></div>
+            <div class="stack">Python · PyTorch · FastAPI · Next.js · Tailwind · Fly.io</div>
+          </div>
+          <div class="entry">
+            <div class="r1"><span class="ti">b2alpha.io</span><span class="wh">2026–NOW · CO-FOUNDER/CEO</span></div>
+            <div class="org">b2alpha.io</div>
+            <div class="desc">Open agent-to-agent protocol — secure messaging + DNS integration; prompt engineering for structured, parseable output. <span class="met">2,000+ business users.</span></div>
+            <div class="stack">TypeScript · Node.js · OpenAI API · Vercel · Supabase · DNS</div>
+          </div>
+          <div class="entry">
+            <div class="r1"><span class="ti">PredictionView</span><span class="wh">2026–NOW · CO-FOUNDER/CEO</span></div>
+            <div class="org">predictionview.app</div>
+            <div class="desc">Analytics for prediction markets — charts, signals, comparisons. Own the backend, tests, and most of the debugging.</div>
+            <div class="stack">Next.js · TypeScript · Supabase · Recharts</div>
+          </div>
+          <div class="entry">
+            <div class="r1"><span class="ti">Khali</span><span class="wh">2025–2026 · CO-FOUNDER/CEO</span></div>
+            <div class="org">khali.info</div>
+            <div class="desc">News app with a short-form (Reels-style) video feed built to get past the spin. Submitted to Y Combinator's Spring 2026 batch.</div>
+            <div class="stack">React Native · Expo · Supabase · News APIs</div>
+          </div>
+        </section>
 
-    <section>
-      <h2>Experience</h2>
-      <div class="entry">
-        <div class="r1"><span class="ti">AI Engineer &amp; SWE Intern</span><span class="wh">FEB 2021–NOW</span></div>
-        <div class="org">Ember Learning (formerly DeAP Learning Labs)</div>
-        <ul>
-          <li>Wrote the LLM prompts behind AP-tutor chatbots; built automated AI grading for AP DBQs/FRQs against the official rubric.</li>
-          <li>Indexed lecture transcripts in a vector DB for timestamp-level search; led the company website.</li>
-          <li>Team landed a Microsoft &amp; OpenAI grant and crossed a $1M+ valuation.</li>
-        </ul>
+        <section>
+          <h2>Skills</h2>
+          <dl class="skl">
+            <dt>Languages</dt><dd>Java, Python, JavaScript, TypeScript, HTML, CSS, Git</dd>
+            <dt>AI / ML</dt><dd>Prompt engineering, LLMs, CNNs, computer vision, agent architecture</dd>
+            <dt>Cloud</dt><dd>Fly.io, Vercel, Supabase, Fusion 360</dd>
+            <dt>Hardware</dt><dd>Arduino, load cells, soldering, multimeter, PID control</dd>
+          </dl>
+        </section>
       </div>
-      <div class="entry">
-        <div class="r1"><span class="ti">CAD Intern</span><span class="wh">JUN 2025–MAY 2026</span></div>
-        <div class="org">I3 Simulations</div>
-        <ul><li>3D models and haptic-feedback prototypes for medical-training simulators.</li></ul>
-      </div>
-      <div class="entry">
-        <div class="r1"><span class="ti">Bike Mechanic</span><span class="wh">JUN 2021–AUG 2025</span></div>
-        <div class="org">The Bike Lane · intern → part-time</div>
-        <ul><li>Built bikes from the frame up; ran final safety checks.</li></ul>
-      </div>
-    </section>
 
-    <section class="two">
-      <div>
-        <h2>Skills</h2>
-        <dl class="skl">
-          <dt>Languages</dt><dd>Java, Python, JavaScript, TypeScript, HTML, CSS, Git</dd>
-          <dt>AI / ML</dt><dd>Prompt engineering, LLMs, CNNs, computer vision, agent architecture</dd>
-          <dt>Cloud</dt><dd>Fly.io, Vercel, Supabase, Fusion 360</dd>
-          <dt>Hardware</dt><dd>Arduino, load cells, soldering, multimeter, PID control</dd>
-        </dl>
+      <!-- ============ COLUMN B ============ -->
+      <div class="col">
+        <section class="flush">
+          <h2>Mechanical / Hardware</h2>
+          <div class="entry">
+            <div class="r1"><span class="ti">Passive Vortex Propulsion</span><span class="wh">2024–2025 · 1ST AUTHOR</span></div>
+            <div class="desc">Built a wind tunnel from scratch; soldered &amp; calibrated load cells with an Arduino; ran CFD in Fusion 360. <span class="met">First demonstration of passive vortex propulsion in air</span> — published first-author paper; AIAA award &amp; NASA Goddard invitation.</div>
+            <div class="stack">Arduino · C++ · load cells · Fusion 360 · CFD · Python</div>
+          </div>
+          <div class="entry">
+            <div class="r1"><span class="ti">FTC Robotics — Absolute Zero (12096)</span><span class="wh">2022–2026 · CAPTAIN</span></div>
+            <div class="desc">Four years as captain &amp; lead programmer; CADded and built every part in Fusion 360. Wrote autonomous &amp; tele-op in Java — PID loops, sensor fusion, odometry. Reached the Chesapeake championship.</div>
+          </div>
+          <div class="entry">
+            <div class="r1"><span class="ti">EV &amp; Salinity Sensor</span><span class="wh">SCIENCE OLYMPIAD</span></div>
+            <div class="desc">Autonomous EV that accelerates then brakes to a target distance (Arduino, goBILDA motor, quadrature encoder, PID); Arduino salt-water salinity sensor reading conductivity.</div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Experience</h2>
+          <div class="entry">
+            <div class="r1"><span class="ti">AI Engineer &amp; SWE Intern</span><span class="wh">FEB 2021–NOW</span></div>
+            <div class="org">Ember Learning (formerly DeAP Learning Labs)</div>
+            <div class="desc">Wrote the LLM prompts behind AP-tutor chatbots; built automated AI grading for AP DBQs/FRQs against the official rubric; indexed lecture transcripts in a vector DB for timestamp search; led the company website. <span class="met">Team landed a Microsoft &amp; OpenAI grant; $1M+ valuation.</span></div>
+          </div>
+          <div class="entry">
+            <div class="r1"><span class="ti">CAD Intern</span><span class="wh">JUN 2025–MAY 2026</span></div>
+            <div class="org">I3 Simulations</div>
+            <div class="desc">3D models and haptic-feedback prototypes for medical-training simulators.</div>
+          </div>
+          <div class="entry">
+            <div class="r1"><span class="ti">Bike Mechanic</span><span class="wh">JUN 2021–AUG 2025</span></div>
+            <div class="org">The Bike Lane · intern → part-time</div>
+            <div class="desc">Built bikes from the frame up; ran final safety checks.</div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Honors &amp; Music</h2>
+          <ul class="hon">
+            <li>AIAA Aerospace Award (RSEF special honor → NASA Goddard invitation)</li>
+            <li>Captain, Science Olympiad</li>
+            <li>Presidential Volunteer Service Award (Silver)</li>
+            <li>Central Virginia Governor's School for Science &amp; Technology — Mathematics, 2024</li>
+            <li>1st place, Agaudo guitar competition · All-Virginia Guitar Ensemble</li>
+          </ul>
+        </section>
       </div>
-      <div>
-        <h2>Honors &amp; Music</h2>
-        <ul class="hon">
-          <li>AIAA Aerospace Award (RSEF special honor → NASA Goddard invitation)</li>
-          <li>Captain, Science Olympiad</li>
-          <li>Presidential Volunteer Service Award (Silver)</li>
-          <li>Central Virginia Governor's School for Science &amp; Technology — Mathematics, 2024</li>
-          <li>1st place, Agaudo guitar competition · All-Virginia Guitar Ensemble</li>
-        </ul>
-      </div>
-    </section>
+
+    </div>
   </div>
 </div>
 
