@@ -4,21 +4,21 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Nirav Surabhi — Software + Mechanical Engineering</title>
-<meta name="description" content="Nirav Surabhi — 18, Brambleton VA. Half on a screen, half on a workbench. Software and mechanical engineering: live CNN apps, an IEEE first-author paper, FIRST Tech Challenge, classical guitar." />
+<meta name="description" content="Nirav Surabhi — software and mechanical engineering. A Honda Civic efficiency experiment became an IEEE paper on passive vortex propulsion; a TikTok habit became a bias-reducing news app." />
 <link rel="canonical" href="https://niravsurabhi.com/" />
 <meta name="theme-color" content="#ece6da" />
 
 <!-- Open Graph / Twitter -->
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Nirav Surabhi — Software + Mechanical Engineering" />
-<meta property="og:description" content="Half on a screen, half on a workbench. Chad vs. Chud (10K+ users), an IEEE-published wind tunnel, four years of FIRST Tech Challenge." />
+<meta property="og:description" content="A Honda Civic efficiency experiment became an IEEE paper; a TikTok habit became a bias-reducing news app." />
 <meta property="og:url" content="https://niravsurabhi.com/" />
 <meta property="og:image" content="https://niravsurabhi.com/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Nirav Surabhi — Software + Mechanical Engineering" />
-<meta name="twitter:description" content="Half on a screen, half on a workbench." />
+<meta name="twitter:description" content="Software + mechanical engineering, from Civic aerodynamics to bias-reducing news." />
 <meta name="twitter:image" content="https://niravsurabhi.com/og.png" />
 
 <!-- Favicon: inline SVG, split blue/red mark -->
@@ -94,14 +94,6 @@ header.bar{
   border-bottom:1.5px solid var(--ink);
 }
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex:0 0 auto}
-.brand .mk{
-  width:30px;height:30px;border:1.5px solid var(--ink);border-radius:50%;
-  display:grid;place-items:center;font-family:var(--disp);font-weight:900;font-size:13px;
-  position:relative;overflow:hidden;background:var(--paper);
-}
-.brand .mk::before{content:"";position:absolute;inset:0 50% 0 0;background:var(--blue-wash)}
-.brand .mk::after{content:"";position:absolute;inset:0 0 0 50%;background:var(--red-wash)}
-.brand .mk span{position:relative;z-index:1}
 .brand b{font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.04em;white-space:nowrap}
 nav.sheets{margin-left:auto;display:flex;align-items:center;gap:2px}
 nav.sheets a{
@@ -130,6 +122,7 @@ nav.sheets a.cv:hover{background:var(--ink);color:var(--paper)}
 .indicator .b{border-left:1.5px solid var(--ink)}
 .indicator .dot{width:9px;height:9px;border-radius:50%;background:var(--blue);align-self:center;transition:background .3s}
 body.is-work .indicator .dot{background:var(--red)}
+body.is-index .indicator{transform:translateY(calc(100% + 28px))}
 
 /* ============================ SECTION SCAFFOLD ============================ */
 section{position:relative;scroll-margin-top:var(--hdr)}
@@ -341,7 +334,7 @@ section{position:relative;scroll-margin-top:var(--hdr)}
 .figpair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
 /* ============================ SKILLS ============================ */
-.skills{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1.5px solid var(--ink);margin-top:clamp(24px,4vw,42px)}
+.skills{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1.5px solid var(--ink);margin-top:clamp(22px,3.5vw,38px)}
 .skillcol{padding:18px 18px 22px;border-left:1px solid var(--line)}
 .skillcol:first-child{border-left:0;padding-left:0}
 .skillcol h5{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin-bottom:12px}
@@ -452,12 +445,11 @@ html{scroll-behavior:smooth}
 @keyframes draw{to{stroke-dashoffset:0}}
 </style>
 </head>
-<body>
+<body class="is-index">
 
 <!-- ============================ HEADER ============================ -->
 <header class="bar">
   <a class="brand" href="#index" aria-label="Nirav Surabhi — top of page">
-    <span class="mk"><span>NS</span></span>
     <b>NIRAV&nbsp;SURABHI</b>
   </a>
   <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="sheetnav">MENU</button>
@@ -465,15 +457,16 @@ html{scroll-behavior:smooth}
     <a href="#software"><span class="nn">01</span> <span class="lbl">Software</span></a>
     <a href="#hardware"><span class="nn">02</span> <span class="lbl">Hardware</span></a>
     <a href="#work"><span class="nn">03</span> <span class="lbl">Experience</span></a>
-    <a href="#guitar"><span class="nn">04</span> <span class="lbl">Guitar</span></a>
-    <a href="#contact"><span class="nn">05</span> <span class="lbl">Contact</span></a>
+    <a href="#skills"><span class="nn">04</span> <span class="lbl">Skills</span></a>
+    <a href="#guitar"><span class="nn">05</span> <span class="lbl">Guitar</span></a>
+    <a href="#contact"><span class="nn">06</span> <span class="lbl">Contact</span></a>
     <a class="cv" href="resume.html">RÉSUMÉ <span aria-hidden="true">↗</span></a>
   </nav>
 </header>
 
 <!-- sheet indicator title-block tab -->
 <aside class="indicator" aria-hidden="true">
-  <div><span class="k">SHEET</span><span class="v"><span id="indSheet">00</span>/05</span></div>
+  <div><span class="k">SHEET</span><span class="v"><span id="indSheet">00</span>/06</span></div>
   <div class="b"><span class="k">SECTION</span><span class="v" id="indName">INDEX</span></div>
   <div class="b"><span class="k">SCALE</span><span class="v">1:1</span></div>
   <div class="b" style="padding-right:12px"><span class="dot"></span></div>
@@ -492,8 +485,8 @@ html{scroll-behavior:smooth}
     <div class="hero-grid">
       <div class="namewrap">
         <h1 class="hero-name">Nirav<span class="l2">Surabhi</span></h1>
-        <p class="hero-tag">Half on a <span class="scr">screen</span>, half on a <span class="wrk">workbench.</span></p>
-        <p class="hero-disc">// software + mechanical engineering — i train models &amp; ship apps, then go build the rig that tests the idea.</p>
+        <p class="hero-tag">Engineering curiosity into useful systems.</p>
+        <p class="hero-disc">// a Honda Civic efficiency experiment became passive vortex propulsion; a TikTok habit became Khali, a short-form news app that combines opposing sources.</p>
         <div class="hero-cta">
           <a class="btn solid" href="#software">See the work <span class="ar" aria-hidden="true">↓</span></a>
           <a class="btn" href="mailto:niravsurabhi@gmail.com" data-copy-email><span data-copy-label>Let's talk</span> <span class="ar" aria-hidden="true">→</span></a>
@@ -559,14 +552,14 @@ html{scroll-behavior:smooth}
       <div>
         <div class="pno">PROJ <b>01.A</b> · 2026–NOW · CO-FOUNDER &amp; CEO</div>
         <h3 class="ptitle">Chad vs. Chud</h3>
-        <div class="prole">Real-time computer vision · trained &amp; shipped solo</div>
-        <p class="pbody">A live web app where people join real-time sessions and a <b>custom CNN ranks faces from live video</b>, instantly. I trained the model, wrote the backend, and shipped it on Fly.io.</p>
+        <div class="prole">Real-time PvP face-rating game · full-stack + ML</div>
+        <p class="pbody">A real-time 1v1 face-rating battle — two players duel over webcam and an AI scores each face. I built the Next.js client, a <b>Socket.IO + WebRTC</b> matchmaking service, and a Python/FastAPI inference service running a <b>fine-tuned ResNet-18 + ArcFace ensemble</b> alongside an LLM scorer — plus tournaments, leaderboards, and a Stripe cosmetics economy.</p>
         <div class="pmetrics">
           <div class="pmetric"><div class="m-n">10,000+</div><div class="m-l">TOTAL USERS</div></div>
           <div class="pmetric"><div class="m-n">100+</div><div class="m-l">CONCURRENT</div></div>
         </div>
         <div class="stack">
-          <span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">FastAPI</span><span class="chip">Next.js</span><span class="chip">Tailwind</span><span class="chip">Fly.io</span>
+          <span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">FastAPI</span><span class="chip">WebRTC</span><span class="chip">Socket.io</span><span class="chip">PyTorch</span><span class="chip">Gemini</span><span class="chip">Supabase</span><span class="chip">Stripe</span><span class="chip">Fly.io</span>
         </div>
         <div class="plinks">
           <a class="plink" href="https://chadvschud.com" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
@@ -610,10 +603,10 @@ html{scroll-behavior:smooth}
       <div>
         <div class="pno">PROJ <b>01.C</b> · 2026–NOW · CO-FOUNDER &amp; CEO</div>
         <h3 class="ptitle">PredictionView</h3>
-        <div class="prole">Analytics for prediction markets</div>
-        <p class="pbody">Charts, signals, and comparisons across prediction markets. I own the <b>backend, the tests, and most of the debugging</b>.</p>
+        <div class="prole">A trading hub for Kalshi prediction markets</div>
+        <p class="pbody">Live market search, price charts, an <b>OpenAI (gpt-4o-mini) analyst</b> with web-search research, alerts, watchlists, and a trade journal/backtester. I own the <b>Express + Prisma/Postgres backend</b> — a 127-route API with cron sync jobs — plus the auth layer and the Vitest test suite.</p>
         <div class="stack">
-          <span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">Supabase</span><span class="chip">Recharts</span>
+          <span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Vite</span><span class="chip">Express</span><span class="chip">Prisma</span><span class="chip">PostgreSQL</span><span class="chip">OpenAI</span><span class="chip">lightweight-charts</span><span class="chip">Stripe</span>
         </div>
         <div class="plinks">
           <a class="plink" href="https://predictionview.app" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
@@ -632,10 +625,10 @@ html{scroll-behavior:smooth}
       <div>
         <div class="pno">PROJ <b>01.D</b> · 2025–2026 · CO-FOUNDER &amp; CEO</div>
         <h3 class="ptitle">Khali</h3>
-        <div class="prole">Short-form news feed · YC S26 applicant</div>
-        <p class="pbody">A news app with a Reels-style short-form video feed, built to <b>get past the spin</b>. Submitted to Y&nbsp;Combinator's Spring 2026 batch.</p>
+        <div class="prole">Short-form video news · native iOS + Expo · YC S26 applicant</div>
+        <p class="pbody">I was addicted to the TikTok scroll, so I tried to make that interaction useful instead of empty. Khali turns news into a swipe-through feed where each story combines reporting from opposing sources, presents one claim at a time, and lets you ask an OpenAI assistant for the evidence behind it. I built the native <b>SwiftUI iOS</b> app and the <b>Expo / React Native</b> app on a Node + Python backend that ingests sources, clusters events, and generates the clips and narration. Submitted to Y&nbsp;Combinator's Spring 2026 batch.</p>
         <div class="stack">
-          <span class="chip">React Native</span><span class="chip">Expo</span><span class="chip">Supabase</span><span class="chip">News APIs</span>
+          <span class="chip">Swift / SwiftUI</span><span class="chip">React Native</span><span class="chip">Expo</span><span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">Python</span><span class="chip">OpenAI</span><span class="chip">Supabase</span>
         </div>
         <div class="plinks">
           <a class="plink" href="https://khali.info" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
@@ -653,7 +646,7 @@ html{scroll-behavior:smooth}
       <div class="sheet-meta">
         <span class="tag">The Workbench</span>
         <h2 class="sheet-title">Hardware <em>/ built from scratch</em></h2>
-        <p class="sheet-sub">Where the soldering iron lives. CAD, control loops, load cells, and a wind tunnel I built to test an idea.</p>
+        <p class="sheet-sub">CAD, control loops, load cells, and a wind tunnel that started with a simple question: could I make my Honda Civic cut through air more efficiently?</p>
       </div>
     </div>
 
@@ -664,7 +657,7 @@ html{scroll-behavior:smooth}
           <div class="pno">PROJ <b>02.A</b> · 2024–2025 · FIRST AUTHOR</div>
           <h3 class="ptitle">Passive Vortex Propulsion</h3>
           <div class="prole">Self-built wind tunnel · CFD · published research</div>
-          <p class="pbody">I built a wind tunnel from scratch to test an idea about aerodynamic drag — <b>soldered and calibrated the load cells</b> with an Arduino and ran the CFD in Fusion 360. It was the <b>first demonstration of passive vortex propulsion in air</b>.</p>
+          <p class="pbody">I wanted to make my Honda Civic more efficient, so I started experimenting with ways to reduce aerodynamic drag. That turned into a self-built wind tunnel, <b>soldered and calibrated load cells</b> with an Arduino, and CFD in Fusion 360. The work became a <b>first-author IEEE paper</b> on the first demonstration of passive vortex propulsion in air.</p>
           <div class="stack">
             <span class="chip">Arduino</span><span class="chip">C++</span><span class="chip">Load cells</span><span class="chip">Fusion 360</span><span class="chip">CFD</span><span class="chip">Python</span>
           </div>
@@ -840,7 +833,20 @@ html{scroll-behavior:smooth}
       </div>
     </div>
 
-    <!-- skills -->
+  </div>
+</section>
+
+<!-- ============================ 04 — SKILLS ============================ -->
+<section id="skills" aria-label="Skills">
+  <div class="wrap">
+    <div class="sheet-head">
+      <div class="sheet-no">04</div>
+      <div class="sheet-meta">
+        <span class="tag">Technical Inventory</span>
+        <h2 class="sheet-title">Skills</h2>
+        <p class="sheet-sub">Languages, AI/ML, cloud tools, and hardware I use across the work above.</p>
+      </div>
+    </div>
     <div class="skills">
       <div class="skillcol">
         <h5>Languages</h5>
@@ -862,11 +868,11 @@ html{scroll-behavior:smooth}
   </div>
 </section>
 
-<!-- ============================ 04 — GUITAR ============================ -->
+<!-- ============================ 05 — GUITAR ============================ -->
 <section id="guitar" aria-label="Classical guitar">
   <div class="wrap">
     <div class="sheet-head">
-      <div class="sheet-no">04</div>
+      <div class="sheet-no">05</div>
       <div class="sheet-meta">
         <span class="tag">B-Side</span>
         <h2 class="sheet-title">Classical Guitar</h2>
@@ -893,11 +899,11 @@ html{scroll-behavior:smooth}
   </div>
 </section>
 
-<!-- ============================ 05 — CONTACT / TITLE BLOCK ============================ -->
+<!-- ============================ 06 — CONTACT / TITLE BLOCK ============================ -->
 <section id="contact" aria-label="Honors and contact">
   <div class="wrap">
     <div class="sheet-head">
-      <div class="sheet-no">05</div>
+      <div class="sheet-no">06</div>
       <div class="sheet-meta">
         <span class="tag">For the Record</span>
         <h2 class="sheet-title">Honors &amp; Contact</h2>
@@ -932,7 +938,7 @@ html{scroll-behavior:smooth}
       <div class="tb-top">
         <div class="tb-name">
           <div class="big">Let's<br />Build<br />Some<span class="amp">thing.</span></div>
-          <p>Recruiter, founder, or fellow builder — I read every message. I'm an incoming Purdue ME with a shipping track record on both sides of the screen.</p>
+          <p>Recruiter, founder, or fellow builder — I read every message. I'm an incoming Purdue ME with a shipping track record across software, hardware, and research.</p>
         </div>
         <div class="tb-contactlinks">
           <a class="tbc" href="mailto:niravsurabhi@gmail.com" data-copy-email>
@@ -957,7 +963,7 @@ html{scroll-behavior:smooth}
         <div class="tb-cell"><span class="k">TITLE</span><span class="v">PORTFOLIO</span></div>
         <div class="tb-cell"><span class="k">DISCIPLINE</span><span class="v">SW + ME</span></div>
         <div class="tb-cell"><span class="k">LOCATION</span><span class="v">BRAMBLETON, VA</span></div>
-        <div class="tb-cell"><span class="k">SHEET</span><span class="v">05 / 05</span></div>
+        <div class="tb-cell"><span class="k">SHEET</span><span class="v">06 / 06</span></div>
         <div class="tb-cell"><span class="k">REV</span><span class="v">2026.05 — A</span></div>
       </div>
     </div>
@@ -1206,7 +1212,7 @@ html{scroll-behavior:smooth}
   });
 
   /* ---------- sheet indicator ---------- */
-  var sections = [['index','INDEX','00'],['software','SOFTWARE','01'],['hardware','HARDWARE','02'],['work','EXPERIENCE','03'],['guitar','GUITAR','04'],['contact','CONTACT','05']];
+  var sections = [['index','INDEX','00'],['software','SOFTWARE','01'],['hardware','HARDWARE','02'],['work','EXPERIENCE','03'],['skills','SKILLS','04'],['guitar','GUITAR','05'],['contact','CONTACT','06']];
   var indSheet = document.getElementById('indSheet'), indName = document.getElementById('indName');
   if('IntersectionObserver' in window){
     var io2 = new IntersectionObserver(function(es){
@@ -1214,11 +1220,16 @@ html{scroll-behavior:smooth}
         if(en.isIntersecting){
           var m = sections.filter(function(s){ return s[0] === en.target.id; })[0];
           if(m){ indSheet.textContent = m[2]; indName.textContent = m[1];
+            document.body.classList.toggle('is-index', en.target.id==='index');
             document.body.classList.toggle('is-work', en.target.id==='hardware'); }
         }
       });
     },{rootMargin:'-45% 0px -50% 0px'});
     sections.forEach(function(s){ var el = document.getElementById(s[0]); if(el) io2.observe(el); });
+  } else {
+    window.addEventListener('scroll', function(){
+      document.body.classList.toggle('is-index', window.scrollY < window.innerHeight * 0.45);
+    });
   }
 
   /* ---------- ambient airflow streamlines (decorative) ---------- */
