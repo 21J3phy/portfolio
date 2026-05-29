@@ -331,7 +331,9 @@ section{position:relative;scroll-margin-top:var(--hdr)}
 .lb-dl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.06em;color:var(--ink);background:var(--paper);
   border:1.5px solid var(--paper);padding:7px 13px;text-decoration:none;white-space:nowrap}
 .lb-dl:hover{background:#fff}
-.lb-inner iframe.lb-doc{width:100%;height:78vh;border:1.5px solid rgba(236,230,218,.4);background:#fff;display:block}
+.lb-pages{width:100%;max-height:78vh;overflow-y:auto;background:#fff;border:1.5px solid rgba(236,230,218,.4);-webkit-overflow-scrolling:touch}
+.lb-pages .lb-page{display:block;width:100%;height:auto;max-height:none;object-fit:fill;border:0}
+.lb-pages .lb-page+.lb-page{border-top:1px solid rgba(0,0,0,.1)}
 /* clickable + paired figures (CAD renders) */
 .fig-btn{padding:0;cursor:zoom-in;color:inherit;font:inherit;display:block;width:100%}
 .fig-btn img{transition:transform .3s}
@@ -674,8 +676,8 @@ html{scroll-behavior:smooth}
             <div class="stamp">IEEE<small>first-author paper</small></div>
           </div>
           <div class="plinks" style="margin-top:16px">
-            <a class="plink" href="paper.pdf" data-doc data-title="Passive Vortex Propulsion — paper (IEEE)" target="_blank" rel="noopener">Read the paper <span class="ar" aria-hidden="true">↗</span></a>
-            <a class="plink" href="conference-certificate.pdf" data-doc data-title="Conference certificate" target="_blank" rel="noopener">Certificate <span class="ar" aria-hidden="true">↗</span></a>
+            <a class="plink" href="paper.pdf" data-doc data-pdf="paper.pdf" data-base="img/docs/paper" data-pages="5" data-title="Passive Vortex Propulsion — paper (IEEE)" target="_blank" rel="noopener">Read the paper <span class="ar" aria-hidden="true">↗</span></a>
+            <a class="plink" href="conference-certificate.pdf" data-doc data-pdf="conference-certificate.pdf" data-base="img/docs/cert" data-pages="1" data-title="Conference certificate" target="_blank" rel="noopener">Certificate <span class="ar" aria-hidden="true">↗</span></a>
           </div>
         </div>
       </div>
@@ -733,7 +735,7 @@ html{scroll-behavior:smooth}
         </div>
         <div class="stack"><span class="chip">Arduino</span><span class="chip">RS-555 motor</span><span class="chip">188:1 planetary</span><span class="chip">PWM</span><span class="chip">Roboclaw</span><span class="chip">Fusion 360</span></div>
         <div class="plinks">
-          <a class="plink" href="motor-resistance-poster.pdf" data-doc data-title="Motor-Based Resistance System — RSEF 2025 poster" target="_blank" rel="noopener">Read the poster <span class="ar" aria-hidden="true">↗</span></a>
+          <a class="plink" href="motor-resistance-poster.pdf" data-doc data-pdf="motor-resistance-poster.pdf" data-base="img/docs/poster" data-pages="2" data-title="Motor-Based Resistance System — RSEF 2025 poster" target="_blank" rel="noopener">Read the poster <span class="ar" aria-hidden="true">↗</span></a>
           <a class="plink" href="img/motor-sim.webp" data-lightimg="img/motor-sim.webp" data-lightcap="FEA — horizontal force on the drawer slides (Fusion 360)" target="_blank" rel="noopener">Stress analysis (FEA) <span class="ar" aria-hidden="true">↗</span></a>
         </div>
       </div>
@@ -1161,10 +1163,16 @@ html{scroll-behavior:smooth}
   function openVid(src, poster, cap){
     open('<video src="'+src+'" poster="'+poster+'" controls autoplay playsinline></video>', cap);
   }
-  function openDoc(src, title){
-    open('<div class="lb-docbar"><span class="lb-doc-t">'+title+'</span>' +
-         '<a class="lb-dl" href="'+src+'" download>Download PDF ↓</a></div>' +
-         '<iframe class="lb-doc" src="'+src+'" title="'+title+'"></iframe>', '');
+  // PDFs are shown as pre-rendered page images in a scrollable column — every page,
+  // every browser (Safari won't paginate an inline <iframe> PDF), plus a real download.
+  function openDoc(o){
+    var pages = '';
+    for(var i = 1; i <= o.pages; i++){
+      pages += '<img class="lb-page" src="' + o.base + '-' + i + '.webp" alt="' + o.title + ' — page ' + i + ' of ' + o.pages + '" loading="lazy" />';
+    }
+    open('<div class="lb-docbar"><span class="lb-doc-t">' + o.title + (o.pages > 1 ? ' · ' + o.pages + ' pages' : '') + '</span>' +
+         '<a class="lb-dl" href="' + o.pdf + '" download>Download PDF ↓</a></div>' +
+         '<div class="lb-pages">' + pages + '</div>', '');
   }
   function close(){
     lb.classList.remove('open'); lbMedia.innerHTML = ''; document.body.style.overflow = '';
@@ -1179,7 +1187,12 @@ html{scroll-behavior:smooth}
     a.addEventListener('click', function(e){
       if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
       e.preventDefault();
-      openDoc(a.getAttribute('href'), a.getAttribute('data-title') || 'Document');
+      openDoc({
+        pdf:   a.getAttribute('data-pdf') || a.getAttribute('href'),
+        title: a.getAttribute('data-title') || 'Document',
+        base:  a.getAttribute('data-base'),
+        pages: +(a.getAttribute('data-pages') || 1)
+      });
     });
   });
 
