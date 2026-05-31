@@ -122,6 +122,19 @@ nav.sheets a.cv:hover{background:var(--ink);color:var(--paper)}
 .indicator .b{border-left:1.5px solid var(--ink)}
 .indicator .dot{width:9px;height:9px;border-radius:50%;background:var(--blue);align-self:center;transition:background .3s}
 body.is-work .indicator .dot{background:var(--red)}
+
+/* hide the native page scrollbar — replaced by the drafting-style .scrollrail */
+html{scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar{width:0;height:0;display:none}
+.scrollrail{position:fixed;top:calc(var(--hdr) + 16px);bottom:20px;right:12px;width:14px;z-index:45}
+.scrollrail .track{position:absolute;top:0;bottom:0;right:6px;width:1.5px;background:repeating-linear-gradient(var(--ink) 0 2px,transparent 2px 7px);opacity:.4}
+.scrollrail .fill{position:absolute;top:0;right:6px;width:1.5px;height:0;background:var(--red)}
+.scrollrail .thumb{position:absolute;top:0;right:0;width:14px;height:14px;border:1.5px solid var(--ink);background:var(--paper);cursor:grab;box-shadow:2px 2px 0 rgba(25,21,16,.16);touch-action:none}
+.scrollrail .thumb::after{content:"";position:absolute;inset:3px;border:1px solid var(--ink);opacity:.45}
+.scrollrail .thumb:active{cursor:grabbing}
+.scrollrail:hover .thumb,.scrollrail .thumb:active{background:var(--red);box-shadow:2px 2px 0 var(--ink)}
+.scrollrail:hover .thumb::after{border-color:var(--paper)}
+@media(max-width:860px){.scrollrail{display:none}}
 body.is-index .indicator{transform:translateY(calc(100% + 28px))}
 
 /* ============================ SECTION SCAFFOLD ============================ */
@@ -161,7 +174,7 @@ section{position:relative;scroll-margin-top:var(--hdr)}
 
 /* split portrait */
 .portrait{position:relative;border:1.5px solid var(--ink);background:var(--paper-2);aspect-ratio:1/1;overflow:hidden}
-.portrait img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.04) brightness(1.02)}
+.portrait img{width:100%;height:100%;object-fit:cover}
 .portrait .tint{position:absolute;top:0;bottom:0;mix-blend-mode:color}
 .portrait .ts{left:0;right:50%;background:var(--blue)}
 .portrait .tw{left:50%;right:0;background:var(--red)}
@@ -453,8 +466,8 @@ html{scroll-behavior:smooth}
   </a>
   <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="sheetnav">MENU</button>
   <nav class="sheets" id="sheetnav" aria-label="Sheet index">
-    <a href="#software"><span class="nn">01</span> <span class="lbl">Software</span></a>
-    <a href="#hardware"><span class="nn">02</span> <span class="lbl">Hardware</span></a>
+    <a href="#hardware"><span class="nn">01</span> <span class="lbl">Hardware</span></a>
+    <a href="#software"><span class="nn">02</span> <span class="lbl">Software</span></a>
     <a href="#work"><span class="nn">03</span> <span class="lbl">Experience</span></a>
     <a href="#skills"><span class="nn">04</span> <span class="lbl">Skills</span></a>
     <a href="#guitar"><span class="nn">05</span> <span class="lbl">Guitar</span></a>
@@ -471,6 +484,13 @@ html{scroll-behavior:smooth}
   <div class="b" style="padding-right:12px"><span class="dot"></span></div>
 </aside>
 
+<!-- custom drafting-style scroll rail (replaces the native scrollbar) -->
+<div class="scrollrail" id="scrollrail" aria-hidden="true">
+  <div class="track"></div>
+  <div class="fill"></div>
+  <div class="thumb"></div>
+</div>
+
 <main>
 
 <!-- ============================ 00 — HERO ============================ -->
@@ -484,21 +504,16 @@ html{scroll-behavior:smooth}
     <div class="hero-grid">
       <div class="namewrap">
         <h1 class="hero-name">Nirav<span class="l2">Surabhi</span></h1>
-        <p class="hero-tag">Engineering curiosity into useful systems.</p>
         <p class="hero-disc">// a Honda Civic efficiency experiment became passive vortex propulsion; a TikTok habit became Khali, a short-form news app that combines opposing sources.</p>
         <div class="hero-cta">
-          <a class="btn solid" href="#software">See the work <span class="ar" aria-hidden="true">↓</span></a>
+          <a class="btn solid" href="#hardware">See the work <span class="ar" aria-hidden="true">↓</span></a>
           <a class="btn" href="mailto:niravsurabhi@gmail.com" data-copy-email><span data-copy-label>Let's talk</span> <span class="ar" aria-hidden="true">→</span></a>
         </div>
       </div>
       <div class="portrait-wrap">
         <figure class="portrait">
-          <img src="img/face.webp" alt="Portrait of Nirav Surabhi, split-toned blue on the left and red on the right" width="600" height="600" />
-          <span class="tint ts"></span><span class="tint tw"></span>
-          <span class="seam"></span>
+          <img src="img/face.webp" alt="Portrait of Nirav Surabhi" width="600" height="600" />
           <span class="pcorn pc1"></span><span class="pcorn pc2"></span><span class="pcorn pc3"></span><span class="pcorn pc4"></span>
-          <figcaption class="plabel ls">SOFTWARE</figcaption>
-          <span class="plabel lw">MECHANICAL</span>
         </figure>
       </div>
     </div>
@@ -528,120 +543,11 @@ html{scroll-behavior:smooth}
   </div>
 </section>
 
-<!-- ============================ 01 — SOFTWARE ============================ -->
-<section id="software" class="theme-soft" aria-label="Software projects">
-  <div class="wrap">
-    <div class="sheet-head">
-      <div class="sheet-no">01</div>
-      <div class="sheet-meta">
-        <span class="tag">The Screen</span>
-        <h2 class="sheet-title">Software <em>/ shipped &amp; live</em></h2>
-        <p class="sheet-sub">Four products I co-founded and run as CEO — models trained, backends written, deployed to real users.</p>
-      </div>
-    </div>
-
-    <!-- Chad vs Chud (featured) -->
-    <article class="proj feat">
-      <div class="figc">
-        <div class="fig" style="aspect-ratio:3/2">
-          <img src="img/shot-chad.webp" alt="Screenshot of Chad vs. Chud, a live face-ranking web app" width="1200" height="800" />
-          <span class="cap">FIG. 01 — chadvschud.com</span>
-        </div>
-      </div>
-      <div>
-        <div class="pno">PROJ <b>01.A</b> · 2026–NOW · CO-FOUNDER &amp; CEO</div>
-        <h3 class="ptitle">Chad vs. Chud</h3>
-        <div class="prole">Real-time PvP face-rating game · full-stack + ML</div>
-        <p class="pbody">A real-time 1v1 face-rating battle — two players duel over webcam and an AI scores each face. I built the Next.js client, a <b>Socket.IO + WebRTC</b> matchmaking service, and a Python/FastAPI inference service running a <b>fine-tuned ResNet-18 + ArcFace ensemble</b> alongside an LLM scorer — plus tournaments, leaderboards, and a Stripe cosmetics economy.</p>
-        <div class="pmetrics">
-          <div class="pmetric"><div class="m-n">10,000+</div><div class="m-l">TOTAL USERS</div></div>
-          <div class="pmetric"><div class="m-n">100+</div><div class="m-l">CONCURRENT</div></div>
-        </div>
-        <div class="stack">
-          <span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">FastAPI</span><span class="chip">WebRTC</span><span class="chip">Socket.io</span><span class="chip">PyTorch</span><span class="chip">Gemini</span><span class="chip">Supabase</span><span class="chip">Stripe</span><span class="chip">Fly.io</span>
-        </div>
-        <div class="plinks">
-          <a class="plink" href="https://chadvschud.com" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-    </article>
-
-    <!-- b2alpha -->
-    <article class="proj rev">
-      <div class="figc">
-        <div class="fig" style="aspect-ratio:3/2">
-          <img src="img/shot-b2a.webp" alt="Screenshot of b2alpha.io, an agent-to-agent protocol dashboard" width="1200" height="800" />
-          <span class="cap">FIG. 02 — b2alpha.io</span>
-        </div>
-      </div>
-      <div>
-        <div class="pno">PROJ <b>01.B</b> · 2026–NOW · CO-FOUNDER &amp; CEO</div>
-        <h3 class="ptitle">b2alpha.io</h3>
-        <div class="prole">Open agent-to-agent protocol</div>
-        <p class="pbody">Secure messaging plus DNS integration so autonomous agents can find and talk to each other. Heavy <b>prompt engineering</b> to make models emit structured output other agents can reliably parse.</p>
-        <div class="pmetrics">
-          <div class="pmetric"><div class="m-n">2,000+</div><div class="m-l">BUSINESS USERS</div></div>
-        </div>
-        <div class="stack">
-          <span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">OpenAI API</span><span class="chip">Vercel</span><span class="chip">Supabase</span><span class="chip">DNS</span>
-        </div>
-        <div class="plinks">
-          <a class="plink" href="https://b2alpha.io" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-    </article>
-
-    <!-- PredictionView -->
-    <article class="proj">
-      <div class="figc">
-        <div class="fig" style="aspect-ratio:3/2">
-          <img src="img/shot-pv.webp" alt="Screenshot of PredictionView analytics charts for prediction markets" width="1200" height="800" />
-          <span class="cap">FIG. 03 — predictionview.app</span>
-        </div>
-      </div>
-      <div>
-        <div class="pno">PROJ <b>01.C</b> · 2026–NOW · CO-FOUNDER &amp; CEO</div>
-        <h3 class="ptitle">PredictionView</h3>
-        <div class="prole">A trading hub for Kalshi prediction markets</div>
-        <p class="pbody">Live market search, price charts, an <b>OpenAI (gpt-4o-mini) analyst</b> with web-search research, alerts, watchlists, and a trade journal/backtester. I own the <b>Express + Prisma/Postgres backend</b> — a 127-route API with cron sync jobs — plus the auth layer and the Vitest test suite.</p>
-        <div class="stack">
-          <span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Vite</span><span class="chip">Express</span><span class="chip">Prisma</span><span class="chip">PostgreSQL</span><span class="chip">OpenAI</span><span class="chip">lightweight-charts</span><span class="chip">Stripe</span>
-        </div>
-        <div class="plinks">
-          <a class="plink" href="https://predictionview.app" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-    </article>
-
-    <!-- Khali -->
-    <article class="proj rev">
-      <div class="figc">
-        <div class="fig" style="aspect-ratio:3/2">
-          <img src="img/shot-khali.webp" alt="Screenshot of Khali, a short-form news video feed app" width="1200" height="800" />
-          <span class="cap">FIG. 04 — khali.info</span>
-        </div>
-      </div>
-      <div>
-        <div class="pno">PROJ <b>01.D</b> · 2025–2026 · CO-FOUNDER &amp; CEO</div>
-        <h3 class="ptitle">Khali</h3>
-        <div class="prole">Short-form video news · native iOS + Expo · YC S26 applicant</div>
-        <p class="pbody">I was addicted to the TikTok scroll, so I tried to make that interaction useful instead of empty. Khali turns news into a swipe-through feed where each story combines reporting from opposing sources, presents one claim at a time, and lets you ask an OpenAI assistant for the evidence behind it. I built the native <b>SwiftUI iOS</b> app and the <b>Expo / React Native</b> app on a Node + Python backend that ingests sources, clusters events, and generates the clips and narration. Submitted to Y&nbsp;Combinator's Spring 2026 batch.</p>
-        <div class="stack">
-          <span class="chip">Swift / SwiftUI</span><span class="chip">React Native</span><span class="chip">Expo</span><span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">Python</span><span class="chip">OpenAI</span><span class="chip">Supabase</span>
-        </div>
-        <div class="plinks">
-          <a class="plink" href="https://khali.info" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-    </article>
-  </div>
-</section>
-
-<!-- ============================ 02 — HARDWARE ============================ -->
+<!-- ============================ 01 — HARDWARE ============================ -->
 <section id="hardware" class="theme-work" aria-label="Mechanical and hardware projects">
   <div class="wrap">
     <div class="sheet-head">
-      <div class="sheet-no">02</div>
+      <div class="sheet-no">01</div>
       <div class="sheet-meta">
         <span class="tag">The Workbench</span>
         <h2 class="sheet-title">Hardware <em>/ built from scratch</em></h2>
@@ -653,7 +559,7 @@ html{scroll-behavior:smooth}
     <div class="vortex">
       <div class="vortex-head">
         <div>
-          <div class="pno">PROJ <b>02.A</b> · 2024–2025 · FIRST AUTHOR</div>
+          <div class="pno">PROJ <b>01.A</b> · 2024–2025 · FIRST AUTHOR</div>
           <h3 class="ptitle">Passive Vortex Propulsion</h3>
           <div class="prole">Self-built wind tunnel · CFD · published research</div>
           <p class="pbody">I wanted to make my Honda Civic more efficient, so I started experimenting with ways to reduce aerodynamic drag. That turned into a self-built wind tunnel, <b>soldered and calibrated load cells</b> with an Arduino, and CFD in Fusion 360. The work became a <b>first-author IEEE paper</b> on the first demonstration of passive vortex propulsion in air.</p>
@@ -686,7 +592,7 @@ html{scroll-behavior:smooth}
     <div class="ftc">
       <div class="ftc-top">
         <div>
-          <div class="pno">PROJ <b>02.B</b> · 2022–2026 · CAPTAIN &amp; LEAD PROGRAMMER</div>
+          <div class="pno">PROJ <b>01.B</b> · 2022–2026 · CAPTAIN &amp; LEAD PROGRAMMER</div>
           <h3 class="ptitle">FTC Robotics — Absolute Zero <span style="color:var(--red)">#12096</span></h3>
           <div class="prole">Four seasons · every part CADded &amp; built · Chesapeake championship</div>
           <p class="pbody">Four years leading team 12096. I <b>CADded and built every part in Fusion 360</b> and wrote the autonomous and tele-op in Java — <b>PID loops, sensor fusion, odometry</b>. We took it to the Chesapeake championship.</p>
@@ -717,7 +623,7 @@ html{scroll-behavior:smooth}
         </button>
       </div>
       <div>
-        <div class="pno">PROJ <b>02.C</b> · 2025 · RSEF · FIRST AUTHOR</div>
+        <div class="pno">PROJ <b>01.C</b> · 2025 · RSEF · FIRST AUTHOR</div>
         <h3 class="ptitle">Motor-Based Resistance System</h3>
         <div class="prole">Portable strength trainer · designed, built &amp; tested by me</div>
         <p class="pbody">A compact, battery-powered resistance trainer — no weights, no mounting, no wall power. A <b>188:1 geared motor</b> on drawer slides gives smooth, <b>PWM-controlled resistance</b> from an Arduino. I designed and built it through three prototypes — eddy-current → chain-driven → geared — and tested it to a <b>linear, repeatable force curve (R² = 0.993)</b>.</p>
@@ -748,7 +654,7 @@ html{scroll-behavior:smooth}
         </div>
       </div>
       <div>
-        <div class="pno">PROJ <b>02.D</b> · SCIENCE OLYMPIAD · BRIDGE EVENT</div>
+        <div class="pno">PROJ <b>01.D</b> · SCIENCE OLYMPIAD · BRIDGE EVENT</div>
         <h3 class="ptitle">Truss Bridge</h3>
         <div class="prole">CADded &amp; built by me · iterated v1 → v2 for strength-to-weight</div>
         <p class="pbody">A wooden truss bridge for the Science Olympiad Bridge event, judged on load carried per gram. I CADded it in Fusion 360 and <b>iterated v1 → v2</b> — thinning members and reworking the top chord into an arch to shed weight while holding strength.</p>
@@ -769,7 +675,7 @@ html{scroll-behavior:smooth}
             <span class="cap">BUILT</span>
           </button>
         </div>
-        <div class="pno">PROJ <b>02.E</b> · SCIENCE OLYMPIAD</div>
+        <div class="pno">PROJ <b>01.E</b> · SCIENCE OLYMPIAD</div>
         <h4>Electric Vehicle</h4>
         <div class="prole">Accelerate, then brake to a target distance</div>
         <p class="pbody">An autonomous vehicle that accelerates then brakes to stop on a target distance. I CADded it in Fusion 360 and built it — Arduino, a goBILDA motor, and a quadrature encoder, tuned with <b>PID</b>.</p>
@@ -781,13 +687,122 @@ html{scroll-behavior:smooth}
             SALT-WATER SALINITY SENSOR<br /><span style="opacity:.6">conductivity probe · Arduino</span>
           </div>
         </div>
-        <div class="pno">PROJ <b>02.F</b> · SCIENCE OLYMPIAD</div>
+        <div class="pno">PROJ <b>01.F</b> · SCIENCE OLYMPIAD</div>
         <h4>Salt-water Salinity Sensor</h4>
         <div class="prole">Reads salinity from conductivity</div>
         <p class="pbody">An Arduino device that reads the salinity of salt water — a calibrated conductivity probe feeding a microcontroller.</p>
         <div class="stack"><span class="chip">Arduino</span><span class="chip">Conductivity</span><span class="chip">Sensor calibration</span></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============================ 02 — SOFTWARE ============================ -->
+<section id="software" class="theme-soft" aria-label="Software projects">
+  <div class="wrap">
+    <div class="sheet-head">
+      <div class="sheet-no">02</div>
+      <div class="sheet-meta">
+        <span class="tag">The Screen</span>
+        <h2 class="sheet-title">Software <em>/ shipped &amp; live</em></h2>
+        <p class="sheet-sub">Four products I co-founded and run as CEO — models trained, backends written, deployed to real users.</p>
+      </div>
+    </div>
+
+    <!-- Chad vs Chud (featured) -->
+    <article class="proj feat">
+      <div class="figc">
+        <div class="fig" style="aspect-ratio:3/2">
+          <img src="img/shot-chad.webp" alt="Screenshot of Chad vs. Chud, a live face-ranking web app" width="1200" height="800" />
+          <span class="cap">FIG. 01 — chadvschud.com</span>
+        </div>
+      </div>
+      <div>
+        <div class="pno">PROJ <b>02.A</b> · 2026–NOW · CO-FOUNDER &amp; CEO</div>
+        <h3 class="ptitle">Chad vs. Chud</h3>
+        <div class="prole">Real-time PvP face-rating game · full-stack + ML</div>
+        <p class="pbody">A real-time 1v1 face-rating battle — two players duel over webcam and an AI scores each face. I built the Next.js client, a <b>Socket.IO + WebRTC</b> matchmaking service, and a Python/FastAPI inference service running a <b>fine-tuned ResNet-18 + ArcFace ensemble</b> alongside an LLM scorer — plus tournaments, leaderboards, and a Stripe cosmetics economy.</p>
+        <div class="pmetrics">
+          <div class="pmetric"><div class="m-n">10,000+</div><div class="m-l">TOTAL USERS</div></div>
+          <div class="pmetric"><div class="m-n">100+</div><div class="m-l">CONCURRENT</div></div>
+        </div>
+        <div class="stack">
+          <span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">FastAPI</span><span class="chip">WebRTC</span><span class="chip">Socket.io</span><span class="chip">PyTorch</span><span class="chip">Gemini</span><span class="chip">Supabase</span><span class="chip">Stripe</span><span class="chip">Fly.io</span>
+        </div>
+        <div class="plinks">
+          <a class="plink" href="https://chadvschud.com" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- b2alpha -->
+    <article class="proj rev">
+      <div class="figc">
+        <div class="fig" style="aspect-ratio:3/2">
+          <img src="img/shot-b2a.webp" alt="Screenshot of b2alpha.io, an agent-to-agent protocol dashboard" width="1200" height="800" />
+          <span class="cap">FIG. 02 — b2alpha.io</span>
+        </div>
+      </div>
+      <div>
+        <div class="pno">PROJ <b>02.B</b> · 2026–NOW · CO-FOUNDER &amp; CEO</div>
+        <h3 class="ptitle">b2alpha.io</h3>
+        <div class="prole">Open agent-to-agent protocol</div>
+        <p class="pbody">Secure messaging plus DNS integration so autonomous agents can find and talk to each other. Heavy <b>prompt engineering</b> to make models emit structured output other agents can reliably parse.</p>
+        <div class="pmetrics">
+          <div class="pmetric"><div class="m-n">2,000+</div><div class="m-l">BUSINESS USERS</div></div>
+        </div>
+        <div class="stack">
+          <span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">OpenAI API</span><span class="chip">Vercel</span><span class="chip">Supabase</span><span class="chip">DNS</span>
+        </div>
+        <div class="plinks">
+          <a class="plink" href="https://b2alpha.io" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- PredictionView -->
+    <article class="proj">
+      <div class="figc">
+        <div class="fig" style="aspect-ratio:3/2">
+          <img src="img/shot-pv.webp" alt="Screenshot of PredictionView analytics charts for prediction markets" width="1200" height="800" />
+          <span class="cap">FIG. 03 — predictionview.app</span>
+        </div>
+      </div>
+      <div>
+        <div class="pno">PROJ <b>02.C</b> · 2026–NOW · CO-FOUNDER &amp; CEO</div>
+        <h3 class="ptitle">PredictionView</h3>
+        <div class="prole">A trading hub for Kalshi prediction markets</div>
+        <p class="pbody">Live market search, price charts, an <b>OpenAI (gpt-4o-mini) analyst</b> with web-search research, alerts, watchlists, and a trade journal/backtester. I own the <b>Express + Prisma/Postgres backend</b> — a 127-route API with cron sync jobs — plus the auth layer and the Vitest test suite.</p>
+        <div class="stack">
+          <span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Vite</span><span class="chip">Express</span><span class="chip">Prisma</span><span class="chip">PostgreSQL</span><span class="chip">OpenAI</span><span class="chip">lightweight-charts</span><span class="chip">Stripe</span>
+        </div>
+        <div class="plinks">
+          <a class="plink" href="https://predictionview.app" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Khali -->
+    <article class="proj rev">
+      <div class="figc">
+        <div class="fig" style="aspect-ratio:3/2">
+          <img src="img/shot-khali.webp" alt="Screenshot of Khali, a short-form news video feed app" width="1200" height="800" />
+          <span class="cap">FIG. 04 — khali.info</span>
+        </div>
+      </div>
+      <div>
+        <div class="pno">PROJ <b>02.D</b> · 2025–2026 · CO-FOUNDER &amp; CEO</div>
+        <h3 class="ptitle">Khali</h3>
+        <div class="prole">A news startup · native iOS + Expo · YC S26 applicant</div>
+        <p class="pbody">I was addicted to the TikTok scroll, so I tried to make that interaction useful instead of empty. Khali turns news into a swipe-through feed where each story combines reporting from opposing sources, presents one claim at a time, and lets you ask an OpenAI assistant for the evidence behind it. I built the native <b>SwiftUI iOS</b> app and the <b>Expo / React Native</b> app on a Node + Python backend that ingests sources, clusters events, and generates the clips and narration. Submitted to Y&nbsp;Combinator's Spring 2026 batch.</p>
+        <div class="stack">
+          <span class="chip">Swift / SwiftUI</span><span class="chip">React Native</span><span class="chip">Expo</span><span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">Python</span><span class="chip">OpenAI</span><span class="chip">Supabase</span>
+        </div>
+        <div class="plinks">
+          <a class="plink" href="https://khali.info" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -875,7 +890,7 @@ html{scroll-behavior:smooth}
       <div class="sheet-meta">
         <span class="tag">B-Side</span>
         <h2 class="sheet-title">Classical Guitar</h2>
-        <p class="sheet-sub">The other half of the brain. Nylon strings, small rooms, no microphones.</p>
+        <p class="sheet-sub">The other half of the brain. Nylon strings, small rooms.</p>
       </div>
     </div>
     <div class="guitar-intro">
@@ -883,7 +898,7 @@ html{scroll-behavior:smooth}
       <div class="guitar-cred">
         <div class="gline"><span class="gk">AWARD</span><span><b>1st place</b>, the Agaudo competition</span></div>
         <div class="gline"><span class="gk">ENSEMBLE</span><span>Member, the <b>All-Virginia Guitar Ensemble</b></span></div>
-        <div class="gline"><span class="gk">COMMUNITY</span><span>I <b>organize concerts at local senior centers</b> — small rooms, no microphones</span></div>
+        <div class="gline"><span class="gk">COMMUNITY</span><span>I <b>organize concerts at local senior centers</b> — small rooms</span></div>
       </div>
     </div>
     <div class="deck-wrap">
@@ -1211,7 +1226,7 @@ html{scroll-behavior:smooth}
   });
 
   /* ---------- sheet indicator ---------- */
-  var sections = [['index','INDEX','00'],['software','SOFTWARE','01'],['hardware','HARDWARE','02'],['work','EXPERIENCE','03'],['skills','SKILLS','04'],['guitar','GUITAR','05'],['contact','CONTACT','06']];
+  var sections = [['index','INDEX','00'],['hardware','HARDWARE','01'],['software','SOFTWARE','02'],['work','EXPERIENCE','03'],['skills','SKILLS','04'],['guitar','GUITAR','05'],['contact','CONTACT','06']];
   var indSheet = document.getElementById('indSheet'), indName = document.getElementById('indName');
   if('IntersectionObserver' in window){
     var io2 = new IntersectionObserver(function(es){
@@ -1263,6 +1278,29 @@ html{scroll-behavior:smooth}
       }, function(){ window.location.href = 'mailto:' + EMAIL; });
     });
   });
+})();
+
+/* ---------- custom drafting-style scroll rail (replaces native scrollbar) ---------- */
+(function(){
+  var rail = document.getElementById('scrollrail');
+  if(!rail) return;
+  var fill = rail.querySelector('.fill'), thumb = rail.querySelector('.thumb');
+  function maxS(){ return Math.max(1, document.documentElement.scrollHeight - window.innerHeight); }
+  function travel(){ return Math.max(1, rail.clientHeight - thumb.offsetHeight); }
+  function update(){
+    var p = Math.min(1, Math.max(0, window.scrollY / maxS()));
+    var y = p * travel();
+    thumb.style.top = y + 'px';
+    fill.style.height = (y + thumb.offsetHeight / 2) + 'px';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  var drag = false;
+  thumb.addEventListener('pointerdown', function(e){ drag = true; e.preventDefault(); try{ thumb.setPointerCapture(e.pointerId); }catch(_){} });
+  window.addEventListener('pointermove', function(e){ if(!drag) return; var r = rail.getBoundingClientRect(); var p = (e.clientY - r.top - thumb.offsetHeight / 2) / travel(); p = Math.min(1, Math.max(0, p)); window.scrollTo(0, p * maxS()); });
+  window.addEventListener('pointerup', function(){ drag = false; });
+  rail.addEventListener('pointerdown', function(e){ if(e.target === thumb) return; var r = rail.getBoundingClientRect(); var p = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)); window.scrollTo({ top: p * maxS(), behavior: 'smooth' }); });
+  update();
 })();
 </script>
 </body>
