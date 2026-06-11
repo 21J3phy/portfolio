@@ -212,6 +212,31 @@ section{position:relative;scroll-margin-top:var(--hdr)}
   background:var(--ink);color:var(--paper);padding:4px 9px}
 .theme-soft .fig{box-shadow:7px 7px 0 var(--blue-wash)}
 .theme-work .fig{box-shadow:7px 7px 0 var(--red-wash)}
+
+/* sunset projects — archived, kept for the record */
+.proj.sunset .fig img{filter:grayscale(.45) sepia(.12);transition:filter .35s ease}
+.proj.sunset:hover .fig img{filter:none}
+.sunset-stamp{position:absolute;top:14px;right:14px;z-index:2;transform:rotate(7deg);
+  border:2px solid var(--red);color:var(--red-deep);background:var(--paper);
+  font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  padding:8px 14px;line-height:1.25;text-align:center;box-shadow:0 1px 0 var(--red-wash);opacity:.92}
+.sunset-stamp small{display:block;font-weight:500;color:var(--red);letter-spacing:.06em;font-size:9px;margin-top:2px;text-transform:none}
+
+/* sunset warning dialog */
+.sw-card{position:relative;max-width:440px;width:100%;background:var(--paper);border:2px solid var(--ink);
+  padding:30px 30px 26px;transform:rotate(-.4deg);box-shadow:10px 10px 0 rgba(0,0,0,.35)}
+.sw-card .stamp{position:absolute;top:-14px;right:18px;transform:rotate(5deg);background:var(--paper)}
+.sw-kicker{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--ink-2);margin-bottom:10px}
+.sw-title{font-family:var(--disp);font-size:24px;line-height:1.15;letter-spacing:-.01em;margin-bottom:10px}
+.sw-body{font-size:15.5px;color:var(--ink-2);line-height:1.55}
+.sw-body b{color:var(--red-deep)}
+.sw-actions{display:flex;gap:12px;align-items:center;margin-top:20px;flex-wrap:wrap}
+.sw-go{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;text-decoration:none;
+  background:var(--ink);color:var(--paper);padding:10px 16px;border:1.5px solid var(--ink)}
+.sw-go:hover{background:var(--red-deep);border-color:var(--red-deep)}
+.sw-stay{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;cursor:pointer;
+  background:none;color:var(--ink);padding:10px 16px;border:1.5px solid var(--ink)}
+.sw-stay:hover{background:var(--paper-2)}
 .pno{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--ink-2)}
 .theme-soft .pno b{color:var(--blue)}
 .theme-work .pno b{color:var(--red)}
@@ -777,10 +802,11 @@ html{scroll-behavior:smooth}
     </article>
 
     <!-- Chad vs Chud (sunset) -->
-    <article class="proj rev">
+    <article class="proj rev sunset">
       <div class="figc">
         <div class="fig" style="aspect-ratio:3/2">
           <img src="img/shot-chad.webp" alt="Screenshot of Chad vs. Chud, a live face-ranking web app" width="1200" height="800" loading="lazy" />
+          <span class="sunset-stamp" aria-hidden="true">Sunset<small>no longer maintained</small></span>
           <span class="cap">FIG. 04 — chadvschud.com</span>
         </div>
       </div>
@@ -797,16 +823,17 @@ html{scroll-behavior:smooth}
           <span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">FastAPI</span><span class="chip">WebRTC</span><span class="chip">Socket.io</span><span class="chip">PyTorch</span><span class="chip">Gemini</span><span class="chip">Supabase</span><span class="chip">Stripe</span><span class="chip">Fly.io</span>
         </div>
         <div class="plinks">
-          <a class="plink" href="https://chadvschud.com" target="_blank" rel="noopener">Visit <span class="ar" aria-hidden="true">↗</span></a>
+          <a class="plink" href="https://chadvschud.com" data-sunset="Chad vs. Chud" target="_blank" rel="noopener">Visit <span class="ar" aria-hidden="true">↗</span></a>
         </div>
       </div>
     </article>
 
     <!-- b2alpha (sunset) -->
-    <article class="proj">
+    <article class="proj sunset">
       <div class="figc">
         <div class="fig" style="aspect-ratio:3/2">
           <img src="img/shot-b2a.webp" alt="Screenshot of b2alpha.io, an agent-to-agent protocol dashboard" width="1200" height="800" loading="lazy" />
+          <span class="sunset-stamp" aria-hidden="true">Sunset<small>no longer maintained</small></span>
           <span class="cap">FIG. 05 — b2alpha.io</span>
         </div>
       </div>
@@ -822,16 +849,17 @@ html{scroll-behavior:smooth}
           <span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">OpenAI API</span><span class="chip">Vercel</span><span class="chip">Supabase</span><span class="chip">DNS</span>
         </div>
         <div class="plinks">
-          <a class="plink" href="https://b2alpha.io" target="_blank" rel="noopener">Visit <span class="ar" aria-hidden="true">↗</span></a>
+          <a class="plink" href="https://b2alpha.io" data-sunset="b2alpha.io" target="_blank" rel="noopener">Visit <span class="ar" aria-hidden="true">↗</span></a>
         </div>
       </div>
     </article>
 
     <!-- PredictionView (sunset) -->
-    <article class="proj rev">
+    <article class="proj rev sunset">
       <div class="figc">
         <div class="fig" style="aspect-ratio:3/2">
           <img src="img/shot-pv.webp" alt="Screenshot of PredictionView analytics charts for prediction markets" width="1200" height="800" loading="lazy" />
+          <span class="sunset-stamp" aria-hidden="true">Sunset<small>no longer maintained</small></span>
           <span class="cap">FIG. 06 — predictionview.app</span>
         </div>
       </div>
@@ -844,7 +872,7 @@ html{scroll-behavior:smooth}
           <span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Vite</span><span class="chip">Express</span><span class="chip">Prisma</span><span class="chip">PostgreSQL</span><span class="chip">OpenAI</span><span class="chip">lightweight-charts</span><span class="chip">Stripe</span>
         </div>
         <div class="plinks">
-          <a class="plink" href="https://predictionview.app" target="_blank" rel="noopener">Visit <span class="ar" aria-hidden="true">↗</span></a>
+          <a class="plink" href="https://predictionview.app" data-sunset="PredictionView" target="_blank" rel="noopener">Visit <span class="ar" aria-hidden="true">↗</span></a>
         </div>
       </div>
     </article>
@@ -1032,6 +1060,19 @@ html{scroll-behavior:smooth}
 </main>
 
 <!-- ============================ LIGHTBOX ============================ -->
+<div class="lb" id="sunsetWarn" role="alertdialog" aria-modal="true" aria-labelledby="swTitle">
+  <div class="sw-card">
+    <div class="stamp" aria-hidden="true">Sunset<small>project archived</small></div>
+    <div class="sw-kicker">FIELD NOTE — ARCHIVED PROJECT</div>
+    <h3 class="sw-title" id="swTitle">This project is sunset</h3>
+    <p class="sw-body"><b id="swName">This project</b> is no longer maintained. The site is still up, but <b>things might be broken</b> — dead features, stale data, expired keys.</p>
+    <div class="sw-actions">
+      <a class="sw-go" id="swGo" href="#" target="_blank" rel="noopener">Visit anyway ↗</a>
+      <button class="sw-stay" type="button" id="swStay">Stay here</button>
+    </div>
+  </div>
+</div>
+
 <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Media viewer">
   <div class="lb-inner">
     <button class="lb-close" id="lbClose">CLOSE ✕</button>
@@ -1260,6 +1301,29 @@ html{scroll-behavior:smooth}
       });
     });
   });
+
+  /* ---------- sunset projects: warn before visiting ---------- */
+  var sw = document.getElementById('sunsetWarn'), swName = document.getElementById('swName'),
+      swGo = document.getElementById('swGo'), swStay = document.getElementById('swStay'), swLast = null;
+  function swClose(){
+    sw.classList.remove('open'); document.body.style.overflow = '';
+    if(swLast) swLast.focus();
+  }
+  document.querySelectorAll('[data-sunset]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
+      e.preventDefault();
+      swLast = a;
+      swName.textContent = a.getAttribute('data-sunset');
+      swGo.setAttribute('href', a.getAttribute('href'));
+      sw.classList.add('open'); document.body.style.overflow = 'hidden';
+      swStay.focus();
+    });
+  });
+  swStay.addEventListener('click', swClose);
+  swGo.addEventListener('click', swClose);
+  sw.addEventListener('click', function(e){ if(e.target === sw) swClose(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && sw.classList.contains('open')) swClose(); });
 
   /* ---------- enlarge any [data-lightimg] (CAD renders, sims) ---------- */
   document.querySelectorAll('[data-lightimg]').forEach(function(el){
