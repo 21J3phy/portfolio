@@ -77,31 +77,31 @@ h2::after{content:"";flex:1;height:0;border-top:1px solid var(--line)}
 @page{size:Letter;margin:0.3in}
 @media print{
   html,body{background:#fff}
-  body{padding:0;font-size:9pt;line-height:1.3;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{padding:0;font-size:8.5pt;line-height:1.24;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .page{border:0;box-shadow:none;max-width:none;width:100%;background:#fff}
   .topbar{display:none}
   a{color:var(--ink)}
-  .head{padding:9px 0 7px}
-  .head .nm{font-size:30pt}
-  .head .tg{font-size:11.5pt;margin-top:5px}
-  .head .meta{font-size:8.4pt}
-  .body{padding:5px 0 2px}
-  .cols{gap:0 22px}
-  section{padding:5px 0;break-inside:avoid}
-  h2{margin-bottom:5px;font-size:9.5pt}
-  .entry{margin-bottom:5px;break-inside:avoid}
-  .entry .ti{font-size:11pt}
-  .entry .desc{font-size:9pt;margin-top:2px}
-  .stack{font-size:8pt;margin-top:3px}
-  .skl dd,.hon li{font-size:8.6pt}
-  .hon{gap:4px}
+  .head{padding:7px 0 5px}
+  .head .nm{font-size:28pt}
+  .head .tg{font-size:10.5pt;margin-top:4px}
+  .head .meta{font-size:8pt}
+  .body{padding:3px 0 0}
+  .cols{gap:0 20px}
+  section{padding:3px 0;break-inside:avoid}
+  h2{margin-bottom:4px;font-size:8.8pt}
+  .entry{margin-bottom:4px;break-inside:avoid}
+  .entry .ti{font-size:10.3pt}
+  .entry .desc{font-size:8.4pt;line-height:1.26;margin-top:2px}
+  .stack{font-size:7.5pt;margin-top:2px}
+  .skl dd,.hon li{font-size:8pt}
+  .hon{gap:2px}
 }
 </style>
 </head>
 <body>
 <div class="page">
   <div class="topbar">
-    <span>RÉSUMÉ · REV 2026.05 · SHEET 1/1</span>
+    <span>RÉSUMÉ · REV 2026.07 · SHEET 1/1</span>
     <span><a href="index.html">← portfolio</a> &nbsp;·&nbsp; <a href="Resume.pdf" target="_blank" rel="noopener">download PDF ↓</a></span>
   </div>
 
@@ -128,11 +128,11 @@ h2::after{content:"";flex:1;height:0;border-top:1px solid var(--line)}
           <h2>Education</h2>
           <div class="entry">
             <div class="r1"><span class="ti">Purdue University</span><span class="wh">FALL 2026 · INCOMING</span></div>
-            <div class="org">B.S. Mechanical Engineering</div>
+            <div class="org">First-Year Engineering · Intended Mechanical Engineering</div>
           </div>
           <div class="entry">
             <div class="r1"><span class="ti">Independence High School</span><span class="wh">GRAD. JUN 2026</span></div>
-            <div class="org">Loudoun County, VA · Senior</div>
+            <div class="org">Loudoun County, VA · Class of 2026</div>
             <div class="desc">Coursework: AP Computer Science A, AP Physics C, Multivariable Calculus.</div>
           </div>
           <div class="entry">
@@ -142,29 +142,35 @@ h2::after{content:"";flex:1;height:0;border-top:1px solid var(--line)}
         </section>
 
         <section>
-          <h2>Mechanical / Hardware</h2>
+          <h2>Research &amp; Publication</h2>
           <div class="entry">
             <div class="r1"><span class="ti">Passive Vortex Propulsion</span><span class="wh">2024–2025 · 1ST AUTHOR</span></div>
-            <div class="desc">Started as an experiment to make my Honda Civic more efficient; built a wind tunnel from scratch, soldered &amp; calibrated load cells with an Arduino, and ran CFD in Fusion 360. <span class="met">First demonstration of passive vortex propulsion in air</span> — published first-author paper; AIAA award &amp; NASA Goddard invitation.</div>
-            <div class="stack">Arduino · C++ · load cells · Fusion 360 · CFD · Python</div>
+            <div class="org"><a href="https://ieeexplore.ieee.org/document/11567580" target="_blank" rel="noopener">IEEE Xplore · Document 11567580</a></div>
+            <div class="desc">Designed and built a wind-tunnel test rig, soldered and calibrated an Arduino load-cell system, ran CFD, and analyzed 20 trials. Measured <span class="met">3.1 N mean net thrust (p &lt; 0.001)</span>, providing the first experimental evidence of passive vortex propulsion in air.</div>
+            <div class="stack">Arduino · C++ · load cells · Fusion 360 · CFD · Python · statistical analysis</div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Engineering Projects</h2>
+          <div class="entry">
+            <div class="r1"><span class="ti">Motor-Based Resistance System</span><span class="wh">2025 · RSEF · 1ST AUTHOR</span></div>
+            <div class="desc">Designed and built a portable, battery-powered strength trainer through three prototypes. A 188:1 geared motor produced a repeatable, PWM-controlled force curve (<span class="met">R² = 0.993</span>) at a $214.95 prototype cost.</div>
+            <div class="stack">Fusion 360 · FEA · Arduino · PWM · motor control · prototyping</div>
           </div>
           <div class="entry">
             <div class="r1"><span class="ti">FTC Robotics — Absolute Zero (12096)</span><span class="wh">2022–2026 · CAPTAIN</span></div>
             <div class="desc">Four years as captain &amp; lead programmer; CADded and built every part in Fusion 360. Wrote autonomous &amp; tele-op in Java — PID loops, sensor fusion, odometry. Reached the Chesapeake championship.</div>
-          </div>
-          <div class="entry">
-            <div class="r1"><span class="ti">EV &amp; Salinity Sensor</span><span class="wh">SCIENCE OLYMPIAD</span></div>
-            <div class="desc">Autonomous EV that accelerates then brakes to a target distance (Arduino, goBILDA motor, quadrature encoder, PID); Arduino salt-water salinity sensor reading conductivity.</div>
           </div>
         </section>
 
         <section>
           <h2>Skills</h2>
           <dl class="skl">
-            <dt>Languages</dt><dd>Java, Python, JavaScript, TypeScript, HTML, CSS, Git</dd>
-            <dt>AI / ML</dt><dd>Prompt engineering, LLMs, CNNs, computer vision, agent architecture</dd>
-            <dt>Cloud</dt><dd>Fly.io, Vercel, Supabase, Fusion 360</dd>
-            <dt>Hardware</dt><dd>Arduino, load cells, soldering, multimeter, PID control</dd>
+            <dt>Programming</dt><dd>Python, Java, C++, JavaScript, TypeScript, Git</dd>
+            <dt>Engineering</dt><dd>Fusion 360, CFD, FEA, Arduino, load cells, soldering</dd>
+            <dt>Controls</dt><dd>PID, sensor fusion, odometry, motor control, data analysis</dd>
+            <dt>AI / ML</dt><dd>PyTorch, computer vision, LLMs, agent architecture</dd>
           </dl>
         </section>
 
@@ -175,7 +181,7 @@ h2::after{content:"";flex:1;height:0;border-top:1px solid var(--line)}
             <li>Captain, Science Olympiad</li>
             <li>Presidential Volunteer Service Award (Silver)</li>
             <li>Central Virginia Governor's School for Science &amp; Technology — Mathematics, 2024</li>
-            <li>1st place, Agaudo guitar competition · All-Virginia Guitar Ensemble</li>
+            <li>1st place, Aguado guitar competition · All-Virginia Guitar Ensemble</li>
           </ul>
         </section>
       </div>
@@ -183,36 +189,30 @@ h2::after{content:"";flex:1;height:0;border-top:1px solid var(--line)}
       <!-- ============ COLUMN B ============ -->
       <div class="col">
         <section class="flush">
-          <h2>Software — Founder Projects</h2>
+          <h2>Software / ML — Selected</h2>
           <div class="entry">
-            <div class="r1"><span class="ti">Khali</span><span class="wh">2025–NOW · CO-FOUNDER/CEO</span></div>
+            <div class="r1"><span class="ti">Khali</span><span class="wh">2025–NOW · CO-FOUNDER/LEAD ENGINEER</span></div>
             <div class="org">khali.info</div>
             <div class="desc">TikTok-style swipe-through news startup built to make short-form scrolling useful: stories combine opposing sources, present one claim at a time, and include an OpenAI "ask this story" assistant. Native SwiftUI iOS + Expo/RN app on a Node + Python backend.</div>
             <div class="stack">Swift/SwiftUI · React Native · Expo · Node.js · Python · OpenAI · Supabase</div>
           </div>
           <div class="entry">
-            <div class="r1"><span class="ti">Articulator</span><span class="wh">2026–NOW · INDYHAX 2026</span></div>
+            <div class="r1"><span class="ti">Articulator</span><span class="wh">2026–NOW · CREATOR · INDYHAX</span></div>
             <div class="org">articulator-3000.vercel.app</div>
             <div class="desc">Turns a rough idea — spoken, typed, air-drawn over webcam (MediaPipe, client-side), or uploaded — into a structured model, interviews you until it understands, runs a web-research reality check, and emits briefs and a concept image. Hackathon project taken to production.</div>
             <div class="stack">Next.js · TypeScript · OpenAI Responses API · MediaPipe · Supabase · Zod</div>
           </div>
           <div class="entry">
-            <div class="r1"><span class="ti">Chad vs. Chud</span><span class="wh">2026 · CO-FOUNDER/CEO · SUNSET</span></div>
-            <div class="org">chadvschud.com</div>
-            <div class="desc">Real-time 1v1 webcam face-rating battle scored by an AI. Built the Next.js client, a Socket.IO/WebRTC matchmaking service, and a Python/FastAPI inference service (ResNet-18 + ArcFace + LLM scorer). <span class="met">10,000+ users, 100+ concurrent.</span></div>
-            <div class="stack">Next.js · TypeScript · FastAPI · WebRTC · PyTorch · Supabase · Fly.io</div>
+            <div class="r1"><span class="ti">Oh</span><span class="wh">2026–NOW · CREATOR</span></div>
+            <div class="org">github.com/21J3phy/Oh</div>
+            <div class="desc">Built shared memory for AI coding agents: hook-driven session capture, local secret scrubbing, vector retrieval, and an MCP interface that preserves the reasoning behind code changes.</div>
+            <div class="stack">TypeScript · Node.js · MCP · OpenAI · Supabase · pgvector</div>
           </div>
           <div class="entry">
-            <div class="r1"><span class="ti">b2alpha.io</span><span class="wh">2026 · CO-FOUNDER/CEO · SUNSET</span></div>
-            <div class="org">b2alpha.io</div>
-            <div class="desc">Open agent-to-agent protocol — secure messaging + DNS integration; prompt engineering for structured, parseable output. <span class="met">2,000+ business users.</span></div>
-            <div class="stack">TypeScript · Node.js · OpenAI API · Vercel · Supabase · DNS</div>
-          </div>
-          <div class="entry">
-            <div class="r1"><span class="ti">PredictionView</span><span class="wh">2026 · CO-FOUNDER/CEO · SUNSET</span></div>
-            <div class="org">predictionview.app</div>
-            <div class="desc">Full-stack Kalshi prediction-market trading hub — charts, an OpenAI analyst with web research, alerts, watchlists, a journal/backtester. Owned the Express + Prisma/Postgres backend (127 routes, cron jobs) and Vitest tests.</div>
-            <div class="stack">React · TypeScript · Vite · Express · Prisma · PostgreSQL · OpenAI</div>
+            <div class="r1"><span class="ti">Chad vs. Chud</span><span class="wh">2026 · CO-FOUNDER/LEAD ENGINEER</span></div>
+            <div class="org">chadvschud.com · sunset</div>
+            <div class="desc">Built a real-time webcam client, Socket.IO/WebRTC matchmaking, and a FastAPI inference service using a fine-tuned ResNet-18 + ArcFace ensemble. <span class="met">10,000+ users; 100+ concurrent.</span></div>
+            <div class="stack">Next.js · TypeScript · FastAPI · WebRTC · PyTorch · Fly.io</div>
           </div>
         </section>
 
