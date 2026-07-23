@@ -14,7 +14,7 @@ A small static site, written by hand. No framework, no build step.
     --screenshot="$PWD/og.png" "file://$PWD/og.html"
   ```
 - `img/` — images (`.webp`, optimized with `cwebp`) and the guitar clips (`.mp4` + posters).
-- `paper.pdf`, `conference-certificate.pdf` — the passive-vortex paper and its certificate.
+- `paper.pdf`, `conference-certificate.pdf` — local copies of the passive-vortex paper and its certificate. The project also links to the publication's IEEE Xplore record.
 
 ## Design
 
