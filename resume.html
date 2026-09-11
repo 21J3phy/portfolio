@@ -4,254 +4,212 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Résumé — Nirav Surabhi</title>
-<meta name="description" content="Résumé of Nirav Surabhi — mechanical engineering student at Purdue, first-author IEEE researcher, and software engineer shipping native iOS apps, real-time backends, and applied AI." />
+<meta name="description" content="Résumé of Nirav Surabhi — mechanical engineering student at Purdue, first-author IEEE researcher, and founder shipping native iOS apps, real-time voice-AI backends, and instrumented hardware." />
 <link rel="canonical" href="https://niravsurabhi.com/resume.html" />
 <meta name="theme-color" content="#ece6da" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23ece6da'/%3E%3Crect width='32' height='64' fill='%231b46c914'/%3E%3Crect x='32' width='32' height='64' fill='%23cb3a1714'/%3E%3Ctext x='32' y='44' font-family='Archivo,Arial,sans-serif' font-weight='900' font-size='28' fill='%23191510' text-anchor='middle'%3ENS%3C/text%3E%3C/svg%3E" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
+/* IBM Plex Sans, self-hosted static instances (SIL OFL 1.1, see fonts/LICENSE-IBM-Plex.txt).
+   Static files embed in the PDF as real TrueType glyphs; Google Fonts serves the variable
+   font, which headless Chrome flattens into Type 3 outlines some résumé parsers misread. */
+@font-face{font-family:'Plex';src:url(fonts/IBMPlexSans-Regular.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Plex';src:url(fonts/IBMPlexSans-SemiBold.woff2) format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:'Plex';src:url(fonts/IBMPlexSans-Bold.woff2) format('woff2');font-weight:700;font-display:swap}
+/* ============================================================
+   One layout for screen and print. The sheet is a US-Letter page
+   (8.5in wide, 0.5in side margins) in both, so what you see in the
+   browser is exactly what the PDF and applicant-tracking systems get:
+   single column, standard headings, real bullet lists, dates on the
+   same line as the title, body text at 10pt.
+
+   Rebuild Resume.pdf from this file with headless Chrome:
+     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+       --headless=new --disable-gpu --no-pdf-header-footer \
+       --virtual-time-budget=8000 --print-to-pdf=Resume.pdf "file://$PWD/resume.html"
+   Then check: pdfinfo Resume.pdf (1 page), pdffonts (CID TrueType), pdftotext -raw (order).
+   ============================================================ */
 :root{
-  --paper:#ece6da;--ink:#191510;--ink-2:#4f463a;--blue:#1b46c9;--red:#cb3a17;
-  --line:rgba(25,21,16,.18);--line-soft:rgba(25,21,16,.08);
-  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;--disp:'Archivo',sans-serif;
+  --paper:#ece6da;--sheet:#fbf9f4;--ink:#191510;--ink-2:#4f463a;--blue:#1b46c9;--red:#cb3a17;
+  --rule:rgba(25,21,16,.7);--line-soft:rgba(25,21,16,.08);
+  --sans:'Plex',Arial,Helvetica,system-ui,sans-serif;--mono:'Plex',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:13px;line-height:1.42;
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);
   background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
-  background-size:26px 26px;padding:24px 16px 56px}
-a{color:var(--blue);text-decoration:none}
+  background-size:26px 26px;padding:24px 16px 56px;font-size:10pt;line-height:1.22}
+a{color:inherit;text-decoration:none}
 a:hover{text-decoration:underline}
 :focus-visible{outline:3px solid var(--blue);outline-offset:2px}
-.page{max-width:920px;margin:0 auto;background:#f2ede3;border:2px solid var(--ink);box-shadow:6px 6px 0 rgba(25,21,16,.12)}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-bottom:1.5px solid var(--ink);font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink-2)}
-.topbar a{font-weight:600}
 
-/* ---- header ----
-   DOM order is name → contact → summary so the printed PDF reads top-to-bottom
-   for résumé parsers. On screen, grid areas float the contact block right. */
-.head{padding:20px clamp(18px,3.5vw,34px) 16px;border-bottom:2px solid var(--ink);
-  display:grid;grid-template-columns:1fr auto;grid-template-areas:"nm meta" "tg meta";gap:0 24px;align-items:end}
-.head .nm{grid-area:nm;font-family:var(--disp);font-weight:900;font-size:clamp(34px,6.5vw,58px);line-height:.84;letter-spacing:-.03em;text-transform:uppercase}
-.head .tg{grid-area:tg;margin-top:9px;font-size:14px;font-weight:500;max-width:62ch}
-.head .tg .s{color:var(--blue);font-weight:700}.head .tg .w{color:var(--red);font-weight:700}
-.head .meta{grid-area:meta;font-family:var(--mono);font-size:11px;color:var(--ink-2);text-align:right;display:flex;flex-direction:column;gap:3px;white-space:nowrap}
-.head .meta .loc{color:var(--ink);font-weight:600}
-.head .meta .sep{display:none}
+.wrap{max-width:8.5in;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:0 2px 8px;
+  font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.topbar a{font-weight:600;color:var(--blue)}
 
-/* ---- sheet body ----
-   Two visual columns on screen come from CSS multi-column, which preserves DOM
-   order; print sets column-count:1 so the PDF is a single linear column. */
-.body{padding:14px clamp(18px,3.5vw,34px) 22px}
-.sheet{column-count:2;column-gap:30px}
-section{padding:11px 0;border-bottom:1px solid var(--line);break-inside:avoid-column}
-section:first-child{padding-top:2px}
-section:last-child{border-bottom:0}
-h2{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--red);
-  display:flex;align-items:center;gap:10px;margin-bottom:10px}
-h2::after{content:"";flex:1;height:0;border-top:1px solid var(--line)}
+.sheet{background:var(--sheet);border:1.5px solid var(--ink);box-shadow:6px 6px 0 rgba(25,21,16,.12);
+  padding:0.45in 0.5in 0.45in;min-height:11in}
 
-.entry{margin-bottom:11px}
+/* ---- header ---- */
+.head{text-align:center;padding-bottom:5pt;border-bottom:1.2pt solid var(--rule);margin-bottom:4pt}
+.head h1{font-weight:700;font-size:21pt;line-height:1;letter-spacing:.08em;text-transform:uppercase}
+.head .contact{margin-top:3pt;font-size:9pt;color:var(--ink);display:flex;justify-content:center;flex-wrap:wrap;column-gap:0;row-gap:1pt}
+.head .contact>span::after{content:"·";margin:0 .35em;color:var(--ink-2)}
+.head .contact>span:last-child::after{content:none}
+.head .contact a{color:var(--blue)}
+.head .summary{margin-top:4pt;font-size:10pt;line-height:1.28}
+
+/* ---- sections ---- */
+section{margin-top:6pt}
+h2{font-family:var(--sans);font-size:10pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red);
+  padding-bottom:1.5pt;border-bottom:.8pt solid var(--rule);margin-bottom:4pt}
+
+.entry{margin-bottom:3.5pt;break-inside:avoid}
 .entry:last-child{margin-bottom:0}
-.entry .r1{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
-.entry .ti{font-family:var(--disp);font-weight:800;font-size:15px;letter-spacing:-.01em;line-height:1.1}
-.entry .wh{font-family:var(--mono);font-size:9.5px;color:var(--ink-2);white-space:nowrap;letter-spacing:.02em}
-.entry .role{font-family:var(--mono);font-size:10.5px;color:var(--blue);font-weight:600;letter-spacing:0;margin-left:4px}
-.entry .desc{margin-top:4px;font-size:12px;line-height:1.4}
-.bul{margin-top:4px;padding-left:14px;list-style:disc}
-.bul li{font-size:12px;line-height:1.38;margin-bottom:2px}
-.bul li::marker{color:var(--red)}
-.met{color:var(--red);font-weight:600}
-.stack{font-family:var(--mono);font-size:9.5px;color:var(--ink-2);margin-top:4px;letter-spacing:.01em}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:12pt}
+.row .ti{font-size:10.5pt;font-weight:700;letter-spacing:-.005em}
+.row .ti .role{font-weight:400;color:var(--ink)}
+.row .ti .role::before{content:" — "}
+.row .ti .link{font-weight:400;color:var(--blue);font-size:9.5pt}
+.row .ti .link::before{content:" · ";color:var(--ink-2)}
+.row .dt{font-size:9.5pt;color:var(--ink-2);white-space:nowrap;font-variant-numeric:tabular-nums}
+.sub{font-size:9.5pt;color:var(--ink-2);margin-top:.5pt}
+.sub b{color:var(--ink);font-weight:600}
+ul{margin-top:1.5pt;padding-left:12pt;list-style:disc}
+li{margin-bottom:.8pt;padding-left:1pt}
+li::marker{color:var(--red)}
+.met{font-weight:600}
 
-.skl{display:grid;grid-template-columns:82px 1fr;gap:5px 12px}
-.skl dt{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);padding-top:1px}
-.skl dd{font-family:var(--mono);font-size:10.5px;line-height:1.35}
-.hon{padding-left:14px;list-style:disc;display:grid;gap:4px}
-.hon li{font-size:11.5px;line-height:1.35}
-.hon li::marker{color:var(--red)}
+.skill{margin-bottom:1.5pt}
+.skill b{font-weight:700}
 
-@media(max-width:680px){
-  .head{grid-template-columns:1fr;grid-template-areas:"nm" "meta" "tg"}
-  .head .meta{text-align:left;align-items:flex-start;margin-top:8px}
-  .head .tg{margin-top:8px}
-  .sheet{column-count:1}
-  section:last-child{border-bottom:0}
+
+@media(max-width:720px){
+  body{padding:12px 8px 40px;font-size:9.5pt}
+  .sheet{padding:.4in .35in;min-height:0}
+  .row{flex-direction:column;gap:0}
+  .head .summary{max-width:none}
 }
 
-/* ---- print / PDF ----
-   Single column, standard headings, real bullet lists, contact details on one
-   line. This is the copy applicant-tracking systems parse. */
-@page{size:Letter;margin:0.32in 0.4in}
+/* ---- print / PDF ---- */
+@page{size:Letter;margin:0.4in 0.5in}
 @media print{
-  html,body{background:#fff}
-  body{padding:0;font-size:7.9pt;line-height:1.22;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .page{border:0;box-shadow:none;max-width:none;width:100%;background:#fff}
+  html,body{background:#fff;padding:0;font-size:10pt}
+  .wrap{max-width:none}
   .topbar{display:none}
-  a{color:var(--ink);text-decoration:none}
-
-  .head{display:block;padding:0 0 5px;border-bottom:1.2pt solid var(--ink)}
-  .head .nm{font-size:21pt;line-height:1;letter-spacing:0;word-spacing:.12em}
-  .head .meta{display:block;text-align:left;white-space:normal;font-size:8.6pt;margin-top:3pt;color:var(--ink)}
-  .head .meta>*{display:inline}
-  .head .meta .sep{display:inline;color:var(--ink-2)}
-  .head .tg{font-size:8.6pt;margin-top:3pt;max-width:none}
-
-  .body{padding:0}
-  .sheet{column-count:1;column-gap:0}
-  section{padding:2.5pt 0 2pt;break-inside:auto}
-  h2{margin-bottom:2pt;font-size:8.6pt;color:var(--ink);letter-spacing:.14em}
-  h2::after{border-top:1px solid var(--ink)}
-  .entry{margin-bottom:4pt;break-inside:avoid}
-  .entry .ti{font-size:9.4pt;letter-spacing:0;word-spacing:.1em}
-  .entry .r1{display:block}
-  .entry .wh{font-size:8.2pt;white-space:normal}
-  .entry .wh::before{content:" · "}
-  .entry .role{font-size:8pt;color:var(--ink);font-weight:600}
-  .entry .desc{font-size:7.9pt;line-height:1.24;margin-top:1pt}
-  .bul{margin-top:1pt;padding-left:11pt}
-  .bul li{font-size:7.9pt;line-height:1.2;margin-bottom:0}
-  .bul li::marker,.hon li::marker{color:var(--ink)}
-  .met{color:var(--ink);font-weight:700}
-  .stack{font-size:7.8pt;margin-top:1pt;color:var(--ink-2)}
-  .skl{grid-template-columns:52pt 1fr;gap:1.5pt 8pt}
-  .skl dt,.skl dd{font-size:7.9pt}
-  .hon{gap:1pt;padding-left:11pt}
-  .hon li{font-size:7.9pt;line-height:1.2}
+  .sheet{border:0;box-shadow:none;padding:0;min-height:0;background:#fff}
+  a,.head .contact a,.row .ti .link{color:var(--ink)}
+  h2,li::marker{color:var(--ink)}
+  section,.entry{break-inside:avoid}
 }
 </style>
 </head>
 
 <body>
-<div class="page">
+<div class="wrap">
   <div class="topbar">
-    <span>RÉSUMÉ · REV 2026.08 · SHEET 1/1</span>
+    <span>RÉSUMÉ · REV 2026.09 · SHEET 1/1</span>
     <span><a href="index.html">← portfolio</a> &nbsp;·&nbsp; <a href="Resume.pdf" target="_blank" rel="noopener">download PDF ↓</a></span>
   </div>
 
-  <header class="head">
-    <h1 class="nm">Nirav Surabhi</h1>
-    <div class="meta">
-      <span class="loc">West Lafayette, IN · Brambleton, VA</span><span class="sep"> · </span>
-      <a href="tel:+15713078508">(571) 307-8508</a><span class="sep"> · </span>
-      <a href="mailto:niravsurabhi@gmail.com" data-copy-email title="Click to copy"><span data-copy-label>niravsurabhi@gmail.com</span></a><span class="sep"> · </span>
-      <a href="https://niravsurabhi.com" target="_blank" rel="noopener">niravsurabhi.com</a><span class="sep"> · </span>
-      <a href="https://linkedin.com/in/niravss" target="_blank" rel="noopener">linkedin.com/in/niravss</a><span class="sep"> · </span>
-      <a href="https://github.com/21J3phy" target="_blank" rel="noopener">github.com/21J3phy</a>
-    </div>
-    <p class="tg">Mechanical engineering student at Purdue and first-author IEEE researcher who ships production software — native iOS apps, real-time backends, and applied AI — alongside CAD, controls, and instrumented hardware.</p>
-  </header>
+  <article class="sheet">
 
-  <div class="body">
-    <div class="sheet">
+    <header class="head">
+      <h1>Nirav Surabhi</h1>
+      <div class="contact">
+        <span>West Lafayette, IN</span>
+        <span><a href="tel:+15713078508">(571) 307-8508</a></span>
+        <span><a href="mailto:niravsurabhi@gmail.com" data-copy-email title="Click to copy"><span data-copy-label>niravsurabhi@gmail.com</span></a></span>
+        <span><a href="https://niravsurabhi.com" target="_blank" rel="noopener">niravsurabhi.com</a></span>
+        <span><a href="https://linkedin.com/in/niravss" target="_blank" rel="noopener">linkedin.com/in/niravss</a></span>
+        <span><a href="https://github.com/21J3phy" target="_blank" rel="noopener">github.com/21J3phy</a></span>
+      </div>
+      <p class="summary">Purdue mechanical engineering student and first-author IEEE researcher who ships production software: two native iOS apps on the App Store, real-time voice-AI backends, and instrumented hardware with measured results.</p>
+    </header>
 
-      <section>
-        <h2>Education</h2>
-        <div class="entry">
-          <div class="r1"><span class="ti">Purdue University <span class="role">— B.S. First-Year Engineering · Intended Mechanical Engineering</span></span><span class="wh">AUG 2026 – MAY 2030</span></div>
-          <div class="desc">Coursework: ENGR 133, MA 265 Linear Algebra, PHYS 172 Modern Mechanics, SCLA 102 · Purdue Formula SAE (onboarding, Fall 2026).</div>
-        </div>
-        <div class="entry">
-          <div class="r1"><span class="ti">Independence High School <span class="role">— Loudoun County, VA</span></span><span class="wh">GRADUATED JUN 2026</span></div>
-          <div class="desc">Coursework: AP Computer Science A, AP Physics C, Multivariable Calculus.</div>
-        </div>
-      </section>
+    <section>
+      <h2>Education</h2>
+      <div class="entry">
+        <div class="row"><span class="ti">Purdue University<span class="role">B.S. Mechanical Engineering (First-Year Engineering), West Lafayette, IN</span></span><span class="dt">Expected May 2030</span></div>
+        <div class="sub"><b>Coursework:</b> ENGR 133, MA 265 Linear Algebra, PHYS 172 Modern Mechanics &nbsp;·&nbsp; <b>Activities:</b> Purdue Formula SAE</div>
+        <div class="sub"><b>Honors:</b> Presidential Volunteer Service Award, Silver &nbsp;·&nbsp; Mathematics Scholar, Central Virginia Governor's School &nbsp;·&nbsp; Captain, Science Olympiad &nbsp;·&nbsp; 1st place, Aguado Guitar Competition</div>
+      </div>
+    </section>
 
-      <section>
-        <h2>Experience</h2>
-        <div class="entry">
-          <div class="r1"><span class="ti">SpareMe <span class="role">— Founder &amp; Lead Engineer · getspareme.com</span></span><span class="wh">JUL 2026 – PRESENT</span></div>
-          <ul class="bul">
-            <li>Shipped a native SwiftUI iPhone app to the App Store that delegates phone calls to an AI agent — it dials U.S. businesses, works phone trees, waits on hold, and returns a written outcome; released after <span class="met">13 TestFlight builds</span> and an invite beta.</li>
-            <li>Engineered the Node/TypeScript backend on <strong>Twilio ConversationRelay</strong> for real-time speech, with OpenAI reasoning, verified caller ID, encrypted PostgreSQL case state, APNs notifications, signed StoreKit verification, and fail-closed kill switches and rate limits.</li>
-          </ul>
-          <div class="stack">Tech: Swift/SwiftUI · TypeScript · Node.js · Twilio · OpenAI · PostgreSQL · StoreKit · APNs</div>
-        </div>
-        <div class="entry">
-          <div class="r1"><span class="ti">Khali <span class="role">— Co-Founder &amp; Lead Engineer · khali.info</span></span><span class="wh">2025 – PRESENT</span></div>
-          <ul class="bul">
-            <li>Shipped the native <strong>SwiftUI iOS</strong> app and the <strong>Expo / React Native</strong> app for a short-form news feed that combines opposing sources one claim at a time; launched on the App Store and applied to <strong>Y Combinator</strong> Spring 2026.</li>
-            <li>Built the Node + Python backend that ingests sources, clusters events into stories, and generates the clips and narration, plus an OpenAI assistant that surfaces the evidence behind each claim.</li>
-          </ul>
-          <div class="stack">Tech: Swift/SwiftUI · React Native · Expo · TypeScript · Node.js · Python · OpenAI · Supabase</div>
-        </div>
-        <div class="entry">
-          <div class="r1"><span class="ti">I3 Simulations <span class="role">— CAD Intern</span></span><span class="wh">JUN 2025 – MAY 2026</span></div>
-          <ul class="bul"><li>Produced 3D models and haptic-feedback prototypes for medical-training simulators.</li></ul>
-        </div>
-        <div class="entry">
-          <div class="r1"><span class="ti">The Bike Lane <span class="role">— Bike Mechanic (intern → part-time)</span></span><span class="wh">JUN 2021 – AUG 2025</span></div>
-          <ul class="bul"><li>Assembled bicycles from the frame up and ran the final safety inspection before customer delivery.</li></ul>
-        </div>
-        <div class="entry">
-          <div class="r1"><span class="ti">Ember Learning <span class="role">— AI Engineer &amp; Software Intern · formerly DeAP Learning Labs</span></span><span class="wh">FEB 2021 – 2022</span></div>
-          <ul class="bul">
-            <li>Wrote the LLM prompts behind AP-tutor chatbots, built automated grading of AP DBQ/FRQ responses against the official rubrics, indexed lecture transcripts in a vector database for timestamp search, and led the company website. <span class="met">Team secured a Microsoft and OpenAI grant; company valued at $1M+.</span></li>
-          </ul>
-        </div>
-      </section>
+    <section>
+      <h2>Experience</h2>
 
-      <section>
-        <h2>Research &amp; Publications</h2>
-        <div class="entry">
-          <div class="r1"><span class="ti">Passive Vortex Propulsion <span class="role">— Published · <a href="https://ieeexplore.ieee.org/document/11567580" target="_blank" rel="noopener">IEEE Xplore, Document 11567580</a></span></span><span class="wh">2024 – 2025 · FIRST AUTHOR</span></div>
-          <ul class="bul">
-            <li>Built a self-made wind tunnel and test rig, then soldered and calibrated an Arduino load-cell system to measure thrust directly.</li>
-            <li>Ran CFD in Fusion 360 and analyzed 20 trials in Python, measuring <span class="met">3.1 N mean net thrust (p &lt; 0.001)</span> — the first experimental evidence of passive vortex propulsion in air. Earned the <strong>AIAA Aerospace Award</strong> at RSEF with an invitation to NASA Goddard; presented at EngiTek 2025.</li>
-          </ul>
-          <div class="stack">Tech: Arduino · C++ · load cells · Fusion 360 · CFD · Python · statistical analysis</div>
-        </div>
-      </section>
-
-      <section>
-        <h2>Projects</h2>
-        <div class="entry">
-          <div class="r1"><span class="ti">Oh <span class="role">— Creator · github.com/21J3phy/Oh</span></span><span class="wh">2026 – PRESENT</span></div>
-          <ul class="bul">
-            <li>Built shared memory for AI coding agents: hook-driven session capture, local secret scrubbing, pgvector retrieval, and an MCP tool that answers why a change was made instead of interrupting its author.</li>
-          </ul>
-        </div>
-        <div class="entry">
-          <div class="r1"><span class="ti">FTC Robotics, Absolute Zero #12096 <span class="role">— Captain &amp; Lead Programmer</span></span><span class="wh">2022 – 2026</span></div>
-          <ul class="bul">
-            <li>Led the team for <span class="met">four seasons</span>, CADding and building every part in Fusion 360 and writing autonomous and tele-op code in Java with PID control, sensor fusion, and odometry; advanced to the Chesapeake championship.</li>
-          </ul>
-        </div>
-        <div class="entry">
-          <div class="r1"><span class="ti">Motor-Based Resistance System <span class="role">— Portable battery-powered strength trainer</span></span><span class="wh">2025 · RSEF · FIRST AUTHOR</span></div>
-          <ul class="bul">
-            <li>Designed and built three prototypes in which a 188:1 geared motor produced a repeatable PWM-controlled force curve (<span class="met">R² = 0.993</span>) at a $214.95 prototype cost.</li>
-          </ul>
-        </div>
-        <div class="entry">
-          <div class="r1"><span class="ti">Chad vs. Chud <span class="role">— Co-Founder &amp; Lead Engineer · real-time PvP web app</span></span><span class="wh">2026 · SUNSET</span></div>
-          <ul class="bul">
-            <li>Built a Next.js webcam client, Socket.IO/WebRTC matchmaking, and a FastAPI service running a fine-tuned <strong>ResNet-18 + ArcFace</strong> ensemble; scaled to <span class="met">10,000+ users, 100+ concurrent</span>.</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Technical Skills</h2>
-        <dl class="skl">
-          <dt>Languages</dt><dd>Python, Java, C++, Swift, TypeScript, JavaScript, SQL</dd>
-          <dt>Software</dt><dd>SwiftUI, React Native, Expo, Next.js, Node.js, FastAPI, PostgreSQL, Supabase, REST, WebSockets, Git, CI/CD, Vercel</dd>
-          <dt>AI / ML</dt><dd>PyTorch, computer vision, LLM integration, vector search, agent architecture, prompt engineering, evaluation</dd>
-          <dt>Hardware</dt><dd>Fusion 360, CAD, FEA, CFD, 3D printing, Arduino, load cells, soldering, PID, PWM motor control, sensor fusion, odometry, statistical analysis</dd>
-        </dl>
-      </section>
-
-      <section>
-        <h2>Honors &amp; Awards</h2>
-        <ul class="hon">
-          <li>AIAA Aerospace Award, Regional Science &amp; Engineering Fair — special honor, with invitation to NASA Goddard · Presidential Volunteer Service Award, Silver</li>
-          <li>Central Virginia Governor's School for Science &amp; Technology — Mathematics Scholar, 2024 · Captain, Science Olympiad · 1st place, Aguado Guitar Competition · All-Virginia Guitar Ensemble</li>
+      <div class="entry">
+        <div class="row"><span class="ti">SpareMe<span class="role">Founder &amp; Lead Engineer</span><a class="link" href="https://getspareme.com" target="_blank" rel="noopener">getspareme.com</a></span><span class="dt">Jul 2026 – Present</span></div>
+        <ul>
+          <li>Shipped an iPhone app to the App Store that delegates phone calls to an AI agent: it dials U.S. businesses, works phone trees, waits on hold, and returns a written outcome; users watch a live transcript and can type instructions, listen in, or take over mid-call.</li>
+          <li>Built the SwiftUI client and Node/TypeScript backend on Twilio ConversationRelay (real-time speech) and OpenAI (reasoning), with verified caller ID, encrypted PostgreSQL case state, APNs, StoreKit-funded per-minute billing with signed transaction verification, and fail-closed kill switches and rate limits.</li>
         </ul>
-      </section>
+      </div>
 
-    </div>
-  </div>
+      <div class="entry">
+        <div class="row"><span class="ti">Khali<span class="role">Co-Founder &amp; Lead Engineer</span><a class="link" href="https://khali.info" target="_blank" rel="noopener">khali.info</a></span><span class="dt">2025 – Present</span></div>
+        <ul>
+          <li>Shipped a native SwiftUI iOS app and an Expo / React Native app to the App Store for a short-form news feed that pairs opposing sources one claim at a time; applied to <span class="met">Y Combinator</span> Spring 2026.</li>
+          <li>Built the Node + Python pipeline that ingests sources, clusters events into stories, generates clips and narration, and ranks the feed, plus an OpenAI assistant that surfaces the evidence behind each claim.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="row"><span class="ti">I3 Simulations<span class="role">CAD Intern</span></span><span class="dt">Jun 2025 – May 2026</span></div>
+        <ul><li>Produced 3D models and haptic-feedback prototypes for medical-training simulators.</li></ul>
+      </div>
+
+      <div class="entry">
+        <div class="row"><span class="ti">Ember Learning<span class="role">AI Engineer &amp; Software Intern (formerly DeAP Learning Labs)</span></span><span class="dt">Feb 2021 – 2022</span></div>
+        <ul>
+          <li>Wrote the LLM prompts behind AP-tutor chatbots, built automated grading of AP DBQ/FRQ essays against the official rubrics, and indexed lecture transcripts in a vector database for timestamp search; the team secured a <span class="met">Microsoft and OpenAI grant</span> and reached a $1M+ valuation.</li>
+        </ul>
+      </div>
+
+          </section>
+
+    <section>
+      <h2>Research &amp; Publications</h2>
+      <div class="entry">
+        <div class="row"><span class="ti">Passive Vortex Propulsion in Air<span class="role">First Author, published on IEEE Xplore</span><a class="link" href="https://ieeexplore.ieee.org/document/11567580" target="_blank" rel="noopener">doc. 11567580</a></span><span class="dt">2024 – 2025</span></div>
+        <ul>
+          <li>Built a wind tunnel and test rig with a soldered, calibrated Arduino load-cell system; measured <span class="met">3.1 N mean net thrust over 20 trials (p &lt; 0.001)</span>, the first experimental evidence of passive vortex propulsion in air.</li>
+          <li>Compared flat and NACA 0024/0012/0009 fins with ANOVA and Dunn's test in Python plus CFD in Fusion 360; won the <span class="met">AIAA Aerospace Award</span> at the Regional Science &amp; Engineering Fair (invitation to NASA Goddard) and presented at EngiTek 2025.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+
+      <div class="entry">
+        <div class="row"><span class="ti">FTC Robotics, Absolute Zero #12096<span class="role">Captain &amp; Lead Programmer</span></span><span class="dt">2022 – 2026</span></div>
+        <ul><li>Led the team for <span class="met">four seasons</span>; designed and built every mechanism in Fusion 360 and wrote the autonomous and tele-op code in Java (PID control, sensor fusion, odometry); advanced to the Chesapeake regional championship.</li></ul>
+      </div>
+
+      <div class="entry">
+        <div class="row"><span class="ti">Oh<span class="role">Creator, open source</span><a class="link" href="https://github.com/21J3phy/Oh" target="_blank" rel="noopener">github.com/21J3phy/Oh</a></span><span class="dt">2026</span></div>
+        <ul><li>Built shared memory for AI coding agents: hook-driven capture of Claude Code and Codex sessions, local secret scrubbing, pgvector retrieval, and an MCP tool that answers why code is the way it is without interrupting its author.</li></ul>
+      </div>
+
+      <div class="entry">
+        <div class="row"><span class="ti">Motor-Based Resistance Trainer<span class="role">Battery-powered, no-weights strength trainer</span></span><span class="dt">2025</span></div>
+        <ul><li>Built three prototypes (eddy-current, chain-driven, geared) of a portable strength trainer; a 188:1 geared motor under Arduino PWM control produced a linear, repeatable force curve (<span class="met">R² = 0.993</span>) at a $215 build cost.</li></ul>
+      </div>
+
+          </section>
+
+    <section>
+      <h2>Skills</h2>
+      <p class="skill"><b>Languages:</b> Python, Java, C++, Swift, TypeScript, SQL</p>
+      <p class="skill"><b>Software:</b> SwiftUI, React Native, Next.js, Node.js, FastAPI, PostgreSQL, Supabase, WebRTC, Twilio, StoreKit, Git, CI/CD</p>
+      <p class="skill"><b>AI / ML:</b> PyTorch, computer vision, LLM agents and tool use, vector search (pgvector), prompt design, evaluation</p>
+      <p class="skill"><b>Hardware:</b> Fusion 360 (CAD, FEA, CFD), 3D printing, Arduino, load cells, soldering, PID / PWM control, sensor fusion</p>
+    </section>
+
+
+  </article>
 </div>
 
 <script>
