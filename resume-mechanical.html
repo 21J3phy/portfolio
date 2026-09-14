@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Résumé (Mechanical Engineering) — Nirav Surabhi</title>
+<meta name="description" content="Résumé of Nirav Surabhi — mechanical engineering student at Purdue, first-author IEEE researcher, and founder shipping native iOS apps, real-time voice-AI backends, and instrumented hardware." />
+<link rel="canonical" href="https://niravsurabhi.com/resume-mechanical.html" />
+<meta name="theme-color" content="#ece6da" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23ece6da'/%3E%3Crect width='32' height='64' fill='%231b46c914'/%3E%3Crect x='32' width='32' height='64' fill='%23cb3a1714'/%3E%3Ctext x='32' y='44' font-family='Archivo,Arial,sans-serif' font-weight='900' font-size='28' fill='%23191510' text-anchor='middle'%3ENS%3C/text%3E%3C/svg%3E" />
+<style>
+/* ============================================================
+   Mitch Daniels School of Business undergraduate résumé format
+   (business.purdue.edu/careers/resources/undergraduate-resume-template.docx):
+   Times New Roman 11pt, 0.5in margins on all sides, name centered in caps,
+   one contact line separated by pipes, all-caps section headings with a
+   bottom rule, organization bold left / city-state right, title left / dates
+   right, 2–5 action-verb bullets per entry, one page.
+   Section order follows the template: EDUCATION, PROFESSIONAL EXPERIENCE,
+   RESEARCH AND PROJECTS, LEADERSHIP AND INVOLVEMENT, RELEVANT SKILLS.
+
+   Mechanical-engineering variant (Boeing-style roles). Rebuild Resume-Mechanical.pdf from this file with headless Chrome:
+     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+       --headless=new --disable-gpu --no-pdf-header-footer \
+       --virtual-time-budget=8000 --print-to-pdf=Resume-Mechanical.pdf "file://$PWD/resume-mechanical.html"
+   Then check: pdfinfo Resume.pdf (1 page), pdffonts (TrueType), pdftotext -raw (order).
+   ============================================================ */
+:root{
+  --paper:#ece6da;--ink:#000;--ink-2:#4f463a;--blue:#1b46c9;--line-soft:rgba(25,21,16,.08);
+  --serif:'Times New Roman',Times,'Liberation Serif',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--serif);color:var(--ink);background:var(--paper);
+  background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+  background-size:26px 26px;padding:24px 16px 56px;font-size:10pt;line-height:1.1}
+a{color:inherit;text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+.wrap{max-width:8.5in;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:0 2px 8px;
+  font-family:Arial,Helvetica,sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.topbar a{font-weight:600;color:var(--blue)}
+
+.sheet{background:#fff;border:1.5px solid #191510;box-shadow:6px 6px 0 rgba(25,21,16,.12);padding:0.5in;min-height:11in}
+
+/* ---- header ---- */
+.head{text-align:center;margin-bottom:3pt}
+.head h1{font-size:13pt;font-weight:700;text-transform:uppercase;letter-spacing:.02em;line-height:1.2}
+.head .contact{font-size:10pt}
+.head .contact>span::after{content:"|";margin:0 .4em}
+.head .contact>span:last-child::after{content:none}
+
+/* ---- sections ---- */
+section{margin-top:3pt}
+h2{font-size:10pt;font-weight:700;text-transform:uppercase;border-bottom:.75pt solid #000;padding-bottom:0;margin-bottom:2pt}
+
+.entry{margin-bottom:2pt;break-inside:avoid}
+.entry:last-child{margin-bottom:0}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:12pt}
+.row .org{font-weight:700}
+.row .org .link{font-weight:400}
+.row .org .link::before{content:" — "}
+.row .org .link{font-style:normal}
+.row .loc,.row .dt{white-space:nowrap;font-variant-numeric:tabular-nums}
+.row .ti{font-style:italic;font-weight:400}
+.row .org .ti::before{content:" — ";font-style:normal}
+.row>.ti{font-style:italic}
+.sub{margin-top:0}
+ul{list-style:disc;padding-left:.35in;margin-top:0}
+li{padding-left:.03in}
+.skill b{font-weight:700}
+
+/* ---- print ---- */
+@page{size:Letter;margin:0.5in}
+@media print{
+  html,body{background:#fff;padding:0;font-size:10pt}
+  .wrap{max-width:none}
+  .topbar{display:none}
+  .sheet{border:0;box-shadow:none;padding:0;min-height:0;background:#fff}
+  a{color:#000}
+  .entry{break-inside:avoid}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <span>RÉSUMÉ · MECHANICAL ENGINEERING · REV 2026.09</span>
+    <span><a href="index.html">← portfolio</a> &nbsp;·&nbsp; <a href="Resume-Mechanical.pdf" target="_blank" rel="noopener">download PDF ↓</a></span>
+  </div>
+
+  <article class="sheet">
+
+    <header class="head">
+      <h1>Nirav Surabhi</h1>
+      <div class="contact">
+        <span>West Lafayette, IN</span>
+        <span>U.S. Citizen</span>
+        <span><a href="tel:+15713078508">(571) 307-8508</a></span>
+        <span><a href="mailto:niravsurabhi@gmail.com" data-copy-email title="Click to copy"><span data-copy-label>niravsurabhi@gmail.com</span></a></span>
+        <span><a href="https://niravsurabhi.com" target="_blank" rel="noopener">niravsurabhi.com</a></span>
+        <span><a href="https://linkedin.com/in/niravss" target="_blank" rel="noopener">linkedin.com/in/niravss</a></span>
+      </div>
+    </header>
+
+    <section>
+      <h2>Education</h2>
+      <div class="entry">
+        <div class="row"><span class="org">Purdue University</span><span class="loc">West Lafayette, IN</span></div>
+        <div class="row"><span class="ti">Bachelor of Science, Mechanical Engineering</span><span class="dt">Expected Graduation: May 2029</span></div>
+        <div class="sub">Relevant Coursework: ENGR 133, MA 265 Linear Algebra, PHYS 172 Modern Mechanics &nbsp;|&nbsp; Activities: Purdue Formula SAE (Fall 2026, design-onboarding sprint in CAD)</div>
+      </div>
+      <div class="entry">
+        <div class="row"><span class="org">Independence High School</span><span class="loc">Loudoun County, VA</span></div>
+        <div class="row"><span class="ti">High School Diploma, GPA: 3.8/4.00</span><span class="dt">June 2026</span></div>
+        <div class="sub">Relevant Coursework: AP Physics C (Mechanics and E&amp;M), Multivariable Calculus, AP Computer Science A</div>
+        <div class="sub">Honors: Mathematics Scholar, Central Virginia Governor's School for Science &amp; Technology; Presidential Volunteer Service Award, Silver</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Engineering and Research Experience</h2>
+      <div class="entry">
+        <div class="row"><span class="org">Passive Vortex Propulsion in Air: A Proof of Concept Demonstration<a class="link" href="https://doi.org/10.1109/EngiTek68245.2025.11567580" target="_blank" rel="noopener">IEEE EngiTek 2025</a><span class="ti">First Author &amp; Principal Investigator</span></span><span class="dt">2024 – Dec 2025</span></div>
+        <ul>
+          <li>Engineered and published the first experimental demonstration of passive vortex propulsion in air: 3.1 N mean net thrust over 20 trials (p &lt; 0.001) from a fin placed in a bluff-body wake.</li>
+          <li>Designed and fabricated the test equipment from scratch: a custom wind tunnel, bluff-body and fin mounts, and a rig for repeatable wake spacing.</li>
+          <li>Built the data-acquisition system: soldered load cells to an Arduino, calibrated the sensor array, and validated readings against analytical models.</li>
+          <li>Compared 3D-printed flat and NACA 0024/0012/0009 fins with Fusion 360 CFD and ANOVA/Dunn's tests in Python; NACA 0012 won.</li>
+          <li>Won the AIAA Aerospace Award at the Regional Science &amp; Engineering Fair, with an invitation to collaborate at NASA Goddard.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <div class="row"><span class="org">I3 Simulations<span class="ti">CAD Intern</span></span><span class="dt">Jun 2025 – May 2026</span></div>
+        <ul>
+          <li>Designed 3D CAD models and prototyped haptic-feedback systems with cross-functional developers for medical-training simulators.</li>
+          <li>Conducted prototype verification testing for usability, reliability, and conformance to design requirements.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <div class="row"><span class="org">FIRST Tech Challenge Robotics, Absolute Zero #12096<span class="ti">Team Captain &amp; Lead Engineer</span></span><span class="dt">Sep 2022 – Jun 2026</span></div>
+        <ul>
+          <li>Directed end-to-end hardware development over four seasons: Fusion 360 CAD of every mechanism, structural fabrication, and electrical wiring; advanced to the Chesapeake regional championship.</li>
+          <li>Performed component-level troubleshooting and repair, including precision soldering and refurbishment of failing servo motors.</li>
+          <li>Integrated hardware with Java control software: PID loops, encoder and gyroscope sensor fusion, and odometry, verified for timing and signal accuracy.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <div class="row"><span class="org">The Bike Lane<span class="ti">Bike Mechanic (Intern, promoted to Part-Time Staff)</span></span><span class="dt">Jun 2021 – Aug 2025</span></div>
+        <ul>
+          <li>Assembled bicycles from the frame up for the sales floor and ran the final safety inspection on every build before customer delivery.</li>
+          <li>Performed root-cause investigations on nonconforming units and executed precision repairs on drivetrain, brake, and shifting systems.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Technical Projects</h2>
+      <div class="entry">
+        <div class="row"><span class="org">Motor-Based Resistance Trainer<span class="ti">Designer &amp; Builder</span></span><span class="dt">Mar 2025</span></div>
+        <ul>
+          <li>Built three prototypes (eddy-current, chain-driven, geared) of a portable, battery-powered strength trainer; a 188:1 geared motor under Arduino PWM control gave a linear, repeatable force curve (R² = 0.993) for $215.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <div class="row"><span class="org">Science Olympiad, Independence High School<span class="ti">Team Captain &amp; Lead Hardware Engineer</span></span></div>
+        <ul>
+          <li>Engineered a 3D-printed, Arduino-driven electric vehicle, tuning its PID loop through iterative testing for accurate distance runs; built and calibrated an Arduino electrode sensor that measures water salinity.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <div class="row"><span class="org">SpareMe<a class="link" href="https://spareme.com" target="_blank" rel="noopener">spareme.com</a><span class="ti">Founder &amp; Engineer</span></span><span class="dt">Jul 2026 – Present</span></div>
+        <ul>
+          <li>Shipped an App Store iPhone app and Node/TypeScript backend that delegate phone calls to an AI agent (Twilio real-time speech, OpenAI), with fail-closed kill switches and rate limits.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Leadership and Involvement</h2>
+      <div class="entry">
+        <div class="row"><span class="org">Ember Learning (formerly DeAP Learning Labs)<span class="ti">AI Engineer &amp; Software Intern</span></span><span class="dt">Feb 2021 – 2022</span></div>
+        <ul><li>Engineered LLM prompts and automated rubric-scoring tests for AP-tutor chatbots; team won a Microsoft and OpenAI grant.</li></ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Relevant Skills</h2>
+      <div class="skill"><b>Mechanical Design:</b> Fusion 360 (CAD, FEA, CFD), design for additive (FDM) and subtractive manufacturing, fabrication, rapid prototyping</div>
+      <div class="skill"><b>Electromechanical:</b> assembly, soldering, wiring, Arduino, sensor calibration (load cells, electrodes, encoders, gyroscopes), motor repair</div>
+      <div class="skill"><b>Analysis &amp; Testing:</b> test-equipment design, verification testing, PID control, fluid dynamics, ANOVA statistics, root-cause analysis</div>
+      <div class="skill"><b>Software:</b> Python, Java, C++ (Arduino), Swift, TypeScript, Git, technical documentation</div>
+    </section>
+
+  </article>
+</div>
+
+<script>
+(function(){
+  var EMAIL = 'niravsurabhi@gmail.com';
+  document.querySelectorAll('[data-copy-email]').forEach(function(el){
+    el.addEventListener('click', function(e){
+      if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
+      if(!navigator.clipboard){ return; }
+      e.preventDefault();
+      var lab = el.querySelector('[data-copy-label]'); if(!lab) return;
+      var prev = lab.textContent;
+      navigator.clipboard.writeText(EMAIL).then(function(){
+        lab.textContent = 'Copied ✓';
+        setTimeout(function(){ lab.textContent = prev; }, 1500);
+      }, function(){ window.location.href = 'mailto:' + EMAIL; });
+    });
+  });
+})();
+</script>
+</body>
+</html>
