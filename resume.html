@@ -9,98 +9,78 @@
 <meta name="theme-color" content="#ece6da" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23ece6da'/%3E%3Crect width='32' height='64' fill='%231b46c914'/%3E%3Crect x='32' width='32' height='64' fill='%23cb3a1714'/%3E%3Ctext x='32' y='44' font-family='Archivo,Arial,sans-serif' font-weight='900' font-size='28' fill='%23191510' text-anchor='middle'%3ENS%3C/text%3E%3C/svg%3E" />
 <style>
-/* IBM Plex Sans, self-hosted static instances (SIL OFL 1.1, see fonts/LICENSE-IBM-Plex.txt).
-   Static files embed in the PDF as real TrueType glyphs; Google Fonts serves the variable
-   font, which headless Chrome flattens into Type 3 outlines some résumé parsers misread. */
-@font-face{font-family:'Plex';src:url(fonts/IBMPlexSans-Regular.woff2) format('woff2');font-weight:400;font-display:swap}
-@font-face{font-family:'Plex';src:url(fonts/IBMPlexSans-SemiBold.woff2) format('woff2');font-weight:600;font-display:swap}
-@font-face{font-family:'Plex';src:url(fonts/IBMPlexSans-Bold.woff2) format('woff2');font-weight:700;font-display:swap}
 /* ============================================================
-   One layout for screen and print. The sheet is a US-Letter page
-   (8.5in wide, 0.5in side margins) in both, so what you see in the
-   browser is exactly what the PDF and applicant-tracking systems get:
-   single column, standard headings, real bullet lists, dates on the
-   same line as the title, body text at 10pt.
+   Mitch Daniels School of Business undergraduate résumé format
+   (business.purdue.edu/careers/resources/undergraduate-resume-template.docx):
+   Times New Roman 11pt, 0.5in margins on all sides, name centered in caps,
+   one contact line separated by pipes, all-caps section headings with a
+   bottom rule, organization bold left / city-state right, title left / dates
+   right, 2–5 action-verb bullets per entry, one page.
+   Section order follows the template: EDUCATION, PROFESSIONAL EXPERIENCE,
+   RESEARCH AND PROJECTS, LEADERSHIP AND INVOLVEMENT, RELEVANT SKILLS.
 
    Rebuild Resume.pdf from this file with headless Chrome:
      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
        --headless=new --disable-gpu --no-pdf-header-footer \
        --virtual-time-budget=8000 --print-to-pdf=Resume.pdf "file://$PWD/resume.html"
-   Then check: pdfinfo Resume.pdf (1 page), pdffonts (CID TrueType), pdftotext -raw (order).
+   Then check: pdfinfo Resume.pdf (1 page), pdffonts (TrueType), pdftotext -raw (order).
    ============================================================ */
 :root{
-  --paper:#ece6da;--sheet:#fbf9f4;--ink:#191510;--ink-2:#4f463a;--blue:#1b46c9;--red:#cb3a17;
-  --rule:rgba(25,21,16,.7);--line-soft:rgba(25,21,16,.08);
-  --sans:'Plex',Arial,Helvetica,system-ui,sans-serif;--mono:'Plex',monospace;
+  --paper:#ece6da;--ink:#000;--ink-2:#4f463a;--blue:#1b46c9;--line-soft:rgba(25,21,16,.08);
+  --serif:'Times New Roman',Times,'Liberation Serif',serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
-body{font-family:var(--sans);color:var(--ink);background:var(--paper);
+body{font-family:var(--serif);color:var(--ink);background:var(--paper);
   background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
-  background-size:26px 26px;padding:24px 16px 56px;font-size:10pt;line-height:1.22}
+  background-size:26px 26px;padding:24px 16px 56px;font-size:10pt;line-height:1.1}
 a{color:inherit;text-decoration:none}
 a:hover{text-decoration:underline}
 :focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 
 .wrap{max-width:8.5in;margin:0 auto}
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:0 2px 8px;
-  font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+  font-family:Arial,Helvetica,sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
 .topbar a{font-weight:600;color:var(--blue)}
 
-.sheet{background:var(--sheet);border:1.5px solid var(--ink);box-shadow:6px 6px 0 rgba(25,21,16,.12);
-  padding:0.45in 0.5in 0.45in;min-height:11in}
+.sheet{background:#fff;border:1.5px solid #191510;box-shadow:6px 6px 0 rgba(25,21,16,.12);padding:0.5in;min-height:11in}
 
 /* ---- header ---- */
-.head{text-align:center;padding-bottom:5pt;border-bottom:1.2pt solid var(--rule);margin-bottom:4pt}
-.head h1{font-weight:700;font-size:21pt;line-height:1;letter-spacing:.08em;text-transform:uppercase}
-.head .contact{margin-top:3pt;font-size:9pt;color:var(--ink);display:flex;justify-content:center;flex-wrap:wrap;column-gap:0;row-gap:1pt}
-.head .contact>span::after{content:"·";margin:0 .35em;color:var(--ink-2)}
+.head{text-align:center;margin-bottom:3pt}
+.head h1{font-size:13pt;font-weight:700;text-transform:uppercase;letter-spacing:.02em;line-height:1.2}
+.head .contact{font-size:10pt}
+.head .contact>span::after{content:"|";margin:0 .4em}
 .head .contact>span:last-child::after{content:none}
-.head .contact a{color:var(--blue)}
-.head .summary{margin-top:4pt;font-size:10pt;line-height:1.28}
 
 /* ---- sections ---- */
-section{margin-top:6pt}
-h2{font-family:var(--sans);font-size:10pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red);
-  padding-bottom:1.5pt;border-bottom:.8pt solid var(--rule);margin-bottom:4pt}
+section{margin-top:3pt}
+h2{font-size:10pt;font-weight:700;text-transform:uppercase;border-bottom:.75pt solid #000;padding-bottom:0;margin-bottom:2pt}
 
-.entry{margin-bottom:3.5pt;break-inside:avoid}
+.entry{margin-bottom:2pt;break-inside:avoid}
 .entry:last-child{margin-bottom:0}
 .row{display:flex;justify-content:space-between;align-items:baseline;gap:12pt}
-.row .ti{font-size:10.5pt;font-weight:700;letter-spacing:-.005em}
-.row .ti .role{font-weight:400;color:var(--ink)}
-.row .ti .role::before{content:" — "}
-.row .ti .link{font-weight:400;color:var(--blue);font-size:9.5pt}
-.row .ti .link::before{content:" · ";color:var(--ink-2)}
-.row .dt{font-size:9.5pt;color:var(--ink-2);white-space:nowrap;font-variant-numeric:tabular-nums}
-.sub{font-size:9.5pt;color:var(--ink-2);margin-top:.5pt}
-.sub b{color:var(--ink);font-weight:600}
-ul{margin-top:1.5pt;padding-left:12pt;list-style:disc}
-li{margin-bottom:.8pt;padding-left:1pt}
-li::marker{color:var(--red)}
-.met{font-weight:600}
-
-.skill{margin-bottom:1.5pt}
+.row .org{font-weight:700}
+.row .org .link{font-weight:400}
+.row .org .link::before{content:" — "}
+.row .org .link{font-style:normal}
+.row .loc,.row .dt{white-space:nowrap;font-variant-numeric:tabular-nums}
+.row .ti{font-style:italic;font-weight:400}
+.row .org .ti::before{content:" — ";font-style:normal}
+.row>.ti{font-style:italic}
+.sub{margin-top:0}
+ul{list-style:disc;padding-left:.35in;margin-top:0}
+li{padding-left:.03in}
 .skill b{font-weight:700}
 
-
-@media(max-width:720px){
-  body{padding:12px 8px 40px;font-size:9.5pt}
-  .sheet{padding:.4in .35in;min-height:0}
-  .row{flex-direction:column;gap:0}
-  .head .summary{max-width:none}
-}
-
-/* ---- print / PDF ---- */
-@page{size:Letter;margin:0.4in 0.5in}
+/* ---- print ---- */
+@page{size:Letter;margin:0.5in}
 @media print{
   html,body{background:#fff;padding:0;font-size:10pt}
   .wrap{max-width:none}
   .topbar{display:none}
   .sheet{border:0;box-shadow:none;padding:0;min-height:0;background:#fff}
-  a,.head .contact a,.row .ti .link{color:var(--ink)}
-  h2,li::marker{color:var(--ink)}
-  section,.entry{break-inside:avoid}
+  a{color:#000}
+  .entry{break-inside:avoid}
 }
 </style>
 </head>
@@ -122,89 +102,101 @@ li::marker{color:var(--red)}
         <span><a href="mailto:niravsurabhi@gmail.com" data-copy-email title="Click to copy"><span data-copy-label>niravsurabhi@gmail.com</span></a></span>
         <span><a href="https://niravsurabhi.com" target="_blank" rel="noopener">niravsurabhi.com</a></span>
         <span><a href="https://linkedin.com/in/niravss" target="_blank" rel="noopener">linkedin.com/in/niravss</a></span>
-        <span><a href="https://github.com/21J3phy" target="_blank" rel="noopener">github.com/21J3phy</a></span>
       </div>
-      <p class="summary">Purdue mechanical engineering student and first-author IEEE researcher who ships production software: a native iOS app on the App Store, real-time voice-AI backends, and instrumented hardware with measured results.</p>
     </header>
 
     <section>
       <h2>Education</h2>
       <div class="entry">
-        <div class="row"><span class="ti">Purdue University<span class="role">B.S. Mechanical Engineering (First-Year Engineering)</span></span><span class="dt">Aug 2026 – May 2030 (expected)</span></div>
-        <div class="sub"><b>Coursework:</b> ENGR 133, MA 265 Linear Algebra, PHYS 172 Modern Mechanics &nbsp;·&nbsp; <b>Activities:</b> Purdue Formula SAE</div>
-        <div class="sub"><b>Honors:</b> Presidential Volunteer Service Award, Silver &nbsp;·&nbsp; Mathematics Scholar, Central Virginia Governor's School &nbsp;·&nbsp; Captain, Science Olympiad &nbsp;·&nbsp; 1st place, Aguado Guitar Competition</div>
+        <div class="row"><span class="org">Purdue University</span><span class="loc">West Lafayette, IN</span></div>
+        <div class="row"><span class="ti">Bachelor of Science, Mechanical Engineering</span><span class="dt">Expected Graduation: May 2029</span></div>
+        <div class="sub">Relevant Coursework: ENGR 133, MA 265 Linear Algebra, PHYS 172 Modern Mechanics</div>
+      </div>
+      <div class="entry">
+        <div class="row"><span class="org">Independence High School</span><span class="loc">Loudoun County, VA</span></div>
+        <div class="row"><span class="ti">High School Diploma, GPA: 3.8/4.00</span><span class="dt">June 2026</span></div>
+        <div class="sub">Relevant Coursework: AP Physics C (Mechanics and E&amp;M), AP Computer Science A, Multivariable Calculus</div>
+        <div class="sub">Honors: Mathematics Scholar, Central Virginia Governor's School for Science &amp; Technology; Presidential Volunteer Service Award, Silver; 1st Place, Aguado Guitar Competition; All-Virginia Guitar Ensemble</div>
       </div>
     </section>
 
     <section>
-      <h2>Experience</h2>
-
-
+      <h2>Professional Experience</h2>
       <div class="entry">
-        <div class="row"><span class="ti">I3 Simulations<span class="role">CAD Intern</span></span><span class="dt">Jun 2025 – May 2026</span></div>
-        <ul><li>Produced 3D models and haptic-feedback prototypes for medical-training simulators.</li></ul>
-      </div>
-
-      <div class="entry">
-        <div class="row"><span class="ti">The Bike Lane<span class="role">Bike Mechanic (intern, then part-time)</span></span><span class="dt">Jun 2021 – Aug 2025</span></div>
-        <ul><li>Assembled bicycles from the frame up and ran the final safety inspection before customer delivery.</li></ul>
-      </div>
-      <div class="entry">
-        <div class="row"><span class="ti">Ember Learning<span class="role">AI Engineer &amp; Software Intern (formerly DeAP Learning Labs)</span></span><span class="dt">Feb 2021 – 2022</span></div>
+        <div class="row"><span class="org">I3 Simulations<span class="ti">CAD Intern</span></span><span class="dt">Jun 2025 – May 2026</span></div>
         <ul>
-          <li>Wrote the LLM prompts behind AP-tutor chatbots, built automated grading of AP DBQ/FRQ essays against the official rubrics, and indexed lecture transcripts in a vector database for timestamp search; the team secured a <span class="met">Microsoft and OpenAI grant</span> and reached a $1M+ valuation.</li>
+          <li>Designed 3D CAD models and prototyped haptic-feedback systems with cross-functional developers for immersive medical-training simulators.</li>
+          <li>Conducted prototype verification testing for usability, reliability, and conformance to design requirements.</li>
         </ul>
       </div>
-
-          </section>
-
-    <section>
-      <h2>Research &amp; Publications</h2>
       <div class="entry">
-        <div class="row"><span class="ti">Passive Vortex Propulsion in Air: A Proof of Concept Demonstration<span class="role">First Author</span><a class="link" href="https://doi.org/10.1109/EngiTek68245.2025.11567580" target="_blank" rel="noopener">IEEE EngiTek 2025</a></span><span class="dt">Dec 2025</span></div>
+        <div class="row"><span class="org">The Bike Lane<span class="ti">Bike Mechanic (Intern, promoted to Part-Time Staff)</span></span><span class="dt">Jun 2021 – Aug 2025</span></div>
         <ul>
-          <li>Built a wind tunnel and test rig with a soldered, calibrated Arduino load-cell system; measured <span class="met">3.1 N mean net thrust over 20 trials (p &lt; 0.001)</span>, the first experimental evidence of passive vortex propulsion in air.</li>
-          <li>Compared flat and NACA 0024/0012/0009 fins with ANOVA and Dunn's test in Python plus CFD in Fusion 360; won the <span class="met">AIAA Aerospace Award</span> at the Regional Science &amp; Engineering Fair (invitation to NASA Goddard) and presented at EngiTek 2025.</li>
+          <li>Assembled bicycles from the frame up and ran the final safety inspection on every build before customer delivery.</li>
+          <li>Diagnosed root causes on nonconforming units and repaired drivetrain, brake, and shifting systems.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <div class="row"><span class="org">Ember Learning (formerly DeAP Learning Labs)<span class="ti">AI Engineer &amp; Software Intern</span></span><span class="dt">Feb 2021 – 2022</span></div>
+        <ul>
+          <li>Engineered the LLM prompts behind AP-tutor chatbots that replicate the teaching styles of well-known YouTube AP educators; the team secured a Microsoft and OpenAI grant and reached a $1M+ valuation.</li>
+          <li>Built an automated prompt-testing suite that graded AP DBQ and FRQ essays against the official rubrics, scoring both answer accuracy and reasoning.</li>
+          <li>Indexed lecture-video transcripts in a vector database so each student question retrieves the exact video and timestamp.</li>
         </ul>
       </div>
     </section>
 
     <section>
-      <h2>Projects</h2>
-
+      <h2>Research and Projects</h2>
       <div class="entry">
-        <div class="row"><span class="ti">SpareMe<span class="role">Founder &amp; Lead Engineer</span><a class="link" href="https://getspareme.com" target="_blank" rel="noopener">getspareme.com</a></span><span class="dt">Jul 2026 – Present</span></div>
+        <div class="row"><span class="org">Passive Vortex Propulsion in Air: A Proof of Concept Demonstration<a class="link" href="https://doi.org/10.1109/EngiTek68245.2025.11567580" target="_blank" rel="noopener">IEEE EngiTek 2025</a><span class="ti">First Author</span></span><span class="dt">2024 – Dec 2025</span></div>
+        <ul>
+          <li>Built a wind tunnel and test rig with a soldered, calibrated Arduino load-cell system; measured 3.1 N mean net thrust over 20 trials (p &lt; 0.001), the first experimental evidence of passive vortex propulsion in air.</li>
+          <li>Compared flat and NACA 0024/0012/0009 fins using ANOVA and Dunn's test in Python plus CFD in Fusion 360; won the AIAA Aerospace Award at the Regional Science &amp; Engineering Fair (invitation to NASA Goddard).</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <div class="row"><span class="org">SpareMe<a class="link" href="https://spareme.com" target="_blank" rel="noopener">spareme.com</a><span class="ti">Founder &amp; Engineer</span></span><span class="dt">Jul 2026 – Present</span></div>
         <ul>
           <li>Shipped an iPhone app to the App Store that delegates phone calls to an AI agent: it dials U.S. businesses, works phone trees, waits on hold, and returns a written outcome; users watch a live transcript and can type instructions, listen in, or take over mid-call.</li>
-          <li>Built the SwiftUI client and Node/TypeScript backend on Twilio ConversationRelay (real-time speech) and OpenAI (reasoning), with verified caller ID, encrypted PostgreSQL case state, APNs, StoreKit-funded per-minute billing with signed transaction verification, and fail-closed kill switches and rate limits.</li>
+          <li>Built the SwiftUI client and Node/TypeScript backend on Twilio ConversationRelay (real-time speech) and OpenAI (reasoning), with verified caller ID, encrypted PostgreSQL case state, APNs, StoreKit per-minute billing with signed transaction verification, and fail-closed kill switches and rate limits.</li>
         </ul>
       </div>
-
       <div class="entry">
-        <div class="row"><span class="ti">FTC Robotics, Absolute Zero #12096<span class="role">Captain &amp; Lead Programmer</span></span><span class="dt">Sep 2022 – Jun 2026</span></div>
-        <ul><li>Led the team for <span class="met">four seasons</span>; designed and built every mechanism in Fusion 360 and wrote the autonomous and tele-op code in Java (PID control, sensor fusion, odometry); advanced to the Chesapeake regional championship.</li></ul>
-      </div>
-
-      <div class="entry">
-        <div class="row"><span class="ti">Oh<span class="role">Creator, open source</span><a class="link" href="https://github.com/21J3phy/Oh" target="_blank" rel="noopener">github.com/21J3phy/Oh</a></span><span class="dt">May 2026 – Jun 2026</span></div>
+        <div class="row"><span class="org">Oh<a class="link" href="https://github.com/21J3phy/Oh" target="_blank" rel="noopener">github.com/21J3phy/Oh</a><span class="ti">Creator, open source</span></span><span class="dt">May 2026 – Jun 2026</span></div>
         <ul><li>Built shared memory for AI coding agents: hook-driven capture of Claude Code and Codex sessions, local secret scrubbing, pgvector retrieval, and an MCP tool that answers why code is the way it is without interrupting its author.</li></ul>
       </div>
-
       <div class="entry">
-        <div class="row"><span class="ti">Motor-Based Resistance Trainer<span class="role">Battery-powered, no-weights strength trainer</span></span><span class="dt">Mar 2025</span></div>
-        <ul><li>Built three prototypes (eddy-current, chain-driven, geared) of a portable strength trainer; a 188:1 geared motor under Arduino PWM control produced a linear, repeatable force curve (<span class="met">R² = 0.993</span>) at a $215 build cost.</li></ul>
+        <div class="row"><span class="org">Motor-Based Resistance Trainer<span class="ti">Designer &amp; Builder</span></span><span class="dt">Mar 2025</span></div>
+        <ul><li>Built three prototypes (eddy-current, chain-driven, geared) of a portable, battery-powered strength trainer; a 188:1 geared motor under Arduino PWM control gave a linear, repeatable force curve (R² = 0.993) for $215.</li></ul>
       </div>
-
-          </section>
-
-    <section>
-      <h2>Skills</h2>
-      <p class="skill"><b>Languages:</b> Python, Java, C++, Swift, TypeScript, SQL</p>
-      <p class="skill"><b>Software:</b> SwiftUI, Next.js, Node.js, FastAPI, PostgreSQL, WebRTC, Twilio, StoreKit, APNs, Git, CI/CD</p>
-      <p class="skill"><b>AI / ML:</b> PyTorch, computer vision, LLM agents and tool use, vector search (pgvector), prompt design, evaluation</p>
-      <p class="skill"><b>Hardware:</b> Fusion 360 (CAD, FEA, CFD), 3D printing, Arduino, load cells, soldering, PID / PWM control, sensor fusion</p>
     </section>
 
+    <section>
+      <h2>Leadership and Involvement</h2>
+      <div class="entry">
+        <div class="row"><span class="org">FIRST Tech Challenge Robotics, Absolute Zero #12096<span class="ti">Team Captain &amp; Lead Programmer</span></span><span class="dt">Sep 2022 – Jun 2026</span></div>
+        <ul>
+          <li>Led the team for four seasons; designed and built every mechanism in Fusion 360 and advanced to the Chesapeake regional championship.</li>
+          <li>Wrote the autonomous and tele-op code in Java, integrating PID control loops, sensor fusion (encoders, gyroscopes), and odometry.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <div class="row"><span class="org">Purdue Formula SAE<span class="ti">Team Member</span></span><span class="dt">Aug 2026 – Present</span></div>
+        <ul><li>Joined the vehicle team in Fall 2026 and completed the design-onboarding sprint in CAD.</li></ul>
+      </div>
+      <div class="entry">
+        <div class="row"><span class="org">Science Olympiad, Independence High School<span class="ti">Team Captain</span></span></div>
+        <ul><li>Engineered a PID-controlled, 3D-printed Arduino electric vehicle for timed distance runs and an electrode sensor that measures water salinity.</li></ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Relevant Skills</h2>
+      <div class="skill"><b>Software:</b> Python, Java, C++, Swift, TypeScript, SQL; SwiftUI, Next.js, Node.js, FastAPI, PostgreSQL, Twilio, StoreKit, APNs, Git, CI/CD</div>
+      <div class="skill"><b>AI / ML:</b> PyTorch, computer vision, LLM agents and tool use, vector search (pgvector), prompt design, evaluation</div>
+      <div class="skill"><b>Hardware:</b> Fusion 360 (CAD, FEA, CFD), 3D printing, Arduino, load cells, soldering, PID / PWM control, sensor fusion</div>
+    </section>
 
   </article>
 </div>
