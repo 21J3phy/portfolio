@@ -2,1418 +2,512 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Nirav Surabhi — Software + Mechanical Engineering</title>
-<meta name="description" content="Nirav Surabhi — software and mechanical engineering. A Honda Civic efficiency experiment became an IEEE paper on passive vortex propulsion; a TikTok habit became a bias-reducing news app." />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Nirav Surabhi — Mechanical Engineering × Software</title>
+<meta name="description" content="Step into Nirav Surabhi's lab: a first-author IEEE paper on passive vortex propulsion, an AI phone agent on the App Store, and four seasons of FTC robotics. Purdue mechanical engineering, class of 2029." />
 <link rel="canonical" href="https://niravsurabhi.com/" />
-<meta name="theme-color" content="#ece6da" />
-
-<!-- Open Graph / Twitter -->
+<meta name="theme-color" content="#07080a" />
+<meta name="color-scheme" content="dark" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Nirav Surabhi — Software + Mechanical Engineering" />
-<meta property="og:description" content="A Honda Civic efficiency experiment became an IEEE paper; a TikTok habit became a bias-reducing news app." />
+<meta property="og:title" content="Nirav Surabhi — Mechanical Engineering × Software" />
+<meta property="og:description" content="Step into the lab: IEEE first author, FTC captain, two apps on the App Store." />
 <meta property="og:url" content="https://niravsurabhi.com/" />
 <meta property="og:image" content="https://niravsurabhi.com/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Nirav Surabhi — Software + Mechanical Engineering" />
-<meta name="twitter:description" content="Software + mechanical engineering, from Civic aerodynamics to bias-reducing news." />
 <meta name="twitter:image" content="https://niravsurabhi.com/og.png" />
-
-<!-- Favicon: inline SVG, split blue/red mark -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23ece6da'/%3E%3Crect width='32' height='64' fill='%231b46c914'/%3E%3Crect x='32' width='32' height='64' fill='%23cb3a1714'/%3E%3Ctext x='32' y='44' font-family='Archivo,Arial,sans-serif' font-weight='900' font-size='28' fill='%23191510' text-anchor='middle'%3ENS%3C/text%3E%3C/svg%3E" />
-
-<!-- JSON-LD Person -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307080a'/%3E%3Ccircle cx='18' cy='32' r='8.5' fill='none' stroke='%23ecebe6' stroke-width='3.5'/%3E%3Ccircle cx='36' cy='23' r='5.5' fill='%23ff5b1f'/%3E%3Ccircle cx='50' cy='41' r='5.5' fill='%234fb4ff'/%3E%3C/svg%3E" />
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Nirav Surabhi",
-  "url": "https://niravsurabhi.com/",
-  "email": "mailto:niravsurabhi@gmail.com",
-  "address": { "@type": "PostalAddress", "addressLocality": "Brambleton", "addressRegion": "VA", "addressCountry": "US" },
-  "sameAs": ["https://www.linkedin.com/in/niravss", "https://github.com/21J3phy"],
-  "jobTitle": "Engineer",
-  "alumniOf": { "@type": "EducationalOrganization", "name": "Independence High School" }
-}
+{ "@context": "https://schema.org", "@type": "Person", "name": "Nirav Surabhi", "url": "https://niravsurabhi.com/", "email": "mailto:niravsurabhi@gmail.com",
+  "jobTitle": "Mechanical Engineering Student", "affiliation": { "@type": "CollegeOrUniversity", "name": "Purdue University" },
+  "sameAs": ["https://www.linkedin.com/in/niravss", "https://github.com/21J3phy", "https://ieeexplore.ieee.org/document/11567580"] }
 </script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="modulepreload" href="vendor/three/three.module.js" />
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
 <style>
-/* ============================ TOKENS ============================ */
 :root{
-  --paper:#ece6da; --paper-2:#e5dccb; --paper-3:#ddd2bd;
-  --ink:#191510; --ink-2:#4f463a; --ink-3:#80766654;
-  --blue:#1b46c9; --blue-deep:#11308f; --blue-wash:#1b46c914;
-  --red:#cb3a17; --red-deep:#9e2c0f; --red-wash:#cb3a1714;
-  --line:rgba(25,21,16,.18); --line-soft:rgba(25,21,16,.07); --line-mid:rgba(25,21,16,.12);
-  --mono:'IBM Plex Mono',ui-monospace,monospace;
-  --sans:'IBM Plex Sans',system-ui,sans-serif;
-  --disp:'Archivo','IBM Plex Sans',sans-serif;
-  --maxw:1320px;
-  --hdr:54px;
+  --bg:#07080a; --bg1:#0b0d10; --bg2:#101318;
+  --fg:#ecebe6; --fg2:#a8abb1; --fg3:#70757e; --fg4:#474c54;
+  --line:rgba(236,235,230,.08); --line2:rgba(236,235,230,.14); --line3:rgba(236,235,230,.26);
+  --me:#ff5b1f; --sw:#4fb4ff; --me-a:rgba(255,91,31,.14); --sw-a:rgba(79,180,255,.14);
+  --sans:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --ease:cubic-bezier(.2,.7,.1,1);
+  --pw:min(620px,46vw);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
-body{
-  font-family:var(--sans); color:var(--ink); background-color:var(--paper);
-  line-height:1.5; font-size:17px; overflow-x:hidden;
-  background-image:
-    linear-gradient(var(--line-soft) 1px,transparent 1px),
-    linear-gradient(90deg,var(--line-soft) 1px,transparent 1px),
-    linear-gradient(rgba(25,21,16,.045) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(25,21,16,.045) 1px,transparent 1px);
-  background-size:28px 28px,28px 28px,140px 140px,140px 140px;
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);color-scheme:dark}
+body{font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden;overscroll-behavior:none}
+img,video,canvas,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+h1,h2,h3,h4,p,ul,figure{margin:0;padding:0}
+ul{list-style:none}
+::selection{background:var(--fg);color:var(--bg)}
+:focus-visible{outline:2px solid var(--fg);outline-offset:3px;border-radius:4px}
+.lab{font:500 11px/1.45 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--fg3)}
+.me{--c:var(--me);--ca:var(--me-a)} .sw{--c:var(--sw);--ca:var(--sw-a)}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--c,var(--fg2));flex:none}
+
+/* ============================================================ the room */
+#room{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;touch-action:none;outline:none}
+.top{position:fixed;inset:0 0 auto;z-index:20;display:flex;align-items:center;gap:10px;padding:18px clamp(16px,2.6vw,32px);pointer-events:none}
+.top>*{pointer-events:auto}
+.brand{display:flex;align-items:center;gap:12px}
+.brand svg{width:26px;height:26px}
+.brand b{display:block;font:600 13px/1.1 var(--sans);font-stretch:118%;letter-spacing:.07em;text-transform:uppercase}
+.brand small{display:block;margin-top:3px;font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--fg3)}
+.top .sp{flex:1}
+.pill{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 15px;border-radius:999px;border:1px solid var(--line3);background:rgba(7,8,10,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  font:600 11.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;transition:background .2s,color .2s,border-color .2s;white-space:nowrap}
+.pill:hover{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+@media(max-width:520px){.top{padding:14px 14px;gap:8px}.brand{gap:10px}.brand svg{width:22px;height:22px}.brand small{display:none}.brand b{font-size:12px;font-stretch:104%;letter-spacing:.04em;white-space:nowrap}.pill{height:34px;padding:0 11px;font-size:10.5px}}
+
+#dock{position:fixed;left:50%;bottom:clamp(14px,2.4vh,26px);transform:translateX(-50%);z-index:20;display:flex;gap:4px;padding:5px;border-radius:999px;
+  background:rgba(9,10,13,.62);border:1px solid var(--line2);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);transition:opacity .4s}
+#dock button{display:flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:999px;font:500 12.5px/1 var(--sans);color:var(--fg2);white-space:nowrap;transition:background .2s,color .2s}
+#dock button i{font:500 10px/1 var(--mono);color:var(--fg3);font-style:normal}
+#dock button:hover{color:var(--fg);background:rgba(236,235,230,.07)}
+#dock button.on{background:var(--fg);color:var(--bg)}
+#dock button.on i{color:var(--bg)}
+#dock .dot{width:6px;height:6px}
+@media(min-width:900px){body.in-station #dock{left:calc((100vw - var(--pw)) / 2)}}
+#dock{transition:opacity .4s,left .7s var(--ease)}
+@media(max-width:900px){
+  #dock{left:12px;right:12px;transform:none;overflow-x:auto;scrollbar-width:none;border-radius:16px}
+  #dock::-webkit-scrollbar{display:none}
+  #dock button i{display:none}
+  body.in-station #dock{opacity:0;pointer-events:none}
 }
-::selection{background:var(--ink);color:var(--paper)}
-img{display:block;max-width:100%}
-a{color:inherit}
-:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:2px}
-.work :focus-visible,.theme-work :focus-visible{outline-color:var(--red)}
 
-/* ============================ TYPE ============================ */
-.mono{font-family:var(--mono)}
-.tag{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2)}
-.disp{font-family:var(--disp);font-weight:900;line-height:.92;letter-spacing:-.02em}
-.measure{max-width:62ch}
 
-/* ============================ SHELL / GRID ============================ */
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,5vw,64px)}
-.rule{height:0;border:0;border-top:1.5px solid var(--ink);opacity:.85}
-.rule-soft{height:0;border:0;border-top:1px solid var(--line)}
+/* labels floating at each station */
+#hotspots{position:fixed;inset:0;z-index:10;pointer-events:none}
+.hs{position:absolute;left:0;top:0;display:flex;align-items:center;gap:10px;padding:6px 12px 6px 6px;border-radius:999px;pointer-events:auto;
+  background:rgba(9,10,13,.58);border:1px solid var(--line2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s,border-color .2s,background .2s;margin:-18px 0 0 -18px;will-change:transform}
+.hs.vis{opacity:1;visibility:visible}
+.hs i{position:relative;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--c,var(--fg));flex:none}
+.hs i::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--c,var(--fg))}
+.hs i::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:1px solid var(--c,var(--fg));opacity:0;animation:ping 2.6s var(--ease) infinite}
+@keyframes ping{0%{transform:scale(.6);opacity:.7}100%{transform:scale(1.5);opacity:0}}
+.hs b{display:block;font:600 12.5px/1.1 var(--sans);text-align:left;white-space:nowrap}
+.hs small{display:block;margin-top:2px;font:500 10px/1.1 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--fg3);text-align:left;white-space:nowrap}
+.hs:hover,.hs.hot{background:rgba(20,22,27,.8);border-color:var(--c,var(--fg))}
+.hs.flip{flex-direction:row-reverse;padding:6px 6px 6px 12px;translate:calc(-100% + 36px) 0}
+.hs.flip b,.hs.flip small{text-align:right}
 
-/* ============================ HEADER ============================ */
-header.bar{
-  position:fixed;top:0;left:0;right:0;height:var(--hdr);z-index:60;
-  display:flex;align-items:center;gap:16px;
-  padding:0 clamp(14px,4vw,28px);
-  background:rgba(236,230,218,.86);backdrop-filter:blur(8px);
-  border-bottom:1.5px solid var(--ink);
+/* ============================================================ panel */
+#panel{position:fixed;top:0;right:0;bottom:0;width:var(--pw);z-index:30;transform:translateX(104%);transition:transform .7s var(--ease);
+  background:linear-gradient(180deg,rgba(11,12,15,.9),rgba(8,9,11,.94));border-left:1px solid var(--line2);backdrop-filter:blur(18px) saturate(130%);-webkit-backdrop-filter:blur(18px) saturate(130%)}
+#panel.open{transform:none}
+#pclose{position:absolute;top:16px;right:16px;z-index:2}
+#pscroll{position:absolute;inset:0;overflow-y:auto;padding:28px clamp(22px,3vw,40px) 120px;scrollbar-width:thin;overscroll-behavior:contain}
+@media(max-width:899px) and (orientation:portrait){
+  #panel{top:auto;left:0;width:auto;height:58dvh;border-left:0;border-top:1px solid var(--line2);border-radius:20px 20px 0 0;transform:translateY(104%);box-shadow:0 -24px 60px rgba(0,0,0,.5)}
+  #panel::before{content:"";position:absolute;top:8px;left:50%;width:38px;height:4px;margin-left:-19px;border-radius:2px;background:var(--line3);z-index:2}
+  #pscroll{padding:26px 18px 96px}
+  #pclose{top:14px;right:14px;width:38px;height:38px;padding:0;justify-content:center}
+  #pclose .t{display:none}
+  .sec .k{padding-right:52px}
+  .sec h2{padding-right:0;font-size:34px}
+  .sec .lead{font-size:16.5px}
+  body.in-station .top{opacity:0;pointer-events:none}
 }
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex:0 0 auto}
-.brand b{font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.04em;white-space:nowrap}
-nav.sheets{margin-left:auto;display:flex;align-items:center;gap:2px}
-nav.sheets a{
-  text-decoration:none;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.04em;
-  padding:7px 11px;color:var(--ink-2);border-radius:3px;display:inline-flex;gap:6px;align-items:center;
-  transition:color .15s,background .15s;
-}
-nav.sheets a .nn{color:var(--ink-3);font-weight:600}
-nav.sheets a:hover{color:var(--ink);background:rgba(25,21,16,.06)}
-nav.sheets a.cv{border:1.5px solid var(--ink);color:var(--ink);font-weight:600;padding:6px 12px;margin-left:6px}
-nav.sheets a.cv:hover{background:var(--ink);color:var(--paper)}
-.menu-btn{display:none;margin-left:auto;background:none;border:1.5px solid var(--ink);
-  font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.08em;padding:8px 12px;cursor:pointer;color:var(--ink)}
+@media(max-width:899px) and (orientation:landscape){ :root{--pw:min(460px,52vw)} #pclose .t{display:none} #pclose{width:38px;padding:0;justify-content:center} .sec h2{padding-right:48px;font-size:30px} }
+.top{transition:opacity .4s}
+.sec{max-width:640px}
+.sec .k{display:flex;align-items:center;gap:9px;margin-top:6px}
+.sec h2{margin-top:14px;font:300 clamp(34px,3.6vw,52px)/.98 var(--sans);font-stretch:112%;letter-spacing:-.025em;padding-right:120px}
+.sec .lead{margin-top:14px;font-size:18px;line-height:1.45;color:var(--fg2)}
+.sec p{color:var(--fg2);font-size:15.5px}
+.sec p b{color:var(--fg);font-weight:500}
+.sec .blk{margin-top:28px}
+.sec p+p{margin-top:12px}
+.shot{border-radius:12px;overflow:hidden;border:1px solid var(--line2);background:var(--bg2)}
+.shot img{width:100%;height:auto}
+button.shot{display:block;width:100%;cursor:zoom-in}
+.cap{margin-top:8px;font:400 11px/1.5 var(--mono);color:var(--fg3)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line2);border-bottom:1px solid var(--line)}
+.stats>div{padding:14px 12px 14px 0}
+.stats>div+div{padding-left:12px;border-left:1px solid var(--line)}
+.stats b{display:block;font:300 25px/1 var(--sans);font-stretch:112%;color:var(--fg);white-space:nowrap}
+.stats b i{font-style:italic;font-stretch:100%}
+.stats b sub{font-size:.5em}
+.stats span{display:block;margin-top:7px;font-size:12px;line-height:1.3;color:var(--fg3)}
+.stats.three{grid-template-columns:repeat(3,1fr)}
+@media(max-width:520px){.stats{grid-template-columns:1fr 1fr}.stats>div:nth-child(3){padding-left:0;border-left:0;border-top:1px solid var(--line)}.stats>div:nth-child(4){border-top:1px solid var(--line)}}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:400 11.5px/1 var(--mono);color:var(--fg2);padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:rgba(255,255,255,.02)}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.lk{display:inline-flex;align-items:center;gap:9px;height:38px;padding:0 15px;border:1px solid var(--line2);border-radius:999px;font:500 11.5px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;transition:border-color .2s,background .2s}
+.lk:hover{border-color:var(--c,var(--fg));background:var(--ca,rgba(255,255,255,.05))}
+.lk em{font-style:normal;color:var(--c,var(--fg2))}
+.seals{display:flex;flex-wrap:wrap;gap:8px}
+.seal{display:flex;align-items:center;gap:10px;padding:7px 14px 7px 7px;border:1px solid var(--line2);border-radius:999px;font-size:13px;color:var(--fg2)}
+.seal b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--me-a);color:var(--me);font:600 9.5px var(--mono)}
+.seal strong{color:var(--fg);font-weight:500}
 
-/* sheet indicator (CAD title-block tab) */
-.indicator{
-  position:fixed;left:clamp(14px,4vw,28px);bottom:18px;z-index:55;
-  border:1.5px solid var(--ink);background:var(--paper);
-  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;
-  display:flex;align-items:stretch;box-shadow:3px 3px 0 rgba(25,21,16,.12);
-  transition:transform .3s;
-}
-.indicator div{padding:6px 10px;display:flex;flex-direction:column;gap:1px;justify-content:center}
-.indicator .k{font-size:8.5px;letter-spacing:.14em;color:var(--ink-2)}
-.indicator .v{font-size:12px;color:var(--ink)}
-.indicator .b{border-left:1.5px solid var(--ink)}
-.indicator .dot{width:9px;height:9px;border-radius:50%;background:var(--blue);align-self:center;transition:background .3s}
-body.is-work .indicator .dot{background:var(--red)}
+/* research: the live control experiment */
+.flow{border:1px solid var(--line2);border-radius:14px;overflow:hidden;background:var(--bg)}
+.flow canvas{width:100%;height:auto;aspect-ratio:1050/400}
+.conds{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.cond{position:relative;padding:12px 12px 14px;text-align:left;border-left:1px solid var(--line);transition:background .2s}
+.cond:first-child{border-left:0}
+.cond::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:var(--fg);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+.cond[aria-pressed="true"]{background:rgba(236,235,230,.04)}
+.cond[aria-pressed="true"]::before{transform:scaleX(1)}
+.cond .lab{font-size:10px}
+.cond b{display:block;margin-top:6px;font:300 19px/1.1 var(--sans);font-stretch:110%}
+.cond b.pos{color:var(--me)}
+.cond span:not(.lab){display:block;margin-top:5px;font-size:12.5px;line-height:1.4;color:var(--fg2)}
+.flow figcaption{padding:11px 14px;border-top:1px solid var(--line);font:400 11.5px/1.55 var(--mono);color:var(--fg3)}
+.flow figcaption b{color:var(--fg2);font-weight:500}
+@media(max-width:520px){.conds{grid-template-columns:1fr}.cond{border-left:0;border-top:1px solid var(--line)}.cond:first-child{border-top:0}}
 
-/* hide the native page scrollbar — replaced by the drafting-style .scrollrail */
-html{scrollbar-width:none;-ms-overflow-style:none}
-html::-webkit-scrollbar{width:0;height:0;display:none}
-.scrollrail{position:fixed;top:calc(var(--hdr) + 16px);bottom:20px;right:12px;width:14px;z-index:45}
-.scrollrail .track{position:absolute;top:0;bottom:0;right:6px;width:1.5px;background:repeating-linear-gradient(var(--ink) 0 2px,transparent 2px 7px);opacity:.4}
-.scrollrail .fill{position:absolute;top:0;right:6px;width:1.5px;height:0;background:var(--red)}
-.scrollrail .thumb{position:absolute;top:0;right:0;width:14px;height:14px;border:1.5px solid var(--ink);background:var(--paper);cursor:grab;box-shadow:2px 2px 0 rgba(25,21,16,.16);touch-action:none}
-.scrollrail .thumb::after{content:"";position:absolute;inset:3px;border:1px solid var(--ink);opacity:.45}
-.scrollrail .thumb:active{cursor:grabbing}
-.scrollrail:hover .thumb,.scrollrail .thumb:active{background:var(--red);box-shadow:2px 2px 0 var(--ink)}
-.scrollrail:hover .thumb::after{border-color:var(--paper)}
-@media(max-width:860px){.scrollrail{display:none}}
-body.is-index .indicator{transform:translateY(calc(100% + 28px))}
+/* spareme: call steps */
+.steps{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line2);border-radius:12px;overflow:hidden}
+.steps>div{padding:12px 10px 13px;border-left:1px solid var(--line)}
+.steps>div:first-child{border-left:0}
+.steps .lab{color:var(--sw);font-size:10px}
+.steps b{display:block;margin-top:6px;font:400 14px/1.2 var(--sans);font-stretch:104%}
+.steps .you{grid-column:1/-1;border-left:0;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.steps .you .chip{border-color:rgba(79,180,255,.3);color:var(--fg)}
+@media(max-width:520px){.steps{grid-template-columns:1fr 1fr}.steps>div{border-left:0;border-top:1px solid var(--line)}}
 
-/* ============================ SECTION SCAFFOLD ============================ */
-section{position:relative;scroll-margin-top:var(--hdr)}
-.sheet-head{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;padding-top:clamp(46px,7vw,86px)}
-.sheet-no{font-family:var(--disp);font-weight:900;font-size:clamp(40px,9vw,104px);line-height:.8;color:var(--ink);opacity:.13}
-.sheet-meta{flex:1;min-width:200px}
-.sheet-title{font-family:var(--disp);font-weight:800;font-size:clamp(26px,4.4vw,52px);line-height:1;letter-spacing:-.02em}
-.theme-soft .sheet-title em{font-style:normal;color:var(--blue)}
-.theme-work .sheet-title em{font-style:normal;color:var(--red)}
-.sheet-sub{margin-top:10px;color:var(--ink-2);max-width:60ch;font-size:15.5px}
+/* robotics: build log */
+.log{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.log button{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--line2);cursor:zoom-in;
+  background:radial-gradient(ellipse 70% 60% at 50% 55%,rgba(255,91,31,.07),transparent 70%),linear-gradient(var(--line) 1px,transparent 1px) 0 0/22px 22px,linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/22px 22px,var(--bg)}
+.log img{position:absolute;inset:9%;width:82%;height:82%;object-fit:contain;transition:transform .5s var(--ease);filter:drop-shadow(0 10px 14px rgba(0,0,0,.5))}
+.log button.photo img{inset:0;width:100%;height:100%;object-fit:cover;filter:none}
+.log button:hover img{transform:scale(1.05)}
+.log span{position:absolute;left:7px;bottom:7px;right:7px;font:500 9.5px/1.2 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--fg);text-align:left;text-shadow:0 1px 6px #000}
+@media(max-width:520px){.log{grid-template-columns:1fr 1fr}}
 
-/* ============================ HERO ============================ */
-#index{padding-top:var(--hdr);position:relative}
-.hero{padding-top:clamp(34px,6vw,66px);padding-bottom:clamp(26px,4vw,46px)}
-.hero-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
-.hero-loc{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--ink-2)}
-.hero-loc b{color:var(--ink);font-weight:600}
-.hero-grid{display:grid;grid-template-columns:1.55fr .95fr;gap:clamp(22px,4vw,56px);align-items:end;margin-top:18px}
-.namewrap{position:relative}
-.hero-name{font-family:var(--disp);font-weight:900;font-size:clamp(58px,13.2vw,176px);line-height:.84;letter-spacing:-.035em;text-transform:uppercase}
-.hero-name .l2{display:block}
-.hero-name .amp{color:var(--blue)}
-.hero-tag{margin-top:22px;font-size:clamp(19px,2.5vw,30px);line-height:1.22;font-weight:500;max-width:20ch}
-.hero-tag .scr{color:var(--blue);font-weight:700}
-.hero-tag .wrk{color:var(--red);font-weight:700}
-.hero-disc{margin-top:14px;font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:var(--ink-2);max-width:46ch}
-.hero-cta{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap}
-.btn{font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.04em;text-decoration:none;
-  padding:12px 18px;border:1.5px solid var(--ink);display:inline-flex;align-items:center;gap:9px;
-  transition:transform .12s,background .15s,color .15s;background:var(--paper)}
-.btn .ar{transition:transform .15s}
-.btn:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--ink)}
-.btn:hover .ar{transform:translate(3px,0)}
-.btn.solid{background:var(--ink);color:var(--paper)}
-.btn.solid:hover{box-shadow:3px 3px 0 var(--blue)}
+/* more projects */
+.teaser{position:relative;border:1px solid var(--line2);border-radius:14px;overflow:hidden;background:var(--bg1)}
+.teaser img{width:100%;aspect-ratio:1100/560;object-fit:cover;object-position:top}
+.teaser .tx{padding:16px 18px 18px}
+.teaser .big{font:300 34px/1 var(--sans);font-stretch:112%;color:var(--fg)}
+.teaser .big small{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-left:8px}
+.plist{border-top:1px solid var(--line2)}
+.pr{display:grid;grid-template-columns:88px 1fr;gap:16px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.pr .th{aspect-ratio:1;border-radius:9px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(var(--line) 1px,transparent 1px) 0 0/14px 14px,linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/14px 14px,var(--bg)}
+.pr .th img{width:100%;height:100%;object-fit:cover;object-position:top}
+.pr .th img.cad{object-fit:contain;padding:8%}
+.pr h4{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font:400 18px/1.2 var(--sans);font-stretch:106%}
+.pr h4 .lab{font-size:10px}
+.pr p{margin-top:5px;font-size:14px;line-height:1.5}
+.pr .mt{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.pr .mt a{font:500 11px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--fg);border-bottom:1px solid var(--line3);padding-bottom:3px}
+.pr .mt a:hover{border-color:var(--fg)}
+.pr .mt .n{font:500 11px/1 var(--mono);color:var(--c,var(--fg2))}
 
-/* split portrait */
-.portrait{position:relative;border:1.5px solid var(--ink);background:var(--paper-2);aspect-ratio:1/1;overflow:hidden}
-.portrait img{width:100%;height:100%;object-fit:cover}
-.portrait .tint{position:absolute;top:0;bottom:0;mix-blend-mode:color}
-.portrait .ts{left:0;right:50%;background:var(--blue)}
-.portrait .tw{left:50%;right:0;background:var(--red)}
-.portrait .seam{position:absolute;top:0;bottom:0;left:50%;width:1.5px;background:rgba(236,230,218,.7);transform:translateX(-50%)}
-.portrait .pcorn{position:absolute;width:18px;height:18px;border:1.5px solid var(--paper);opacity:.8}
-.portrait .pc1{top:8px;left:8px;border-right:0;border-bottom:0}
-.portrait .pc2{top:8px;right:8px;border-left:0;border-bottom:0}
-.portrait .pc3{bottom:8px;left:8px;border-right:0;border-top:0}
-.portrait .pc4{bottom:8px;right:8px;border-left:0;border-top:0}
-.plabel{position:absolute;bottom:8px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.14em;color:var(--paper);background:rgba(25,21,16,.55);padding:3px 7px}
-.plabel.ls{left:10px}.plabel.lw{right:10px}
+/* about */
+.me-row{display:grid;grid-template-columns:112px 1fr;gap:18px;align-items:center}
+.me-row img{width:112px;height:112px;border-radius:12px;object-fit:cover;object-position:50% 30%;border:1px solid var(--line2)}
+.roles li{display:grid;grid-template-columns:1fr auto;gap:2px 14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.roles li:first-child{border-top:1px solid var(--line2)}
+.roles h4{display:flex;align-items:center;gap:10px;font:400 17px/1.2 var(--sans);font-stretch:106%}
+.roles .when{font:400 11px/1.6 var(--mono);color:var(--fg3);text-align:right;white-space:nowrap}
+.roles .what{grid-column:1/-1;font:500 10.5px/1.4 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--fg2)}
+.roles p{grid-column:1/-1;margin-top:4px;font-size:14px}
+.contact{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line2)}
+.contact>*{display:flex;flex-direction:column;gap:6px;padding:14px 0 16px;border-bottom:1px solid var(--line);transition:background .2s}
+.contact>:nth-child(2n){padding-left:16px;border-left:1px solid var(--line)}
+.contact>a:hover{background:rgba(236,235,230,.03)}
+.contact .v{font:400 15.5px/1.25 var(--sans);color:var(--fg);word-break:break-word}
+.contact .v a{border-bottom:1px solid var(--line3)}
 
-/* spec strip / stats */
-.specstrip{margin-top:clamp(30px,5vw,52px);border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink)}
-.specstrip .lead{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--ink-2);padding:9px 0 0}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);}
-.stat{padding:14px 18px 18px;border-left:1px dashed var(--line);position:relative}
-.stat:first-child{border-left:0;padding-left:0}
-.stat .num{font-family:var(--disp);font-weight:900;font-size:clamp(34px,5.2vw,62px);line-height:.9;letter-spacing:-.03em}
-.stat .num .u{font-size:.46em;vertical-align:top;font-weight:700;margin-left:2px}
-.stat:nth-child(odd) .num{color:var(--blue)}
-.stat:nth-child(even) .num{color:var(--red)}
-.stat .lab{margin-top:9px;font-size:13px;line-height:1.3;color:var(--ink-2)}
-.stat .lab b{color:var(--ink);font-weight:600}
+/* guitar */
+.clips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.clips button{position:relative;aspect-ratio:16/10;border-radius:9px;overflow:hidden;border:1px solid var(--line2);background:#000}
+.clips img{width:100%;height:100%;object-fit:cover;opacity:.9;transition:opacity .3s,transform .5s var(--ease)}
+.clips button:hover img{opacity:1;transform:scale(1.04)}
+.clips span{position:absolute;left:8px;bottom:8px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center}
+.clips span::after{content:"";border:5px solid transparent;border-left:8px solid #000;border-right:0;margin-left:2px}
+.creds li{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14.5px;color:var(--fg2)}
+.creds li:first-child{border-top:1px solid var(--line2)}
+.creds b{color:var(--fg);font-weight:500}
 
-/* ============================ PROJECT ROWS ============================ */
-.proj{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3.5vw,48px);align-items:center;
-  padding:clamp(30px,4.5vw,58px) 0;border-bottom:1px solid var(--line)}
-.proj.rev .figc{order:2}
-.proj.feat{grid-template-columns:1.15fr 1fr}
-.figc{position:relative}
-.fig{border:1.5px solid var(--ink);background:var(--paper-2);position:relative;overflow:hidden}
-.fig img{width:100%;height:100%;object-fit:cover}
-.fig .cap{position:absolute;left:0;bottom:0;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
-  background:var(--ink);color:var(--paper);padding:4px 9px}
-.theme-soft .fig{box-shadow:7px 7px 0 var(--blue-wash)}
-.theme-work .fig{box-shadow:7px 7px 0 var(--red-wash)}
+/* ============================================================ loader */
+#loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--bg);transition:opacity 1.1s var(--ease),visibility 1.1s}
+#loader.done{opacity:0;visibility:hidden}
+.ld{width:min(420px,80vw)}
+.ld h1{font:300 clamp(30px,5vw,44px)/.9 var(--sans);font-stretch:125%;letter-spacing:-.02em;text-transform:uppercase}
+.ld .bar{margin-top:26px;height:1px;background:var(--line2);overflow:hidden}
+.ld #loadbar{height:100%;background:var(--fg);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.ld .row{display:flex;justify-content:space-between;margin-top:12px}
 
-/* sunset projects — archived, kept for the record */
-.proj.sunset .fig img{filter:grayscale(.45) sepia(.12);transition:filter .35s ease}
-.proj.sunset:hover .fig img{filter:none}
-.sunset-stamp{position:absolute;top:14px;right:14px;z-index:2;transform:rotate(7deg);
-  border:2px solid var(--red);color:var(--red-deep);background:var(--paper);
-  font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  padding:8px 14px;line-height:1.25;text-align:center;box-shadow:0 1px 0 var(--red-wash);opacity:.92}
-.sunset-stamp small{display:block;font-weight:500;color:var(--red);letter-spacing:.06em;font-size:9px;margin-top:2px;text-transform:none}
-
-/* sunset warning dialog */
-.sw-card{position:relative;max-width:440px;width:100%;background:var(--paper);border:2px solid var(--ink);
-  padding:30px 30px 26px;transform:rotate(-.4deg);box-shadow:10px 10px 0 rgba(0,0,0,.35)}
-.sw-card .stamp{position:absolute;top:-14px;right:18px;transform:rotate(5deg);background:var(--paper)}
-.sw-kicker{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--ink-2);margin-bottom:10px}
-.sw-title{font-family:var(--disp);font-size:24px;line-height:1.15;letter-spacing:-.01em;margin-bottom:10px}
-.sw-body{font-size:15.5px;color:var(--ink-2);line-height:1.55}
-.sw-body b{color:var(--red-deep)}
-.sw-actions{display:flex;gap:12px;align-items:center;margin-top:20px;flex-wrap:wrap}
-.sw-go{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;text-decoration:none;
-  background:var(--ink);color:var(--paper);padding:10px 16px;border:1.5px solid var(--ink)}
-.sw-go:hover{background:var(--red-deep);border-color:var(--red-deep)}
-.sw-stay{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;cursor:pointer;
-  background:none;color:var(--ink);padding:10px 16px;border:1.5px solid var(--ink)}
-.sw-stay:hover{background:var(--paper-2)}
-.pno{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--ink-2)}
-.theme-soft .pno b{color:var(--blue)}
-.theme-work .pno b{color:var(--red)}
-.ptitle{font-family:var(--disp);font-weight:800;font-size:clamp(28px,3.6vw,46px);line-height:.98;letter-spacing:-.02em;margin-top:8px}
-.prole{margin-top:8px;font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;color:var(--ink-2)}
-.pbody{margin-top:14px;font-size:16px;line-height:1.5;color:#2c261d;max-width:52ch}
-.pbody b{font-weight:600}
-.pmetrics{display:flex;gap:22px;flex-wrap:wrap;margin-top:16px}
-.pmetric .m-n{font-family:var(--disp);font-weight:900;font-size:26px;line-height:1}
-.theme-soft .pmetric .m-n{color:var(--blue)}
-.theme-work .pmetric .m-n{color:var(--red)}
-.pmetric .m-l{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--ink-2);margin-top:4px}
-.stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
-.chip{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.02em;padding:4px 9px;border:1px solid var(--line);
-  color:var(--ink-2);background:var(--paper)}
-.plinks{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
-.plink{font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.03em;text-decoration:none;
-  display:inline-flex;align-items:center;gap:6px;border-bottom:1.5px solid currentColor;padding-bottom:2px}
-.theme-soft .plink{color:var(--blue)}
-.theme-work .plink{color:var(--red)}
-.plink .ar{transition:transform .15s}
-.plink:hover .ar{transform:translate(3px,-3px)}
-
-/* ============================ VORTEX / WIND TUNNEL FEATURE ============================ */
-.vortex{padding:clamp(30px,4.5vw,56px) 0;border-bottom:1px solid var(--line)}
-.vortex-head{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}
-.stamprow{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-.stamp{border:1.5px solid var(--red);color:var(--red-deep);font-family:var(--mono);font-size:10.5px;font-weight:700;
-  letter-spacing:.08em;text-transform:uppercase;padding:7px 11px;transform:rotate(-1.5deg);background:var(--red-wash);text-align:center;line-height:1.25}
-.stamp.b2{transform:rotate(1deg)}
-.stamp small{display:block;font-weight:500;color:var(--red);letter-spacing:.04em;font-size:9px;margin-top:2px}
-.tunnel{margin-top:24px;border:1.5px solid var(--ink);position:relative;background:var(--paper-2);overflow:hidden}
-.tunnel img{width:100%;height:100%;object-fit:cover}
-.tunnel .flow{position:absolute;inset:0;pointer-events:none}
-.tunnel .cap{position:absolute;left:0;bottom:0;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;background:var(--ink);color:var(--paper);padding:4px 9px}
-
-/* ============================ FTC BUILD STORY ============================ */
-.ftc{padding:clamp(30px,4.5vw,56px) 0;border-bottom:1px solid var(--line)}
-.ftc-top{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3.5vw,48px);align-items:center}
-.buildseq{margin-top:clamp(26px,4vw,44px)}
-.buildseq .seqlab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-2);margin-bottom:14px}
-.seqgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
-.seqcell{position:relative;border:1.5px solid var(--ink);background:var(--paper-2);overflow:hidden;cursor:pointer;
-  padding:0;text-align:left;font:inherit;color:inherit;aspect-ratio:4/3}
-.seqcell img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
-.seqcell:hover img,.seqcell:focus-visible img{transform:scale(1.06)}
-.seqcell .sn{position:absolute;top:0;left:0;background:var(--red);color:#fff;font-family:var(--mono);font-weight:700;font-size:11px;padding:2px 7px;letter-spacing:.05em}
-.seqcell .sl{position:absolute;left:0;right:0;bottom:0;background:rgba(25,21,16,.78);color:var(--paper);
-  font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.06em;padding:4px 6px;text-transform:uppercase}
-
-/* ============================ SCIENCE OLYMPIAD PAIR ============================ */
-.solytwo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,40px);padding:clamp(26px,4vw,46px) 0;border-bottom:1px solid var(--line)}
-.solycard .fig{margin-bottom:14px}
-.solycard h4{font-family:var(--disp);font-weight:800;font-size:22px;letter-spacing:-.01em}
-.solycard .prole{margin-top:6px}
-.solycard .pbody{margin-top:10px;font-size:15px}
-
-/* ============================ EXPERIENCE ============================ */
-.exp{padding:clamp(10px,2vw,24px) 0}
-.exprow{display:grid;grid-template-columns:170px 1fr auto;gap:clamp(16px,3vw,40px);align-items:start;
-  padding:clamp(22px,3vw,34px) 0;border-bottom:1px solid var(--line)}
-.exprow .logo{border:1.5px solid var(--ink);background:var(--paper);padding:14px;display:grid;place-items:center}
-.exprow .logo img{max-height:42px;width:auto;filter:grayscale(1) contrast(1.05);mix-blend-mode:multiply}
-.exprow h4{font-family:var(--disp);font-weight:800;font-size:clamp(20px,2.4vw,28px);letter-spacing:-.01em}
-.exprow .role{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);margin-top:5px}
-.exprow .desc{margin-top:11px;font-size:15.5px;line-height:1.5;max-width:62ch}
-.exprow .desc b{font-weight:600}
-.exprow .when{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--ink-2);text-align:right;white-space:nowrap}
-
-/* ============================ GUITAR ============================ */
-#guitar{background:linear-gradient(180deg,transparent,rgba(25,21,16,.025))}
-.guitar-intro{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,52px);align-items:end}
-.guitar-cred{display:flex;flex-direction:column;gap:12px;margin-top:8px}
-.gline{display:flex;gap:12px;align-items:baseline;font-size:15.5px;border-top:1px solid var(--line);padding-top:12px}
-.gline .gk{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-2);min-width:84px;flex:0 0 auto}
-.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:clamp(24px,4vw,42px)}
-.clip{position:relative;border:1.5px solid var(--ink);background:var(--ink);overflow:hidden;cursor:pointer;
-  padding:0;aspect-ratio:16/9;color:inherit;font:inherit}
-.clip img{width:100%;height:100%;object-fit:cover;opacity:.92;filter:grayscale(.2);transition:transform .4s,opacity .3s}
-.clip:hover img,.clip:focus-visible img{transform:scale(1.05);opacity:1}
-.clip .play{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
-.clip .play span{width:46px;height:46px;border-radius:50%;background:rgba(236,230,218,.92);display:grid;place-items:center;
-  border:1.5px solid var(--ink);transition:transform .2s}
-.clip:hover .play span{transform:scale(1.1)}
-.clip .play svg{margin-left:3px}
-.clip .cn{position:absolute;top:0;left:0;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em;
-  background:rgba(25,21,16,.7);color:var(--paper);padding:3px 7px}
-
-/* ============================ GUITAR DECK ============================ */
-.deck-wrap{margin-top:clamp(24px,4vw,40px);max-width:460px}
-.deck{position:relative;width:100%;aspect-ratio:16/10;touch-action:pan-y;margin-bottom:46px;isolation:isolate}
-.gcard{position:absolute;inset:0;border:1.5px solid var(--ink);background:#000;overflow:hidden;padding:0;color:inherit;font:inherit;
-  transform-origin:center center;transition:transform .43s cubic-bezier(.2,.7,.2,1),opacity .35s;will-change:transform;
-  box-shadow:4px 5px 0 rgba(25,21,16,.14)}
-.gcard video{width:100%;height:100%;object-fit:cover;opacity:.96;filter:grayscale(.12);display:block;background:#000;-webkit-user-drag:none;user-select:none}
-.gcard.front{cursor:grab}
-.gcard.dragging{transition:none!important;cursor:grabbing}
-.gcard .cn{position:absolute;top:0;left:0;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;
-  background:rgba(25,21,16,.72);color:var(--paper);padding:3px 8px}
-.gcard .play{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
-.gcard .play span{width:48px;height:48px;border-radius:50%;background:rgba(236,230,218,.92);display:grid;place-items:center;
-  border:1.5px solid var(--ink);transition:transform .2s}
-.gcard.front:hover .play span{transform:scale(1.1)}
-.gcard .play svg{margin-left:3px}
-.gcard:not(.front) .play,.gcard.playing .play{display:none}
-.deck-foot{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:12px;color:var(--ink-2)}
-.deck-btn{width:40px;height:40px;border:1.5px solid var(--ink);background:var(--paper);cursor:pointer;font-size:18px;line-height:1;color:var(--ink);
-  transition:background .15s,color .15s}
-.deck-btn:hover{background:var(--ink);color:var(--paper)}
-.deck-count{font-weight:600;letter-spacing:.08em;color:var(--ink);min-width:48px;text-align:center}
-.deck-hint{margin-left:auto;letter-spacing:.05em;opacity:.85}
-@media(max-width:480px){.deck-wrap{max-width:none}.deck-hint{display:none}}
-/* lightbox rich caption (FTC build notes) */
-.lb-cap{max-width:680px;margin-left:auto;margin-right:auto;line-height:1.5}
-.lb-cap b{display:block;color:#fff;letter-spacing:.08em;margin-bottom:8px;font-family:var(--mono);font-size:12px;font-weight:700}
-.lb-cap .lb-desc{display:block;font-family:var(--sans);font-size:14.5px;color:var(--paper);opacity:.94}
-.lb-cap .lb-credit{display:block;margin-top:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:rgba(236,230,218,.6)}
-/* in-site PDF viewer */
-.lb-docbar{display:flex;align-items:center;justify-content:space-between;gap:14px;background:rgba(25,21,16,.55);
-  border:1.5px solid rgba(236,230,218,.4);border-bottom:0;padding:9px 12px}
-.lb-docbar .lb-doc-t{font-family:var(--mono);font-size:11.5px;font-weight:600;letter-spacing:.08em;color:var(--paper)}
-.lb-dl{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.06em;color:var(--ink);background:var(--paper);
-  border:1.5px solid var(--paper);padding:7px 13px;text-decoration:none;white-space:nowrap}
-.lb-dl:hover{background:#fff}
-.lb-pages{width:100%;max-height:78vh;overflow-y:auto;background:#fff;border:1.5px solid rgba(236,230,218,.4);-webkit-overflow-scrolling:touch}
-.lb-pages .lb-page{display:block;width:100%;height:auto;max-height:none;object-fit:fill;border:0}
-.lb-pages .lb-page+.lb-page{border-top:1px solid rgba(0,0,0,.1)}
-/* clickable + paired figures (CAD renders) */
-.fig-btn{padding:0;cursor:zoom-in;color:inherit;font:inherit;display:block;width:100%}
-.fig-btn img{transition:transform .3s}
-.fig-btn:hover img,.fig-btn:focus-visible img{transform:scale(1.04)}
-.figpair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
-/* ============================ SKILLS ============================ */
-.skills{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1.5px solid var(--ink);margin-top:clamp(22px,3.5vw,38px)}
-.skillcol{padding:18px 18px 22px;border-left:1px solid var(--line)}
-.skillcol:first-child{border-left:0;padding-left:0}
-.skillcol h5{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin-bottom:12px}
-.skillcol ul{list-style:none}
-.skillcol li{font-family:var(--mono);font-size:13px;padding:5px 0;border-bottom:1px dotted var(--line);color:var(--ink)}
-
-/* ============================ HONORS ============================ */
-.honors{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:clamp(22px,3.5vw,38px)}
-.honor{border:1.5px solid var(--ink);padding:16px 14px;background:var(--paper);position:relative;min-height:120px;display:flex;flex-direction:column;justify-content:space-between}
-.honor .hseal{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--ink-2);display:flex;align-items:center;gap:6px}
-.honor .hseal i{width:18px;height:18px;border:1.5px solid var(--ink);border-radius:50%;display:inline-grid;place-items:center;font-style:normal;font-size:10px}
-.honor h6{font-family:var(--disp);font-weight:700;font-size:16px;line-height:1.1;letter-spacing:-.01em}
-.honor p{font-size:12.5px;color:var(--ink-2);line-height:1.35;margin-top:4px}
-
-/* ============================ TITLE BLOCK FOOTER ============================ */
-#contact{padding-bottom:clamp(80px,10vw,120px)}
-.titleblock{border:2px solid var(--ink);margin-top:clamp(24px,4vw,40px);background:var(--paper)}
-.tb-top{display:grid;grid-template-columns:1.4fr 1fr;border-bottom:1.5px solid var(--ink)}
-.tb-name{padding:clamp(22px,3.5vw,38px)}
-.tb-name .big{font-family:var(--disp);font-weight:900;font-size:clamp(34px,6vw,76px);line-height:.86;letter-spacing:-.03em;text-transform:uppercase}
-.tb-name .big .amp{color:var(--blue)}
-.tb-name p{margin-top:14px;font-size:16px;max-width:40ch;color:#2c261d}
-.tb-contactlinks{display:flex;flex-direction:column;border-left:1.5px solid var(--ink)}
-.tbc{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px clamp(18px,3vw,28px);
-  border-bottom:1px solid var(--line);text-decoration:none;transition:background .15s}
-.tbc:last-child{border-bottom:0}
-.tbc:hover{background:rgba(25,21,16,.05)}
-.tbc .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--ink-2)}
-.tbc .v{font-family:var(--mono);font-size:14px;font-weight:600}
-.tbc .ar{font-family:var(--mono)}
-.tb-grid{display:grid;grid-template-columns:repeat(6,1fr)}
-.tb-cell{padding:12px 14px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:3px}
-.tb-cell:first-child{border-left:0}
-.tb-cell .k{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--ink-2)}
-.tb-cell .v{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--ink)}
-
-/* ============================ LIGHTBOX ============================ */
-.lb{position:fixed;inset:0;z-index:120;background:rgba(20,17,12,.9);display:none;align-items:center;justify-content:center;padding:24px}
+/* ============================================================ lightbox */
+.lb{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:clamp(12px,4vw,48px);background:rgba(4,5,7,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .lb.open{display:flex}
-.lb-inner{position:relative;max-width:min(1000px,94vw);max-height:90vh;width:100%}
-.lb-inner img,.lb-inner video{width:100%;max-height:72vh;object-fit:contain;border:1.5px solid rgba(236,230,218,.4);background:#000}
-.lb-cap{font-family:var(--mono);font-size:12px;color:var(--paper);letter-spacing:.06em;margin-top:10px;text-align:center}
-.lb-close{position:absolute;top:-46px;right:0;background:none;border:1.5px solid rgba(236,230,218,.6);color:var(--paper);
-  font-family:var(--mono);font-size:12px;font-weight:600;padding:7px 12px;cursor:pointer;letter-spacing:.06em}
-.lb-close:hover{background:rgba(236,230,218,.15)}
+.lb-in{width:min(1100px,100%);max-height:100%;display:flex;flex-direction:column;gap:14px}
+.lb-media img,.lb-media video{width:100%;max-height:76vh;object-fit:contain;border-radius:10px;background:#000}
+.lb-media img.cad{background:radial-gradient(ellipse at 50% 55%,#1a1e25,#07080a 72%)}
+.lb-bar{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.lb-cap{font-size:14px;line-height:1.5;color:var(--fg2);max-width:70ch}
+.lb-cap b{display:block;font:500 11px/1.4 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--fg);margin-bottom:5px}
+.lb-pages{max-height:78vh;overflow-y:auto;border-radius:10px;background:#fff}
+.lb-pages img{width:100%;height:auto}
+.lb-dl{font:600 11.5px/1 var(--mono);letter-spacing:.06em;height:38px;display:inline-flex;align-items:center;padding:0 14px;border-radius:999px;background:var(--fg);color:var(--bg)}
 
-/* ============================ RESPONSIVE ============================ */
-@media(max-width:1080px){
-  nav.sheets a:not(.cv) .lbl{display:none}
-}
-@media(max-width:860px){
-  body{font-size:16px}
-  .menu-btn{display:inline-block}
-  nav.sheets{position:fixed;top:var(--hdr);left:0;right:0;flex-direction:column;align-items:stretch;
-    background:var(--paper);border-bottom:1.5px solid var(--ink);padding:6px;gap:2px;
-    transform:translateY(-130%);transition:transform .3s;z-index:59;box-shadow:0 14px 24px rgba(25,21,16,.12)}
-  nav.sheets.open{transform:translateY(0)}
-  nav.sheets a{padding:12px 14px}
-  nav.sheets a:not(.cv) .lbl{display:inline}
-  nav.sheets a.cv{margin-left:0;margin-top:4px;justify-content:center}
-  .hero-grid{grid-template-columns:1fr;gap:26px}
-  .namewrap{order:1}.portrait-wrap{order:0}
-  .portrait{max-width:340px}
-  .stats{grid-template-columns:1fr 1fr}
-  .stat{border-top:1px dashed var(--line)}
-  .stat:nth-child(1),.stat:nth-child(2){border-top:0}
-  .stat:nth-child(odd){border-left:0;padding-left:0}
-  .stat:nth-child(even){border-left:1px dashed var(--line)}
-  .proj,.proj.feat{grid-template-columns:1fr;gap:18px}
-  .proj.rev .figc{order:0}
-  .ftc-top{grid-template-columns:1fr}
-  .seqgrid{grid-template-columns:repeat(3,1fr)}
-  .vortex-head{grid-template-columns:1fr}
-  .solytwo{grid-template-columns:1fr}
-  .exprow{grid-template-columns:1fr;gap:10px}
-  .exprow .logo{justify-self:start;padding:10px 16px}
-  .exprow .when{text-align:left}
-  .guitar-intro{grid-template-columns:1fr;gap:18px}
-  .gallery{grid-template-columns:repeat(2,1fr)}
-  .skills{grid-template-columns:1fr 1fr}
-  .skillcol{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-right:0}
-  .skillcol:nth-child(even){padding-left:16px;border-left:1px solid var(--line)}
-  .skillcol:nth-child(1),.skillcol:nth-child(2){border-top:0}
-  .honors{grid-template-columns:1fr 1fr}
-  .tb-top{grid-template-columns:1fr}
-  .tb-contactlinks{border-left:0;border-top:1.5px solid var(--ink)}
-  .tb-grid{grid-template-columns:repeat(3,1fr)}
-  .tb-cell:nth-child(4){border-left:0}
-  .indicator{font-size:10px;bottom:12px}
-}
-@media(max-width:480px){
-  .gallery{grid-template-columns:1fr}
-  .seqgrid{grid-template-columns:repeat(2,1fr)}
-  .honors{grid-template-columns:1fr}
-  .tb-grid{grid-template-columns:repeat(2,1fr)}
-  .tb-cell:nth-child(3){border-left:0}
-  .indicator .b:last-child{display:none}
-}
-
-@media(prefers-reduced-motion:reduce){
-  *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
-}
-html{scroll-behavior:smooth}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-
-/* hero leader-line draw */
-.leadline{stroke:var(--ink);stroke-width:1.4;fill:none}
-@keyframes draw{to{stroke-dashoffset:0}}
+/* ============================================================ list view (also the no-WebGL fallback) */
+body.list{overflow:auto}
+body.list #room,body.list #dock,body.list #hotspots,body.list #pclose{display:none}
+body.list .top{position:sticky;background:rgba(7,8,10,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+body.list #panel{position:static;transform:none;width:auto;height:auto;border:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;border-radius:0}
+body.list #pscroll{position:static;overflow:visible;padding:24px clamp(16px,4vw,40px) 80px;max-width:760px;margin:0 auto}
+body.list .sec{max-width:none;padding:56px 0;border-bottom:1px solid var(--line2)}
+body.list .sec[hidden]{display:block}
+body.list .sec h2{padding-right:0}
+body.no3d #listBtn{display:none}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}}
 </style>
 </head>
-<body class="is-index">
+<body>
+<canvas id="room" tabindex="0" aria-label="A 3D studio. Drag to look around; the stations are also in the dock at the bottom."></canvas>
 
-<!-- ============================ HEADER ============================ -->
-<header class="bar">
-  <a class="brand" href="#index" aria-label="Nirav Surabhi — top of page">
-    <b>NIRAV&nbsp;SURABHI</b>
+<header class="top">
+  <a class="brand" href="#" aria-label="Nirav Surabhi">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="18" cy="32" r="9" fill="none" stroke="#ecebe6" stroke-width="4"/><circle cx="36" cy="22" r="6" fill="#ff5b1f"/><circle cx="51" cy="42" r="6" fill="#4fb4ff"/></svg>
+    <span><b>Nirav Surabhi</b><small>Mechanical Eng. · Purdue ’29</small></span>
   </a>
-  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="sheetnav">MENU</button>
-  <nav class="sheets" id="sheetnav" aria-label="Sheet index">
-    <a href="#hardware"><span class="nn">01</span> <span class="lbl">Hardware</span></a>
-    <a href="#software"><span class="nn">02</span> <span class="lbl">Software</span></a>
-    <a href="#work"><span class="nn">03</span> <span class="lbl">Experience</span></a>
-    <a href="#skills"><span class="nn">04</span> <span class="lbl">Skills</span></a>
-    <a href="#guitar"><span class="nn">05</span> <span class="lbl">Guitar</span></a>
-    <a href="#contact"><span class="nn">06</span> <span class="lbl">Contact</span></a>
-    <a class="cv" href="resume.html">RÉSUMÉ <span aria-hidden="true">↗</span></a>
-  </nav>
+  <span class="sp"></span>
+  <button class="pill" id="listBtn" type="button">List view</button>
+  <a class="pill" href="Resume.pdf" target="_blank" rel="noopener">Résumé ↗</a>
 </header>
 
-<!-- sheet indicator title-block tab -->
-<aside class="indicator" aria-hidden="true">
-  <div><span class="k">SHEET</span><span class="v"><span id="indSheet">00</span>/06</span></div>
-  <div class="b"><span class="k">SECTION</span><span class="v" id="indName">INDEX</span></div>
-  <div class="b"><span class="k">SCALE</span><span class="v">1:1</span></div>
-  <div class="b" style="padding-right:12px"><span class="dot"></span></div>
+<nav id="dock" aria-label="Stations">
+  <button type="button" data-st="research" class="me"><i>01</i><span class="dot"></span>Research</button>
+  <button type="button" data-st="spareme" class="sw"><i>02</i><span class="dot"></span>SpareMe</button>
+  <button type="button" data-st="robotics" class="me"><i>03</i><span class="dot"></span>Robotics</button>
+  <button type="button" data-st="more"><i>04</i>More projects</button>
+  <button type="button" data-st="about"><i>05</i>About</button>
+  <button type="button" data-st="guitar"><i>06</i>B-side</button>
+</nav>
+<div id="hotspots"></div>
+
+<aside id="panel" aria-hidden="true" aria-label="Station details">
+  <button class="pill" id="pclose" type="button" aria-label="Back to the room"><span class="t">Back to room</span> ✕</button>
+  <div id="pscroll">
+
+    <!-- ======================================================= 01 RESEARCH -->
+    <section class="sec me" id="p-research" hidden>
+      <p class="k lab"><i class="dot"></i>01 · Research · Mechanical</p>
+      <h2>Passive Vortex Propulsion in Air</h2>
+      <p class="lead">My first-author IEEE paper. A rigid fin in a cylinder’s wake gets pushed forward by it — the first time this was shown in air.</p>
+
+      <figure class="flow blk">
+        <canvas id="flowCanvas" width="1050" height="400" aria-label="Live flow simulation of the selected configuration"></canvas>
+        <div class="conds" role="group" aria-label="Test configuration">
+          <button class="cond" type="button" data-cond="fin" aria-pressed="false"><span class="lab">A · Fin alone</span><b>Net drag</b><span>No wake to work with. The carriage slid 20 cm backward.</span></button>
+          <button class="cond" type="button" data-cond="cyl" aria-pressed="false"><span class="lab">B · Cylinder alone</span><b>0 N</b><span>Vortices, but nothing to push. The carriage never moved.</span></button>
+          <button class="cond" type="button" data-cond="both" aria-pressed="true"><span class="lab">C · Cylinder + fin</span><b class="pos">+3.1 N thrust</b><span>Pushed into the wind in all 20 trials.</span></button>
+        </div>
+        <figcaption><b>How it works:</b> the fin sits on a bearing, free to pivot. As vortices pass on alternating sides, it swings to redirect each one across (left to right, then right to left), and that redirected flow pushes it forward. Here the fin’s angle comes from the simulated flow itself (2D lattice Boltzmann, Re 150). The forces are the ones I measured on the rig.</figcaption>
+      </figure>
+
+      <div class="blk">
+        <p>It started with my Honda Civic: could a car waste less energy in the air it leaves behind? Fish already do this. A trout behind a rock slaloms between the vortices it sheds and cuts its own muscle effort, but every passive-propulsion experiment I could find had been done in water.</p>
+        <p>So I built a rig to test it in air: a leaf blower through a fan to straighten the flow, a cylinder to shed the vortex street, and a <b>3D-printed NACA 0012 fin</b> on a bearing and an <b>MGN7 linear carriage</b>. The carriage pressed on a <b>100 g load cell</b> that I soldered, calibrated, and logged at <b>1.2 kHz</b>.</p>
+      </div>
+      <div class="stats blk">
+        <div><b>+3.1 N</b><span>mean net thrust</span></div>
+        <div><b><i>p</i> &lt; 0.001</b><span>t(19) = 15.75</span></div>
+        <div><b><i>C</i><sub>T</sub> 0.073</b><span>at Re ≈ 3.3 × 10⁵</span></div>
+        <div><b>20 × 30 s</b><span>trials, 1.2 kHz</span></div>
+      </div>
+      <button class="shot blk" type="button" data-lb="img/vortex-rig.webp" data-cap="Fig. 1 — the apparatus. Leaf blower (I) through fan (G), past cylinder (F), onto fin (D) on its rail (B) and load cell (E)."><img src="img/vortex-rig.webp" alt="Top view of the test rig on a pegboard" loading="lazy" width="1058" height="490" /></button>
+      <p class="cap">The real rig, from the paper (Fig. 1). The bench on the room’s left wall is modeled on it.</p>
+      <div class="seals blk">
+        <span class="seal"><b>AIAA</b><span><strong>Aerospace Award</strong> · Regional Science &amp; Engineering Fair</span></span>
+        <span class="seal"><b>NASA</b><span><strong>Invitation</strong> to Goddard</span></span>
+        <span class="seal"><b>IEEE</b><span><strong>First author</strong> · EngiTek 2025</span></span>
+      </div>
+      <div class="links blk">
+        <a class="lk" href="paper.pdf" data-doc="paper" data-pages="5" data-title="Passive Vortex Propulsion in Air — IEEE EngiTek 2025">Read the paper <em>↗</em></a>
+        <a class="lk" href="https://ieeexplore.ieee.org/document/11567580" target="_blank" rel="noopener">IEEE Xplore <em>↗</em></a>
+        <a class="lk" href="conference-certificate.pdf" data-doc="cert" data-pages="1" data-title="Conference certificate">Certificate <em>↗</em></a>
+      </div>
+    </section>
+
+    <!-- ======================================================= 02 SPAREME -->
+    <section class="sec sw" id="p-spareme" hidden>
+      <p class="k lab"><i class="dot"></i>02 · Software · AI voice agent</p>
+      <h2>SpareMe</h2>
+      <p class="lead">An iPhone app with an AI that makes the phone calls you dread, and hands the call back to you the moment it should.</p>
+      <button class="shot blk" type="button" data-lb="img/shot-spareme.webp" data-cap="getspareme.com"><img src="img/shot-spareme.webp" alt="SpareMe landing page" loading="lazy" width="1200" height="800" /></button>
+      <div class="blk">
+        <p>I hate calling businesses, so I built something that does it for me. You give it a number and one line of intent. It dials, works the phone tree, waits on hold, talks to the representative, and hands back a <b>written outcome</b>.</p>
+        <p>You watch a <b>live transcript</b> the whole time, and can type it a private instruction, listen in, or take the call over mid-sentence. I built the SwiftUI app and the Node/TypeScript backend: Twilio ConversationRelay for real-time speech, OpenAI for reasoning, verified caller ID, encrypted case state, StoreKit per-minute billing, and fail-closed kill switches.</p>
+      </div>
+      <div class="steps blk">
+        <div><span class="lab">01</span><b>Dial</b></div><div><span class="lab">02</span><b>Phone tree</b></div><div><span class="lab">03</span><b>Hold</b></div><div><span class="lab">04</span><b>Rep</b></div><div><span class="lab">05</span><b>Outcome</b></div>
+        <div class="you"><span class="lab" style="margin-right:6px">You can</span><span class="chip">watch</span><span class="chip">type</span><span class="chip">listen in</span><span class="chip">take over</span></div>
+      </div>
+      <div class="chips blk"><span class="chip">SwiftUI</span><span class="chip">Node.js · TypeScript</span><span class="chip">Twilio</span><span class="chip">OpenAI</span><span class="chip">PostgreSQL</span><span class="chip">StoreKit</span><span class="chip">APNs</span></div>
+      <div class="links blk">
+        <a class="lk" href="https://apps.apple.com/us/app/spareme-ai-phone-delegate/id6793629023" target="_blank" rel="noopener">App Store <em>↗</em></a>
+        <a class="lk" href="https://getspareme.com" target="_blank" rel="noopener">getspareme.com <em>↗</em></a>
+      </div>
+    </section>
+
+    <!-- ======================================================= 03 ROBOTICS -->
+    <section class="sec me" id="p-robotics" hidden>
+      <p class="k lab"><i class="dot"></i>03 · Robotics · Mechanical</p>
+      <h2>Absolute Zero — FTC #12096</h2>
+      <p class="lead">Four seasons as captain. Every mechanism modeled in Fusion 360, then built, broken, and rebuilt.</p>
+      <button class="shot blk" type="button" data-lb="img/ftc/ftc-final.webp" data-cap="The competition robot, team 12096"><img src="img/ftc/ftc-final.webp" alt="The 12096 competition robot on the field" loading="lazy" width="760" height="570" /></button>
+      <div class="blk">
+        <p>I designed the robot’s mechanisms in Fusion 360: a chassis machined from 1/8″ aluminum, rollers printed in two materials in one job, and a flywheel shooter on a 360° turret. Then I built them.</p>
+        <p>I also wrote the autonomous and driver code in Java, with <b>PID loops</b>, <b>encoder and gyro sensor fusion</b>, and <b>odometry</b>. We advanced to the <b>Chesapeake championship</b>.</p>
+      </div>
+      <div class="stats three blk">
+        <div><b>4</b><span>seasons as captain</span></div>
+        <div><b>12</b><span>build-log entries</span></div>
+        <div><b>Java</b><span>PID · fusion · odometry</span></div>
+      </div>
+      <p class="lab blk" style="margin-bottom:10px">Build log · tap a part</p>
+      <div class="log" id="log"></div>
+    </section>
+
+    <!-- ======================================================= 04 MORE -->
+    <section class="sec" id="p-more" hidden>
+      <p class="k lab">04 · More projects</p>
+      <h2>Learn about my project that hit 30k users in a month</h2>
+      <div class="teaser sw blk">
+        <img src="img/shot-chad.webp" alt="Chad vs. Chud game screen" loading="lazy" />
+        <div class="tx">
+          <div class="big">30,000 users<small>first month</small></div>
+          <h4 style="margin-top:12px;font:400 20px/1.2 var(--sans);font-stretch:106%">Chad vs. Chud</h4>
+          <p style="margin-top:6px">A real-time 1v1 webcam game with ML scoring. I built the Next.js client, a Socket.IO + WebRTC matchmaker, and a FastAPI service running a fine-tuned ResNet-18 + ArcFace ensemble, plus tournaments, leaderboards, and a Stripe cosmetics economy. It peaked at over 100 players online at once. It’s retired now.</p>
+          <div class="chips" style="margin-top:12px"><span class="chip">Next.js</span><span class="chip">WebRTC</span><span class="chip">Socket.IO</span><span class="chip">FastAPI</span><span class="chip">PyTorch</span><span class="chip">Stripe</span></div>
+        </div>
+      </div>
+      <div class="plist blk">
+        <div class="pr sw"><div class="th"><img src="img/shot-khali.webp" alt="" loading="lazy" /></div><div><h4>Khali <span class="lab">co-founder · iOS</span></h4><p>Short-form news that keeps the central claim and the original reporting one tap away. A SwiftUI app and an Expo app on a Node + Python pipeline.</p><div class="mt"><span class="n">Live on the App Store</span><a href="https://apps.apple.com/us/app/khali/id6759009203" target="_blank" rel="noopener">App Store ↗</a><a href="https://khali.info" target="_blank" rel="noopener">khali.info ↗</a></div></div></div>
+        <div class="pr me"><div class="th"><img src="img/motor-worn.webp" alt="" loading="lazy" /></div><div><h4>Motor-based resistance trainer <span class="lab">RSEF 2025</span></h4><p>Strength training with no weights or wall power: a 188:1 geared motor between drawer slides, PWM-controlled by an Arduino. It took three prototypes, and the force curve came out linear.</p><div class="mt"><span class="n">R² = 0.993 · $214.95</span><a href="motor-resistance-poster.pdf" data-doc="poster" data-pages="2" data-title="Motor-Based Resistance System — RSEF 2025 poster">Poster ↗</a></div></div></div>
+        <div class="pr sw"><div class="th"><img src="img/shot-oh.webp" alt="" loading="lazy" /></div><div><h4>Oh <span class="lab">creator · open source</span></h4><p>Shared memory for AI coding agents. It captures Claude Code and Codex sessions, embeds only the reasoning, and answers “why is this code like this?” over MCP.</p><div class="mt"><a href="https://github.com/21J3phy/Oh" target="_blank" rel="noopener">GitHub ↗</a></div></div></div>
+        <div class="pr sw"><div class="th"><img src="img/shot-b2a.webp" alt="" loading="lazy" /></div><div><h4>b2alpha.io <span class="lab">co-founder · retired</span></h4><p>An open agent-to-agent protocol with secure messaging and DNS-based discovery.</p><div class="mt"><span class="n">2,000+ business users</span></div></div></div>
+        <div class="pr sw"><div class="th"><img src="img/shot-pv.webp" alt="" loading="lazy" /></div><div><h4>PredictionView <span class="lab">co-founder · retired</span></h4><p>A trading hub for Kalshi prediction markets. I owned the Express + Prisma/Postgres backend.</p><div class="mt"><span class="n">127-route API</span></div></div></div>
+        <div class="pr me"><div class="th"><img class="cad" src="img/cad/bridge-v2.webp" alt="" loading="lazy" /></div><div><h4>Truss bridge <span class="lab">Science Olympiad</span></h4><p>Scored on load per gram. For V2 I thinned the members and arched the top chord.</p></div></div>
+        <div class="pr me"><div class="th"><img src="img/shot-ev.webp" alt="" loading="lazy" /></div><div><h4>Electric vehicle <span class="lab">Science Olympiad</span></h4><p>Accelerates, then brakes to a target distance: a goBILDA motor, a quadrature encoder, and a tuned PID loop.</p></div></div>
+        <div class="pr me"><div class="th"><img class="cad" src="img/cad/ev-cad.webp" alt="" loading="lazy" /></div><div><h4>Purdue Formula SAE <span class="lab">Fall 2026</span></h4><p>Joined the vehicle team and finished the design-onboarding sprint in CAD.</p></div></div>
+      </div>
+    </section>
+
+    <!-- ======================================================= 05 ABOUT -->
+    <section class="sec" id="p-about" hidden>
+      <p class="k lab">05 · About</p>
+      <h2>Nirav Surabhi</h2>
+      <div class="me-row blk">
+        <img src="img/face.webp" alt="Portrait of Nirav Surabhi" loading="lazy" />
+        <p class="lead" style="margin:0">Mechanical engineering at Purdue, class of 2029. I design it, build it, measure it, and ship it — <span style="color:var(--me)">in metal</span> and <span style="color:var(--sw)">in code</span>.</p>
+      </div>
+      <p class="lab blk" style="margin-bottom:10px">Experience</p>
+      <ul class="roles">
+        <li class="me"><h4><i class="dot"></i>I3 Simulations</h4><span class="when">Jun 2025 – May 2026</span><span class="what">CAD intern</span><p>CAD models and haptic-feedback prototypes for medical-training simulators, plus prototype verification testing.</p></li>
+        <li class="me"><h4><i class="dot"></i>The Bike Lane</h4><span class="when">Jun 2021 – Aug 2025</span><span class="what">Bike mechanic · intern → part-time staff</span><p>Built bikes from the frame up and ran the final safety inspection on every one.</p></li>
+        <li class="sw"><h4><i class="dot"></i>Ember Learning</h4><span class="when">Feb 2021 – 2022</span><span class="what">AI engineer &amp; software intern</span><p>Wrote the LLM prompts behind the AP-tutor chatbots and built rubric-grading tests. The team won a Microsoft &amp; OpenAI grant and passed a $1M valuation.</p></li>
+        <li><h4><i class="dot"></i>Purdue University</h4><span class="when">2026 – 2029</span><span class="what">B.S. Mechanical Engineering · Formula SAE</span><p>Also: Mathematics Scholar at the Central Virginia Governor’s School, and Presidential Volunteer Service Award (Silver).</p></li>
+      </ul>
+      <p class="lab blk" style="margin-bottom:10px">Contact · hiring for summer 2027?</p>
+      <div class="contact">
+        <a href="mailto:niravsurabhi@gmail.com"><span class="lab">Email</span><span class="v">niravsurabhi@gmail.com</span></a>
+        <a href="https://www.linkedin.com/in/niravss" target="_blank" rel="noopener"><span class="lab">LinkedIn</span><span class="v">/in/niravss ↗</span></a>
+        <a href="https://github.com/21J3phy" target="_blank" rel="noopener"><span class="lab">GitHub</span><span class="v">/21J3phy ↗</span></a>
+        <div><span class="lab">Résumé · PDF</span><span class="v"><a href="Resume.pdf" target="_blank" rel="noopener">General ↗</a> · <a href="Resume-Mechanical.pdf" target="_blank" rel="noopener">Mechanical ↗</a></span></div>
+      </div>
+    </section>
+
+    <!-- ======================================================= 06 GUITAR -->
+    <section class="sec" id="p-guitar" hidden>
+      <p class="k lab">06 · B-side</p>
+      <h2>Classical guitar</h2>
+      <p class="lead">When I’m not in Fusion or a code editor, I’m working a piece up to performance. That discipline carries back into the engineering.</p>
+      <ul class="creds blk">
+        <li><span class="lab">Award</span><span><b>1st place</b>, Aguado competition</span></li>
+        <li><span class="lab">Ensemble</span><span>Member, <b>All-Virginia Guitar Ensemble</b></span></li>
+        <li><span class="lab">Community</span><span>I <b>organize concerts at local senior centers</b></span></li>
+      </ul>
+      <div class="clips blk" id="clips"></div>
+    </section>
+
+  </div>
 </aside>
 
-<!-- custom drafting-style scroll rail (replaces the native scrollbar) -->
-<div class="scrollrail" id="scrollrail" aria-hidden="true">
-  <div class="track"></div>
-  <div class="fill"></div>
-  <div class="thumb"></div>
-</div>
-
-<main>
-
-<!-- ============================ 00 — HERO ============================ -->
-<section id="index" aria-label="Introduction">
-  <div class="wrap hero">
-    <div class="hero-top">
-      <span class="tag">Drawing&nbsp;No. 00 — Index</span>
-      <span class="hero-loc"><b>Brambleton, VA</b> · Independence HS '26 → <b>Purdue First-Year Engineering</b>, Fall 2026 · intended ME</span>
-    </div>
-
-    <div class="hero-grid">
-      <div class="namewrap">
-        <h1 class="hero-name">Nirav<span class="l2">Surabhi</span></h1>
-        <p class="hero-disc">// a Honda Civic efficiency experiment became passive vortex propulsion; a TikTok habit became Khali, a short-form news app that combines opposing sources.</p>
-        <div class="hero-cta">
-          <a class="btn solid" href="#hardware">See the work <span class="ar" aria-hidden="true">↓</span></a>
-          <a class="btn" href="mailto:niravsurabhi@gmail.com" data-copy-email><span data-copy-label>Let's talk</span> <span class="ar" aria-hidden="true">→</span></a>
-        </div>
-      </div>
-      <div class="portrait-wrap">
-        <figure class="portrait">
-          <img src="img/face.webp" alt="Portrait of Nirav Surabhi" width="600" height="600" />
-          <span class="pcorn pc1"></span><span class="pcorn pc2"></span><span class="pcorn pc3"></span><span class="pcorn pc4"></span>
-        </figure>
-      </div>
-    </div>
-
-    <!-- spec strip -->
-    <div class="specstrip">
-      <div class="lead">— SELECTED FIGURES, AT A GLANCE —————————————————————————</div>
-      <div class="stats">
-        <div class="stat">
-          <div class="num"><span data-count="10000">0</span><span class="u">+</span></div>
-          <div class="lab"><b>users</b> on Chad&nbsp;vs.&nbsp;Chud — 100+ concurrent at peak</div>
-        </div>
-        <div class="stat">
-          <div class="num"><span data-count="1">0</span><span class="u">st</span></div>
-          <div class="lab"><b>first-author</b> research paper, published in IEEE</div>
-        </div>
-        <div class="stat">
-          <div class="num"><span data-count="2000">0</span><span class="u">+</span></div>
-          <div class="lab"><b>business users</b> on the b2alpha.io agent protocol</div>
-        </div>
-        <div class="stat">
-          <div class="num"><span data-count="4">0</span><span class="u">yr</span></div>
-          <div class="lab"><b>FIRST Tech Challenge</b> captain &amp; lead engineer</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ 01 — HARDWARE ============================ -->
-<section id="hardware" class="theme-work" aria-label="Mechanical and hardware projects">
-  <div class="wrap">
-    <div class="sheet-head">
-      <div class="sheet-no">01</div>
-      <div class="sheet-meta">
-        <span class="tag">The Workbench</span>
-        <h2 class="sheet-title">Hardware <em>/ built from scratch</em></h2>
-        <p class="sheet-sub">CAD, control loops, load cells, and a wind tunnel that started with a simple question: could I make my Honda Civic cut through air more efficiently?</p>
-      </div>
-    </div>
-
-    <!-- Vortex Propulsion feature -->
-    <div class="vortex">
-      <div class="vortex-head">
-        <div>
-          <div class="pno">PROJ <b>01.A</b> · 2024–2025 · FIRST AUTHOR</div>
-          <h3 class="ptitle">Passive Vortex Propulsion</h3>
-          <div class="prole">Self-built wind tunnel · CFD · published research</div>
-          <p class="pbody">I wanted to make my Honda Civic more efficient, so I started experimenting with ways to reduce aerodynamic drag. That turned into a self-built wind tunnel, <b>soldered and calibrated load cells</b> with an Arduino, and CFD in Fusion 360. The work became a <b>first-author IEEE paper</b> on the first demonstration of passive vortex propulsion in air.</p>
-          <div class="stack">
-            <span class="chip">Arduino</span><span class="chip">C++</span><span class="chip">Load cells</span><span class="chip">Fusion 360</span><span class="chip">CFD</span><span class="chip">Python</span>
-          </div>
-        </div>
-        <div>
-          <div class="stamprow">
-            <div class="stamp">AIAA Aerospace Award<small>RSEF special honor</small></div>
-            <div class="stamp b2">NASA Goddard<small>invitation</small></div>
-            <div class="stamp">IEEE<small>first-author paper</small></div>
-          </div>
-          <div class="plinks" style="margin-top:16px">
-            <a class="plink" href="paper.pdf" data-doc data-pdf="paper.pdf" data-base="img/docs/paper" data-pages="5" data-title="Passive Vortex Propulsion — paper (IEEE)" target="_blank" rel="noopener">Read the paper <span class="ar" aria-hidden="true">↗</span></a>
-            <a class="plink" href="https://ieeexplore.ieee.org/document/11567580" target="_blank" rel="noopener">IEEE Xplore <span class="ar" aria-hidden="true">↗</span></a>
-            <a class="plink" href="conference-certificate.pdf" data-doc data-pdf="conference-certificate.pdf" data-base="img/docs/cert" data-pages="1" data-title="Conference certificate" target="_blank" rel="noopener">Certificate <span class="ar" aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </div>
-      <figure class="tunnel" style="aspect-ratio:16/7">
-        <img src="img/shot-pvp.webp" alt="Labeled diagram of the wind tunnel rig built to test passive vortex propulsion" width="1600" height="700" />
-        <svg class="flow" viewBox="0 0 1600 700" preserveAspectRatio="none" aria-hidden="true">
-          <g class="flowlines"></g>
-        </svg>
-        <figcaption class="cap">FIG. 05 — wind tunnel test rig, load-cell instrumented</figcaption>
-      </figure>
-    </div>
-
-    <!-- FTC build story -->
-    <div class="ftc">
-      <div class="ftc-top">
-        <div>
-          <div class="pno">PROJ <b>01.B</b> · 2022–2026 · CAPTAIN &amp; LEAD PROGRAMMER</div>
-          <h3 class="ptitle">FTC Robotics — Absolute Zero <span style="color:var(--red)">#12096</span></h3>
-          <div class="prole">Four seasons · every part CADded &amp; built · Chesapeake championship</div>
-          <p class="pbody">Four years leading team 12096. I <b>CADded and built every part in Fusion 360</b> and wrote the autonomous and tele-op in Java — <b>PID loops, sensor fusion, odometry</b>. We took it to the Chesapeake championship.</p>
-          <div class="pmetrics">
-            <div class="pmetric"><div class="m-n">4</div><div class="m-l">SEASONS AS CAPTAIN</div></div>
-            <div class="pmetric"><div class="m-n">12</div><div class="m-l">BUILD MILESTONES</div></div>
-          </div>
-        </div>
-        <div class="figc">
-          <div class="fig" style="aspect-ratio:1/1">
-            <img src="img/ftc-robot.webp" alt="The assembled FIRST Tech Challenge robot for team Absolute Zero 12096" width="1000" height="1000" />
-            <span class="cap">FIG. 06 — assembled competition robot</span>
-          </div>
-        </div>
-      </div>
-      <div class="buildseq">
-        <div class="seqlab">BUILD LOG — every part below was CADded, built &amp; iterated by me in Fusion 360. Tap any frame for the engineering story.</div>
-        <div class="seqgrid" id="seqgrid"></div>
-      </div>
-    </div>
-
-    <!-- Motor-Based Resistance System (RSEF 2025) -->
-    <article class="proj">
-      <div class="figc">
-        <button class="fig fig-btn" type="button" style="aspect-ratio:4/5" data-lightimg="img/motor-worn.webp" data-lightcap="Motor-based resistance device, worn on the arm">
-          <img src="img/motor-worn.webp" alt="The motor-based resistance device worn on the arm" width="450" height="600" loading="lazy" />
-          <span class="cap">FIG. 08 — device, worn</span>
-        </button>
-      </div>
-      <div>
-        <div class="pno">PROJ <b>01.C</b> · 2025 · RSEF · FIRST AUTHOR</div>
-        <h3 class="ptitle">Motor-Based Resistance System</h3>
-        <div class="prole">Portable strength trainer · designed, built &amp; tested by me</div>
-        <p class="pbody">A compact, battery-powered resistance trainer — no weights, no mounting, no wall power. A <b>188:1 geared motor</b> on drawer slides gives smooth, <b>PWM-controlled resistance</b> from an Arduino. I designed and built it through three prototypes — eddy-current → chain-driven → geared — and tested it to a <b>linear, repeatable force curve (R² = 0.993)</b>.</p>
-        <div class="pmetrics">
-          <div class="pmetric"><div class="m-n">$214.95</div><div class="m-l">VS $2–3K COMMERCIAL</div></div>
-          <div class="pmetric"><div class="m-n">R²=0.993</div><div class="m-l">FORCE vs PWM</div></div>
-        </div>
-        <div class="stack"><span class="chip">Arduino</span><span class="chip">RS-555 motor</span><span class="chip">188:1 planetary</span><span class="chip">PWM</span><span class="chip">Roboclaw</span><span class="chip">Fusion 360</span></div>
-        <div class="plinks">
-          <a class="plink" href="motor-resistance-poster.pdf" data-doc data-pdf="motor-resistance-poster.pdf" data-base="img/docs/poster" data-pages="2" data-title="Motor-Based Resistance System — RSEF 2025 poster" target="_blank" rel="noopener">Read the poster <span class="ar" aria-hidden="true">↗</span></a>
-          <a class="plink" href="img/motor-sim.webp" data-lightimg="img/motor-sim.webp" data-lightcap="FEA — horizontal force on the drawer slides (Fusion 360)" target="_blank" rel="noopener">Stress analysis (FEA) <span class="ar" aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-    </article>
-
-    <!-- Truss bridge (Science Olympiad, Bridge event) -->
-    <article class="proj rev">
-      <div class="figc">
-        <div class="figpair">
-          <button class="fig fig-btn" type="button" style="aspect-ratio:4/3" data-lightimg="img/bridge-v1.webp" data-lightcap="Truss bridge — V1 CAD (Fusion 360)">
-            <img src="img/bridge-v1.webp" alt="Truss bridge version 1 CAD in Fusion 360" width="1200" height="980" loading="lazy" />
-            <span class="cap">V1 CAD</span>
-          </button>
-          <button class="fig fig-btn" type="button" style="aspect-ratio:4/3" data-lightimg="img/bridge-v2.webp" data-lightcap="Truss bridge — V2 CAD, lighter arched top chord (Fusion 360)">
-            <img src="img/bridge-v2.webp" alt="Truss bridge version 2 CAD in Fusion 360" width="1200" height="843" loading="lazy" />
-            <span class="cap">V2 CAD</span>
-          </button>
-        </div>
-      </div>
-      <div>
-        <div class="pno">PROJ <b>01.D</b> · SCIENCE OLYMPIAD · BRIDGE EVENT</div>
-        <h3 class="ptitle">Truss Bridge</h3>
-        <div class="prole">CADded &amp; built by me · iterated v1 → v2 for strength-to-weight</div>
-        <p class="pbody">A wooden truss bridge for the Science Olympiad Bridge event, judged on load carried per gram. I CADded it in Fusion 360 and <b>iterated v1 → v2</b> — thinning members and reworking the top chord into an arch to shed weight while holding strength.</p>
-        <div class="stack"><span class="chip">Fusion 360</span><span class="chip">Truss design</span><span class="chip">Strength-to-weight</span></div>
-      </div>
-    </article>
-
-    <!-- Science Olympiad pair -->
-    <div class="solytwo">
-      <div class="solycard">
-        <div class="figpair" style="margin-bottom:14px">
-          <button class="fig fig-btn" type="button" style="aspect-ratio:3/2" data-lightimg="img/ev-cad.webp" data-lightcap="Electric Vehicle — Fusion 360 CAD (design)">
-            <img src="img/ev-cad.webp" alt="Electric vehicle CAD design in Fusion 360" width="1200" height="699" loading="lazy" />
-            <span class="cap">CAD</span>
-          </button>
-          <button class="fig fig-btn" type="button" style="aspect-ratio:3/2" data-lightimg="img/shot-ev.webp" data-lightcap="Electric Vehicle — the car I built (implementation)">
-            <img src="img/shot-ev.webp" alt="The built Science Olympiad electric vehicle" width="1200" height="800" loading="lazy" />
-            <span class="cap">BUILT</span>
-          </button>
-        </div>
-        <div class="pno">PROJ <b>01.E</b> · SCIENCE OLYMPIAD</div>
-        <h4>Electric Vehicle</h4>
-        <div class="prole">Accelerate, then brake to a target distance</div>
-        <p class="pbody">An autonomous vehicle that accelerates then brakes to stop on a target distance. I CADded it in Fusion 360 and built it — Arduino, a goBILDA motor, and a quadrature encoder, tuned with <b>PID</b>.</p>
-        <div class="stack"><span class="chip">Fusion 360</span><span class="chip">Arduino</span><span class="chip">goBILDA</span><span class="chip">Encoder</span><span class="chip">PID</span></div>
-      </div>
-      <div class="solycard">
-        <div class="fig" style="aspect-ratio:3/2;display:grid;place-items:center">
-          <div style="font-family:var(--mono);font-size:12px;color:var(--ink-2);letter-spacing:.1em;text-align:center;padding:20px">
-            SALT-WATER SALINITY SENSOR<br /><span style="opacity:.6">conductivity probe · Arduino</span>
-          </div>
-        </div>
-        <div class="pno">PROJ <b>01.F</b> · SCIENCE OLYMPIAD</div>
-        <h4>Salt-water Salinity Sensor</h4>
-        <div class="prole">Reads salinity from conductivity</div>
-        <p class="pbody">An Arduino device that reads the salinity of salt water — a calibrated conductivity probe feeding a microcontroller.</p>
-        <div class="stack"><span class="chip">Arduino</span><span class="chip">Conductivity</span><span class="chip">Sensor calibration</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ 02 — SOFTWARE ============================ -->
-<section id="software" class="theme-soft" aria-label="Software projects">
-  <div class="wrap">
-    <div class="sheet-head">
-      <div class="sheet-no">02</div>
-      <div class="sheet-meta">
-        <span class="tag">The Screen</span>
-        <h2 class="sheet-title">Software <em>/ shipped &amp; live</em></h2>
-        <p class="sheet-sub">Products and tools I've built — models trained, backends written, deployed to real users.</p>
-      </div>
-    </div>
-
-    <!-- SpareMe (featured — current focus) -->
-    <article class="proj feat">
-      <div class="figc">
-        <div class="fig" style="aspect-ratio:3/2">
-          <img src="img/shot-spareme.webp" alt="Screenshot of SpareMe's landing page — an AI phone delegate for iPhone" width="1200" height="800" />
-          <span class="cap">FIG. 01 — getspareme.com</span>
-        </div>
-      </div>
-      <div>
-        <div class="pno">PROJ <b>02.A</b> · 2026–NOW · CREATOR</div>
-        <h3 class="ptitle">SpareMe</h3>
-        <div class="prole">An AI that makes the phone calls you dread · current focus</div>
-        <p class="pbody">I hate calling businesses, so I built something that does it for me. You give SpareMe a number and one line of intent; it dials, <b>works the phone tree, waits on hold</b>, talks to the representative, and hands back a written outcome with evidence. You watch a live transcript the whole time and can privately type an instruction, listen in, or <b>join the call</b> and hand it back mid-sentence. I built the <b>SwiftUI</b> app and the Node/TypeScript backend — <b>Twilio ConversationRelay</b> for real-time speech, OpenAI for the reasoning, plus verified caller ID, durable case state, and StoreKit funding. Shipped on the App Store.</p>
-        <div class="stack">
-          <span class="chip">Swift / SwiftUI</span><span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">Twilio</span><span class="chip">OpenAI</span><span class="chip">Google Chirp TTS</span><span class="chip">PostgreSQL</span><span class="chip">StoreKit</span>
-        </div>
-        <div class="plinks">
-          <a class="plink" href="https://getspareme.com" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
-          <a class="plink" href="https://apps.apple.com/us/app/spareme-ai-phone-delegate/id6793629023" target="_blank" rel="noopener">App Store <span class="ar" aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-    </article>
-
-    <!-- Khali -->
-    <article class="proj rev">
-      <div class="figc">
-        <div class="fig" style="aspect-ratio:3/2">
-          <img src="img/shot-khali.webp" alt="Screenshot of Khali, a short-form news video feed app" width="1200" height="800" />
-          <span class="cap">FIG. 02 — khali.info</span>
-        </div>
-      </div>
-      <div>
-        <div class="pno">PROJ <b>02.B</b> · 2025–NOW · CO-FOUNDER &amp; CEO</div>
-        <h3 class="ptitle">Khali</h3>
-        <div class="prole">A news startup · native iOS + Expo</div>
-        <p class="pbody">I was addicted to the TikTok scroll, so I tried to make that interaction useful instead of empty. Khali turns news into a swipe-through feed where each story combines reporting from opposing sources, presents one claim at a time, and lets you ask an OpenAI assistant for the evidence behind it. I built the native <b>SwiftUI iOS</b> app and the <b>Expo / React Native</b> app on a Node + Python backend that ingests sources, clusters events, and generates the clips and narration. Now shipped on the App Store. Submitted to Y&nbsp;Combinator's Spring 2026 batch.</p>
-        <div class="stack">
-          <span class="chip">Swift / SwiftUI</span><span class="chip">React Native</span><span class="chip">Expo</span><span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">Python</span><span class="chip">OpenAI</span><span class="chip">Supabase</span>
-        </div>
-        <div class="plinks">
-          <a class="plink" href="https://khali.info" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
-          <a class="plink" href="https://apps.apple.com/us/app/khali/id6759009203" target="_blank" rel="noopener">App Store <span class="ar" aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-    </article>
-
-    <!-- Oh -->
-    <article class="proj">
-      <div class="figc">
-        <div class="fig" style="aspect-ratio:3/2">
-          <img src="img/shot-oh.webp" alt="Screenshot of Oh, shared AI-coding memory for small teams" width="1200" height="800" loading="lazy" />
-          <span class="cap">FIG. 03 — 21j3phy.github.io/Oh</span>
-        </div>
-      </div>
-      <div>
-        <div class="pno">PROJ <b>02.C</b> · 2026–NOW</div>
-        <h3 class="ptitle">Oh</h3>
-        <div class="prole">Shared AI-coding memory for small teams</div>
-        <p class="pbody">A team brain for AI coding. Oh captures every Claude Code and Codex session, embeds the <b>reasoning</b> behind each change into a shared store, and exposes one MCP tool — <b>ask</b> — so a teammate's agent can answer "why is this code the way it is?" instead of interrupting the author to re-explain. Capture is hook-driven and incremental; only reasoning is embedded, with secrets scrubbed locally.</p>
-        <div class="stack">
-          <span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">MCP</span><span class="chip">OpenAI</span><span class="chip">Supabase</span><span class="chip">pgvector</span>
-        </div>
-        <div class="plinks">
-          <a class="plink" href="https://21j3phy.github.io/Oh/" target="_blank" rel="noopener">Visit live <span class="ar" aria-hidden="true">↗</span></a>
-          <a class="plink" href="https://github.com/21J3phy/Oh" target="_blank" rel="noopener">GitHub <span class="ar" aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-    </article>
-
-    <!-- Chad vs Chud (sunset) -->
-    <article class="proj rev sunset">
-      <div class="figc">
-        <div class="fig" style="aspect-ratio:3/2">
-          <img src="img/shot-chad.webp" alt="Screenshot of Chad vs. Chud, a live face-ranking web app" width="1200" height="800" loading="lazy" />
-          <span class="sunset-stamp" aria-hidden="true">Sunset<small>no longer maintained</small></span>
-          <span class="cap">FIG. 04 — chadvschud.com</span>
-        </div>
-      </div>
-      <div>
-        <div class="pno">PROJ <b>02.D</b> · 2026 · CO-FOUNDER &amp; CEO · SUNSET</div>
-        <h3 class="ptitle">Chad vs. Chud</h3>
-        <div class="prole">Real-time PvP face-rating game · full-stack + ML</div>
-        <p class="pbody">A real-time 1v1 face-rating battle — two players dueled over webcam and an AI scored each face. I built the Next.js client, a <b>Socket.IO + WebRTC</b> matchmaking service, and a Python/FastAPI inference service running a <b>fine-tuned ResNet-18 + ArcFace ensemble</b> alongside an LLM scorer — plus tournaments, leaderboards, and a Stripe cosmetics economy.</p>
-        <div class="pmetrics">
-          <div class="pmetric"><div class="m-n">10,000+</div><div class="m-l">TOTAL USERS</div></div>
-          <div class="pmetric"><div class="m-n">100+</div><div class="m-l">CONCURRENT AT PEAK</div></div>
-        </div>
-        <div class="stack">
-          <span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">FastAPI</span><span class="chip">WebRTC</span><span class="chip">Socket.io</span><span class="chip">PyTorch</span><span class="chip">Gemini</span><span class="chip">Supabase</span><span class="chip">Stripe</span><span class="chip">Fly.io</span>
-        </div>
-        <div class="plinks">
-          <a class="plink" href="https://chadvschud.com" data-sunset="Chad vs. Chud" target="_blank" rel="noopener">Visit <span class="ar" aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-    </article>
-
-    <!-- b2alpha (sunset) -->
-    <article class="proj sunset">
-      <div class="figc">
-        <div class="fig" style="aspect-ratio:3/2">
-          <img src="img/shot-b2a.webp" alt="Screenshot of b2alpha.io, an agent-to-agent protocol dashboard" width="1200" height="800" loading="lazy" />
-          <span class="sunset-stamp" aria-hidden="true">Sunset<small>no longer maintained</small></span>
-          <span class="cap">FIG. 05 — b2alpha.io</span>
-        </div>
-      </div>
-      <div>
-        <div class="pno">PROJ <b>02.E</b> · 2026 · CO-FOUNDER &amp; CEO · SUNSET</div>
-        <h3 class="ptitle">b2alpha.io</h3>
-        <div class="prole">Open agent-to-agent protocol</div>
-        <p class="pbody">Secure messaging plus DNS integration so autonomous agents could find and talk to each other. Heavy <b>prompt engineering</b> to make models emit structured output other agents can reliably parse.</p>
-        <div class="pmetrics">
-          <div class="pmetric"><div class="m-n">2,000+</div><div class="m-l">BUSINESS USERS</div></div>
-        </div>
-        <div class="stack">
-          <span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">OpenAI API</span><span class="chip">Vercel</span><span class="chip">Supabase</span><span class="chip">DNS</span>
-        </div>
-        <div class="plinks">
-          <a class="plink" href="https://b2alpha.io" data-sunset="b2alpha.io" target="_blank" rel="noopener">Visit <span class="ar" aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-    </article>
-
-    <!-- PredictionView (sunset) -->
-    <article class="proj rev sunset">
-      <div class="figc">
-        <div class="fig" style="aspect-ratio:3/2">
-          <img src="img/shot-pv.webp" alt="Screenshot of PredictionView analytics charts for prediction markets" width="1200" height="800" loading="lazy" />
-          <span class="sunset-stamp" aria-hidden="true">Sunset<small>no longer maintained</small></span>
-          <span class="cap">FIG. 06 — predictionview.app</span>
-        </div>
-      </div>
-      <div>
-        <div class="pno">PROJ <b>02.F</b> · 2026 · CO-FOUNDER &amp; CEO · SUNSET</div>
-        <h3 class="ptitle">PredictionView</h3>
-        <div class="prole">A trading hub for Kalshi prediction markets</div>
-        <p class="pbody">Live market search, price charts, an <b>OpenAI (gpt-4o-mini) analyst</b> with web-search research, alerts, watchlists, and a trade journal/backtester. I owned the <b>Express + Prisma/Postgres backend</b> — a 127-route API with cron sync jobs — plus the auth layer and the Vitest test suite.</p>
-        <div class="stack">
-          <span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Vite</span><span class="chip">Express</span><span class="chip">Prisma</span><span class="chip">PostgreSQL</span><span class="chip">OpenAI</span><span class="chip">lightweight-charts</span><span class="chip">Stripe</span>
-        </div>
-        <div class="plinks">
-          <a class="plink" href="https://predictionview.app" data-sunset="PredictionView" target="_blank" rel="noopener">Visit <span class="ar" aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-    </article>
-  </div>
-</section>
-
-<!-- ============================ 03 — EXPERIENCE ============================ -->
-<section id="work" aria-label="Work experience">
-  <div class="wrap">
-    <div class="sheet-head">
-      <div class="sheet-no">03</div>
-      <div class="sheet-meta">
-        <span class="tag">On the Job</span>
-        <h2 class="sheet-title">Experience</h2>
-        <p class="sheet-sub">From LLM prompts behind AP tutors to haptic medical sims to building bikes from the frame up.</p>
-      </div>
-    </div>
-    <div class="exp">
-      <div class="exprow">
-        <div class="logo"><img src="img/logo-i3.png" alt="I3 Simulations logo" width="280" height="90" /></div>
-        <div>
-          <h4>CAD Intern</h4>
-          <div class="role">I3 Simulations</div>
-          <p class="desc">3D models and <b>haptic-feedback prototypes</b> for medical-training simulators.</p>
-        </div>
-        <div class="when">JUN 2025<br />— MAY 2026</div>
-      </div>
-      <div class="exprow">
-        <div class="logo"><img src="img/logo-bikelane.png" alt="The Bike Lane logo" width="280" height="90" /></div>
-        <div>
-          <h4>Bike Mechanic</h4>
-          <div class="role">The Bike Lane · intern → part-time</div>
-          <p class="desc">Built bikes <b>from the frame up</b> and ran the final safety checks.</p>
-        </div>
-        <div class="when">JUN 2021<br />— AUG 2025</div>
-      </div>
-      <div class="exprow">
-        <div class="logo"><img src="img/logo-ember.png" alt="Ember Learning logo" width="280" height="90" /></div>
-        <div>
-          <h4>AI Engineer &amp; SWE Intern</h4>
-          <div class="role">Ember Learning (formerly DeAP Learning Labs)</div>
-          <p class="desc">Wrote the <b>LLM prompts behind their AP-tutor chatbots</b>; built automated AI grading for AP DBQs/FRQs against the official rubric; indexed lecture transcripts in a vector DB for timestamp-level search; led the company website. The team landed a <b>Microsoft &amp; OpenAI grant</b> and crossed a <b>$1M+ valuation</b>.</p>
-        </div>
-        <div class="when">FEB 2021<br />— 2022</div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ============================ 04 — SKILLS ============================ -->
-<section id="skills" aria-label="Skills">
-  <div class="wrap">
-    <div class="sheet-head">
-      <div class="sheet-no">04</div>
-      <div class="sheet-meta">
-        <span class="tag">Technical Inventory</span>
-        <h2 class="sheet-title">Skills</h2>
-        <p class="sheet-sub">Languages, AI/ML, cloud tools, and hardware I use across the work above.</p>
-      </div>
-    </div>
-    <div class="skills">
-      <div class="skillcol">
-        <h5>Languages</h5>
-        <ul><li>Java</li><li>Python</li><li>JavaScript</li><li>TypeScript</li><li>HTML / CSS</li><li>Git</li></ul>
-      </div>
-      <div class="skillcol">
-        <h5>AI / ML</h5>
-        <ul><li>Prompt engineering</li><li>LLMs</li><li>CNNs</li><li>Computer vision</li><li>Agent architecture</li></ul>
-      </div>
-      <div class="skillcol">
-        <h5>Cloud &amp; Tools</h5>
-        <ul><li>Fly.io</li><li>Vercel</li><li>Supabase</li><li>Fusion 360</li></ul>
-      </div>
-      <div class="skillcol">
-        <h5>Hardware</h5>
-        <ul><li>Arduino</li><li>Load cells</li><li>Soldering</li><li>Multimeter</li><li>PID control</li></ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ 05 — GUITAR ============================ -->
-<section id="guitar" aria-label="Classical guitar">
-  <div class="wrap">
-    <div class="sheet-head">
-      <div class="sheet-no">05</div>
-      <div class="sheet-meta">
-        <span class="tag">B-Side</span>
-        <h2 class="sheet-title">Classical Guitar</h2>
-        <p class="sheet-sub">The other half of the brain. Nylon strings, small rooms.</p>
-      </div>
-    </div>
-    <div class="guitar-intro">
-      <p class="measure" style="font-size:18px;line-height:1.55">I'm a classical guitarist. When I'm not training a model or cutting a part in Fusion, I'm working a piece up to performance — and there's a discipline there that bleeds back into the engineering.</p>
-      <div class="guitar-cred">
-        <div class="gline"><span class="gk">AWARD</span><span><b>1st place</b>, the Aguado competition</span></div>
-        <div class="gline"><span class="gk">ENSEMBLE</span><span>Member, the <b>All-Virginia Guitar Ensemble</b></span></div>
-        <div class="gline"><span class="gk">COMMUNITY</span><span>I <b>organize concerts at local senior centers</b> — small rooms</span></div>
-      </div>
-    </div>
-    <div class="deck-wrap">
-      <div class="deck" id="deck" aria-roledescription="card deck" aria-label="Classical guitar performance clips — swipe the top clip, or use the arrows"></div>
-      <div class="deck-foot">
-        <button class="deck-btn" id="deckPrev" type="button" aria-label="Previous clip">‹</button>
-        <button class="deck-btn" id="deckNext" type="button" aria-label="Next clip">›</button>
-        <span class="deck-count"><span id="deckIdx">1</span> / 9</span>
-        <span class="deck-hint">swipe / drag the top clip · tap to play</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ 06 — CONTACT / TITLE BLOCK ============================ -->
-<section id="contact" aria-label="Honors and contact">
-  <div class="wrap">
-    <div class="sheet-head">
-      <div class="sheet-no">06</div>
-      <div class="sheet-meta">
-        <span class="tag">For the Record</span>
-        <h2 class="sheet-title">Honors &amp; Contact</h2>
-      </div>
-    </div>
-
-    <div class="honors">
-      <div class="honor">
-        <div class="hseal"><i>★</i>AIAA</div>
-        <div><h6>Aerospace Award</h6><p>RSEF special honor → NASA Goddard invitation</p></div>
-      </div>
-      <div class="honor">
-        <div class="hseal"><i>✦</i>SCI-OLY</div>
-        <div><h6>Captain</h6><p>Science Olympiad</p></div>
-      </div>
-      <div class="honor">
-        <div class="hseal"><i>◆</i>PVSA</div>
-        <div><h6>Presidential Volunteer Service</h6><p>Silver Award</p></div>
-      </div>
-      <div class="honor">
-        <div class="hseal"><i>▲</i>GOV-SCH</div>
-        <div><h6>Governor's School</h6><p>Central VA, Science &amp; Tech — Mathematics, 2024</p></div>
-      </div>
-      <div class="honor">
-        <div class="hseal"><i>♪</i>MUSIC</div>
-        <div><h6>All-Virginia Guitar Ensemble</h6><p>Selected member</p></div>
-      </div>
-    </div>
-
-    <!-- title block -->
-    <div class="titleblock">
-      <div class="tb-top">
-        <div class="tb-name">
-          <div class="big">Let's<br />Build<br />Some<span class="amp">thing.</span></div>
-          <p>Recruiter, founder, or fellow builder — I read every message. I'm an incoming Purdue First-Year Engineering student intending to study mechanical engineering, with a shipping track record across software, hardware, and research.</p>
-        </div>
-        <div class="tb-contactlinks">
-          <a class="tbc" href="mailto:niravsurabhi@gmail.com" data-copy-email>
-            <span><span class="k">EMAIL — CLICK TO COPY</span><br /><span class="v" data-copy-label>niravsurabhi@gmail.com</span></span><span class="ar" aria-hidden="true">⧉</span>
-          </a>
-          <a class="tbc" href="https://niravsurabhi.com" target="_blank" rel="noopener">
-            <span><span class="k">SITE</span><br /><span class="v">niravsurabhi.com</span></span><span class="ar" aria-hidden="true">↗</span>
-          </a>
-          <a class="tbc" href="https://linkedin.com/in/niravss" target="_blank" rel="noopener">
-            <span><span class="k">LINKEDIN</span><br /><span class="v">/in/niravss</span></span><span class="ar" aria-hidden="true">↗</span>
-          </a>
-          <a class="tbc" href="https://github.com/21J3phy" target="_blank" rel="noopener">
-            <span><span class="k">GITHUB</span><br /><span class="v">/21J3phy</span></span><span class="ar" aria-hidden="true">↗</span>
-          </a>
-          <a class="tbc" href="resume.html">
-            <span><span class="k">DOCUMENT</span><br /><span class="v">Résumé — view in browser</span></span><span class="ar" aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </div>
-      <div class="tb-grid">
-        <div class="tb-cell"><span class="k">DRAWN BY</span><span class="v">N. SURABHI</span></div>
-        <div class="tb-cell"><span class="k">TITLE</span><span class="v">PORTFOLIO</span></div>
-        <div class="tb-cell"><span class="k">DISCIPLINE</span><span class="v">SW + ME</span></div>
-        <div class="tb-cell"><span class="k">LOCATION</span><span class="v">BRAMBLETON, VA</span></div>
-        <div class="tb-cell"><span class="k">SHEET</span><span class="v">06 / 06</span></div>
-        <div class="tb-cell"><span class="k">REV</span><span class="v">2026.07 — B</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<!-- ============================ LIGHTBOX ============================ -->
-<div class="lb" id="sunsetWarn" role="alertdialog" aria-modal="true" aria-labelledby="swTitle">
-  <div class="sw-card">
-    <div class="stamp" aria-hidden="true">Sunset<small>project archived</small></div>
-    <div class="sw-kicker">FIELD NOTE — ARCHIVED PROJECT</div>
-    <h3 class="sw-title" id="swTitle">This project is sunset</h3>
-    <p class="sw-body"><b id="swName">This project</b> is no longer maintained. The site is still up, but <b>things might be broken</b> — dead features, stale data, expired keys.</p>
-    <div class="sw-actions">
-      <a class="sw-go" id="swGo" href="#" target="_blank" rel="noopener">Visit anyway ↗</a>
-      <button class="sw-stay" type="button" id="swStay">Stay here</button>
-    </div>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Viewer">
+  <div class="lb-in">
+    <div class="lb-media" id="lbMedia"></div>
+    <div class="lb-bar"><div class="lb-cap" id="lbCap"></div><div style="display:flex;gap:8px"><span id="lbExtra"></span><button class="pill" id="lbX" type="button">Close ✕</button></div></div>
   </div>
 </div>
 
-<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Media viewer">
-  <div class="lb-inner">
-    <button class="lb-close" id="lbClose">CLOSE ✕</button>
-    <div id="lbMedia"></div>
-    <div class="lb-cap" id="lbCap"></div>
+<div id="loader" aria-hidden="true">
+  <div class="ld">
+    <h1>Nirav<br />Surabhi</h1>
+    <div class="bar"><div id="loadbar"></div></div>
+    <div class="row"><span class="lab" id="loadlabel">Opening the lab</span><span class="lab">Mechanical × Software</span></div>
   </div>
 </div>
 
+<script src="wake.js"></script>
 <script>
-(function(){
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ---------- mobile menu ---------- */
-  var menuBtn = document.getElementById('menuBtn'), nav = document.getElementById('sheetnav');
-  menuBtn.addEventListener('click', function(){
-    var open = nav.classList.toggle('open');
-    menuBtn.setAttribute('aria-expanded', open ? 'true':'false');
-  });
-  nav.addEventListener('click', function(e){
-    if(e.target.closest('a')){ nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); }
-  });
-
-  /* ---------- count up ---------- */
-  function fmt(n){ return n.toLocaleString('en-US'); }
-  var counted = false;
-  function runCount(){
-    if(counted) return; counted = true;
-    document.querySelectorAll('[data-count]').forEach(function(el){
-      var target = +el.getAttribute('data-count');
-      if(reduce){ el.textContent = fmt(target); return; }
-      var dur = 1100, t0 = null;
-      function step(ts){
-        if(!t0) t0 = ts;
-        var p = Math.min((ts - t0)/dur, 1);
-        var e = 1 - Math.pow(1-p, 3);
-        el.textContent = fmt(Math.round(target * e));
-        if(p < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    });
-  }
-  var hero = document.getElementById('index');
-  if('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting) runCount(); }); },{threshold:.2});
-    io.observe(hero);
-  }
-  // Robust fallbacks — the spec strip is above the fold, so the numbers must
-  // always reach their targets even if IO never fires in this context.
-  window.addEventListener('load', runCount);
-  setTimeout(runCount, 850);
-
-  /* ---------- FTC build sequence — slug, title, engineering note (all designed, built & iterated by me) ---------- */
-  var ftc = [
-    ['ftc-chassis','Chassis','Designed the frame from scratch instead of buying a kit — a compact footprint I machined from 1/8" aluminum to stay light without flexing under load.'],
-    ['ftc-bumper-v1','Bumper v1','My first bumper revision: one sculpted piece. It looked clean, but it was slow to mount and a pain to repair after a hard hit.'],
-    ['ftc-bumper-v2','Bumper v2','So I redesigned them — wraparound geometry that swaps fast and shrugs off contact. This v1 → v2 loop is how I ran the whole season: build, break, rebuild.'],
-    ['ftc-intake-ground','Intake · ground','Chained every roller to a single motor so one drive spins the whole intake — fewer motors means less weight, wiring, and current to budget.'],
-    ['ftc-intake-2dof','Intake · 2-DOF','The next intake I designed gained a second axis of motion and 3D-printed TPU rollers — grippy enough to grab a game piece without crushing it.'],
-    ['ftc-roller','Roller','Printed each roller in two materials in one job: a rigid PLA core for the shaft, a soft TPU skin for traction. One part doing two jobs.'],
-    ['ftc-slides','Linear slides','A motorized extension I braced with unpowered perpendicular slides — the cross-bracing kills the wobble when it reaches out under load.'],
-    ['ftc-slides-dual','Slides · dual','Two-stage slides with a 180° servo pivot on the intake at the tip — it reaches out and flips orientation at the end of travel.'],
-    ['ftc-intake-ramp','Intake · ramp','I modeled the full intake-to-ramp path as one jointed assembly so I could play the motion in CAD and catch collisions before cutting any metal.'],
-    ['ftc-shooter','Turret shooter','A flywheel hood shooter on a full 360° turret I designed — it can aim and fire from anywhere on the field without rotating the whole robot.'],
-    ['ftc-semis','Semifinals','All of it together, on the field — tethering up before a semifinal match at the Chesapeake championship.'],
-    ['ftc-final','Final build','Where a season of CAD ended up. Every subsystem here started as a part I modeled, printed or machined, then built and bolted on myself.']
+// Generated content (build log, guitar clips) and the no-WebGL fallback.
+(function () {
+  var parts = [
+    ['ftc-chassis', 'Chassis', 'Designed from scratch instead of a kit: a compact frame machined from 1/8″ aluminum, light without flexing under load.'],
+    ['ftc-bumper-v1', 'Bumper v1', 'One sculpted piece. Clean, but slow to mount and a pain to repair after a hard hit.'],
+    ['ftc-bumper-v2', 'Bumper v2', 'Wraparound geometry that swaps fast and shrugs off contact. Build, break, rebuild ran the whole season.'],
+    ['ftc-intake-ground', 'Intake · ground', 'Every roller chained to one motor: less weight, wiring, and current to budget.'],
+    ['ftc-intake-2dof', 'Intake · 2-DOF', 'A second axis of motion and TPU rollers grippy enough to hold a game piece without crushing it.'],
+    ['ftc-roller', 'Roller', 'Printed in two materials in one job: a rigid PLA core and a soft TPU skin.', 'ftc'],
+    ['ftc-slides', 'Linear slides', 'A motorized extension braced by unpowered cross slides, which kill the wobble at full reach.'],
+    ['ftc-slides-dual', 'Two-stage slides', 'A 180° servo pivot at the tip, so the intake reaches out and flips at the end of travel.'],
+    ['ftc-intake-ramp', 'Intake → ramp', 'One jointed assembly, so I could play the motion in CAD and catch collisions before cutting metal.'],
+    ['ftc-shooter', 'Turret shooter', 'A flywheel hood shooter on a full 360° turret that aims from anywhere without turning the robot.'],
+    ['ftc-semis', 'Semifinals', 'On the field before a semifinal at the Chesapeake championship.', 'photo'],
+    ['ftc-final', 'Final build', 'Every subsystem started as a part I modeled, printed or machined, then built.', 'photo']
   ];
-  var seq = document.getElementById('seqgrid');
-  ftc.forEach(function(f, i){
-    var b = document.createElement('button');
-    b.className = 'seqcell';
-    var step = String(i+1).padStart(2,'0');
-    b.setAttribute('aria-label', 'Build step ' + step + ' of 12: ' + f[1] + '. ' + f[2]);
-    b.innerHTML = '<span class="sn">' + step + '</span>' +
-      '<img src="img/ftc/' + f[0] + '.webp" alt="FTC build step ' + step + ': ' + f[1] + '" width="800" height="600" loading="lazy" />' +
-      '<span class="sl">' + f[1] + '</span>';
-    b.addEventListener('click', function(){
-      openImg('img/ftc/' + f[0] + '.webp',
-        '<b>BUILD ' + step + ' / 12 — ' + f[1].toUpperCase() + '</b><span class="lb-desc">' + f[2] + '</span>' +
-        '<span class="lb-credit">Designed, built &amp; iterated by Nirav Surabhi · Fusion 360</span>');
-    });
-    seq.appendChild(b);
+  var log = document.getElementById('log');
+  parts.forEach(function (p, i) {
+    var src = p[3] ? 'img/ftc/' + p[0] + '.webp' : 'img/cad/' + p[0] + '.webp';
+    var b = document.createElement('button'); b.type = 'button'; if (p[3]) b.className = 'photo';
+    b.setAttribute('data-lb', src); if (!p[3]) b.setAttribute('data-cad', '');
+    b.setAttribute('data-cap', (i + 1) + ' / 12 · ' + p[1] + ' — ' + p[2]);
+    b.innerHTML = '<img src="' + src + '" alt="' + p[1] + '" loading="lazy" /><span>' + String(i + 1).padStart(2, '0') + ' ' + p[1] + '</span>';
+    log.appendChild(b);
   });
-
-  /* ---------- guitar deck (swipeable stack; clips play in place) ---------- */
-  (function(){
-    var deck = document.getElementById('deck');
-    if(!deck) return;
-    var N = 9, order = [], animating = false, suppress = false;
-    for(var gi=1; gi<=N; gi++){
-      var c = document.createElement('button');
-      c.type = 'button'; c.className = 'gcard'; c.dataset.n = gi;
-      c.setAttribute('aria-label', 'Play guitar clip ' + gi + ' of ' + N);
-      c.innerHTML = '<video class="gv" src="img/guitar/g' + gi + '.mp4" poster="img/guitar/g' + gi + '.jpg" preload="none" playsinline></video>' +
-        '<span class="cn">CLIP ' + String(gi).padStart(2,'0') + '</span>' +
-        '<span class="play"><span><svg width="15" height="17" viewBox="0 0 16 18" aria-hidden="true"><path d="M0 0 L16 9 L0 18 Z" fill="#191510"/></svg></span></span>';
-      deck.appendChild(c); order.push(c);
-    }
-    var idxEl = document.getElementById('deckIdx');
-    function place(card, d, anim){
-      card.style.transition = anim ? '' : 'none';
-      var x = d*6, y = d*5, rot = -d*1.2, sc = Math.max(0.7, 1 - 0.022*d), op = Math.max(0.4, 1 - 0.07*d);
-      card.style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + rot + 'deg) scale(' + sc + ')';
-      card.style.opacity = op; card.style.zIndex = String(90 - d);
-      var front = d === 0;
-      card.classList.toggle('front', front);
-      card.style.pointerEvents = front ? 'auto' : 'none';
-      card.tabIndex = front ? 0 : -1;
-      card.setAttribute('aria-hidden', front ? 'false' : 'true');
-    }
-    function layout(anim){ order.forEach(function(c,d){ place(c,d,anim); }); if(idxEl) idxEl.textContent = order[0].dataset.n; }
-    function vid(card){ return card.querySelector('video'); }
-    function resetCard(card){ var v = vid(card); if(!v) return; v.pause(); try{ v.currentTime = 0; }catch(_){} card.classList.remove('playing'); }
-    function togglePlay(card){
-      var v = vid(card); if(!v) return;
-      if(v.paused){ card.classList.add('playing'); var p = v.play(); if(p && p.catch) p.catch(function(){}); }
-      else { v.pause(); card.classList.remove('playing'); }
-    }
-    // Send the top card to the BACK of the stack — it visibly tucks behind the others
-    // (lifts off the top, then drops into the rear slot), rather than flying away.
-    function sendBack(useLift){
-      if(animating) return; animating = true;
-      var leaving = order[0], k;
-      resetCard(leaving);
-      leaving.classList.remove('front'); leaving.style.pointerEvents = 'none';
-      for(k = 1; k < order.length; k++) place(order[k], k-1, true);   // the rest slide forward one slot
-      function tuck(){
-        order.push(order.shift());
-        place(leaving, order.length - 1, true);                      // drops behind into the rear slot
-        setTimeout(function(){ animating = false; if(idxEl) idxEl.textContent = order[0].dataset.n; }, 400);
-      }
-      if(useLift){
-        leaving.style.zIndex = '200';
-        leaving.style.transition = 'transform .2s cubic-bezier(.4,0,.2,1)';
-        leaving.style.transform = 'translate(0,-30px) scale(1.05)';
-        setTimeout(tuck, 200);
-      } else { tuck(); }                                             // a swipe already supplied the visible motion
-    }
-    function prev(){
-      if(animating) return; animating = true;
-      resetCard(order[0]);
-      var coming = order.pop(); order.unshift(coming);               // rear card rises to the front
-      layout(true);
-      setTimeout(function(){ animating = false; if(idxEl) idxEl.textContent = order[0].dataset.n; }, 430);
-    }
-    /* drag the top card */
-    var sx=0, sy=0, dragging=false, moved=0;
-    deck.addEventListener('pointerdown', function(e){
-      var front = order[0];
-      if(animating || e.target.closest('.gcard') !== front) return;
-      dragging = true; suppress = false; moved = 0; sx = e.clientX; sy = e.clientY;
-      front.classList.add('dragging');
-      try{ front.setPointerCapture(e.pointerId); }catch(_){}
+  var clips = document.getElementById('clips');
+  for (var i = 1; i <= 9; i++) (function (i) {
+    var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Play guitar clip ' + i);
+    b.innerHTML = '<img src="img/guitar/g' + i + '.jpg" alt="" loading="lazy" /><span></span>';
+    b.addEventListener('click', function () {
+      document.getElementById('lbMedia').innerHTML = '<video src="img/guitar/g' + i + '.mp4" poster="img/guitar/g' + i + '.jpg" controls autoplay playsinline></video>';
+      document.getElementById('lbCap').innerHTML = '<b>Classical guitar · clip ' + i + ' / 9</b>';
+      document.getElementById('lbExtra').innerHTML = '';
+      document.getElementById('lb').classList.add('open');
     });
-    deck.addEventListener('pointermove', function(e){
-      if(!dragging) return;
-      var dx = e.clientX - sx, dy = e.clientY - sy; moved = Math.max(moved, Math.abs(dx) + Math.abs(dy));
-      order[0].style.transition = 'none';
-      order[0].style.transform = 'translate(' + dx + 'px,' + (dy*0.22) + 'px) rotate(' + (dx*0.04) + 'deg)';
-    });
-    function endDrag(e){
-      if(!dragging) return; dragging = false;
-      var front = order[0]; front.classList.remove('dragging');
-      var dx = (e.clientX || sx) - sx;
-      if(moved >= 8){
-        suppress = true;
-        if(Math.abs(dx) >= 70) sendBack(false);   // swept far enough → tuck to the back from here
-        else place(front, 0, true);               // not far → snap back to front
-      }
-    }
-    deck.addEventListener('pointerup', endDrag);
-    deck.addEventListener('pointercancel', function(){ if(dragging){ dragging=false; order[0].classList.remove('dragging'); place(order[0],0,true); } });
-    order.forEach(function(c){ c.addEventListener('click', function(){ if(suppress){ suppress = false; return; } if(order[0] === c) togglePlay(c); }); });
-    deck.addEventListener('keydown', function(e){
-      if(e.key === 'ArrowLeft'){ e.preventDefault(); prev(); }
-      else if(e.key === 'ArrowRight'){ e.preventDefault(); sendBack(true); }
-    });
-    var pb = document.getElementById('deckPrev'), nb = document.getElementById('deckNext');
-    if(nb) nb.addEventListener('click', function(){ sendBack(true); });
-    if(pb) pb.addEventListener('click', prev);
-    layout(false);
-  })();
-
-  /* ---------- lightbox ---------- */
-  var lb = document.getElementById('lightbox'), lbMedia = document.getElementById('lbMedia'),
-      lbCap = document.getElementById('lbCap'), lbClose = document.getElementById('lbClose');
-  var lastFocus = null;
-  function open(html, cap){
-    lastFocus = document.activeElement;
-    lbMedia.innerHTML = html; lbCap.innerHTML = cap || '';
-    lb.classList.add('open'); document.body.style.overflow = 'hidden';
-    lbClose.focus();
+    clips.appendChild(b);
+  })(i);
+  // no WebGL at all → the list view is the site
+  var ok = false;
+  try { var c = document.createElement('canvas'); ok = !!c.getContext('webgl2'); } catch (e) {}
+  if (!ok) {
+    document.body.classList.add('list', 'no3d');
+    document.querySelectorAll('.sec').forEach(function (s) { s.hidden = false; });
+    var l = document.getElementById('loader'); l && l.remove();
   }
-  function openImg(src, cap){ open('<img src="'+src+'" alt="'+(cap||'Enlarged image')+'" />', cap); }
-  function openVid(src, poster, cap){
-    open('<video src="'+src+'" poster="'+poster+'" controls autoplay playsinline></video>', cap);
-  }
-  // PDFs are shown as pre-rendered page images in a scrollable column — every page,
-  // every browser (Safari won't paginate an inline <iframe> PDF), plus a real download.
-  function openDoc(o){
-    var pages = '';
-    for(var i = 1; i <= o.pages; i++){
-      pages += '<img class="lb-page" src="' + o.base + '-' + i + '.webp" alt="' + o.title + ' — page ' + i + ' of ' + o.pages + '" loading="lazy" />';
-    }
-    open('<div class="lb-docbar"><span class="lb-doc-t">' + o.title + (o.pages > 1 ? ' · ' + o.pages + ' pages' : '') + '</span>' +
-         '<a class="lb-dl" href="' + o.pdf + '" download>Download PDF ↓</a></div>' +
-         '<div class="lb-pages">' + pages + '</div>', '');
-  }
-  function close(){
-    lb.classList.remove('open'); lbMedia.innerHTML = ''; document.body.style.overflow = '';
-    if(lastFocus) lastFocus.focus();
-  }
-  lbClose.addEventListener('click', close);
-  lb.addEventListener('click', function(e){ if(e.target === lb) close(); });
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && lb.classList.contains('open')) close(); });
-
-  /* ---------- PDFs (paper, certificate): open in-site with a download option ---------- */
-  document.querySelectorAll('[data-doc]').forEach(function(a){
-    a.addEventListener('click', function(e){
-      if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
-      e.preventDefault();
-      openDoc({
-        pdf:   a.getAttribute('data-pdf') || a.getAttribute('href'),
-        title: a.getAttribute('data-title') || 'Document',
-        base:  a.getAttribute('data-base'),
-        pages: +(a.getAttribute('data-pages') || 1)
-      });
-    });
-  });
-
-  /* ---------- sunset projects: warn before visiting ---------- */
-  var sw = document.getElementById('sunsetWarn'), swName = document.getElementById('swName'),
-      swGo = document.getElementById('swGo'), swStay = document.getElementById('swStay'), swLast = null;
-  function swClose(){
-    sw.classList.remove('open'); document.body.style.overflow = '';
-    if(swLast) swLast.focus();
-  }
-  document.querySelectorAll('[data-sunset]').forEach(function(a){
-    a.addEventListener('click', function(e){
-      if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
-      e.preventDefault();
-      swLast = a;
-      swName.textContent = a.getAttribute('data-sunset');
-      swGo.setAttribute('href', a.getAttribute('href'));
-      sw.classList.add('open'); document.body.style.overflow = 'hidden';
-      swStay.focus();
-    });
-  });
-  swStay.addEventListener('click', swClose);
-  swGo.addEventListener('click', swClose);
-  sw.addEventListener('click', function(e){ if(e.target === sw) swClose(); });
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && sw.classList.contains('open')) swClose(); });
-
-  /* ---------- enlarge any [data-lightimg] (CAD renders, sims) ---------- */
-  document.querySelectorAll('[data-lightimg]').forEach(function(el){
-    el.addEventListener('click', function(e){
-      if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
-      e.preventDefault();
-      openImg(el.getAttribute('data-lightimg'), el.getAttribute('data-lightcap') || '');
-    });
-  });
-
-  /* ---------- sheet indicator ---------- */
-  var sections = [['index','INDEX','00'],['hardware','HARDWARE','01'],['software','SOFTWARE','02'],['work','EXPERIENCE','03'],['skills','SKILLS','04'],['guitar','GUITAR','05'],['contact','CONTACT','06']];
-  var indSheet = document.getElementById('indSheet'), indName = document.getElementById('indName');
-  if('IntersectionObserver' in window){
-    var io2 = new IntersectionObserver(function(es){
-      es.forEach(function(en){
-        if(en.isIntersecting){
-          var m = sections.filter(function(s){ return s[0] === en.target.id; })[0];
-          if(m){ indSheet.textContent = m[2]; indName.textContent = m[1];
-            document.body.classList.toggle('is-index', en.target.id==='index');
-            document.body.classList.toggle('is-work', en.target.id==='hardware'); }
-        }
-      });
-    },{rootMargin:'-45% 0px -50% 0px'});
-    sections.forEach(function(s){ var el = document.getElementById(s[0]); if(el) io2.observe(el); });
-  } else {
-    window.addEventListener('scroll', function(){
-      document.body.classList.toggle('is-index', window.scrollY < window.innerHeight * 0.45);
-    });
-  }
-
-  /* ---------- ambient airflow streamlines (decorative) ---------- */
-  if(!reduce){
-    var g = document.querySelector('.flowlines');
-    if(g){
-      var lines = '';
-      for(var k=0;k<7;k++){
-        var y = 90 + k*78, amp = 16 + (k%3)*10;
-        var d = 'M-40 '+y;
-        for(var x=0;x<=1640;x+=80){ d += ' Q '+(x+40)+' '+(y - (x/80%2?amp:-amp))+' '+(x+80)+' '+y; }
-        lines += '<path class="leadline" d="'+d+'" stroke="rgba(203,58,23,.5)" stroke-width="1.2" fill="none" stroke-dasharray="6 10"><animate attributeName="stroke-dashoffset" from="0" to="-160" dur="'+(3+k*0.4)+'s" repeatCount="indefinite"/></path>';
-      }
-      g.innerHTML = lines;
-    }
-  }
-})();
-
-/* ---------- email links: click to copy (cmd/ctrl-click still opens mail) ---------- */
-(function(){
-  var EMAIL = 'niravsurabhi@gmail.com';
-  document.querySelectorAll('[data-copy-email]').forEach(function(el){
-    el.addEventListener('click', function(e){
-      if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
-      if(!navigator.clipboard){ return; }
-      e.preventDefault();
-      var lab = el.querySelector('[data-copy-label]'); if(!lab) return;
-      var prev = lab.textContent;
-      navigator.clipboard.writeText(EMAIL).then(function(){
-        lab.textContent = 'Copied ✓';
-        setTimeout(function(){ lab.textContent = prev; }, 1500);
-      }, function(){ window.location.href = 'mailto:' + EMAIL; });
-    });
-  });
-})();
-
-/* ---------- custom drafting-style scroll rail (replaces native scrollbar) ---------- */
-(function(){
-  var rail = document.getElementById('scrollrail');
-  if(!rail) return;
-  var fill = rail.querySelector('.fill'), thumb = rail.querySelector('.thumb');
-  function maxS(){ return Math.max(1, document.documentElement.scrollHeight - window.innerHeight); }
-  function travel(){ return Math.max(1, rail.clientHeight - thumb.offsetHeight); }
-  function update(){
-    var p = Math.min(1, Math.max(0, window.scrollY / maxS()));
-    var y = p * travel();
-    thumb.style.top = y + 'px';
-    fill.style.height = (y + thumb.offsetHeight / 2) + 'px';
-  }
-  window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', update);
-  var drag = false;
-  thumb.addEventListener('pointerdown', function(e){ drag = true; e.preventDefault(); document.documentElement.style.scrollBehavior = 'auto'; try{ thumb.setPointerCapture(e.pointerId); }catch(_){} });
-  window.addEventListener('pointermove', function(e){ if(!drag) return; e.preventDefault(); var r = rail.getBoundingClientRect(); var p = Math.min(1, Math.max(0, (e.clientY - r.top - thumb.offsetHeight / 2) / travel())); var y = p * travel(); thumb.style.top = y + 'px'; fill.style.height = (y + thumb.offsetHeight / 2) + 'px'; window.scrollTo({ top: p * maxS(), left: 0, behavior: 'auto' }); });
-  window.addEventListener('pointerup', function(){ if(!drag) return; drag = false; document.documentElement.style.scrollBehavior = ''; });
-  rail.addEventListener('pointerdown', function(e){ if(e.target === thumb) return; var r = rail.getBoundingClientRect(); var p = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)); window.scrollTo({ top: p * maxS(), behavior: 'smooth' }); });
-  update();
 })();
 </script>
+<script type="module" src="room/main.js"></script>
 </body>
 </html>
