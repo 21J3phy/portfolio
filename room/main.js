@@ -301,6 +301,8 @@ function closeStation() {
   $$('video', pscroll).forEach(v => v.pause());
 }
 $('#pclose').addEventListener('click', closeStation);
+// in-page hash changes (edited URL, the logo's href="#") open or leave stations too
+addEventListener('hashchange', () => { const id = location.hash.slice(1); if (STATIONS[id]) openStation(id); else closeStation(); });
 $$('#dock button').forEach(b => b.addEventListener('click', () => openStation(b.dataset.st)));
 $$('[data-open]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); openStation(b.dataset.open); }));
 
@@ -427,8 +429,9 @@ function enter() {
 $('#listBtn').addEventListener('click', () => {
   const on = document.body.classList.toggle('list');
   $('#listBtn').textContent = on ? '3D room' : 'List view';
-  if (on) { renderer.setAnimationLoop(null); $$('.sec', pscroll).forEach(s => s.hidden = false); scrollTo(0, 0); }
-  else { closeStation(); renderer.setAnimationLoop(frame); }
+  // the 3D loop stops in list view, so the flow canvas runs on its own clock there
+  if (on) { renderer.setAnimationLoop(null); $$('.sec', pscroll).forEach(s => s.hidden = false); scrollTo(0, 0); if (sim) sim.start(); }
+  else { if (sim) sim.stop(); closeStation(); renderer.setAnimationLoop(frame); }
 });
 document.addEventListener('visibilitychange', () => renderer.setAnimationLoop(document.hidden || document.body.classList.contains('list') ? null : frame));
 renderer.setAnimationLoop(frame);
