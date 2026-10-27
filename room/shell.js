@@ -139,23 +139,22 @@ function tileTexture() {
 }
 
 // ---------------------------------------------------------------- content surfaces
-// Wall lettering: matte charcoal vinyl with a hint of shadow, so it reads under the spotlight.
+// Wall lettering: solid charcoal with enough weight to survive minification from across the room.
 function signTexture() {
   const [c, g] = canvas(2048, 400);
   g.clearRect(0, 0, 2048, 400);
-  g.font = '300 150px Archivo, Arial, sans-serif';
+  g.font = '600 150px Archivo, Arial, sans-serif';
   if ('fontStretch' in g) g.fontStretch = 'ultra-expanded';
   g.textBaseline = 'middle'; g.textAlign = 'left';
-  g.shadowColor = 'rgba(40,30,20,.28)'; g.shadowBlur = 10; g.shadowOffsetY = 6;
-  g.fillStyle = '#202227';
+  g.fillStyle = '#16191e';
   g.fillText('NIRAV SURABHI', 200, 170);
   // the vortex-street mark: a cylinder and one vortex of each sign
   g.lineWidth = 12; g.strokeStyle = '#202227'; g.beginPath(); g.arc(70, 170, 36, 0, Math.PI * 2); g.stroke();
   g.fillStyle = '#ff5b1f'; g.beginPath(); g.arc(142, 126, 20, 0, Math.PI * 2); g.fill();
   g.fillStyle = '#2f8fe0'; g.beginPath(); g.arc(142, 214, 20, 0, Math.PI * 2); g.fill();
   g.shadowColor = 'transparent';
-  g.font = '500 44px "JetBrains Mono", ui-monospace, monospace';
-  g.fillStyle = 'rgba(32,34,39,.62)';
+  g.font = '600 50px "JetBrains Mono", ui-monospace, monospace';
+  g.fillStyle = '#30343a';
   g.fillText('ROBOTICS & MACHINE LEARNING  ·  PURDUE ’30', 206, 318);
   return tex(c);
 }
@@ -166,22 +165,22 @@ function welcomeTexture(touch) {
   g.clearRect(0, 0, W, H);
   g.textBaseline = 'alphabetic'; g.textAlign = 'left';
   g.fillStyle = '#ff5b1f'; g.beginPath(); g.arc(16, 44, 13, 0, Math.PI * 2); g.fill();
-  g.font = '500 50px "JetBrains Mono", ui-monospace, monospace'; g.fillStyle = 'rgba(32,34,39,.66)';
+  g.font = '600 58px "JetBrains Mono", ui-monospace, monospace'; g.fillStyle = '#30343a';
   g.fillText('WELCOME TO MY LAB', 52, 62);
   const text = 'Start at 01 on the left and follow the numbers around the room.';
   if ('fontStretch' in g) g.fontStretch = 'semi-expanded';
   let size = 150, lines;
   for (; size > 70; size -= 4) {
-    g.font = `300 ${size}px Archivo, Arial, sans-serif`;
+    g.font = `500 ${size}px Archivo, Arial, sans-serif`;
     lines = []; let line = '';
     for (const w of text.split(' ')) { const t = line ? line + ' ' + w : w; if (g.measureText(t).width > W - 8 && line) { lines.push(line); line = w; } else line = t; }
     lines.push(line);
     if (lines.length <= 3) break;
   }
-  g.fillStyle = '#23252a';
+  g.fillStyle = '#16191e';
   lines.forEach((l, i) => g.fillText(l, 0, 110 + size + i * size * 1.06));
   const y = 110 + size + (lines.length - 1) * size * 1.06 + 120;
-  g.font = '500 42px "JetBrains Mono", ui-monospace, monospace'; g.fillStyle = 'rgba(32,34,39,.6)';
+  g.font = '600 44px "JetBrains Mono", ui-monospace, monospace'; g.fillStyle = '#30343a';
   g.fillText((touch ? 'SWIPE TO TURN' : 'DRAG TO TURN') + '  ·  ' + (touch ? 'TAP A NUMBER' : 'CLICK A NUMBER') + '  ·  OR START THE TOUR', 0, y);
   return tex(c);
 }
@@ -737,10 +736,10 @@ export function buildShell(scene, renderer, { tier = 'high', photo, touch = fals
 
   // ---------- name sign and the welcome note: the first wall, centred, above the MARSChair floor
   {
-    const sign = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 0.508), new THREE.MeshStandardMaterial({ map: signTexture(), transparent: true, roughness: 0.7, depthWrite: false }));
+    const sign = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 0.508), new THREE.MeshBasicMaterial({ map: signTexture(), transparent: true, toneMapped: false, depthWrite: false }));
     place(sign, 'back', 0.15, 2.32, 0.005); sign.renderOrder = 1; scene.add(sign);
     const w = 1.28, h = w * 900 / 1600;
-    const note = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshStandardMaterial({ map: welcomeTexture(touch), transparent: true, roughness: 0.8, depthWrite: false }));
+    const note = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: welcomeTexture(touch), transparent: true, toneMapped: false, depthWrite: false }));
     place(note, 'back', 0.15 - (2.6 - w) / 2 + 0.2, 1.66, 0.004); note.renderOrder = 1; scene.add(note);
   }
 

@@ -8,6 +8,8 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { FXAAShader } from 'three/addons/shaders/FXAAShader.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { Builder, box } from './models/kit.js';
 import { buildShell, pinCards, blob, place, onWall, ROOM, WINDOW } from './shell.js';
@@ -52,7 +54,7 @@ try {
 } catch (e) { window.listOnly?.(); throw e; }
 // Resolution: the screen's, inside a pixel budget (a 5K display at 1.75× would push 11 million pixels a frame),
 // and capped lower at run time if frames run long (see frame pacing).
-const DPR = { max: tier === 'high' ? 1.75 : 1.5, min: tier === 'high' ? 1 : 0.75, budget: tier === 'high' ? 3.4e6 : 1.4e6, cap: Infinity };
+const DPR = { max: tier === 'high' ? 1.75 : 2, min: devicePixelRatio > 1 ? 1.25 : 1, budget: tier === 'high' ? 3.4e6 : 1.4e6, cap: Infinity };
 const minDpr = () => Math.min(DPR.min, devicePixelRatio, Math.sqrt(DPR.budget / (innerWidth * innerHeight)));
 const pickDpr = () => Math.max(minDpr(), Math.min(devicePixelRatio, DPR.max, DPR.cap, Math.sqrt(DPR.budget / (innerWidth * innerHeight))));
 renderer.setPixelRatio(pickDpr());
@@ -97,6 +99,11 @@ const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.
 { const set = bloom.setSize.bind(bloom); bloom.setSize = (w, h) => set(w / 2, h / 2); }   // the glow is soft anyway: half resolution looks the same at a quarter of the cost
 if (halfFloat) composer.addPass(bloom);
 composer.addPass(new OutputPass());
+// Keep smoothing when MSAA is unavailable or too expensive. FXAA expects the sRGB output above.
+const edgeAA = new ShaderPass(FXAAShader);
+edgeAA.enabled = samples === 0;
+edgeAA.setSize = (w, h) => edgeAA.uniforms.resolution.value.set(1 / w, 1 / h);
+composer.addPass(edgeAA);
 
 // ------------------------------------------------------------------ loading
 const loader = $('#loader'), bar = $('#loadbar');
@@ -108,7 +115,7 @@ async function load(path) { try { return await import(path); } catch (e) { conso
 const modules = Promise.all(['./models/windtunnel.js', './models/robot.js', './models/props.js', './models/marschair.js', './models/armsim.js', './models/legoengine.js', './models/fixtures.js'].map(load));
 const photoReady = new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = 'img/room/face.webp'; });
 // canvas text needs the web fonts; never wait on them for long
-const fontsLoaded = Promise.all([document.fonts.load('300 40px Archivo'), document.fonts.load('600 40px Archivo'), document.fonts.load('500 20px "JetBrains Mono"')]).catch(() => {});
+const fontsLoaded = Promise.all([document.fonts.load('500 40px Archivo'), document.fonts.load('600 40px Archivo'), document.fonts.load('600 20px "JetBrains Mono"')]).catch(() => {});
 await Promise.race([fontsLoaded, new Promise(r => setTimeout(r, 2500))]);
 progress('Wiring the lights');
 function standin(stand) { const b = new Builder('standin'); b.add(box(...stand, 0.02), 'plasticGrey', { position: [0, stand[1] / 2, 0] }); return b.build(); }
@@ -838,11 +845,11 @@ function enter() {
 
 // ------------------------------------------------------------------ frame pacing
 // At most 60 fps (a 120 Hz screen would otherwise do twice the work), 30 on a phone left alone. If frames still
-// run long, lower the resolution cap within a second or two (by more when far behind, and never climbing back to
-// a level that was too slow); at the floor, drop the multisampling and the glow as a last resort.
+// run long, drop decorative glow first, then use cheaper edge smoothing before reducing resolution.
+// Even the lightest mode keeps anti-aliasing and a readable resolution floor.
 const pace = { clock: new FramePacer(), input: 0, lean: false };
 function lean() {
-  pace.lean = true; bloom.enabled = false;
+  pace.lean = true; bloom.enabled = false; edgeAA.enabled = true;
   for (const t of [composer.renderTarget1, composer.renderTarget2]) { t.samples = 0; t.dispose(); }   // reallocated on next use
 }
 for (const t of ['pointerdown', 'pointermove', 'keydown', 'wheel']) addEventListener(t, () => { pace.input = performance.now(); }, { passive: true });
@@ -855,8 +862,9 @@ function tick(t) {
   const rate = pace.clock.sample(t);
   if (rate < 0.8) {
     const now = renderer.getPixelRatio(), floor = minDpr();
-    if (now > floor + 1e-3) { DPR.cap = Math.max(floor, now - (rate < 0.5 ? 0.5 : 0.25)); resize(); }
+    if (bloom.enabled) bloom.enabled = false;
     else if (!pace.lean) lean();
+    else if (now > floor + 1e-3) { DPR.cap = Math.max(floor, now - (rate < 0.5 ? 0.5 : 0.25)); resize(); }
   }
 }
 

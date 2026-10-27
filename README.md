@@ -66,8 +66,8 @@ A white-walled 3D studio you can look around in, built with three.js. It's a sta
   engine video (6.4 MB, 540p) and the guitar clips load only when opened.
 - Phones and 4-core machines get the low tier: a smaller floor texture, half-resolution bloom, no spotlight shadows,
   and 30 fps after a few seconds without input (60 while someone is interacting). Every device is capped at 60 fps, and
-  the resolution steps down if frames run long; slow GPUs can also drop MSAA and bloom. A pixel budget bounds the
-  starting resolution on large displays. `?tier=low` previews the tier on a desktop.
+  slow GPUs drop bloom and switch MSAA to FXAA before reducing resolution. Edge smoothing stays enabled in every
+  mode, with a 1.25× minimum on Retina screens within the pixel budget. `?tier=low` previews the tier on a desktop.
 - Nothing in the window's sunlight moves, so the sun's shadow map is drawn once; station spotlights redraw theirs only
   while their station is on screen. Animations, screens and the flow solver only run while they're in view.
 - Shaders compile before the room appears, with parallel compilation where the browser supports it.
