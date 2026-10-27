@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="robots" content="noindex"><title>SO-101 pose QA</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#eeede8;color:#22282b;font:12px/1.5 ui-monospace,Menlo,monospace}canvas{display:block}aside{position:absolute;left:20px;top:18px;width:310px;background:#f8f7f1ed;padding:15px;border:1px solid #d1d2cc;border-radius:8px}h1{font:600 16px system-ui;margin:0 0 12px}button{font:11px ui-monospace;padding:6px 9px;margin:2px;border:1px solid #bdc1ba;background:#fffdf6;border-radius:4px;cursor:pointer}button.active{background:#efd34c}pre{font-size:10px;white-space:pre-wrap}#fail{color:#ad2823}small{display:block;margin-top:9px;color:#656963}#results{display:none}
+</style>
+<script type="importmap">{"imports":{"three":"../../vendor/three/three.module.js","three/addons/":"../../vendor/three/addons/"}}</script>
+<aside><h1>SO-101 / kinematics & geometry</h1><div id="poses"></div><pre id="stats"></pre><pre id="pose"></pre><div id="fail"></div><small>Drag to orbit · wheel to zoom. Target poses put the closed-jaw midpoint 50 mm above object centre.</small></aside><pre id="results"></pre>
+<script>
+window.qaErrors=[];
+window.addEventListener('error',e=>{qaErrors.push(e.message);document.getElementById('fail').textContent=e.message;});
+window.addEventListener('unhandledrejection',e=>{qaErrors.push(String(e.reason));document.getElementById('fail').textContent=String(e.reason);});
+const originalError=console.error;console.error=(...args)=>{qaErrors.push(args.map(String).join(' '));originalError(...args);};
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import create, { solveIK,setJoints,TARGETS,HOME,TIP } from '../models/armsim.js';
+const query=new URLSearchParams(location.search);
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(1);renderer.setSize(innerWidth,innerHeight);renderer.toneMapping=THREE.NeutralToneMapping;renderer.toneMappingExposure=1;
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;document.body.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color('#eeede8');
+const pmrem=new THREE.PMREMGenerator(renderer);const room=new RoomEnvironment();const env=pmrem.fromScene(room,0.04);scene.environment=env.texture;scene.environmentIntensity=0.7;room.dispose();pmrem.dispose();
+const key=new THREE.DirectionalLight(0xffedd6,3.0);key.position.set(0.8,2.8,1.5);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=key.shadow.camera.bottom=-1.0;key.shadow.camera.right=key.shadow.camera.top=1.0;key.shadow.camera.near=.1;key.shadow.camera.far=5;key.shadow.bias=-.00008;key.shadow.normalBias=.001;scene.add(key);
+const fill=new THREE.DirectionalLight(0xd8e5ff,.65);fill.position.set(-1,2,-1);scene.add(fill);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(10,10),new THREE.MeshStandardMaterial({color:0xd6d6cc,roughness:.9}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+const model=create();scene.add(model);window.model=model;window.THREE=THREE;window.armModule={solveIK,setJoints,TARGETS,HOME,TIP};
+const tip=model.getObjectByName(TIP);const targetDot=new THREE.Mesh(new THREE.SphereGeometry(.003,12,8),new THREE.MeshBasicMaterial({color:0xee502e}));targetDot.visible=false;scene.add(targetDot);
+const cam=new THREE.PerspectiveCamera(35,innerWidth/innerHeight,.005,100);
+const controls=new OrbitControls(cam,renderer.domElement);
+const focus=query.get('full')==='1'?new THREE.Vector3(0,.64,0):new THREE.Vector3(0,.94,-.04);
+const yaw=+(query.get('yaw')??35)*Math.PI/180,pitch=+(query.get('pitch')??25)*Math.PI/180;
+const distance=(query.get('full')==='1'?2.8:1.6)/(+(query.get('zoom')||1));
+cam.position.set(focus.x+distance*Math.sin(yaw)*Math.cos(pitch),focus.y+distance*Math.sin(pitch),focus.z+distance*Math.cos(yaw)*Math.cos(pitch));controls.target.copy(focus);controls.update();key.target.position.set(0,.75,0);scene.add(key.target);
+function apply(pose){
+ targetDot.visible=false;let angles;
+ if(pose==='home')angles=HOME;
+ else if(pose==='zero')angles={pan:0,lift:0,elbow:0,wflex:0,wroll:0,grip:0};
+ else {const t=TARGETS[+pose];angles={...solveIK(model,t.position),grip:0};targetDot.position.fromArray(t.position).y+=.05;targetDot.visible=true;}
+ setJoints(model,angles);
+ document.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.pose===pose));
+ document.getElementById('pose').textContent=Object.entries(angles).map(([k,v])=>k.padEnd(6)+' '+(v*180/Math.PI).toFixed(3)+'°').join('\n');
+}
+for(const [id,name] of [['home','Home'],['zero','Qpos zero'],...TARGETS.map((t,i)=>[String(i),t.label.replace('the ','')])]){
+ const b=document.createElement('button');b.textContent=name;b.dataset.pose=id;b.onclick=()=>apply(id);document.getElementById('poses').appendChild(b);
+}
+let meshCount=0,shadows=true;model.traverse(o=>{if(o.isMesh){meshCount++;shadows&&=o.castShadow&&o.receiveShadow;}});
+const qa=TARGETS.map(t=>{
+ const q=solveIK(model,t.position);setJoints(model,{...q,grip:0});const expected=new THREE.Vector3(...t.position);expected.y+=.05;
+ const tipPosition=tip.getWorldPosition(new THREE.Vector3());const direction=new THREE.Vector3(0,0,-1).applyQuaternion(tip.getWorldQuaternion(new THREE.Quaternion()));
+ return {label:t.label,angles:q,errorMm:1000*tipPosition.distanceTo(expected),tip:tipPosition.toArray(),downwardTiltDegrees:THREE.MathUtils.radToDeg(Math.acos(THREE.MathUtils.clamp(-direction.y,-1,1)))};
+});
+const zero={pan:0,lift:0,elbow:0,wflex:0,wroll:0,grip:0};setJoints(model,zero);const zeroTip=tip.getWorldPosition(new THREE.Vector3()).toArray();
+const before=JSON.stringify(model.getObjectByName('shoulder_pan').rotation.toArray());solveIK(model,TARGETS[0].position);const solverDoesNotMutate=before===JSON.stringify(model.getObjectByName('shoulder_pan').rotation.toArray());
+const failureTests={};for(const [name,fn] of [['unreachable',()=>solveIK(model,[4,.8,4])],['nonfinite',()=>solveIK(model,[NaN,.8,0])],['nonfiniteJoint',()=>setJoints(model,{pan:NaN})]]){try{fn();failureTests[name]=false;}catch(e){failureTests[name]=e.constructor.name;}}
+const frameCases=[];for(const q of [HOME,zero,...qa.map(x=>x.angles),{pan:.8,lift:-.5,elbow:.7,wflex:.6,wroll:1.3,grip:.8},{pan:-1.1,lift:.4,elbow:-.7,wflex:.2,wroll:-1.5,grip:1.1}]){setJoints(model,{...q,grip:q.grip??0});frameCases.push({angles:q,tip:tip.getWorldPosition(new THREE.Vector3()).toArray(),movingJawTip:model.getObjectByName('gripper').localToWorld(new THREE.Vector3(-.012,-.078,.0192)).toArray()});}
+// Rigid parent transforms must not change the group-local solver contract.
+model.position.set(.4,.1,-.7);model.rotation.y=.7;const q=solveIK(model,TARGETS[2].position);setJoints(model,q);
+const movedExpected=model.localToWorld(new THREE.Vector3(...TARGETS[2].position).add(new THREE.Vector3(0,.05,0)));
+const movedErrorMm=1000*tip.getWorldPosition(new THREE.Vector3()).distanceTo(movedExpected);
+model.position.set(0,0,0);model.rotation.set(0,0,0);
+apply(query.get('pose')||'home');
+const bb=new THREE.Box3().setFromObject(model);const screen=model.getObjectByName('armScreen');
+window.qa={targets:qa,triangles:model.userData.triangles,drawCalls:meshCount,allMeshesCastAndReceive:shadows,zeroTip,solverDoesNotMutate,failureTests,movedErrorMm,frameCases,bounds:{min:bb.min.toArray(),max:bb.max.toArray()},screen:{type:screen.geometry.type,material:screen.material.type,color:screen.material.color.getHex(),uv:Array.from(screen.geometry.attributes.uv.array)},cameraBaseline:model.getObjectByName('headLeftCamera').getWorldPosition(new THREE.Vector3()).distanceTo(model.getObjectByName('headRightCamera').getWorldPosition(new THREE.Vector3()))};
+document.getElementById('stats').textContent=`${model.userData.triangles.toLocaleString()} triangles · ${meshCount} model draws\nBench 1.00 × 0.60 m · top 0.760 m\nStereo baseline ${(window.qa.cameraBaseline*1000).toFixed(3)} mm\n\nIK: error mm / tilt from vertical\n`+qa.map(t=>t.label.replace('the ','').padEnd(15)+t.errorMm.toFixed(6)+' / '+t.downwardTiltDegrees.toFixed(3)+'°').join('\n');
+renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,cam);});
+requestAnimationFrame(()=>requestAnimationFrame(()=>{window.qa.errors=window.qaErrors;document.getElementById('results').textContent=JSON.stringify(window.qa);document.title='ready';}));
+addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();});
+</script>
+</html>

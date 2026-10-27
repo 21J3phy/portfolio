@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Nirav Surabhi — Mechanical Engineering × Software</title>
-<meta name="description" content="Step into Nirav Surabhi's lab: a first-author IEEE paper on passive vortex propulsion, an AI phone agent on the App Store, and four seasons of FTC robotics. Purdue mechanical engineering, class of 2029." />
+<title>Nirav Surabhi — Robotics &amp; Machine Learning</title>
+<meta name="description" content="Step into Nirav Surabhi's lab: a robot arm that turns words into 3D targets with a fine-tuned vision-language model, a chair-moving robot in Purdue's MARS Lab, four seasons of FTC robotics, a first-author IEEE paper and a LEGO vacuum engine. Purdue engineering, class of 2030." />
 <link rel="canonical" href="https://niravsurabhi.com/" />
-<meta name="theme-color" content="#07080a" />
+<meta name="theme-color" content="#e9e6e0" />
 <meta name="color-scheme" content="dark" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Nirav Surabhi — Mechanical Engineering × Software" />
-<meta property="og:description" content="Step into the lab: IEEE first author, FTC captain, two apps on the App Store." />
+<meta property="og:title" content="Nirav Surabhi — Robotics &amp; Machine Learning" />
+<meta property="og:description" content="Step into the lab: a robot arm that learns where to reach, MARS Lab robotics, FTC captain, IEEE first author." />
 <meta property="og:url" content="https://niravsurabhi.com/" />
 <meta property="og:image" content="https://niravsurabhi.com/og.png" />
 <meta property="og:image:width" content="1200" />
@@ -20,17 +20,40 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307080a'/%3E%3Ccircle cx='18' cy='32' r='8.5' fill='none' stroke='%23ecebe6' stroke-width='3.5'/%3E%3Ccircle cx='36' cy='23' r='5.5' fill='%23ff5b1f'/%3E%3Ccircle cx='50' cy='41' r='5.5' fill='%234fb4ff'/%3E%3C/svg%3E" />
 <script type="application/ld+json">
 { "@context": "https://schema.org", "@type": "Person", "name": "Nirav Surabhi", "url": "https://niravsurabhi.com/", "email": "mailto:niravsurabhi@gmail.com",
-  "jobTitle": "Mechanical Engineering Student", "affiliation": { "@type": "CollegeOrUniversity", "name": "Purdue University" },
+  "jobTitle": "Mechanical engineering student, robotics and machine learning", "affiliation": { "@type": "CollegeOrUniversity", "name": "Purdue University" },
   "sameAs": ["https://www.linkedin.com/in/niravss", "https://github.com/21J3phy", "https://ieeexplore.ieee.org/document/11567580"] }
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="preload" href="fonts/Archivo-var.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="fonts/JetBrainsMono-var.woff2" as="font" type="font/woff2" crossorigin />
+<!-- the room's module graph, fetched in parallel instead of one import at a time -->
 <link rel="modulepreload" href="vendor/three/three.module.js" />
+<link rel="modulepreload" href="vendor/three/three.core.js" />
+<link rel="modulepreload" href="room/main.js" />
+<link rel="modulepreload" href="room/shell.js" />
+<link rel="modulepreload" href="room/models/kit.js" />
+<link rel="modulepreload" href="room/models/props.js" />
+<link rel="modulepreload" href="room/models/windtunnel.js" />
+<link rel="modulepreload" href="room/models/robot.js" />
+<link rel="modulepreload" href="room/models/marschair.js" />
+<link rel="modulepreload" href="room/models/armsim.js" />
+<link rel="modulepreload" href="room/models/legoengine.js" />
+<link rel="modulepreload" href="room/models/fixtures.js" />
+<link rel="modulepreload" href="room/models/belltower.js" />
+<link rel="modulepreload" href="vendor/three/addons/postprocessing/EffectComposer.js" /><link rel="modulepreload" href="vendor/three/addons/postprocessing/RenderPass.js" />
+<link rel="modulepreload" href="vendor/three/addons/postprocessing/UnrealBloomPass.js" /><link rel="modulepreload" href="vendor/three/addons/postprocessing/OutlinePass.js" />
+<link rel="modulepreload" href="vendor/three/addons/postprocessing/OutputPass.js" /><link rel="modulepreload" href="vendor/three/addons/postprocessing/Pass.js" />
+<link rel="modulepreload" href="vendor/three/addons/postprocessing/ShaderPass.js" /><link rel="modulepreload" href="vendor/three/addons/postprocessing/MaskPass.js" />
+<link rel="modulepreload" href="vendor/three/addons/shaders/CopyShader.js" /><link rel="modulepreload" href="vendor/three/addons/shaders/OutputShader.js" />
+<link rel="modulepreload" href="vendor/three/addons/shaders/LuminosityHighPassShader.js" /><link rel="modulepreload" href="vendor/three/addons/environments/RoomEnvironment.js" />
+<link rel="modulepreload" href="vendor/three/addons/geometries/RoundedBoxGeometry.js" /><link rel="modulepreload" href="vendor/three/addons/utils/BufferGeometryUtils.js" />
+<link rel="modulepreload" href="vendor/meshopt/meshopt_decoder.module.js" />
 <script type="importmap">
 { "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/addons/" } }
 </script>
 <style>
+/* Archivo and JetBrains Mono (SIL OFL 1.1, see fonts/), trimmed to the Latin set and the weights and widths used here */
+@font-face{font-family:'Archivo';src:url(fonts/Archivo-var.woff2) format('woff2');font-weight:300 700;font-stretch:100% 125%;font-style:normal;font-display:swap}
+@font-face{font-family:'JetBrains Mono';src:url(fonts/JetBrainsMono-var.woff2) format('woff2');font-weight:400 700;font-style:normal;font-display:swap}
 :root{
   --bg:#07080a; --bg1:#0b0d10; --bg2:#101318;
   --fg:#ecebe6; --fg2:#a8abb1; --fg3:#70757e; --fg4:#474c54;
@@ -59,25 +82,29 @@ ul{list-style:none}
 #room{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;touch-action:none;outline:none}
 .top{position:fixed;inset:0 0 auto;z-index:20;display:flex;align-items:center;gap:10px;padding:18px clamp(16px,2.6vw,32px);pointer-events:none}
 .top>*{pointer-events:auto}
-.brand{display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;height:44px;padding:0 16px 0 10px;border-radius:999px;background:rgba(9,10,13,.62);border:1px solid var(--line2);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .brand svg{width:26px;height:26px}
 .brand b{display:block;font:600 13px/1.1 var(--sans);font-stretch:118%;letter-spacing:.07em;text-transform:uppercase}
 .brand small{display:block;margin-top:3px;font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--fg3)}
 .top .sp{flex:1}
-.pill{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 15px;border-radius:999px;border:1px solid var(--line3);background:rgba(7,8,10,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+.pill{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 15px;border-radius:999px;border:1px solid var(--line3);background:rgba(9,10,13,.66);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   font:600 11.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;transition:background .2s,color .2s,border-color .2s;white-space:nowrap}
 .pill:hover{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 @media(max-width:520px){.top{padding:14px 14px;gap:8px}.brand{gap:10px}.brand svg{width:22px;height:22px}.brand small{display:none}.brand b{font-size:12px;font-stretch:104%;letter-spacing:.04em;white-space:nowrap}.pill{height:34px;padding:0 11px;font-size:10.5px}}
+@media(max-width:400px){.top{padding:12px 10px;gap:6px}.brand{gap:8px;padding:0 12px 0 9px}.brand svg{width:20px;height:20px}.brand b{font-size:11px;letter-spacing:.02em}.pill{padding:0 9px;font-size:10px;letter-spacing:.06em}}
 
 #dock{position:fixed;left:50%;bottom:clamp(14px,2.4vh,26px);transform:translateX(-50%);z-index:20;display:flex;gap:4px;padding:5px;border-radius:999px;
   background:rgba(9,10,13,.62);border:1px solid var(--line2);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);transition:opacity .4s}
-#dock button{display:flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:999px;font:500 12.5px/1 var(--sans);color:var(--fg2);white-space:nowrap;transition:background .2s,color .2s}
+#dock{max-width:calc(100vw - 24px);overflow-x:auto;scrollbar-width:none}
+#dock::-webkit-scrollbar{display:none}
+#dock button{display:flex;align-items:center;gap:7px;height:36px;padding:0 11px;border-radius:999px;font:500 12.5px/1 var(--sans);color:var(--fg2);white-space:nowrap;transition:background .2s,color .2s;flex:none}
+@media(max-width:1480px){#dock button i{display:none}#dock button{padding:0 10px;font-size:12px}}
 #dock button i{font:500 10px/1 var(--mono);color:var(--fg3);font-style:normal}
 #dock button:hover{color:var(--fg);background:rgba(236,235,230,.07)}
 #dock button.on{background:var(--fg);color:var(--bg)}
 #dock button.on i{color:var(--bg)}
 #dock .dot{width:6px;height:6px}
-@media(min-width:900px){body.in-station #dock{left:calc((100vw - var(--pw)) / 2)}}
+@media(min-width:900px){body.in-station #dock{left:calc((100vw - var(--pw)) / 2);max-width:calc(100vw - var(--pw) - 24px)}}
 #dock{transition:opacity .4s,left .7s var(--ease)}
 @media(max-width:900px){
   #dock{left:12px;right:12px;transform:none;overflow-x:auto;scrollbar-width:none;border-radius:16px}
@@ -87,10 +114,31 @@ ul{list-style:none}
 }
 
 
+/* Blur behind HUD pieces costs a re-blur of the live 3D view every frame: the moving labels and the big panel go
+   without it everywhere, and touch devices skip it altogether (slightly more opaque instead). */
+@media (pointer:coarse){.brand,.pill,#dock,.lb,body.list .top{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .brand,.pill{background:rgba(9,10,13,.82)} #dock{background:rgba(9,10,13,.84)}}
+/* the tour: one clear next step from the room, and from every panel */
+#tour{position:fixed;left:50%;bottom:calc(clamp(14px,2.4vh,26px) + 58px);transform:translateX(-50%);z-index:20;height:42px;padding:0 20px;font-size:12px;
+  background:var(--fg);color:var(--bg);border-color:var(--fg);box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .4s,transform .4s var(--ease)}
+body.ready #tour{opacity:1;pointer-events:auto}
+body.in-station #tour,body.list #tour{opacity:0;pointer-events:none}
+#tour:hover{transform:translateX(-50%) translateY(-1px)}
+@media(max-width:900px){#tour{bottom:calc(clamp(14px,2.4vh,26px) + 62px)}}
+#pnav{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:26px clamp(22px,3vw,40px) 18px;
+  background:linear-gradient(180deg,rgba(8,9,11,0),rgba(8,9,11,.94) 45%);pointer-events:none}
+#pnav>*{pointer-events:auto}
+#pnav .pill{height:36px;max-width:42%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#pnext{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+#pnext:hover{background:#fff}
+#pcount{white-space:nowrap}
+@media(max-width:899px) and (orientation:portrait){#pnav{padding:22px 18px 14px}#pnav .pill{height:34px;font-size:10.5px}}
+body.list #pnav{display:none}
+
 /* labels floating at each station */
 #hotspots{position:fixed;inset:0;z-index:10;pointer-events:none}
 .hs{position:absolute;left:0;top:0;display:flex;align-items:center;gap:10px;padding:6px 12px 6px 6px;border-radius:999px;pointer-events:auto;
-  background:rgba(9,10,13,.58);border:1px solid var(--line2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  background:rgba(9,10,13,.74);border:1px solid var(--line2);
   opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s,border-color .2s,background .2s;margin:-18px 0 0 -18px;will-change:transform}
 .hs.vis{opacity:1;visibility:visible}
 .hs i{position:relative;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--c,var(--fg));flex:none}
@@ -98,6 +146,7 @@ ul{list-style:none}
 .hs i::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:1px solid var(--c,var(--fg));opacity:0;animation:ping 2.6s var(--ease) infinite}
 @keyframes ping{0%{transform:scale(.6);opacity:.7}100%{transform:scale(1.5);opacity:0}}
 .hs b{display:block;font:600 12.5px/1.1 var(--sans);text-align:left;white-space:nowrap}
+.hs b em{margin-right:7px;padding:2px 5px;border-radius:5px;font:600 10.5px/1 var(--mono);font-style:normal;letter-spacing:.02em;color:var(--bg);background:var(--c,var(--fg2))}
 .hs small{display:block;margin-top:2px;font:500 10px/1.1 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--fg3);text-align:left;white-space:nowrap}
 .hs:hover,.hs.hot{background:rgba(20,22,27,.8);border-color:var(--c,var(--fg))}
 .hs.flip{flex-direction:row-reverse;padding:6px 6px 6px 12px;translate:calc(-100% + 36px) 0}
@@ -105,7 +154,7 @@ ul{list-style:none}
 
 /* ============================================================ panel */
 #panel{position:fixed;top:0;right:0;bottom:0;width:var(--pw);z-index:30;transform:translateX(104%);transition:transform .7s var(--ease);
-  background:linear-gradient(180deg,rgba(11,12,15,.9),rgba(8,9,11,.94));border-left:1px solid var(--line2);backdrop-filter:blur(18px) saturate(130%);-webkit-backdrop-filter:blur(18px) saturate(130%)}
+  background:linear-gradient(180deg,rgba(11,12,15,.95),rgba(8,9,11,.97));border-left:1px solid var(--line2)}
 #panel.open{transform:none}
 #pclose{position:absolute;top:16px;right:16px;z-index:2}
 #pscroll{position:absolute;inset:0;overflow-y:auto;padding:28px clamp(22px,3vw,40px) 120px;scrollbar-width:thin;overscroll-behavior:contain}
@@ -226,6 +275,14 @@ button.shot{display:block;width:100%;cursor:zoom-in}
 .contact .v{font:400 15.5px/1.25 var(--sans);color:var(--fg);word-break:break-word}
 .contact .v a{border-bottom:1px solid var(--line3)}
 
+/* engine: the video next to its story */
+.vid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:16px;align-items:start}
+.vid video{width:100%;aspect-ratio:9/16;max-height:68vh;object-fit:cover;border-radius:12px;border:1px solid var(--line2);background:#000}
+@media(max-width:620px){.vid{grid-template-columns:1fr}.vid video{max-height:70vh}}
+
+/* contact: through the door */
+.door-lead{font-size:13px;color:var(--fg3);margin-top:10px}
+
 /* guitar */
 .clips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .clips button{position:relative;aspect-ratio:16/10;border-radius:9px;overflow:hidden;border:1px solid var(--line2);background:#000}
@@ -239,7 +296,9 @@ button.shot{display:block;width:100%;cursor:zoom-in}
 
 /* ============================================================ loader */
 #loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--bg);transition:opacity 1.1s var(--ease),visibility 1.1s}
-#loader.done{opacity:0;visibility:hidden}
+#loader.done{opacity:0;visibility:hidden;pointer-events:none}
+#slow{margin-top:26px;opacity:0;pointer-events:none;transition:opacity .6s}
+#loader.slow #slow{opacity:1;pointer-events:auto}
 .ld{width:min(420px,80vw)}
 .ld h1{font:300 clamp(30px,5vw,44px)/.9 var(--sans);font-stretch:125%;letter-spacing:-.02em;text-transform:uppercase}
 .ld .bar{margin-top:26px;height:1px;background:var(--line2);overflow:hidden}
@@ -279,7 +338,7 @@ body.no3d .flow canvas{display:none}
 <header class="top">
   <a class="brand" href="#" aria-label="Nirav Surabhi">
     <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="18" cy="32" r="9" fill="none" stroke="#ecebe6" stroke-width="4"/><circle cx="36" cy="22" r="6" fill="#ff5b1f"/><circle cx="51" cy="42" r="6" fill="#4fb4ff"/></svg>
-    <span><b>Nirav Surabhi</b><small>Mechanical Eng. · Purdue ’29</small></span>
+    <span><b>Nirav Surabhi</b><small>Robotics &amp; ML · Purdue ’30</small></span>
   </a>
   <span class="sp"></span>
   <button class="pill" id="listBtn" type="button">List view</button>
@@ -287,22 +346,108 @@ body.no3d .flow canvas{display:none}
 </header>
 
 <nav id="dock" aria-label="Stations">
-  <button type="button" data-st="research" class="me"><i>01</i><span class="dot"></span>Research</button>
-  <button type="button" data-st="spareme" class="sw"><i>02</i><span class="dot"></span>SpareMe</button>
-  <button type="button" data-st="robotics" class="me"><i>03</i><span class="dot"></span>Robotics</button>
-  <button type="button" data-st="more"><i>04</i>More projects</button>
-  <button type="button" data-st="about"><i>05</i>About</button>
-  <button type="button" data-st="guitar"><i>06</i>B-side</button>
+  <button type="button" data-st="armsim" class="sw"><i>01</i><span class="dot"></span>Arm sim</button>
+  <button type="button" data-st="marschair" class="me"><i>02</i><span class="dot"></span>MARSChair</button>
+  <button type="button" data-st="robotics" class="me"><i>03</i><span class="dot"></span>FTC</button>
+  <button type="button" data-st="engine" class="me"><i>04</i><span class="dot"></span>LEGO engine</button>
+  <button type="button" data-st="research" class="me"><i>05</i><span class="dot"></span>Research</button>
+  <button type="button" data-st="spareme" class="sw"><i>06</i><span class="dot"></span>SpareMe</button>
+  <button type="button" data-st="silk" class="sw"><i>07</i><span class="dot"></span>Silk</button>
+  <button type="button" data-st="more"><i>08</i>More</button>
+  <button type="button" data-st="about"><i>09</i>About</button>
+  <button type="button" data-st="guitar"><i>10</i>B-side</button>
+  <button type="button" data-st="contact"><i>11</i>Contact</button>
 </nav>
+<button class="pill" id="tour" type="button">Start the tour <span aria-hidden="true">→</span></button>
 <div id="hotspots"></div>
 
 <aside id="panel" aria-hidden="true" aria-label="Station details">
   <button class="pill" id="pclose" type="button" aria-label="Back to the room"><span class="t">Back to room</span> ✕</button>
   <div id="pscroll">
 
-    <!-- ======================================================= 01 RESEARCH -->
+    <!-- ======================================================= 01 ARM SIM -->
+    <section class="sec sw" id="p-armsim" hidden>
+      <p class="k lab"><i class="dot"></i>01 · Robotics · Machine learning</p>
+      <h2>Language-guided 3D targeting</h2>
+      <p class="lead">Tell a robot arm “the cube left of the red ball,” and it finds that point in 3D and moves there. I built it in MuJoCo around the SO-101 arm.</p>
+      <button class="shot blk" type="button" data-lb="img/armsim-scene.webp" data-cap="What the arm sees: the left image of the head stereo pair, from a validation scene"><img src="img/armsim-scene.webp" alt="Simulated head-camera view of the SO-101 arm over colored blocks" loading="lazy" width="640" height="480" /></button>
+      <div class="blk">
+        <p>The arm sees the table the way current robots do: a <b>stereo head camera</b>, a <b>wrist camera</b> and its own joint angles. I derived the camera intrinsics and frame transforms and checked them against rendered depth. Then I compared two ways to get from words to a 3D point: a classical pipeline (color detection, stereo depth, inverse kinematics) and a 2B-parameter vision-language model (<b>Qwen2-VL, QLoRA</b>) fine-tuned to point at the target in the image, which stereo depth then lifts to 3D. Asked for x, y, z directly, the same model managed only 16%.</p>
+        <p>That turned into a question about training budgets: given extra GPU time, is reinforcement learning (GRPO) worth more than more supervised fine-tuning? I froze the test sets and wrote the claims down before training, so no result could be tuned after the fact. From an undertrained start, more fine-tuning beat GRPO by about 21 points. Training the model properly first took it from 55.5% to 93.7% and 91.7% of targets within 2 cm (two seeds).</p>
+      </div>
+      <div class="stats blk">
+        <div><b>93.7%</b><span>within 2 cm, fine-tuned VLM (best seed)</span></div>
+        <div><b>94.0%</b><span>within 2 cm, color + stereo (dev set)</span></div>
+        <div><b>+37.2 pts</b><span>proper SFT vs one epoch, two-seed mean</span></div>
+        <div><b>2B</b><span>params, on free Kaggle T4s</span></div>
+      </div>
+      <p class="cap">In-distribution scenes, error under 20 mm. The VLM numbers are on a frozen confirmation set, scored once; the color + stereo baseline is on the development set, so the two aren’t a head-to-head. The arm in the room solves the real SO-101 inverse kinematics for each target.</p>
+      <div class="chips blk"><span class="chip">MuJoCo</span><span class="chip">SO-101</span><span class="chip">Stereo vision</span><span class="chip">Inverse kinematics</span><span class="chip">Qwen2-VL</span><span class="chip">QLoRA</span><span class="chip">GRPO</span></div>
+    </section>
+
+    <!-- ======================================================= 02 MARSCHAIR -->
+    <section class="sec me" id="p-marschair" hidden>
+      <p class="k lab"><i class="dot"></i>02 · Robotics · Purdue MARS Lab</p>
+      <h2>MARSChair</h2>
+      <p class="lead">A robot that sets up rooms. In simulation, it pushes chairs out of a storage room, down a hallway and into place in a conference room, to within 5 cm.</p>
+      <button class="shot blk" type="button" data-lb="img/marschair-sim.webp" data-cap="The MuJoCo model: Fetch Freight base, 4040 extrusion frame with the U-shaped chair cradle in front, and two reBot B601 arms"><img src="img/marschair-sim.webp" alt="MuJoCo render of the MARSChair robot" loading="lazy" width="1000" height="750" /></button>
+      <div class="blk">
+        <p>I’m an undergraduate researcher in Purdue’s Mechanisms and Robotic Systems (MARS) Lab, with Prof. Yu She. The robot is hardware the lab already owns: a <b>Fetch Freight base</b> and two <b>reBot B601 arms</b>, plus a pushing attachment I designed from <b>4040 aluminum extrusion</b>. I’m building it in MuJoCo first, to learn what decides whether a pushed chair slides straight or spins away.</p>
+        <p>The first answer was that the arms are the wrong tool. Each can push about 15–25 N, and a sled chair on carpet takes about 38 N to keep moving. So the frame carries the load: a U-shaped cradle at ski height catches the chair’s rear legs, and the arms stay stowed for tables later. Turning in place lost the chair even at 0.25 rad/s, so with a chair aboard the robot never reverses and only turns on forward arcs of 1.5 m or wider. A hybrid A* planner finds those paths, and a closed-loop tracker follows them.</p>
+      </div>
+      <div class="stats blk">
+        <div><b>100 / 100</b><span>randomized runs placed</span></div>
+        <div><b>0.67 cm</b><span>median position error</span></div>
+        <div><b>0.82°</b><span>median heading error</span></div>
+        <div><b>±30%</b><span>friction, mass and CoM varied</span></div>
+      </div>
+      <p class="cap">One chair per run, from a random spot in the staging zone to a random reachable target. In the room, the model runs the same cycle: capture, push, place, back off. The translucent ghosts riding along are other runs, each with friction, mass and center of mass varied by up to 30%: slightly different lines, the same landing.</p>
+      <div class="chips blk"><span class="chip">MuJoCo</span><span class="chip">Python</span><span class="chip">Hybrid A*</span><span class="chip">Path tracking</span><span class="chip">Contact &amp; friction</span><span class="chip">4040 extrusion</span></div>
+    </section>
+
+    <!-- ======================================================= 03 ROBOTICS -->
+    <section class="sec me" id="p-robotics" hidden>
+      <p class="k lab"><i class="dot"></i>03 · Robotics · Mechanical</p>
+      <h2>Absolute Zero — FTC #12096</h2>
+      <p class="lead">Four seasons as captain. Every mechanism modeled in Fusion 360, then built, broken, and rebuilt.</p>
+      <button class="shot blk" type="button" data-lb="img/ftc/ftc-final.webp" data-cap="The competition robot, team 12096"><img src="img/ftc/ftc-final.webp" alt="The 12096 competition robot on the field" loading="lazy" width="760" height="570" /></button>
+      <div class="blk">
+        <p>I designed the robot’s mechanisms in Fusion 360: a chassis machined from 1/8″ aluminum, rollers printed in two materials in one job, and a flywheel shooter on a 360° turret. Then I built them.</p>
+        <p>I also wrote the autonomous and driver code in Java, with <b>PID loops</b>, <b>encoder and gyro sensor fusion</b>, and <b>odometry</b>. We advanced to the <b>Chesapeake championship</b>.</p>
+      </div>
+      <div class="stats three blk">
+        <div><b>4</b><span>seasons as captain</span></div>
+        <div><b>12</b><span>build-log entries</span></div>
+        <div><b>Java</b><span>PID · fusion · odometry</span></div>
+      </div>
+      <p class="lab blk" style="margin-bottom:10px">Build log · tap a part</p>
+      <div class="log" id="log"></div>
+    </section>
+
+    <!-- ======================================================= 04 LEGO ENGINE -->
+    <section class="sec me" id="p-engine" hidden>
+      <p class="k lab"><i class="dot"></i>04 · Mechanical · Side build</p>
+      <h2>LEGO vacuum engine</h2>
+      <p class="lead">A single-cylinder engine I built from LEGO that runs on the suction of a vacuum cleaner.</p>
+      <div class="vid blk">
+        <video src="img/lego/engine.mp4" data-poster="img/lego/engine.jpg" controls playsinline preload="none" aria-label="Video of the LEGO vacuum engine running"></video>
+        <div>
+          <p>The vacuum pulls air out of the cylinder, and the air in the room pushes the piston in. A valve decides when the cylinder sees suction.</p>
+          <p>The valve is timed <b>90°</b> from the crank, so it changes over as the piston reaches each end of its stroke. The flywheel carries the engine through each changeover.</p>
+          <div class="stats three" style="margin-top:22px">
+            <div><b>1</b><span>cylinder</span></div>
+            <div><b>90°</b><span>valve timing</span></div>
+            <div><b>0</b><span>motors</span></div>
+          </div>
+          <p class="cap">The model in the room is a reconstruction from this video.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================================================= 05 RESEARCH -->
     <section class="sec me" id="p-research" hidden>
-      <p class="k lab"><i class="dot"></i>01 · Research · Mechanical</p>
+      <p class="k lab"><i class="dot"></i>05 · Research · Fluid mechanics</p>
       <h2>Passive Vortex Propulsion in Air</h2>
       <p class="lead">My first-author IEEE paper. A rigid fin in a cylinder’s wake gets pushed forward by it — the first time this was shown in air.</p>
 
@@ -340,9 +485,9 @@ body.no3d .flow canvas{display:none}
       </div>
     </section>
 
-    <!-- ======================================================= 02 SPAREME -->
+    <!-- ======================================================= 06 SPAREME -->
     <section class="sec sw" id="p-spareme" hidden>
-      <p class="k lab"><i class="dot"></i>02 · Software · AI voice agent</p>
+      <p class="k lab"><i class="dot"></i>06 · AI · Voice agent</p>
       <h2>SpareMe</h2>
       <p class="lead">An iPhone app with an AI that makes the phone calls you dread, and hands the call back to you the moment it should.</p>
       <button class="shot blk" type="button" data-lb="img/shot-spareme.webp" data-cap="getspareme.com"><img src="img/shot-spareme.webp" alt="SpareMe landing page" loading="lazy" width="1200" height="800" /></button>
@@ -361,28 +506,33 @@ body.no3d .flow canvas{display:none}
       </div>
     </section>
 
-    <!-- ======================================================= 03 ROBOTICS -->
-    <section class="sec me" id="p-robotics" hidden>
-      <p class="k lab"><i class="dot"></i>03 · Robotics · Mechanical</p>
-      <h2>Absolute Zero — FTC #12096</h2>
-      <p class="lead">Four seasons as captain. Every mechanism modeled in Fusion 360, then built, broken, and rebuilt.</p>
-      <button class="shot blk" type="button" data-lb="img/ftc/ftc-final.webp" data-cap="The competition robot, team 12096"><img src="img/ftc/ftc-final.webp" alt="The 12096 competition robot on the field" loading="lazy" width="760" height="570" /></button>
+    <!-- ======================================================= 07 SILK -->
+    <section class="sec sw" id="p-silk" hidden>
+      <p class="k lab"><i class="dot"></i>07 · AI agents · Open source</p>
+      <h2>Silk</h2>
+      <p class="lead">Messaging between AI agents, with people in control. Your agent can message someone else’s agent only after their owner says yes.</p>
+      <button class="shot blk" type="button" data-lb="img/shot-silk.webp" data-cap="Silk v2 benchmarks, live on the public relay"><img src="img/shot-silk.webp" alt="Silk v2 benchmark charts" loading="lazy" width="1200" height="675" /></button>
       <div class="blk">
-        <p>I designed the robot’s mechanisms in Fusion 360: a chassis machined from 1/8″ aluminum, rollers printed in two materials in one job, and a flywheel shooter on a 360° turret. Then I built them.</p>
-        <p>I also wrote the autonomous and driver code in Java, with <b>PID loops</b>, <b>encoder and gyro sensor fusion</b>, and <b>odometry</b>. We advanced to the <b>Chesapeake championship</b>.</p>
+        <p>Messages are end-to-end encrypted with a <b>post-quantum hybrid handshake</b> (ML-KEM-768 + X25519) and a ratchet that changes keys every turn. Every registration, approval and message lands on a public, tamper-evident <b>Merkle ledger</b> that anyone can audit, and unsolicited contact costs <b>proof-of-work postage</b>, so spam is expensive.</p>
+        <p>A public relay is live. Agents connect over MCP, from Claude Code, Codex and Cursor on your computer to ChatGPT and claude.ai in the cloud, and no tool lets an agent approve its own contacts. Version 2 is a single 7.1 MB Go binary.</p>
       </div>
-      <div class="stats three blk">
-        <div><b>4</b><span>seasons as captain</span></div>
-        <div><b>12</b><span>build-log entries</span></div>
-        <div><b>Java</b><span>PID · fusion · odometry</span></div>
+      <div class="stats blk">
+        <div><b>7,825/s</b><span>messages, 16 clients</span></div>
+        <div><b>0.86 ms</b><span>median roundtrip</span></div>
+        <div><b>16×</b><span>v1 throughput</span></div>
+        <div><b>0 lost</b><span>of 72,766 writes, 20 crashes</span></div>
       </div>
-      <p class="lab blk" style="margin-bottom:10px">Build log · tap a part</p>
-      <div class="log" id="log"></div>
+      <div class="chips blk"><span class="chip">Go</span><span class="chip">MCP</span><span class="chip">HPKE · ML-KEM-768</span><span class="chip">Merkle ledger</span><span class="chip">Proof of work</span></div>
+      <div class="links blk">
+        <a class="lk" href="https://github.com/21J3phy/silk" target="_blank" rel="noopener">GitHub <em>↗</em></a>
+        <a class="lk" href="https://silk-relay.vercel.app/benchmarks" target="_blank" rel="noopener">Live benchmarks <em>↗</em></a>
+      </div>
     </section>
 
-    <!-- ======================================================= 04 MORE -->
+
+    <!-- ======================================================= 08 MORE -->
     <section class="sec" id="p-more" hidden>
-      <p class="k lab">04 · More projects</p>
+      <p class="k lab">08 · More projects</p>
       <h2>Learn about my project that hit 30k users in a month</h2>
       <div class="teaser sw blk">
         <img src="img/shot-chad.webp" alt="Chad vs. Chud game screen" loading="lazy" />
@@ -405,33 +555,28 @@ body.no3d .flow canvas{display:none}
       </div>
     </section>
 
-    <!-- ======================================================= 05 ABOUT -->
+    <!-- ======================================================= 09 ABOUT -->
     <section class="sec" id="p-about" hidden>
-      <p class="k lab">05 · About</p>
+      <p class="k lab">09 · About</p>
       <h2>Nirav Surabhi</h2>
       <div class="me-row blk">
         <img src="img/face.webp" alt="Portrait of Nirav Surabhi" loading="lazy" />
-        <p class="lead" style="margin:0">Mechanical engineering at Purdue, class of 2029. I design it, build it, measure it, and ship it — <span style="color:var(--me)">in metal</span> and <span style="color:var(--sw)">in code</span>.</p>
+        <p class="lead" style="margin:0">Mechanical engineering at Purdue, class of 2030, focused on robotics and machine learning. I build robots, test them in simulation, and train the models that tell them where to go — <span style="color:var(--me)">in metal</span> and <span style="color:var(--sw)">in code</span>.</p>
       </div>
       <p class="lab blk" style="margin-bottom:10px">Experience</p>
       <ul class="roles">
+        <li class="me"><h4><i class="dot"></i>Purdue MARS Lab</h4><span class="when">Oct 2026 – now</span><span class="what">Undergraduate researcher · Prof. Yu She</span><p>A MuJoCo simulation in which a Fetch robot moves chairs and tables out of storage and arranges them in another room. <a href="#marschair" data-open="marschair" style="border-bottom:1px solid var(--line3)">See MARSChair</a>.</p></li>
         <li class="me"><h4><i class="dot"></i>I3 Simulations</h4><span class="when">Jun 2025 – May 2026</span><span class="what">CAD intern</span><p>CAD models and haptic-feedback prototypes for medical-training simulators, plus prototype verification testing.</p></li>
         <li class="me"><h4><i class="dot"></i>The Bike Lane</h4><span class="when">Jun 2021 – Aug 2025</span><span class="what">Bike mechanic · intern → part-time staff</span><p>Built bikes from the frame up and ran the final safety inspection on every one.</p></li>
         <li class="sw"><h4><i class="dot"></i>Ember Learning</h4><span class="when">Feb 2021 – 2022</span><span class="what">AI engineer &amp; software intern</span><p>Wrote the LLM prompts behind the AP-tutor chatbots and built rubric-grading tests. The team won a Microsoft &amp; OpenAI grant and passed a $1M valuation.</p></li>
-        <li><h4><i class="dot"></i>Purdue University</h4><span class="when">2026 – 2029</span><span class="what">B.S. Mechanical Engineering · Formula SAE</span><p>Also: Mathematics Scholar at the Central Virginia Governor’s School, and Presidential Volunteer Service Award (Silver).</p></li>
+        <li><h4><i class="dot"></i>Purdue University</h4><span class="when">2026 – 2030</span><span class="what">B.S. Mechanical Engineering · Formula SAE</span><p>Also: Mathematics Scholar at the Central Virginia Governor’s School, and Presidential Volunteer Service Award (Silver).</p></li>
       </ul>
-      <p class="lab blk" style="margin-bottom:10px">Contact · hiring for summer 2027?</p>
-      <div class="contact">
-        <a href="mailto:niravsurabhi@gmail.com"><span class="lab">Email</span><span class="v">niravsurabhi@gmail.com</span></a>
-        <a href="https://www.linkedin.com/in/niravss" target="_blank" rel="noopener"><span class="lab">LinkedIn</span><span class="v">/in/niravss ↗</span></a>
-        <a href="https://github.com/21J3phy" target="_blank" rel="noopener"><span class="lab">GitHub</span><span class="v">/21J3phy ↗</span></a>
-        <div><span class="lab">Résumé · PDF</span><span class="v"><a href="Resume.pdf" target="_blank" rel="noopener">General ↗</a> · <a href="Resume-Mechanical.pdf" target="_blank" rel="noopener">Mechanical ↗</a></span></div>
-      </div>
+      <div class="links blk"><a class="lk" href="#contact" data-open="contact">Contact: open the door <em>→</em></a></div>
     </section>
 
-    <!-- ======================================================= 06 GUITAR -->
+    <!-- ======================================================= 10 GUITAR -->
     <section class="sec" id="p-guitar" hidden>
-      <p class="k lab">06 · B-side</p>
+      <p class="k lab">10 · B-side</p>
       <h2>Classical guitar</h2>
       <p class="lead">When I’m not in Fusion or a code editor, I’m working a piece up to performance. That discipline carries back into the engineering.</p>
       <ul class="creds blk">
@@ -442,7 +587,28 @@ body.no3d .flow canvas{display:none}
       <div class="clips blk" id="clips"></div>
     </section>
 
+    <!-- ======================================================= 11 CONTACT -->
+    <section class="sec" id="p-contact" hidden>
+      <p class="k lab">11 · Contact</p>
+      <h2>Let’s open a door.</h2>
+      <p class="lead">Hiring an engineering intern for summer 2027, or building something hard? I’d like to hear about it.</p>
+      <p class="lab blk" style="margin-bottom:10px">Get in touch</p>
+      <div class="contact">
+        <a href="mailto:niravsurabhi@gmail.com"><span class="lab">Email</span><span class="v">niravsurabhi@gmail.com</span></a>
+        <a href="https://www.linkedin.com/in/niravss" target="_blank" rel="noopener"><span class="lab">LinkedIn</span><span class="v">/in/niravss ↗</span></a>
+        <a href="https://github.com/21J3phy" target="_blank" rel="noopener"><span class="lab">GitHub</span><span class="v">/21J3phy ↗</span></a>
+        <div><span class="lab">Résumé · PDF</span><span class="v"><a href="Resume.pdf" target="_blank" rel="noopener">General ↗</a> · <a href="Resume-Mechanical.pdf" target="_blank" rel="noopener">Mechanical ↗</a></span></div>
+      </div>
+      <p class="door-lead">West Lafayette, Indiana · Purdue University</p>
+    </section>
+
+
   </div>
+  <nav id="pnav" aria-label="Tour">
+    <button class="pill" id="pprev" type="button" aria-label="Previous station">← <span></span></button>
+    <span id="pcount" class="lab"></span>
+    <button class="pill" id="pnext" type="button"><span></span> →</button>
+  </nav>
 </aside>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Viewer">
@@ -456,14 +622,35 @@ body.no3d .flow canvas{display:none}
   <div class="ld">
     <h1>Nirav<br />Surabhi</h1>
     <div class="bar"><div id="loadbar"></div></div>
-    <div class="row"><span class="lab" id="loadlabel">Opening the lab</span><span class="lab">Mechanical × Software</span></div>
+    <div class="row"><span class="lab" id="loadlabel">Opening the lab</span><span class="lab">Robotics × Machine learning</span></div>
+    <button class="pill" id="slow" type="button" onclick="listOnly()">Taking a while? Read it as a page →</button>
   </div>
 </div>
 
-<script src="wake.js"></script>
 <script>
 // Generated content (build log, guitar clips) and the no-WebGL fallback.
 (function () {
+const $ = s => document.querySelector(s);
+// ------------------------------------------------------------------ lightbox (images, PDFs as page images, video)
+let lbReturnFocus;
+const lb = $('#lb'), lbMedia = $('#lbMedia'), lbCap = $('#lbCap'), lbExtra = $('#lbExtra');
+function lbOpen(html, cap, extra) { lbReturnFocus = document.activeElement; lbMedia.innerHTML = html; lbCap.innerHTML = cap || ''; lbExtra.innerHTML = extra || ''; lb.classList.add('open'); $('#lbX').focus(); }
+function lbClose() { lb.classList.remove('open'); lbMedia.innerHTML = ''; if (lbReturnFocus) lbReturnFocus.focus({ preventScroll: true }); }
+$('#lbX').addEventListener('click', lbClose);
+lb.addEventListener('click', e => { if (e.target === lb) lbClose(); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) { e.stopImmediatePropagation(); lbClose(); } });
+document.addEventListener('click', e => {
+  const im = e.target.closest('[data-lb]');
+  if (im) { e.preventDefault(); lbOpen(`<img src="${im.dataset.lb}" alt=""${im.hasAttribute('data-cad') ? ' class="cad"' : ''}>`, im.dataset.cap ? `<b>${im.dataset.cap}</b>` : ''); return; }
+  const doc = e.target.closest('[data-doc]');
+  if (doc && !(e.metaKey || e.ctrlKey || e.shiftKey)) {
+    e.preventDefault();
+    let pages = ''; for (let i = 1; i <= +doc.dataset.pages; i++) pages += `<img src="img/docs/${doc.dataset.doc}-${i}.webp" alt="${doc.dataset.title}, page ${i}" loading="lazy">`;
+    lbOpen(`<div class="lb-pages">${pages}</div>`, `<b>${doc.dataset.title}</b>`, `<a class="lb-dl" href="${doc.getAttribute('href')}" download>Download PDF ↓</a>`);
+  }
+});
+
+
   var parts = [
     ['ftc-chassis', 'Chassis', 'Designed from scratch instead of a kit: a compact frame machined from 1/8″ aluminum, light without flexing under load.'],
     ['ftc-bumper-v1', 'Bumper v1', 'One sculpted piece. Clean, but slow to mount and a pain to repair after a hard hit.'],
@@ -492,23 +679,37 @@ body.no3d .flow canvas{display:none}
     var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Play guitar clip ' + i);
     b.innerHTML = '<img src="img/guitar/g' + i + '.jpg" alt="" loading="lazy" /><span></span>';
     b.addEventListener('click', function () {
-      document.getElementById('lbMedia').innerHTML = '<video src="img/guitar/g' + i + '.mp4" poster="img/guitar/g' + i + '.jpg" controls autoplay playsinline></video>';
-      document.getElementById('lbCap').innerHTML = '<b>Classical guitar · clip ' + i + ' / 9</b>';
-      document.getElementById('lbExtra').innerHTML = '';
-      document.getElementById('lb').classList.add('open');
+      lbOpen('<video src="img/guitar/g' + i + '.mp4" poster="img/guitar/g' + i + '.jpg" controls autoplay playsinline></video>', '<b>Classical guitar · clip ' + i + ' / 9</b>');
     });
     clips.appendChild(b);
   })(i);
-  // no WebGL at all → the list view is the site
-  var ok = false;
-  try { var c = document.createElement('canvas'); ok = !!c.getContext('webgl2'); } catch (e) {}
-  if (!ok) {
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('[data-open]');
+    if (link && document.body.classList.contains('list')) {
+      e.preventDefault(); var target = document.getElementById('p-' + link.dataset.open); if (target) target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+  // no WebGL at all, or the 3D code can't load → the list view is the site
+  window.listOnly = function () {
     document.body.classList.add('list', 'no3d');
+    document.getElementById('panel').setAttribute('aria-hidden', 'false');
+    dispatchEvent(new Event('pageonly'));
     document.querySelectorAll('.sec').forEach(function (s) { s.hidden = false; });
+    document.querySelectorAll('video[data-poster]').forEach(function (v) { v.poster = v.getAttribute('data-poster'); });
     var l = document.getElementById('loader'); l && l.remove();
-  }
+  };
+  // the room needs WebGL2 and import maps (Safari 16.4+, Firefox 108+, Chrome 89+); without them, the page
+  var ok = false;
+  try { var c = document.createElement('canvas'); var testGL = c.getContext('webgl2'); ok = !!testGL; var lose = testGL && testGL.getExtension('WEBGL_lose_context'); if (lose) lose.loseContext(); } catch (e) {}
+  if (!(window.HTMLScriptElement && HTMLScriptElement.supports && HTMLScriptElement.supports('importmap'))) ok = false;
+  if (!ok) listOnly();
+  // and if the room is still loading after 15 s (a slow phone on a slow network), offer the page instead
+  setTimeout(function () { var l = document.getElementById('loader'); if (l && !document.body.classList.contains('ready')) l.classList.add('slow'); }, 15000);
 })();
 </script>
-<script type="module" src="room/main.js"></script>
+<script defer src="wake.js"></script>
+<script type="module">
+if (!document.body.classList.contains('no3d')) import('./room/main.js').catch(() => listOnly());
+</script>
 </body>
 </html>

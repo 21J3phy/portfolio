@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
-import { Builder, box, cyl, sphere, torus, extrude, tube } from './kit.js';
+import { Builder, box, cyl, sphere, torus, extrude, tube, lathe } from './kit.js';
 
 const PI = Math.PI;
 const radians = THREE.MathUtils.degToRad;
@@ -62,16 +62,12 @@ export function createDesk() {
   b.add(sphere(1, 20, 12), 'plasticBlack', { position: [0.288, 0.747, 0.123], scale: [0.031, 0.021, 0.052] });
   b.add(box(0.001, 0.001, 0.031), 'plasticGrey', { position: [0.288, 0.768, 0.105] });
   b.add(cyl(0.006, 0.006, 0.007, 12), 'rubber', { position: [0.288, 0.768, 0.095], rotation: [0, 0, PI / 2] });
-  // Phone and dock. Keep the display an unmodified plane for integration.
+  // Phone dock. The phone itself (models/fixtures.js) is set on it by the room, at PHONE_DOCK.
   b.add(box(0.091, 0.009, 0.09, 0.005), 'blackMetal', { position: [0.486, 0.745, -0.093] });
   b.add(box(0.04, 0.066, 0.009, 0.003), 'blackMetal', { position: [0.486, 0.779, -0.115], rotation: [radians(-15), 0, 0] });
-  const phonePosition = new THREE.Vector3(0.486, 0.842, -0.078);
-  const phoneRotation = new THREE.Euler(radians(-15), 0, 0);
-  b.add(box(0.077, 0.158, 0.009, 0.0044), 'plasticBlack', { position: phonePosition.toArray(), rotation: [phoneRotation.x, 0, 0] });
-  const phoneScreen = customMesh(new THREE.PlaneGeometry(0.068, 0.147), new THREE.MeshBasicMaterial({ color: 0x000000 }), 'phoneScreen');
-  b.object(phoneScreen, { position: new THREE.Vector3(0, 0, 0.0047).applyEuler(phoneRotation).add(phonePosition).toArray(), rotation: [phoneRotation.x, 0, 0] });
-  b.add(box(0.014, 0.0035, 0.001, 0.001), 'plasticBlack', { position: new THREE.Vector3(0, 0.068, 0.0053).applyEuler(phoneRotation).add(phonePosition).toArray(), rotation: [phoneRotation.x, 0, 0] });
   b.add(box(0.08, 0.012, 0.012, 0.002), 'blackMetal', { position: [0.486, 0.758, -0.059] });
+  const dock = new THREE.Object3D(); dock.name = 'phoneDock';
+  b.object(dock, { position: [0.486, 0.832, -0.081], rotation: [radians(-15), 0, 0] });
   // The whole lamp can swivel about its base around Y.
   const lamp = b.part('lamp', { position: [-0.579, 0.74, -0.173] });
   lamp.add(cyl(0.075, 0.077, 0.012, 32), 'blackMetal', { position: [0, 0.006, 0] });
@@ -322,9 +318,53 @@ export function createShelf() {
   return floorCentered(b.build());
 }
 
+// A low white sideboard with a walnut top on black steel legs, for the LEGO engine under the window.
+export function createSideboard() {
+  const b = new Builder('sideboard');
+  const W = 1.3, D = 0.42, H = 0.74;
+  b.add(box(W, 0.03, D, 0.006), 'woodDark', { position: [0, H - 0.015, 0] });
+  b.add(box(W - 0.02, 0.5, D - 0.03, 0.004), 'plasticWhite', { position: [0, H - 0.29, -0.005] });
+  for (let i = 0; i < 3; i++) {
+    const x = -W / 2 + 0.01 + (W - 0.02) * (i + 0.5) / 3;
+    b.add(box((W - 0.05) / 3, 0.47, 0.018, 0.003), 'plasticWhite', { position: [x, H - 0.29, D / 2 - 0.012] });
+    b.add(box(0.12, 0.012, 0.012, 0.003), 'blackMetal', { position: [x, H - 0.1, D / 2 + 0.002] });
+  }
+  for (const x of [-W / 2 + 0.06, W / 2 - 0.06]) for (const z of [-D / 2 + 0.05, D / 2 - 0.05]) {
+    beam(b, [x, 0.01, z], [x * 0.98, H - 0.54, z * 0.9], 0.012);
+    b.add(cyl(0.016, 0.016, 0.01, 12), 'rubber', { position: [x, 0.005, z] });
+  }
+  return floorCentered(b.build());
+}
+
+// A fiddle-leaf fig in a white ceramic pot, about 1.6 m tall.
+export function createPlant() {
+  const b = new Builder('plant');
+  b.add(lathe([[0, 0], [0.15, 0], [0.165, 0.02], [0.2, 0.34], [0.205, 0.36], [0.19, 0.36], [0.186, 0.34], [0, 0.34]], 40), 'plasticWhite');
+  b.add(cyl(0.186, 0.186, 0.01, 32), 'woodDark', { position: [0, 0.325, 0] });
+  let seed = 7;
+  const rand = () => ((seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296);
+  const leaf = new THREE.Shape();
+  leaf.moveTo(0, 0); leaf.bezierCurveTo(0.07, 0.03, 0.085, 0.2, 0.0, 0.27); leaf.bezierCurveTo(-0.085, 0.2, -0.07, 0.03, 0, 0);
+  const leafGeo = new THREE.ShapeGeometry(leaf, 6), leafBack = leafGeo.clone().rotateY(Math.PI);   // symmetric outline, so the back face lines up
+  const stems = [[0, 1.0], [0.08, 1.35], [-0.1, 1.25], [0.03, 1.6]];
+  beam(b, [0, 0.33, 0], [0.01, 1.0, 0.01], 0.014, 'woodDark', 8);
+  for (const [sx, top] of stems) {
+    const end = [sx + (rand() - 0.5) * 0.1, top, (rand() - 0.5) * 0.12];
+    beam(b, [0.01, 0.8 + rand() * 0.15, 0.01], end, 0.009, 'woodDark', 6);
+    for (let i = 0; i < 11; i++) {
+      const k = i / 10, a = i * 2.4 + rand(), y = end[1] - (1 - k) * 0.55;
+      const r = 0.03 + (1 - k) * 0.05;
+      const pos = [end[0] * (0.5 + k * 0.5) + Math.cos(a) * r, y, end[2] * (0.5 + k * 0.5) + Math.sin(a) * r];
+      const t = { position: pos, rotation: [-0.9 - rand() * 0.6, -a + Math.PI / 2, (rand() - 0.5) * 0.4], scale: 0.75 + rand() * 0.5 };
+      b.add(leafGeo, 'pcbGreen', t); b.add(leafBack, 'pcbGreen', t);
+    }
+  }
+  return floorCentered(b.build());
+}
+
 export default function createProps() {
   const group = new THREE.Group(); group.name = 'props';
-  const entries = [[createDesk(), -1.82], [createChair(), -0.60], [createGuitar(), 0.22], [createStool(), 0.91], [createShelf(), 1.86]];
+  const entries = [[createDesk(), -1.82], [createChair(), -0.60], [createGuitar(), 0.22], [createStool(), 0.91], [createShelf(), 1.86], [createSideboard(), 3.0]];
   for (const [prop, x] of entries) { prop.position.x = x; group.add(prop); }
   return floorCentered(group);
 }

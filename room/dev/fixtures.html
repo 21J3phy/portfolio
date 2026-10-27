@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex">
+<link rel="icon" href="data:,">
+<title>fixtures QA</title>
+<style>
+html,body{margin:0;overflow:hidden;background:#e2e0db;font:12px/1.5 ui-monospace,monospace;color:#302f2b}canvas{display:block}
+#ui{position:fixed;left:18px;top:16px;background:#f4f2edeb;padding:14px 18px;border-radius:8px;max-width:340px}pre{margin:8px 0 0;white-space:pre-wrap}label{display:block}input{vertical-align:middle;width:150px}a{color:#6e572f;margin-right:12px}#errors{color:#a22}#qa{display:none}
+</style>
+<script type="importmap">{"imports":{"three":"../../vendor/three/three.module.js","three/addons/":"../../vendor/three/addons/"}}</script>
+</head>
+<body>
+<div id="ui"><div><a href="?model=door">DOOR</a><a href="?model=phone">PHONE</a><a href="?model=phone&yaw=155">BACK</a><a href="?model=phone&uv=1">SCREEN UV</a></div>
+<div id="doorControls"><label>Open <input id="open" type="range" min="0" max="1.75" step="0.01" value="0"></label><label>Handle <input id="handle" type="range" min="0" max="0.5" step="0.01" value="0"></label></div><pre id="stats"></pre><pre id="errors"></pre></div>
+<pre id="qa"></pre>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { createDoor, createPhone, DOOR, OPENING, PHONE_SCREEN } from '../models/fixtures.js';
+import { triangles } from '../models/kit.js';
+const errors=[];
+addEventListener('error',e=>{errors.push(e.message);document.querySelector('#errors').textContent=errors.join('\n')});
+addEventListener('unhandledrejection',e=>{errors.push(String(e.reason));document.querySelector('#errors').textContent=errors.join('\n')});
+const q=new URLSearchParams(location.search), isPhone=q.get('model')==='phone';
+const door=createDoor(),phone=createPhone(),model=isPhone?phone:door;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xdedcd6);
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(1);renderer.toneMapping=THREE.NeutralToneMapping;
+renderer.toneMappingExposure=1;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;
+document.body.appendChild(renderer.domElement);
+const pmrem=new THREE.PMREMGenerator(renderer),env=new RoomEnvironment();scene.environment=pmrem.fromScene(env,0.04).texture;env.dispose();scene.environmentIntensity=0.75;
+const scale=isPhone?0.075:1;
+const key=new THREE.DirectionalLight(0xffe7c8,2.7);key.position.set(2.1*scale,3.8*scale,3.2*scale);key.castShadow=true;
+key.shadow.mapSize.set(2048,2048);key.shadow.bias=-0.00008;key.shadow.normalBias=isPhone?0.0001:0.001;
+key.shadow.camera.left=key.shadow.camera.bottom=-2.4*scale;key.shadow.camera.right=key.shadow.camera.top=2.4*scale;key.shadow.camera.near=0.005;key.shadow.camera.far=20*scale;scene.add(key);
+const fill=new THREE.DirectionalLight(0xdfeaff,1.1);fill.position.set(-3*scale,2*scale,-2*scale);scene.add(fill);
+scene.add(model);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(12*scale,12*scale),new THREE.MeshStandardMaterial({color:0xc9c5bc,roughness:0.8}));
+floor.rotation.x=-Math.PI/2;floor.position.y=isPhone?-0.082:-0.0005;floor.receiveShadow=true;floor.castShadow=true;scene.add(floor);
+if(!isPhone){
+ const paint=new THREE.MeshStandardMaterial({color:0xe9e6df,roughness:0.88});
+ const wall=(w,h,x,y)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,0.12),paint);m.position.set(x,y,-0.06);m.castShadow=m.receiveShadow=true;scene.add(m)};
+ const sideWidth=(3.2-OPENING.width)/2;
+ for(const sign of [-1,1])wall(sideWidth,2.55,sign*(OPENING.width/2+sideWidth/2),1.275);
+ wall(OPENING.width,2.55-OPENING.height,0,(OPENING.height+2.55)/2);
+ const outside=new THREE.Mesh(new THREE.PlaneGeometry(2.4,3.3),new THREE.MeshBasicMaterial({color:0xfff1d4}));outside.position.set(0,1.4,-0.5);scene.add(outside);
+ document.querySelector('#open').value=q.get('open')||0;
+}else document.querySelector('#doorControls').hidden=true;
+if(q.get('uv')){
+ const c=document.createElement('canvas');c.width=512;c.height=1024;const ctx=c.getContext('2d');
+ ctx.fillStyle='#263549';ctx.fillRect(0,0,512,1024);
+ for(let y=0;y<8;y++)for(let x=0;x<4;x++){ctx.fillStyle=(x+y)%2?'#a6cad8':'#789db0';ctx.fillRect(x*128,y*128,128,128)}
+ ctx.fillStyle='#14202d';ctx.font='bold 36px monospace';ctx.fillText('TOP  v=1',35,130);ctx.fillText('BOTTOM v=0',30,950);
+ ctx.fillStyle='#b24d3a';ctx.fillRect(0,0,35,1024);ctx.fillStyle='#41624a';ctx.fillRect(477,0,35,1024);
+ const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;phone.getObjectByName('screen').material=phone.getObjectByName('screen').material.clone();phone.getObjectByName('screen').material.color.set(0xffffff);phone.getObjectByName('screen').material.map=tex;
+}
+const camera=new THREE.PerspectiveCamera(35,innerWidth/innerHeight,isPhone?0.005:0.05,isPhone?5:30);
+const target=new THREE.Vector3(+(q.get('cx')||0),+(q.get('cy')??(isPhone?0:1.08)),0);
+const yaw=THREE.MathUtils.degToRad(+(q.get('yaw')??(isPhone?28:23))),pitch=THREE.MathUtils.degToRad(+(q.get('pitch')??(isPhone?15:10)));
+const distance=(isPhone?0.32:4.8)/(+(q.get('zoom')||1));
+camera.position.set(target.x+distance*Math.sin(yaw)*Math.cos(pitch),target.y+distance*Math.sin(pitch),target.z+distance*Math.cos(yaw)*Math.cos(pitch));
+const controls=new OrbitControls(camera,renderer.domElement);controls.target.copy(target);controls.update();key.target.position.copy(target);scene.add(key.target);
+const leaf=door.getObjectByName('doorLeaf'),handle=door.getObjectByName('doorHandle');
+function setPose(){leaf.rotation.y=DOOR.openSign*Number(document.querySelector('#open').value);handle.rotation.z=Number(document.querySelector('#handle').value);door.updateMatrixWorld(true)}
+document.querySelector('#open').addEventListener('input',setPose);document.querySelector('#handle').addEventListener('input',setPose);setPose();
+document.querySelector('#handle').value=q.get('handle')||0;setPose();
+const describe=(g)=>{let meshes=0,allShadows=true;g.traverse(o=>{if(o.isMesh){meshes++;allShadows&&=o.castShadow&&o.receiveShadow}});return {triangles:triangles(g),drawCalls:meshes,allShadows,bounds:new THREE.Box3().setFromObject(g).getSize(new THREE.Vector3()).toArray()}};
+// Independent SAT of the solid leaf cross-section against the jamb, stops and casing.
+function intersects(a,b){
+ const polygons=[a,b];for(const p of polygons)for(let i=0;i<p.length;i++){
+  const next=p[(i+1)%p.length],axis=[-(next[1]-p[i][1]),next[0]-p[i][0]];
+  const ap=a.map(v=>v[0]*axis[0]+v[1]*axis[1]),bp=b.map(v=>v[0]*axis[0]+v[1]*axis[1]);
+  if(Math.max(...ap)<=Math.min(...bp)+1e-12||Math.max(...bp)<=Math.min(...ap)+1e-12)return false;
+ }return true;
+}
+const rect=(x0,x1,z0,z1)=>[[x0,z0],[x1,z0],[x1,z1],[x0,z1]];
+const obstacles=[];
+for(const sign of [-1,1]){
+ const side=(x0,x1,z0,z1)=>rect(Math.min(sign*x0,sign*x1),Math.max(sign*x0,sign*x1),z0,z1);
+ obstacles.push(side(0.4615,0.4835,-0.12,0),side(0.4495,0.4615,-0.066,-0.049),side(0.4695,0.5395,0,0.010),side(0.4785,0.5285,0.010,0.015),side(0.4835,0.5215,0.015,0.017),side(0.4695,0.5295,-0.13,-0.12));
+}
+const collisions=[];
+for(let i=0;i<=350;i++){
+ const a=i*1.75/350,c=Math.cos(a),s=Math.sin(a);
+ const polygon=rect(0.002,0.917,-0.060,-0.015).map(([x,z])=>[DOOR.hingeX+c*x-s*z,0.012+s*x+c*z]);
+ if(obstacles.some(o=>intersects(polygon,o)))collisions.push(a);
+}
+const screen=phone.getObjectByName('screen'),uv=screen.geometry.attributes.uv;
+const us=[],vs=[];for(let i=0;i<uv.count;i++){us.push(uv.getX(i));vs.push(uv.getY(i))}
+const report={door:describe(door),phone:describe(phone),DOOR,OPENING,PHONE_SCREEN,leafPivot:leaf.position.toArray(),handlePivot:handle.position.toArray(),handleParent:handle.parent.name,screenUV:[Math.min(...us),Math.max(...us),Math.min(...vs),Math.max(...vs)],screenPosition:screen.position.toArray(),clearance:{samples:351,collisions},errors};
+report.pass=report.door.triangles<=20000&&report.phone.triangles<=8000&&report.door.allShadows&&report.phone.allShadows&&collisions.length===0;
+document.querySelector('#qa').textContent=JSON.stringify(report);
+document.querySelector('#stats').textContent=(isPhone?'PHONE — actual scale':'DOOR — room face z = 0')+'\n'+JSON.stringify(describe(model),null,2)+'\nSweep: '+collisions.length+' intersections / 351 angles\nBudget: '+(report.pass?'PASS':'FAIL');
+renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,camera)});
+requestAnimationFrame(()=>requestAnimationFrame(()=>{document.title=report.pass?'ready':'QA FAILED'}));
+addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()});
+window.fixtureQA={report,renderer,scene,camera,door,phone};
+</script>
+</body>
+</html>

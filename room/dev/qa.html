@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="robots" content="noindex" />
+<title>qa</title>
+<!--
+  Headless QA for the room (not deployed). Loads the site in an iframe, steps the loop by hand with
+  __room.advance() (headless Chrome barely ticks requestAnimationFrame when the display sleeps), and
+  POSTs each canvas frame to the QA server's /__shot endpoint.
+  /room/dev/qa.html?w=1440&h=900&shots=home,marschair,marschair:6,yaw3.1
+    id          open that station, settle 2.2 s
+    id:N        … then N more seconds of simulation
+    yawR        back home, looking at yaw R (radians)
+    list:Y      switch to list view, scrolled to Y px (last step; see _page.png)
+-->
+<style>html,body{margin:0;background:#000}iframe{border:0;display:block}</style>
+</head>
+<body>
+<iframe id="f"></iframe>
+<script>
+const q = new URLSearchParams(location.search);
+const W = +(q.get('w') || 1440), H = +(q.get('h') || 900);
+const f = document.getElementById('f');
+f.style.width = W + 'px'; f.style.height = H + 'px';
+f.src = '../../index.html' + (q.get('tier') ? '?tier=' + q.get('tier') : '');   // &tier=low: the phone settings
+const shots = (q.get('shots') || 'home').split(',');
+const post = (name, data) => fetch('/__shot?name=' + encodeURIComponent(name), { method: 'POST', body: data });
+const wait = ms => new Promise(r => setTimeout(r, ms));
+(async () => {
+  const errs = [];
+  f.addEventListener('load', () => {
+    const w = f.contentWindow;
+    w.addEventListener('error', e => errs.push(String(e.message)));
+    const ce = w.console.error.bind(w.console), cw = w.console.warn.bind(w.console);
+    w.console.error = (...a) => { errs.push('E ' + a.map(String).join(' ')); ce(...a); };
+    w.console.warn = (...a) => { errs.push('W ' + a.map(String).join(' ')); cw(...a); };
+  });
+  let w;
+  for (let i = 0; i < 600; i++) { w = f.contentWindow; if (w && w.__room) break; await wait(100); }
+  if (!w || !w.__room) { await post('log', JSON.stringify({ errs, error: 'no __room' })); document.title = 'done'; return; }
+  const R = w.__room;
+  R.advance(4);
+  for (const s of shots) {
+    const [id, extra] = s.split(':');
+    if (id === 'list') { f.contentDocument.getElementById('listBtn').click(); await wait(400); if (extra) f.contentWindow.scrollTo(0, +extra); await wait(300); continue; }
+    if (id === 'stats') {   // one frame's total GPU work (all passes) and texture memory
+      const info = R.renderer.info; info.autoReset = false; info.reset(); R.advance(1 / 30); const fr = { calls: info.render.calls, tris: info.render.triangles }; info.autoReset = true;
+      const seen = new Set(); let texMB = 0;
+      R.scene.traverse(o => { const ms = o.material ? [].concat(o.material) : []; for (const m of ms) for (const k in m) { const t = m[k]; if (t && t.isTexture && !seen.has(t)) { seen.add(t); const im = t.image; if (im && im.width) texMB += im.width * im.height * 4 * (t.generateMipmaps ? 1.33 : 1) / 1048576; } } });
+      let meshes = 0, casters = 0; R.scene.traverse(o => { if (o.isMesh) { meshes++; if (o.castShadow) casters++; } });
+      await post('stats', JSON.stringify({ ...fr, textures: seen.size, texMB: Math.round(texMB), meshes, casters, programs: info.programs.length, dpr: R.renderer.getPixelRatio() })); continue;
+    }
+    if (id === 'texlist') {
+      const seen = new Map();
+      R.scene.traverse(o => { const ms = o.material ? [].concat(o.material) : []; for (const m of ms) for (const k in m) { const t = m[k]; if (t && t.isTexture && t.image && t.image.width && !seen.has(t)) seen.set(t, [o.name || o.parent?.name || '?', m.name || m.type, k, t.image.width + 'x' + t.image.height, +(t.image.width * t.image.height * 4 * (t.generateMipmaps ? 1.33 : 1) / 1048576).toFixed(1)]); } });
+      await post('texlist', JSON.stringify([...seen.values()].sort((a, b) => b[4] - a[4]))); continue;
+    }
+    if (id === 'net') { await post('net', JSON.stringify(f.contentWindow.performance.getEntriesByType('resource').map(e => [e.name.replace(location.origin, ''), e.initiatorType, e.decodedBodySize]))); continue; }
+    if (id === 'probe') { const d = f.contentDocument, r = sel => { const e = d.querySelector(sel); if (!e) return null; const b = e.getBoundingClientRect(); return [Math.round(b.left), Math.round(b.top), Math.round(b.width), Math.round(b.height), getComputedStyle(e).position, getComputedStyle(e).transform]; }; await post('probe', JSON.stringify({ body: d.body.className, panel: r('#panel'), pscroll: r('#pscroll'), top: r('.top'), sec: r('.sec') })); continue; }
+    if (id === 'home') R.closeStation();
+    else if (id.startsWith('yaw')) { R.closeStation(); R.advance(1.5); R.look.yaw = +id.slice(3); R.look.vy = 0; R.look.pitch = +(q.get('pitch') || -0.06); }
+    else R.openStation(id);
+    R.advance(2.2 + (+extra || 0));
+    R.advance(1 / 30);   // render, then read the canvas in the same task
+    await post(s.replace(/[:.]/g, '_'), R.renderer.domElement.toDataURL('image/png'));
+  }
+  const info = R.renderer.info;
+  await post('log', JSON.stringify({ errs, calls: info.render.calls, triangles: info.render.triangles, programs: info.programs?.length, textures: info.memory.textures, geometries: info.memory.geometries }));
+  document.title = 'done';
+})();
+</script>
+</body>
+</html>

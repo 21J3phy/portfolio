@@ -165,17 +165,10 @@
   function Wake(canvas, opts) {
     this.o = opts || {};
     this.canvas = canvas;
-    var gl = canvas.getContext('webgl2', { antialias: false, alpha: false, depth: false, stencil: false, premultipliedAlpha: false, preserveDrawingBuffer: false, powerPreference: 'high-performance' });
+    var gl = canvas.getContext('webgl2', { antialias: false, alpha: false, depth: false, stencil: false, premultipliedAlpha: false, preserveDrawingBuffer: !!this.o.preserveDrawingBuffer, powerPreference: 'high-performance' });
     if (!gl || !gl.getExtension('EXT_color_buffer_float')) throw new Error('WebGL2 float render targets unavailable');
     this.gl = gl;
-    this.pStep = program(gl, STEP);
-    this.pDye = program(gl, DYE);
-    this.pShow = program(gl, SHOW);
-    var vb = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, vb);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    gl.enableVertexAttribArray(0);
-    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+    this._initGPU();
     this.u0 = 0.1;
     this.cyl = [0, 0, 0]; this.cylTarget = null; this.cylV = [0, 0];
     this.finOn = !!this.o.fin; this.cylOn = true;
@@ -186,7 +179,29 @@
     this.colors = { a: hex(this.o.colorA || '#ff5b1f'), b: hex(this.o.colorB || '#4fb4ff'), s: hex('#d9d6cf'), bg: hex(this.o.bg || '#07080a') };
     this.resize(true);
     this._frame = this._frame.bind(this);
+    var self = this;
+    canvas.addEventListener('webglcontextlost', function (e) {
+      e.preventDefault(); self.lost = true; cancelAnimationFrame(self.raf);
+    });
+    canvas.addEventListener('webglcontextrestored', function () {
+      gl.getExtension('EXT_color_buffer_float');
+      self._initGPU(); self._gpu = []; self.resize(true);
+      self.lost = false; self._last = 0; self._deadline = 0;
+      if (self.running) self.raf = requestAnimationFrame(self._frame);
+    });
   }
+
+  Wake.prototype._initGPU = function () {
+    var gl = this.gl;
+    this.pStep = program(gl, STEP);
+    this.pDye = program(gl, DYE);
+    this.pShow = program(gl, SHOW);
+    var vb = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vb);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+  };
 
   Wake.prototype.resize = function (force) {
     var gl = this.gl, c = this.canvas;
@@ -398,13 +413,17 @@
   };
 
   Wake.prototype._frame = function (t) {
-    if (!this.running) return;
+    if (!this.running || this.lost) return;
     this.raf = requestAnimationFrame(this._frame);
+    var gap = 1000 / (this.o.maxFPS || 60);
+    if (t + 0.2 < this._deadline) return;
+    this._deadline = (this._deadline || t) + (Math.floor(Math.max(0, t - (this._deadline || t)) / gap) + 1) * gap;
     this.tick(t);
   };
 
   /** Advance and draw one frame. Returns true once the flow is developed. */
   Wake.prototype.tick = function (t) {
+    if (this.lost || this.gl.isContextLost()) return false;
     if (t == null) t = performance.now();
     if (this.warm > 0) {                                  // warm-up in chunks so no single frame blocks the GPU
       var n = Math.min(this.warm, 300);
@@ -452,8 +471,8 @@
 
   Wake.prototype.start = function () {
     if (this.running) return;
-    this.running = true; this._last = 0; this._n = this._n || 0;
-    this.raf = requestAnimationFrame(this._frame);
+    this.running = true; this._last = 0; this._deadline = 0; this._n = this._n || 0;
+    if (!this.lost) this.raf = requestAnimationFrame(this._frame);
   };
   Wake.prototype.stop = function () { this.running = false; cancelAnimationFrame(this.raf); };
 
