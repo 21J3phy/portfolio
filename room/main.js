@@ -318,9 +318,10 @@ if (phoneScreen) { drawSpare(0, 754); phoneScreen.material = new THREE.MeshBasic
 const LS = mProps.LAPTOP_SCREEN || { w: 0.2872, h: 0.1868 };
 const blogScreen = viewerPhone ? canvasTex(600, Math.round(600 * pH / pW)) : canvasTex(1470, 956);
 const blogPosts = (async () => {
-  const [mod, html] = await Promise.all([import('/blog/notes.js'), fetch('/blog/index.html').then(r => r.text())]);
-  return { mod, list: mod.readPosts(new DOMParser().parseFromString(html, 'text/html')) };
+  const [mod, html, mac] = await Promise.all([import('/blog/notes.js'), fetch('/blog/index.html').then(r => r.text()), viewerPhone ? null : import('/blog/macnotes.js')]);
+  return { mod, mac, list: mod.readPosts(new DOMParser().parseFromString(html, 'text/html')) };
 })();
+{ const css = viewerPhone ? '/blog/notes.css' : '/blog/macnotes.css'; document.head.insertAdjacentHTML('beforeend', `<link rel="stylesheet" href="${css}">`); }
 function drawNotes(post) {
   const { g, c, t } = blogScreen, k = c.width / 393, Y = '#ffc93c', INK = '#fff';
   g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = '#000'; g.fillRect(0, 0, c.width, c.height);
@@ -703,10 +704,14 @@ const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 function dirFrom(yaw, pitch, out = new THREE.Vector3()) { return out.set(Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), -Math.cos(yaw) * Math.cos(pitch)); }
 function homeTarget() { return HOME.pos.clone().add(dirFrom(look.yaw, look.pitch)); }
 const UP = new THREE.Vector3(0, 1, 0);
-function fly(toPos, toLook, dur = 1.25, up = UP) {   // up: which way is up on screen at the end (the blog's screen, square on)
+// up: which way is up on screen at the end (the blog's screen, square on); via: a point the path curves toward, so
+// the camera can come in square to a screen instead of cutting through the furniture
+// (with via, the camera turns to face the target first, then moves in, squaring up to the screen only at the end)
+function fly(toPos, toLook, dur = 1.25, up = UP, via = null) {
   const fromLook = cam.target.clone();
-  flight = { from: camera.position.clone(), to: toPos.clone(), fromT: fromLook, toT: toLook.clone(), upFrom: camera.up.clone(), upTo: up.clone(), t0: nowMs, dur: reduce ? 0.001 : dur * 1000 };
+  flight = { from: camera.position.clone(), to: toPos.clone(), via, fromT: fromLook, toT: toLook.clone(), upFrom: camera.up.clone(), upTo: up.clone(), t0: nowMs, dur: reduce ? 0.001 : dur * 1000 };
 }
+const ramp = (x, a, b) => { x = Math.max(0, Math.min(1, (x - a) / (b - a))); return x * x * (3 - 2 * x); };
 
 // pointer: drag to look (home), click to open
 let drag = null, pointer = new THREE.Vector2(-9, -9), pointerMoved = false;
@@ -799,11 +804,13 @@ function openStation(id) {
 function showPosters(root = pscroll) { $$('video[data-poster]', root).forEach(v => { v.poster = v.dataset.poster; v.removeAttribute('data-poster'); }); }
 function closeStation() {
   if (cam.mode !== 'station') return;
-  if (cam.station === 'blog') hideBook();
+  const fromBlog = cam.station === 'blog';
+  if (fromBlog) hideBook();
   cam.mode = 'home'; cam.station = null;
   DOOR.to = 0;
   if (homeLook) { look.yaw = homeLook.yaw; look.pitch = homeLook.pitch; }
   fly(HOME.pos, homeTarget());
+  if (fromBlog) leaveBook();
   panel.classList.remove('open'); document.body.classList.remove('in-station');
   panel.setAttribute('aria-hidden', 'true');
   $$('#dock button').forEach(b => b.classList.remove('on'));
@@ -814,24 +821,52 @@ function closeStation() {
 $('#pclose').addEventListener('click', closeStation);
 
 // ------------------------------------------------------------------ the blog: the device on the desk, open in Notes
-// Click it: the camera flies square onto its screen until the screen fills yours, then the real app (blog/notes.js on
-// a phone, blog/macnotes.js on a laptop, the same ones /blog uses) takes over the whole window. Its posts come from
-// /blog/index.html, so a post written there shows up here too.
-const reader = { el: $('#reader'), view: null, shown: false, timer: 0 };
-reader.el.style.background = viewerPhone ? '#000' : '#1e1e1e';
-let macModule = null;
-function screenPose() {
+// Click it: the camera curves in square onto its screen. Partway there the real app (blog/notes.js on a phone,
+// blog/macnotes.js on a laptop, the same ones /blog uses) is laid onto the 3D screen in perspective and rides it in, so
+// you watch the app itself grow until it fills your window, and then it is simply the page. Leaving runs it backward.
+// The posts come from /blog/index.html, so a post written there shows up here too.
+const reader = { el: $('#reader'), box: $('#readerBook'), view: null, shown: false, corners: null, radius: 0 };
+const smooth = x => { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); };
+// the part of the screen with your window's shape (centred), as world-space corners TL, TR, BR, BL
+function screenFrame() {
   const m = blogScreenMesh; m.updateMatrixWorld(true);
-  const c = m.getWorldPosition(new THREE.Vector3()), q = m.getWorldQuaternion(new THREE.Quaternion());
+  m.geometry.computeBoundingBox();
+  const bb = m.geometry.boundingBox, cx = (bb.min.x + bb.max.x) / 2, cy = (bb.min.y + bb.max.y) / 2;
+  const w = bb.max.x - bb.min.x, h = bb.max.y - bb.min.y, a = innerWidth / innerHeight;
+  let sw = w, sh = w / a; if (sh > h) { sh = h; sw = h * a; }
+  const corners = [[-1, 1], [1, 1], [1, -1], [-1, -1]].map(([x, y]) => new THREE.Vector3(cx + x * sw / 2, cy + y * sh / 2, 0).applyMatrix4(m.matrixWorld));
+  const q = m.getWorldQuaternion(new THREE.Quaternion());
   const n = new THREE.Vector3(0, 0, 1).applyQuaternion(q), up = new THREE.Vector3(0, 1, 0).applyQuaternion(q);
-  const [w, h] = viewerPhone ? [pW, pH] : [LS.w, LS.h];
-  const tf = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
-  const d = 0.985 * Math.min(h / 2 / tf, w / 2 / (tf * camera.aspect));   // the screen just covers the view
-  return { pos: c.clone().addScaledVector(n, d), look: c, up };
+  const c = new THREE.Vector3(cx, cy, 0).applyMatrix4(m.matrixWorld);
+  const d = sh / 2 / Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);   // that part exactly fills the view
+  return { corners, look: c, pos: c.clone().addScaledVector(n, d), via: c.clone().addScaledVector(n, d + 0.55), up, radius: viewerPhone ? 0.0076 / sw * innerWidth : 0 };
+}
+// lay the app (a window-sized element) onto the screen's corners in perspective: the square-to-quad homography
+const _c = new THREE.Vector3();
+function glue(opacity) {
+  const W = reader.el.clientWidth, H = reader.el.clientHeight, pts = [];
+  for (const c of reader.corners) {
+    _c.copy(c).applyMatrix4(camera.matrixWorldInverse);
+    if (_c.z > -camera.near * 2) { reader.box.style.opacity = 0; return; }   // behind you: nothing to draw yet
+    _c.copy(c).project(camera); pts.push((_c.x + 1) / 2 * W, (1 - _c.y) / 2 * H);
+  }
+  const [x0, y0, x1, y1, x2, y2, x3, y3] = pts;
+  const dx1 = x1 - x2, dx2 = x3 - x2, dx3 = x0 - x1 + x2 - x3, dy1 = y1 - y2, dy2 = y3 - y2, dy3 = y0 - y1 + y2 - y3;
+  const det = dx1 * dy2 - dx2 * dy1 || 1e-9;
+  const g = (dx3 * dy2 - dx2 * dy3) / det, h = (dx1 * dy3 - dx3 * dy1) / det;
+  const a = x1 - x0 + g * x1, b = x3 - x0 + h * x3, d = y1 - y0 + g * y1, e = y3 - y0 + h * y3;
+  reader.box.style.transform = `matrix3d(${a / W},${d / W},0,${g / W},${b / H},${e / H},0,${h / H},0,0,1,0,${x0},${y0},0,1)`;
+  reader.box.style.opacity = opacity;
+}
+function dockApp() {   // the app is the page now
+  reader.box.style.transform = ''; reader.box.style.opacity = 1; reader.box.style.borderRadius = '';
+  reader.el.classList.add('docked');
+  reader.shown = true; updateActivity();   // the room rests while you read
 }
 function openBook() {
   if (document.body.classList.contains('list')) { location.assign('/blog'); return; }
   if (cam.station === 'blog') return;
+  if (!blogScreenMesh) { location.assign('/blog'); return; }
   if (cam.mode === 'station') closeStation();
   homeLook = { yaw: look.yaw, pitch: look.pitch };
   cam.mode = 'station'; cam.station = 'blog'; intro = null;
@@ -839,28 +874,38 @@ function openBook() {
   outline.selectedObjects = [];
   document.body.classList.add('in-station', 'reading');
   history.replaceState(null, '', '#blog');
-  const css = viewerPhone ? '/blog/notes.css' : '/blog/macnotes.css';
-  if (!$(`link[href="${css}"]`)) document.head.insertAdjacentHTML('beforeend', `<link rel="stylesheet" href="${css}">`);
-  if (!viewerPhone) macModule ||= import('/blog/macnotes.js');
-  const ready = Promise.all([blogPosts, macModule]);
-  const p = blogScreenMesh ? screenPose() : { pos: new THREE.Vector3(...STATIONS.blog.view.pos), look: new THREE.Vector3(...STATIONS.blog.view.look), up: UP };
-  fly(p.pos, p.look, 1.5, p.up);
-  flight.done = () => ready.then(([{ mod, list }, mac]) => {
+  reader.leaving?.destroy(); reader.leaving = null;
+  const f = screenFrame();
+  reader.corners = f.corners; reader.radius = f.radius;
+  reader.el.classList.remove('docked'); reader.el.classList.add('open'); reader.el.setAttribute('aria-hidden', 'false');
+  reader.box.style.opacity = 0;
+  fly(f.pos, f.look, 1.7, f.up, f.via);
+  let docked = false;
+  const mount = blogPosts.then(({ mod, mac, list }) => {
     if (cam.station !== 'blog') return;
     reader.view?.destroy();
     const o = { start: 'latest', onClose: closeStation, url: location.origin + '/blog' };
-    reader.view = viewerPhone ? mod.mountNotes($('#readerBook'), list, { ...o, scheme: 'dark', bare: true }) : mac.mountMacNotes($('#readerBook'), list, o);
-    reader.el.classList.add('open'); reader.el.setAttribute('aria-hidden', 'false');
-    reader.timer = setTimeout(() => { reader.shown = true; updateActivity(); }, 400);   // the room rests while you read
+    reader.view = viewerPhone ? mod.mountNotes(reader.box, list, { ...o, scheme: 'dark', bare: true }) : mac.mountMacNotes(reader.box, list, o);
   }).catch(e => { console.warn('blog', e); location.assign('/blog'); });
+  flight.step = k => {
+    if (!reader.view) return;
+    glue(smooth((k - 0.3) / 0.3));
+    if (reader.radius) reader.box.style.borderRadius = reader.radius * (1 - smooth((k - 0.82) / 0.18)) + 'px';
+  };
+  flight.done = () => mount.then(() => { if (cam.station === 'blog' && reader.view && !docked) { docked = true; dockApp(); } });
 }
 function hideBook() {
-  clearTimeout(reader.timer);
   reader.shown = false; updateActivity();
-  reader.el.classList.remove('open'); reader.el.setAttribute('aria-hidden', 'true');
+  reader.el.classList.remove('docked'); reader.el.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('reading');
-  const v = reader.view; reader.view = null;
-  if (v) setTimeout(() => v.destroy(), 500);
+  reader.leaving = reader.view; reader.view = null;
+}
+function leaveBook() {   // ride the app back out on the screen, fading as the room comes back
+  const v = reader.leaving;
+  const finish = () => { if (reader.leaving === v) { v?.destroy(); reader.leaving = null; } if (cam.station !== 'blog') { reader.el.classList.remove('open'); reader.box.style.cssText = ''; } };
+  if (!v || !flight) return finish();
+  flight.step = k => glue(1 - smooth(k / 0.35));
+  flight.done = finish;
 }
 
 // ------------------------------------------------------------------ the tour: always one clear next step
@@ -923,12 +968,21 @@ function frame(dtFixed) {
   nowMs += dt * 1000;
   if (!reduce || dtFixed) simTime += dt;
   // camera
+  let flightStep = null;
   if (flight) {
     const k = Math.min(1, (nowMs - flight.t0) / flight.dur), e = ease(k);
-    camera.position.lerpVectors(flight.from, flight.to, e);
-    cam.target.lerpVectors(flight.fromT, flight.toT, e);
-    camera.up.lerpVectors(flight.upFrom, flight.upTo, e).normalize();
-    if (k >= 1) { flight.done?.(); flight = null; }
+    if (flight.via) {
+      const m = ease(ramp(k, 0.12, 1)), u = 1 - m;   // move once the turn is under way
+      camera.position.copy(flight.from).multiplyScalar(u * u).addScaledVector(flight.via, 2 * u * m).addScaledVector(flight.to, m * m);
+      cam.target.lerpVectors(flight.fromT, flight.toT, ease(Math.min(1, k / 0.42)));
+      camera.up.lerpVectors(flight.upFrom, flight.upTo, ramp(k, 0.55, 1)).normalize();
+    } else {
+      camera.position.lerpVectors(flight.from, flight.to, e);
+      cam.target.lerpVectors(flight.fromT, flight.toT, e);
+      camera.up.lerpVectors(flight.upFrom, flight.upTo, flight.upFrom.equals(flight.upTo) ? 1 : ramp(k, 0, 0.4)).normalize();
+    }
+    flightStep = [flight.step, k, k >= 1 ? flight.done : null];   // run once the camera's matrices are current
+    if (k >= 1) flight = null;
   } else if (cam.mode === 'home') {
     if (intro) {
       const k = Math.max(0, Math.min(1, (nowMs - intro.t0) / intro.dur));
@@ -944,6 +998,7 @@ function frame(dtFixed) {
   cam.off.lerp(cam.offTarget, reduce ? 1 : 0.12);
   if (cam.off.lengthSq() > 0.25) camera.setViewOffset(innerWidth, innerHeight, cam.off.x, cam.off.y, innerWidth, innerHeight); else camera.clearViewOffset();
   camera.updateMatrixWorld();
+  if (flightStep) { flightStep[0]?.(flightStep[1]); flightStep[2]?.(); }
 
   pv.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse); frustum.setFromProjectionMatrix(pv);
   const seen = (sph, id) => cam.station === id || (sph && frustum.intersectsSphere(sph));

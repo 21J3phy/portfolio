@@ -137,11 +137,11 @@ body.in-station #tour,body.list #tour{opacity:0;pointer-events:none}
 body.list #pnav{display:none}
 
 /* the blog: the phone on the desk comes up over the room, open in Notes */
-/* at the end of the zoom the screen goes to the app's own background, then the app comes up on it */
-#reader{position:fixed;inset:0;z-index:45;opacity:0;visibility:hidden;background:#1e1e1e;transition:opacity .16s,visibility .16s}
-#reader.open{opacity:1;visibility:visible}
-#readerBook{position:absolute;inset:0;opacity:0;transition:opacity .22s}
-#reader.open #readerBook{opacity:1;transition-delay:.14s}
+/* the app rides in on the 3D screen (a perspective transform set each frame), then fills the window */
+#reader{position:fixed;inset:0;z-index:45;visibility:hidden;pointer-events:none;overflow:hidden}
+#reader.open{visibility:visible}
+#reader.docked{pointer-events:auto}
+#readerBook{position:absolute;inset:0;transform-origin:0 0;opacity:0;overflow:hidden;will-change:transform,opacity;backface-visibility:hidden}
 body.reading .top,body.reading #dock,body.reading #tour,body.reading #hotspots{opacity:0;pointer-events:none}
 #dock button.blog i{font-size:12px}
 

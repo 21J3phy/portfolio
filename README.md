@@ -19,9 +19,9 @@ A white-walled 3D studio you can look around in, built with three.js. It's a sta
 - **Start the tour** over the dock opens 01 and then offers the next station each time you're back in the room;
   every panel has previous / next, and the arrow keys walk the tour too. `#marschair` etc. deep-link.
 - **The blog** is the visitor's own kind of device on the desk, open in Notes (and **Blog** at the end of the dock):
-  a phone lying screen up for visitors on a phone, an open laptop for everyone else. Clicking it flies the camera
-  square onto the screen until it fills the view, then the real app takes over the whole window: iPhone Notes or
-  Mac Notes, dark mode. The room stops drawing while you read. Back (iPhone), the red light (Mac) or Escape flies back
+  a phone lying screen up for visitors on a phone, an open laptop for everyone else. Clicking it turns the camera to the desk and glides it
+  in square to the screen; on the way the real app (iPhone Notes or Mac Notes, dark mode) is laid onto the 3D screen in
+  perspective and rides in with it until it fills the window. There's no cut to black, and the app is the page from then on. The room stops drawing while you read. Back (iPhone), the red light (Mac) or Escape flies back
   out. `#blog` deep-links it. The link to share is **niravsurabhi.com/blog**: the same app, full screen, chosen by
   device, without the 3D room, so it opens fast from X. `/blog#walk-back` opens a particular post.
 - All panel content is plain HTML in `index.html`. **List view** shows it as an ordinary page, and
