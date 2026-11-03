@@ -68,6 +68,9 @@ export function createDesk() {
   b.add(box(0.08, 0.012, 0.012, 0.002), 'blackMetal', { position: [0.486, 0.758, -0.059] });
   const dock = new THREE.Object3D(); dock.name = 'phoneDock';
   b.object(dock, { position: [0.486, 0.832, -0.081], rotation: [radians(-15), 0, 0] });
+  // A second phone (the blog, open in Notes) lies here, left of the keyboard; the room places it.
+  const blogSpot = new THREE.Object3D(); blogSpot.name = 'blogSpot';
+  b.object(blogSpot, { position: [-0.47, 0.74, 0.12], rotation: [0, 0.28, 0] });
   // The whole lamp can swivel about its base around Y.
   const lamp = b.part('lamp', { position: [-0.579, 0.74, -0.173] });
   lamp.add(cyl(0.075, 0.077, 0.012, 32), 'blackMetal', { position: [0, 0.006, 0] });
@@ -76,6 +79,31 @@ export function createDesk() {
   lamp.add(sphere(0.013, 12, 8), 'blackMetal', { position: [0, 0.31, -0.016] });
   lamp.add(cyl(0.025, 0.064, 0.065, 32), 'blackMetal', { position: [0.087, 0.368, 0.038] });
   lamp.add(cyl(0.056, 0.056, 0.002, 32), 'ledWarm', { position: [0.087, 0.335, 0.038] });
+  return floorCentered(b.build());
+}
+
+// A laptop, open, for the blog on a desk-sized screen: space-grey aluminium, black glass bezel with a notch, and a
+// named 'screen' plane (full UVs, facing +Z) the room draws Notes into. Faces +Z; the lid is the 'lid' part.
+export const LAPTOP_SCREEN = Object.freeze({ w: 0.2872, h: 0.1868 });
+export function createLaptop() {
+  const W = 0.3041, D = 0.215, T = 0.0113, L = 0.0042;
+  const b = new Builder('laptop');
+  b.add(box(W, T, D, 0.0045, 3), 'aluminumDark', { position: [0, T / 2, 0] });
+  b.add(box(0.272, 0.0006, 0.108, 0.003), 'plasticBlack', { position: [0, T + 0.0001, -0.036] });   // keyboard well
+  for (let r = 0; r < 6; r++) for (let c = 0; c < 14; c++) {
+    const kw = r === 0 ? 0.0155 : 0.0165, kh = r === 0 ? 0.008 : 0.0158;
+    b.add(box(kw, 0.0008, kh, 0.0012, 1), 'plasticGrey', { position: [-0.1235 + c * 0.019, T + 0.0006, -0.083 + (r === 0 ? 0 : 0.012 + (r - 1) * 0.0188)] });
+  }
+  b.add(box(0.135, 0.0004, 0.083, 0.006), 'aluminum', { position: [0, T + 0.0001, 0.062] });          // trackpad
+  b.add(box(0.03, 0.002, 0.004, 0.001), 'plasticBlack', { position: [0, T * 0.55, D / 2 + 0.0002] }); // the thumb notch
+  const lid = b.part('lid', { position: [0, T, -D / 2 + 0.004], rotation: [-radians(17), 0, 0] });
+  lid.add(box(W, D - 0.004, L, 0.0045, 3), 'aluminumDark', { position: [0, (D - 0.004) / 2, -L / 2] });
+  lid.add(box(W - 0.004, D - 0.008, 0.0004, 0.004, 2), 'plasticBlack', { position: [0, (D - 0.004) / 2, 0.0002] });
+  lid.add(box(0.03, 0.0062, 0.0004, 0.002, 1), 'plasticBlack', { position: [0, D - 0.004 - 0.0112 - 0.0031 + 0.0062 / 2, 0.0009] });   // the notch
+  const lidPart = lid;
+  const screen = customMesh(new THREE.PlaneGeometry(LAPTOP_SCREEN.w, LAPTOP_SCREEN.h), new THREE.MeshBasicMaterial({ color: 0x000000 }), 'screen');
+  screen.castShadow = false;
+  lidPart.object(screen, { position: [0, D - 0.004 - 0.0112 - LAPTOP_SCREEN.h / 2, 0.0006] });
   return floorCentered(b.build());
 }
 

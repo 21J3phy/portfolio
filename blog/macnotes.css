@@ -1,0 +1,80 @@
+/* The blog on a Mac: Notes, full window, dark (the macOS 26 look). The visitor's own system font (San Francisco on a Mac). */
+.mn{--bg:#1e1e1e;--list:#1e1e1e;--label:rgba(255,255,255,.88);--label2:rgba(255,255,255,.55);--label3:rgba(255,255,255,.28);--sep:rgba(255,255,255,.08);
+  --sel:rgba(255,255,255,.10);--tint:#f5c33b;--glass:rgba(58,58,60,.62);--glass-edge:rgba(255,255,255,.12);
+  position:absolute;inset:0;display:flex;overflow:hidden;background:var(--bg);color:var(--label);
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',system-ui,'Segoe UI',Roboto,sans-serif;
+  font-size:13px;line-height:16px;-webkit-font-smoothing:antialiased;letter-spacing:-.003em;-webkit-user-select:none;user-select:none;cursor:default}
+:where(.mn) *,:where(.mn) *::before,:where(.mn) *::after{box-sizing:border-box}
+:where(.mn) button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:default;-webkit-appearance:none;appearance:none}
+.mn svg{display:block}
+.mn-i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.mn-glass{background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);
+  box-shadow:inset 0 .5px 0 var(--glass-edge),inset 0 0 0 .5px rgba(255,255,255,.05),0 2px 8px rgba(0,0,0,.25)}
+
+/* the floating sidebar */
+.mn-side{position:relative;flex:none;width:224px;margin:8px 0 8px 8px;border-radius:18px;display:flex;flex-direction:column;padding:0 10px 10px;z-index:2;
+  background:rgba(44,44,46,.78);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);
+  box-shadow:inset 0 .5px 0 rgba(255,255,255,.12),inset 0 0 0 .5px rgba(255,255,255,.06),0 8px 24px rgba(0,0,0,.3)}
+.mn-lights{position:absolute;left:26px;top:8px;z-index:5;display:flex;gap:8px;height:48px;align-items:center}
+.mn-lights button{width:12px;height:12px;border-radius:50%;position:relative;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.25)}
+.mn-lights .c{background:#ff5f57}.mn-lights .m{background:#febc2e}.mn-lights .z{background:#28c840}
+.mn-lights svg{position:absolute;inset:2px;width:8px;height:8px;opacity:0;stroke:rgba(0,0,0,.6);stroke-width:1.6;fill:none;stroke-linecap:round}
+.mn-lights:hover svg{opacity:1}
+.mn-shead{display:flex;align-items:center;justify-content:space-between;padding:10px 8px 4px;font-size:11px;font-weight:700;color:var(--label3)}
+.mn-folders{list-style:none;margin:0;padding:0}
+.mn-folder{display:flex;align-items:center;gap:7px;width:100%;height:28px;padding:0 8px;border-radius:8px;text-align:left;color:var(--label)}
+.mn-folder.on{background:var(--sel)}
+.mn-folder .mn-i{color:var(--tint);width:17px;height:17px}
+.mn-folder span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mn-folder i{font-style:normal;color:var(--label2);font-variant-numeric:tabular-nums}
+.mn-side .sp{flex:1}
+.mn-newf{display:flex;align-items:center;gap:6px;height:28px;padding:0 8px;color:var(--label2)}
+.mn-newf .mn-i{width:15px;height:15px}
+
+/* one toolbar across the list and the note */
+.mn-main{position:relative;flex:1;min-width:0;display:flex}
+.mn-tb{position:absolute;left:0;right:0;top:0;height:52px;z-index:3;display:flex;align-items:center;gap:8px;padding:0 12px;pointer-events:none}
+.mn-tb>*{pointer-events:auto}
+.mn-tb .sp{flex:1}
+.mn-cap{display:flex;align-items:center;height:32px;border-radius:16px;padding:0 3px;color:var(--label)}
+.mn-cap button{width:34px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:14px}
+.mn-cap button:hover,.mn-circ:hover{background:rgba(255,255,255,.07)}
+.mn-cap .on{color:var(--tint)}
+.mn-circ{width:32px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center;color:var(--label)}
+.mn-cap .mn-i,.mn-circ .mn-i{width:17px;height:17px}
+.mn-cap .aa{font-size:14px;font-weight:500;letter-spacing:-.02em}
+.mn-search{display:flex;align-items:center;gap:6px;width:190px;height:32px;padding:0 10px;border-radius:16px;color:var(--label2)}
+.mn-search input{flex:1;min-width:0;border:0;outline:0;background:none;font:inherit;color:var(--label);font-size:13px}
+.mn-search input::placeholder{color:var(--label2)}
+.mn-search .mn-i{width:14px;height:14px}
+
+/* the list of notes */
+.mn-list{position:relative;flex:none;width:300px;border-right:.5px solid rgba(0,0,0,.6);background:var(--list)}
+.mn-scroll{position:absolute;inset:0;overflow-y:auto;padding-top:56px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
+.mn-list .mn-scroll{padding:56px 10px 20px}
+.mn-sec h2{margin:10px 10px 6px;font-size:12px;line-height:16px;font-weight:700;color:var(--label2)}
+.mn-rows{list-style:none;margin:0 0 10px;padding:0}
+.mn-row{display:block;width:100%;padding:9px 10px 10px;border-radius:9px;text-align:left;color:var(--label)}
+.mn-rows li+li .mn-row:not(.on){background:linear-gradient(var(--sep),var(--sep)) 10px 0/calc(100% - 20px) .5px no-repeat}
+.mn-row.on{background:var(--sel)}
+.mn-row.on+*,.mn-rows li:has(.on)+li .mn-row{background:none}
+.mn-row b{display:block;font-size:13px;line-height:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mn-row span{display:block;margin-top:2px;font-size:12px;line-height:16px;color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mn-row span em{font-style:normal;color:var(--label);margin-right:6px}
+.mn-empty{margin-top:120px;text-align:center;font-size:15px;color:var(--label3)}
+
+/* the note */
+.mn-editor{position:relative;flex:1;min-width:0;background:var(--bg)}
+.mn-editor .mn-scroll{padding:60px 0 80px}
+.mn-doc{max-width:900px;padding:0 44px;-webkit-user-select:text;user-select:text;cursor:text}
+.mn-date{margin:0 0 18px;text-align:center;font-size:12px;line-height:16px;color:var(--label2)}
+.mn-doc h1{margin:0 0 6px;font-size:26px;line-height:32px;font-weight:700;color:#fff;letter-spacing:-.01em}
+.mn-doc p{margin:0 0 19px;font-size:15px;line-height:19px;color:var(--label)}
+.mn-doc p:last-child{margin-bottom:0}
+.mn-toast{position:absolute;left:50%;bottom:28px;transform:translate(-50%,8px);padding:9px 16px;border-radius:18px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s,transform .3s cubic-bezier(.32,.72,0,1);z-index:9;color:#fff}
+.mn-toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* a narrower window: the sidebar goes, then the list, as Notes does */
+@media (max-width:1040px){.mn-side{display:none}.mn-list{width:270px}.mn-tb.first{padding-left:90px}}
+@media (max-width:760px){.mn-list{display:none}.mn-search{width:150px}.mn-editor .mn-tb{padding-left:90px}}
+.mn :focus-visible{outline:2px solid var(--tint);outline-offset:1px}

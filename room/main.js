@@ -20,6 +20,8 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const coarse = matchMedia('(pointer: coarse)').matches;
 const tier = new URLSearchParams(location.search).get('tier') || (coarse || (navigator.hardwareConcurrency || 8) <= 4 ? 'low' : 'high');   // ?tier=low previews the phone settings
+// the blog shows on the viewer's own kind of device: a phone on a phone, a laptop on anything else
+const viewerPhone = (coarse && Math.min(screen.width, screen.height) < 700) || innerWidth < 600;
 const X0 = -ROOM.W / 2, X1 = ROOM.W / 2, Z0 = -ROOM.D / 2, Z1 = ROOM.D / 2;
 
 // ------------------------------------------------------------------ stations
@@ -42,6 +44,9 @@ const STATIONS = {
   about:     { label: 'About', sub: 'Experience', disc: '', view: { pos: [-0.1, 1.48, 1.05], look: [-0.1, 1.48, 2.8] }, fit: [1.62, 1.62] },
   guitar:    { label: 'B-side', sub: 'Classical guitar', disc: '', view: { pos: [-0.5, 1.2, 1.45], look: [-1.35, 0.62, 2.45] }, fit: [0.6, 1.1] },
   contact:   { label: 'Contact', sub: 'Open the door', disc: '', view: { pos: [-0.75, 1.5, 0.95], look: [-3.0, 1.1, 1.55] }, fit: [1.5, 2.3] },
+  // the blog: a phone or a laptop on the desk (whichever the viewer is on), open in Notes. Not a numbered stop on the
+  // tour; clicking it zooms into the screen until the app fills yours.
+  blog:      { label: 'Blog', sub: 'Written in my Notes app', disc: '', view: null, fit: [0.2, 0.2], book: true },
 };
 // a little in front of the middle, facing the first wall: name, welcome note and 01–03 all in view
 const HOME = { pos: new THREE.Vector3(0, 1.6, 1.0), yaw: 0, pitch: -0.15 };
@@ -126,7 +131,7 @@ async function make(mod, fn, stand) {
 }
 const [mWind, mRobot, mProps, mMars, mArm, mLego, mFix] = await modules;
 performance.mark('room:modules');
-const [rig, robot, desk, guitar, plant, mars, arm, lego, door, phone] = await Promise.all([
+const [rig, robot, desk, guitar, plant, mars, arm, lego, door, phone, blogPhone] = await Promise.all([
   make(mWind, 'default', [1.8, 0.9, 0.72]),
   make(mRobot, 'default', [0.45, 0.4, 0.45]),
   make(mProps, 'createDesk', [1.5, 0.74, 0.72]),
@@ -137,6 +142,7 @@ const [rig, robot, desk, guitar, plant, mars, arm, lego, door, phone] = await Pr
   make(mLego, 'default', [0.3, 0.2, 0.2]),
   make(mFix, 'createDoor', [0.92, 2.03, 0.05]),
   make(mFix, 'createPhone', [0.0715, 0.1476, 0.0078]),
+  viewerPhone ? make(mFix, 'createPhone', [0.0715, 0.1476, 0.0078]) : make(mProps, 'createLaptop', [0.304, 0.22, 0.215]),
 ]);
 progress('Framing the room');
 performance.mark('room:models');
@@ -154,7 +160,7 @@ place(desk, 'front', -1.8, 0, 0.38);                    // 06 and 07, under the 
 place(guitar, 'front', 1.35, 0, 0.35, 0.5);             // 10
 plant.position.set(X0 + 0.34, 0, 0.05); plant.rotation.y = 0.6;   // the one plant, on the otherwise quiet left wall
 scene.add(rig, robot, desk, guitar, plant, lego, arm, mars);
-for (const o of [rig, robot, desk, guitar, plant, lego, arm, mars, door, phone]) o.traverse(m => { if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; } });
+for (const o of [rig, robot, desk, guitar, plant, lego, arm, mars, door, phone, blogPhone]) o.traverse(m => { if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; } });
 
 // soft contact shadows where things meet the floor
 for (const [o, w, d, op] of [[plant, 0.55, 0.55, 0.4], [rig, 1.95, 0.9, 0.35], [desk, 1.6, 0.85, 0.3], [arm, 1.1, 0.72, 0.32], [guitar, 0.5, 0.5, 0.3]]) {
@@ -166,12 +172,27 @@ desk.updateMatrixWorld(true);
 const dock = desk.getObjectByName('phoneDock');
 if (dock) { dock.matrixWorld.decompose(phone.position, phone.quaternion, phone.scale); phone.scale.setScalar(1); }
 scene.add(phone);
+// and the blog, beside the keyboard: a phone lying screen up (resting on its camera bump), or an open laptop
+const blogSpot = desk.getObjectByName('blogSpot');
+if (blogSpot) blogSpot.matrixWorld.decompose(blogPhone.position, blogPhone.quaternion, blogPhone.scale);
+else blogPhone.position.copy(onWall('front', -1.35, 0.74, 0.25));
+blogPhone.scale.setScalar(1);
+if (viewerPhone) {
+  blogPhone.quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2));   // screen up, its top away from the room
+  blogPhone.position.y += 0.0081;
+} else {
+  blogPhone.quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), 0.12));   // turned a little more toward the room
+  blogPhone.position.add(new THREE.Vector3(0.0, 0, -0.06).applyQuaternion(blogPhone.quaternion));
+}
+scene.add(blogPhone);
 function aim(id, look, offset) { STATIONS[id].view = { look: look.toArray(), pos: look.clone().add(new THREE.Vector3(...offset)).toArray() }; }
 const phonePos = phone.getWorldPosition(new THREE.Vector3());
 aim('spareme', phonePos, [-0.07, 0.09, -0.3]);
 const monitor = desk.getObjectByName('screen');
 const monitorPos = monitor ? monitor.getWorldPosition(new THREE.Vector3()) : new THREE.Vector3(1.8, 1.09, Z1 - 0.2);
 aim('silk', monitorPos, [0, 0.06, -0.78]);
+const blogPos = new THREE.Box3().setFromObject(blogPhone).getCenter(new THREE.Vector3());
+aim('blog', blogPos, [0.03, 0.3, -0.2]);
 // the engine itself (not the vacuum beside it) is what the camera frames
 const engineBox = new THREE.Box3();
 lego.updateMatrixWorld(true);
@@ -291,6 +312,103 @@ function drawSpare(n, holdSec) {
 }
 const phoneScreen = phone.getObjectByName('screen');
 if (phoneScreen) { drawSpare(0, 754); phoneScreen.material = new THREE.MeshBasicMaterial({ map: spare.t, toneMapped: false, color: 0xd6d6d6 }); }
+
+// the blog device's screen: the latest post open in Notes (dark mode), drawn in points like the real screen
+// (an iPhone is 393 pt wide; a 13-inch laptop 1470 × 956)
+const LS = mProps.LAPTOP_SCREEN || { w: 0.2872, h: 0.1868 };
+const blogScreen = viewerPhone ? canvasTex(600, Math.round(600 * pH / pW)) : canvasTex(1470, 956);
+const blogPosts = (async () => {
+  const [mod, html] = await Promise.all([import('/blog/notes.js'), fetch('/blog/index.html').then(r => r.text())]);
+  return { mod, list: mod.readPosts(new DOMParser().parseFromString(html, 'text/html')) };
+})();
+function drawNotes(post) {
+  const { g, c, t } = blogScreen, k = c.width / 393, Y = '#ffc93c', INK = '#fff';
+  g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = '#000'; g.fillRect(0, 0, c.width, c.height);
+  g.setTransform(k, 0, 0, k, 0, 0); g.textBaseline = 'alphabetic';
+  const now = new Date();
+  g.fillStyle = INK; g.font = `600 17px ${sysFont}`; g.textAlign = 'center'; g.fillText(`${now.getHours() % 12 || 12}:${String(now.getMinutes()).padStart(2, '0')}`, 79, 37);
+  for (let i = 0; i < 4; i++) { rrect(g, 293 + i * 5, 34 - 3 - i * 2.5, 3.2, 3 + i * 2.5, 1); g.fill(); }
+  rrect(g, 340, 25, 23, 12, 3.8); g.globalAlpha = 0.38; g.lineWidth = 1; g.strokeStyle = INK; g.stroke(); g.globalAlpha = 1; rrect(g, 341.5, 26.5, 20, 9, 2.4); g.fill();
+  // the glass buttons
+  const glass = (x, y, w, h) => { g.save(); g.shadowColor = 'rgba(0,0,0,.45)'; g.shadowBlur = 14; g.shadowOffsetY = 4; g.fillStyle = '#2c2c2e'; rrect(g, x, y, w, h, h / 2); g.fill(); g.restore(); };
+  glass(16, 58, 44, 44); glass(289, 58, 88, 44);
+  g.strokeStyle = Y; g.lineWidth = 2.4; g.lineCap = g.lineJoin = 'round';
+  g.beginPath(); g.moveTo(41.5, 72.5); g.lineTo(34, 80); g.lineTo(41.5, 87.5); g.stroke();
+  g.lineWidth = 1.9; g.beginPath(); g.moveTo(311, 70); g.lineTo(311, 83); g.moveTo(307, 74); g.lineTo(311, 70); g.lineTo(315, 74); g.stroke();
+  rrect(g, 305, 76, 12, 12, 2); g.stroke();
+  g.fillStyle = Y; for (const x of [347, 354, 361]) { g.beginPath(); g.arc(x, 80, 1.7, 0, 7); g.fill(); }
+  // the note
+  if (post) {
+    g.fillStyle = 'rgba(235,235,245,.6)'; g.font = `400 13px ${sysFont}`;
+    g.fillText(`${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][post.when.getMonth()]} ${post.when.getDate()}, ${post.when.getFullYear()}`, 196.5, 126);
+    g.textAlign = 'left'; g.fillStyle = INK; g.font = `700 28px ${sysFont}`;
+    let y = 168;
+    for (const line of wrapLines(g, post.title, 353)) { g.fillText(line, 20, y); y += 34; }
+    y -= 6; g.font = `400 17px ${sysFont}`;
+    const tmp = document.createElement('div');
+    for (const html of post.paras) {
+      tmp.innerHTML = html;
+      for (const line of wrapLines(g, tmp.textContent, 353)) { if (y > 800) break; g.fillText(line, 20, y); y += 22; }
+      y += 22; if (y > 800) break;
+    }
+  }
+  // the scroll edge and the bottom bar
+  const fade = g.createLinearGradient(0, 700, 0, 790); fade.addColorStop(0, 'rgba(0,0,0,0)'); fade.addColorStop(1, '#000');
+  g.fillStyle = fade; g.fillRect(0, 700, 393, 152);
+  glass(16, 770, 144, 48); glass(329, 770, 48, 48);
+  g.strokeStyle = Y; g.lineWidth = 1.9;
+  g.beginPath(); g.moveTo(32, 788); g.lineTo(34, 790); g.lineTo(37.5, 786.5); g.moveTo(32, 799); g.lineTo(34, 801); g.lineTo(37.5, 797.5); g.moveTo(41, 789); g.lineTo(50, 789); g.moveTo(41, 800); g.lineTo(50, 800); g.stroke();
+  g.beginPath(); g.arc(132, 794, 10, 0, 7); g.stroke();
+  g.beginPath(); g.arc(86, 790, 5, Math.PI, 0); g.lineTo(91, 800); g.arc(86, 800, 5, 0, Math.PI); g.lineTo(81, 792); g.stroke();
+  rrect(g, 343, 785, 18, 18, 3); g.stroke();
+  g.fillStyle = INK; rrect(g, 127, 838, 139, 5, 2.5); g.fill();
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  t.needsUpdate = true;
+}
+function drawMacNotes(post) {
+  const { g, t } = blogScreen, Y = '#f5c33b', W = 1470, H = 956;
+  g.setTransform(1, 0, 0, 1, 0, 0); g.textBaseline = 'alphabetic'; g.textAlign = 'left';
+  g.fillStyle = '#1e1e1e'; g.fillRect(0, 0, W, H);
+  g.fillStyle = '#2c2c2e'; rrect(g, 8, 8, 224, H - 16, 18); g.fill();
+  [['#ff5f57', 32], ['#febc2e', 52], ['#28c840', 72]].forEach(([c, x]) => { g.fillStyle = c; g.beginPath(); g.arc(x, 32, 6, 0, 7); g.fill(); });
+  g.fillStyle = 'rgba(255,255,255,.28)'; g.font = `700 11px ${sysFont}`; g.fillText('iCloud', 26, 78);
+  [['All iCloud', 104], ['Notes', 132], ['Recently Deleted', 160]].forEach(([n, y], i) => {
+    if (i === 1) { g.fillStyle = 'rgba(255,255,255,.1)'; rrect(g, 18, y - 18, 204, 28, 8); g.fill(); }
+    g.strokeStyle = Y; g.lineWidth = 1.4; rrect(g, 28, y - 10, 15, 12, 2.5); g.stroke();
+    g.fillStyle = 'rgba(255,255,255,.88)'; g.font = `400 13px ${sysFont}`; g.fillText(n, 50, y);
+    if (i < 2) { g.fillStyle = 'rgba(255,255,255,.55)'; g.textAlign = 'right'; g.fillText('1', 214, y); g.textAlign = 'left'; }
+  });
+  g.fillStyle = 'rgba(0,0,0,.6)'; g.fillRect(540, 0, 1, H);
+  const cap = (x, w) => { g.fillStyle = 'rgba(58,58,60,.9)'; rrect(g, x, 10, w, 32, 16); g.fill(); };
+  cap(405, 74); cap(487, 32); cap(552, 32); cap(592, 140); cap(1164, 74); cap(1246, 190);
+  g.fillStyle = 'rgba(255,255,255,.55)'; g.font = `400 13px ${sysFont}`; g.fillText('Search', 1278, 31);
+  g.fillStyle = 'rgba(255,255,255,.88)'; g.font = `500 14px ${sysFont}`; g.fillText('Aa', 604, 31);
+  if (post) {
+    g.fillStyle = 'rgba(255,255,255,.55)'; g.font = `700 12px ${sysFont}`; g.fillText('Today', 260, 78);
+    g.fillStyle = 'rgba(255,255,255,.1)'; rrect(g, 250, 88, 280, 54, 9); g.fill();
+    g.fillStyle = 'rgba(255,255,255,.88)'; g.font = `700 13px ${sysFont}`; g.fillText(post.title.length > 38 ? post.title.slice(0, 37) + '…' : post.title, 260, 110);
+    g.font = `400 12px ${sysFont}`; g.fillText(`${post.when.getMonth() + 1}/${post.when.getDate()}/${String(post.when.getFullYear()).slice(2)}`, 260, 129);
+    g.fillStyle = 'rgba(255,255,255,.55)'; g.fillText('I think I’m a pretty logical person. I…', 310, 129);
+    const tmp = document.createElement('div');
+    g.fillStyle = 'rgba(255,255,255,.55)'; g.textAlign = 'center'; g.font = `400 12px ${sysFont}`;
+    g.fillText(`${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][post.when.getMonth()]} ${post.when.getDate()}, ${post.when.getFullYear()}`, 1005, 82);
+    g.textAlign = 'left'; g.fillStyle = '#fff'; g.font = `700 26px ${sysFont}`; g.fillText(post.title, 585, 126);
+    let y = 158; g.font = `400 15px ${sysFont}`; g.fillStyle = 'rgba(255,255,255,.88)';
+    for (const html of post.paras) {
+      tmp.innerHTML = html;
+      for (const line of wrapLines(g, tmp.textContent, 812)) { if (y > H - 20) break; g.fillText(line, 585, y); y += 19; }
+      y += 19; if (y > H - 20) break;
+    }
+  }
+  t.needsUpdate = true;
+}
+const drawBlog = viewerPhone ? drawNotes : drawMacNotes;
+const blogScreenMesh = blogPhone.getObjectByName('screen');
+if (blogScreenMesh) {
+  drawBlog(null);
+  blogScreenMesh.material = new THREE.MeshBasicMaterial({ map: blogScreen.t, toneMapped: false, color: 0xd8d8d8 });
+  blogPosts.then(({ list }) => drawBlog(list[0])).catch(e => console.warn('blog', e));
+}
 
 // arm sim: the instruction it was given and the point it chose
 const armScreenMesh = arm.getObjectByName('armScreen');
@@ -547,7 +665,7 @@ progress('Starting the flow');
 // ------------------------------------------------------------------ station registry: hit targets + label anchors
 const hitRoots = {
   research: [rig, shell.flowScreen], marschair: [mars, ...(MARS.chair ? [MARS.chair] : [])], armsim: [arm], robotics: [robot], engine: [lego, shell.ledge],
-  silk: [desk], spareme: [phone], more: [shell.pinboard.group], about: [shell.aboutWall], guitar: [guitar], contact: [door],
+  silk: [desk], spareme: [phone], blog: [blogPhone], more: [shell.pinboard.group], about: [shell.aboutWall], guitar: [guitar], contact: [door],
 };
 const anchors = {
   ...shell.anchors,
@@ -556,20 +674,21 @@ const anchors = {
   engine: enginePos.clone().add(new THREE.Vector3(0, 0.2, 0)),
   spareme: phonePos.clone().add(new THREE.Vector3(0, 0.12, -0.04)),
   silk: monitorPos.clone().add(new THREE.Vector3(0.2, 0.27, -0.05)),
+  blog: blogPos.clone().add(new THREE.Vector3(0, 0.1, 0)),
   guitar: new THREE.Vector3(-1.3, 1.2, 2.4),
 };
 const hitList = [], meshToStation = new Map();
 for (const [id, roots] of Object.entries(hitRoots)) for (const r of roots) r.traverse(o => { if (o.isMesh) { if (!meshToStation.has(o)) hitList.push(o); meshToStation.set(o, id); } });
 
 // number the stations in dock order, and build the floating labels
-const ids = Object.keys(STATIONS);
+const ids = Object.keys(STATIONS).filter(id => !STATIONS[id].book);   // the tour, numbers and number keys
 ids.forEach((id, i) => { STATIONS[id].n = String(i + 1).padStart(2, '0'); });
 const hotspots = $('#hotspots');
 const hsEls = {};
 for (const [id, s] of Object.entries(STATIONS)) {
   const b = document.createElement('button');
   b.className = 'hs ' + (s.disc || ''); b.type = 'button'; b.dataset.st = id;
-  b.innerHTML = `<i></i><span><b><em>${s.n}</em>${s.label}</b><small>${s.sub}</small></span>`;
+  b.innerHTML = `<i></i><span><b>${s.n ? `<em>${s.n}</em>` : ''}${s.label}</b><small>${s.sub}</small></span>`;
   b.addEventListener('click', () => openStation(id));
   hotspots.appendChild(b); hsEls[id] = b;
 }
@@ -583,9 +702,10 @@ let flight = null;   // { from, to, fromT, toT, t0, dur }
 const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 function dirFrom(yaw, pitch, out = new THREE.Vector3()) { return out.set(Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), -Math.cos(yaw) * Math.cos(pitch)); }
 function homeTarget() { return HOME.pos.clone().add(dirFrom(look.yaw, look.pitch)); }
-function fly(toPos, toLook, dur = 1.25) {
+const UP = new THREE.Vector3(0, 1, 0);
+function fly(toPos, toLook, dur = 1.25, up = UP) {   // up: which way is up on screen at the end (the blog's screen, square on)
   const fromLook = cam.target.clone();
-  flight = { from: camera.position.clone(), to: toPos.clone(), fromT: fromLook, toT: toLook.clone(), t0: nowMs, dur: reduce ? 0.001 : dur * 1000 };
+  flight = { from: camera.position.clone(), to: toPos.clone(), fromT: fromLook, toT: toLook.clone(), upFrom: camera.up.clone(), upTo: up.clone(), t0: nowMs, dur: reduce ? 0.001 : dur * 1000 };
 }
 
 // pointer: drag to look (home), click to open
@@ -626,7 +746,7 @@ function pick(x, y) {
 }
 
 addEventListener('keydown', e => {
-  if (document.body.classList.contains('list') || e.target.closest('input,textarea') || $('#lb').classList.contains('open')) return;
+  if (document.body.classList.contains('list') || document.body.classList.contains('reading') || e.target.closest('input,textarea') || $('#lb').classList.contains('open')) return;
   if (e.key === 'Escape') closeStation();
   if (cam.mode === 'home' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) { look.vy = (e.key === 'ArrowLeft' ? 1 : -1) * 0.06; }
   else if (cam.mode === 'station' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) { e.preventDefault(); stepTour(e.key === 'ArrowRight' ? 1 : -1); }
@@ -655,6 +775,7 @@ function stationPose(s) {
 }
 function openStation(id) {
   const s = STATIONS[id]; if (!s) return;
+  if (s.book) return openBook();
   if (document.body.classList.contains('list')) { $('#p-' + id)?.scrollIntoView(); return; }
   if (cam.mode === 'home') homeLook = { yaw: look.yaw, pitch: look.pitch };
   cam.mode = 'station'; cam.station = id;
@@ -678,6 +799,7 @@ function openStation(id) {
 function showPosters(root = pscroll) { $$('video[data-poster]', root).forEach(v => { v.poster = v.dataset.poster; v.removeAttribute('data-poster'); }); }
 function closeStation() {
   if (cam.mode !== 'station') return;
+  if (cam.station === 'blog') hideBook();
   cam.mode = 'home'; cam.station = null;
   DOOR.to = 0;
   if (homeLook) { look.yaw = homeLook.yaw; look.pitch = homeLook.pitch; }
@@ -690,6 +812,56 @@ function closeStation() {
   $$('video', pscroll).forEach(v => v.pause());
 }
 $('#pclose').addEventListener('click', closeStation);
+
+// ------------------------------------------------------------------ the blog: the device on the desk, open in Notes
+// Click it: the camera flies square onto its screen until the screen fills yours, then the real app (blog/notes.js on
+// a phone, blog/macnotes.js on a laptop, the same ones /blog uses) takes over the whole window. Its posts come from
+// /blog/index.html, so a post written there shows up here too.
+const reader = { el: $('#reader'), view: null, shown: false, timer: 0 };
+reader.el.style.background = viewerPhone ? '#000' : '#1e1e1e';
+let macModule = null;
+function screenPose() {
+  const m = blogScreenMesh; m.updateMatrixWorld(true);
+  const c = m.getWorldPosition(new THREE.Vector3()), q = m.getWorldQuaternion(new THREE.Quaternion());
+  const n = new THREE.Vector3(0, 0, 1).applyQuaternion(q), up = new THREE.Vector3(0, 1, 0).applyQuaternion(q);
+  const [w, h] = viewerPhone ? [pW, pH] : [LS.w, LS.h];
+  const tf = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+  const d = 0.985 * Math.min(h / 2 / tf, w / 2 / (tf * camera.aspect));   // the screen just covers the view
+  return { pos: c.clone().addScaledVector(n, d), look: c, up };
+}
+function openBook() {
+  if (document.body.classList.contains('list')) { location.assign('/blog'); return; }
+  if (cam.station === 'blog') return;
+  if (cam.mode === 'station') closeStation();
+  homeLook = { yaw: look.yaw, pitch: look.pitch };
+  cam.mode = 'station'; cam.station = 'blog'; intro = null;
+  cam.offTarget.set(0, 0);
+  outline.selectedObjects = [];
+  document.body.classList.add('in-station', 'reading');
+  history.replaceState(null, '', '#blog');
+  const css = viewerPhone ? '/blog/notes.css' : '/blog/macnotes.css';
+  if (!$(`link[href="${css}"]`)) document.head.insertAdjacentHTML('beforeend', `<link rel="stylesheet" href="${css}">`);
+  if (!viewerPhone) macModule ||= import('/blog/macnotes.js');
+  const ready = Promise.all([blogPosts, macModule]);
+  const p = blogScreenMesh ? screenPose() : { pos: new THREE.Vector3(...STATIONS.blog.view.pos), look: new THREE.Vector3(...STATIONS.blog.view.look), up: UP };
+  fly(p.pos, p.look, 1.5, p.up);
+  flight.done = () => ready.then(([{ mod, list }, mac]) => {
+    if (cam.station !== 'blog') return;
+    reader.view?.destroy();
+    const o = { start: 'latest', onClose: closeStation, url: location.origin + '/blog' };
+    reader.view = viewerPhone ? mod.mountNotes($('#readerBook'), list, { ...o, scheme: 'dark', bare: true }) : mac.mountMacNotes($('#readerBook'), list, o);
+    reader.el.classList.add('open'); reader.el.setAttribute('aria-hidden', 'false');
+    reader.timer = setTimeout(() => { reader.shown = true; updateActivity(); }, 400);   // the room rests while you read
+  }).catch(e => { console.warn('blog', e); location.assign('/blog'); });
+}
+function hideBook() {
+  clearTimeout(reader.timer);
+  reader.shown = false; updateActivity();
+  reader.el.classList.remove('open'); reader.el.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('reading');
+  const v = reader.view; reader.view = null;
+  if (v) setTimeout(() => v.destroy(), 500);
+}
 
 // ------------------------------------------------------------------ the tour: always one clear next step
 // From the room, a button over the dock starts it (then offers the next station); every panel has
@@ -724,7 +896,7 @@ function resize() {
   if (d !== renderer.getPixelRatio()) renderer.setPixelRatio(d);
   renderer.setSize(w, h, false); composer.setSize(Math.floor(w * d), Math.floor(h * d));
   camera.aspect = w / h; camera.fov = w < 760 ? 70 : 58; camera.updateProjectionMatrix();
-  if (cam.mode === 'station' && !flight) { viewOffset(); const p = stationPose(STATIONS[cam.station]); fly(p.pos, p.look, 0.35); }
+  if (cam.mode === 'station' && cam.station !== 'blog' && !flight) { viewOffset(); const p = stationPose(STATIONS[cam.station]); fly(p.pos, p.look, 0.35); }
 }
 addEventListener('resize', resize); resize();
 
@@ -755,7 +927,8 @@ function frame(dtFixed) {
     const k = Math.min(1, (nowMs - flight.t0) / flight.dur), e = ease(k);
     camera.position.lerpVectors(flight.from, flight.to, e);
     cam.target.lerpVectors(flight.fromT, flight.toT, e);
-    if (k >= 1) flight = null;
+    camera.up.lerpVectors(flight.upFrom, flight.upTo, e).normalize();
+    if (k >= 1) { flight.done?.(); flight = null; }
   } else if (cam.mode === 'home') {
     if (intro) {
       const k = Math.max(0, Math.min(1, (nowMs - intro.t0) / intro.dur));
@@ -873,7 +1046,7 @@ let flowInView = false, roomRunning = false, initialized = false;
 function updateActivity() {
   if (!initialized) return;
   const list = document.body.classList.contains('list'), available = !document.hidden && !document.body.classList.contains('no3d');
-  const run = available && !list && !renderer.getContext().isContextLost();
+  const run = available && !list && !reader.shown && !renderer.getContext().isContextLost();
   if (run !== roomRunning) { roomRunning = run; pace.clock.reset(); timer.reset(); renderer.setAnimationLoop(run ? tick : null); }
   if (sim) { if (available && list && flowInView && !reduce) sim.start(); else sim.stop(); }
 }

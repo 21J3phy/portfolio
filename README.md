@@ -18,6 +18,12 @@ A white-walled 3D studio you can look around in, built with three.js. It's a sta
   plates), **10 B-side** (guitar); left wall **11 Contact** (the door, which swings open onto daylight).
 - **Start the tour** over the dock opens 01 and then offers the next station each time you're back in the room;
   every panel has previous / next, and the arrow keys walk the tour too. `#marschair` etc. deep-link.
+- **The blog** is the visitor's own kind of device on the desk, open in Notes (and **Blog** at the end of the dock):
+  a phone lying screen up for visitors on a phone, an open laptop for everyone else. Clicking it flies the camera
+  square onto the screen until it fills the view, then the real app takes over the whole window: iPhone Notes or
+  Mac Notes, dark mode. The room stops drawing while you read. Back (iPhone), the red light (Mac) or Escape flies back
+  out. `#blog` deep-links it. The link to share is **niravsurabhi.com/blog**: the same app, full screen, chosen by
+  device, without the 3D room, so it opens fast from X. `/blog#walk-back` opens a particular post.
 - All panel content is plain HTML in `index.html`. **List view** shows it as an ordinary page, and
   that is also what browsers without WebGL2 get.
 - Wide screens and phones held sideways get a side panel; portrait phones get a bottom sheet, and
@@ -34,6 +40,18 @@ A white-walled 3D studio you can look around in, built with three.js. It's a sta
   window. That view is a portal: a shader looks up each pixel's direction in a campus panorama painted once at load
   (a small projected scene of brick buildings, trees and walks), so it holds still like real distant scenery. The Bell
   Tower is a 3D model rendered once into its own texture, with a mask for the trees in front of its base.
+- `blog/index.html` — the blog page, and the posts themselves: one `<article data-post id="slug" data-date="YYYY-MM-DD">`
+  per post (add `data-time="HH:MM"` for the time Notes shows), newest first, an `<h1>` title then plain `<p>`
+  paragraphs. The phone on `/blog`, the phone in the room and the no-JavaScript page all come from these articles, so a
+  new post is just a new article. Update the `og:`/`twitter:` description to match, and the share card if you like
+  (`blog/og.html` → `blog/og.png`, a 1200×630 screenshot).
+- `blog/macnotes.js`, `blog/macnotes.css` — Mac Notes (the macOS 26 look): the floating sidebar with the iCloud
+  folders, the list by date, the note, glass toolbars, working search, Share copies the link, the red light closes.
+- `blog/notes.js`, `blog/notes.css` — iPhone Notes (the iOS 26 look): the folder (grouped Today / Yesterday / Previous
+  7 Days… against the reader's clock, with working search), the note, glass buttons, swipe from the left edge to go
+  back, Share / Copy Link, in dark mode. Text uses the visitor's system font (San Francisco on
+  Apple devices). No Apple fonts or artwork are shipped. The device on the desk draws the same note into its screen
+  texture (`drawNotes` / `drawMacNotes` in `room/main.js`; the laptop is `createLaptop` in `room/models/props.js`).
 - `room/models/` — procedural models: `kit.js` (shared materials + a mesh-merging builder),
   `robot.js` (FTC), `windtunnel.js`, `props.js` (desk, chair, guitar, stool, shelf, sideboard, plant),
   `marschair.js` (Fetch Freight base, 4040 frame and cradle, two reBot B601 arms, sled chair),

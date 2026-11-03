@@ -136,6 +136,15 @@ body.in-station #tour,body.list #tour{opacity:0;pointer-events:none}
 @media(max-width:899px) and (orientation:portrait){#pnav{padding:22px 18px 14px}#pnav .pill{height:34px;font-size:10.5px}}
 body.list #pnav{display:none}
 
+/* the blog: the phone on the desk comes up over the room, open in Notes */
+/* at the end of the zoom the screen goes to the app's own background, then the app comes up on it */
+#reader{position:fixed;inset:0;z-index:45;opacity:0;visibility:hidden;background:#1e1e1e;transition:opacity .16s,visibility .16s}
+#reader.open{opacity:1;visibility:visible}
+#readerBook{position:absolute;inset:0;opacity:0;transition:opacity .22s}
+#reader.open #readerBook{opacity:1;transition-delay:.14s}
+body.reading .top,body.reading #dock,body.reading #tour,body.reading #hotspots{opacity:0;pointer-events:none}
+#dock button.blog i{font-size:12px}
+
 /* labels floating at each station */
 #hotspots{position:fixed;inset:0;z-index:10;pointer-events:none}
 .hs{position:absolute;left:0;top:0;display:flex;align-items:center;gap:10px;padding:6px 12px 6px 6px;border-radius:999px;pointer-events:auto;
@@ -358,6 +367,7 @@ body.no3d .flow canvas{display:none}
   <button type="button" data-st="about"><i>09</i>About</button>
   <button type="button" data-st="guitar"><i>10</i>B-side</button>
   <button type="button" data-st="contact"><i>11</i>Contact</button>
+  <button type="button" data-st="blog" class="blog"><i>✎</i>Blog</button>
 </nav>
 <button class="pill" id="tour" type="button">Start the tour <span aria-hidden="true">→</span></button>
 <div id="hotspots"></div>
@@ -603,6 +613,14 @@ body.no3d .flow canvas{display:none}
       <p class="door-lead">West Lafayette, Indiana · Purdue University</p>
     </section>
 
+    <!-- ======================================================= BLOG (the phone on the desk; list view links out) -->
+    <section class="sec" id="p-blog" hidden>
+      <p class="k lab">Blog</p>
+      <h2>Written in my Notes app.</h2>
+      <p class="lead">Latest: <a href="/blog#walk-back">I’m writing this on the walk back from class</a>. In the room, it’s the phone lying on the desk.</p>
+      <p class="blk"><a class="pill" href="/blog">Open the blog →</a></p>
+    </section>
+
 
   </div>
   <nav id="pnav" aria-label="Tour">
@@ -611,6 +629,10 @@ body.no3d .flow canvas{display:none}
     <button class="pill" id="pnext" type="button"><span></span> →</button>
   </nav>
 </aside>
+
+<div id="reader" role="dialog" aria-modal="true" aria-label="Blog, in the Notes app" aria-hidden="true">
+  <div id="readerBook"></div>
+</div>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Viewer">
   <div class="lb-in">

@@ -1,4 +1,5 @@
 {
+  "rewrites": [{ "source": "/blog", "destination": "/blog/index.html" }],
   "headers": [
     {
       "source": "/vendor/(.*)",

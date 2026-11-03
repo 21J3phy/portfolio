@@ -1,0 +1,114 @@
+/* The blog as a note on an iPhone, in the Notes app (the iOS 26 look). Used by /blog and, as an overlay, by the room.
+   Fonts are the visitor's own system font: San Francisco on Apple devices. No Apple font or artwork is shipped. */
+.nt-wrap{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',system-ui,'Segoe UI',Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;letter-spacing:-.01em}
+:where(.nt-wrap) *,:where(.nt-wrap) *::before,:where(.nt-wrap) *::after{box-sizing:border-box}
+:where(.nt-wrap) button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;-webkit-appearance:none;appearance:none}
+
+/* color schemes, as in the app */
+.nt-screen{--bg:#fff;--listbg:#f2f2f7;--card:#fff;--label:#000;--label2:rgba(60,60,67,.6);--label3:rgba(60,60,67,.3);--sep:rgba(60,60,67,.18);
+  --tint:#e1a500;--glass:rgba(250,250,252,.72);--glass-edge:rgba(255,255,255,.95);--glass-line:rgba(0,0,0,.07);--glass-shadow:0 6px 20px rgba(0,0,0,.10);
+  --fill:rgba(118,118,128,.12);--dim:rgba(0,0,0,.08)}
+.nt-screen.dark{--bg:#000;--listbg:#000;--card:#1c1c1e;--label:#fff;--label2:rgba(235,235,245,.6);--label3:rgba(235,235,245,.3);--sep:rgba(84,84,88,.55);
+  --tint:#ffc93c;--glass:rgba(44,44,46,.62);--glass-edge:rgba(255,255,255,.14);--glass-line:rgba(255,255,255,.06);--glass-shadow:0 6px 20px rgba(0,0,0,.45);
+  --fill:rgba(118,118,128,.24);--dim:rgba(0,0,0,.35)}
+
+/* the phone: 393 × 852 pt screen in a titanium band, scaled to fit */
+.nt-fit{position:relative;flex:none}
+.nt-device{position:absolute;left:0;top:0;width:419px;height:878px;padding:13px;border-radius:70px;background:#050506;transform-origin:0 0;
+  box-shadow:0 0 0 1px #1d1d1f,0 0 0 3.5px #9c9890,0 0 0 4.5px #6d6a64,0 0 0 5px #2a2927,0 50px 90px -20px rgba(0,0,0,.75),0 20px 40px rgba(0,0,0,.35)}
+.nt-side{position:absolute;width:4px;border-radius:2px;background:linear-gradient(90deg,#6d6a64,#b4b0a8 50%,#77736d)}
+.nt-side.l{left:-8px}.nt-side.r{right:-8px}
+.nt-screen{position:relative;width:393px;height:852px;border-radius:57px;overflow:hidden;background:var(--bg);color:var(--label);isolation:isolate;
+  --st:54px;--sb:34px}
+.nt-island{position:absolute;left:50%;top:11px;width:124px;height:36px;margin-left:-62px;border-radius:18px;background:#000;z-index:20}
+.nt-status{position:absolute;left:0;right:0;top:0;height:54px;z-index:19;display:flex;align-items:center;justify-content:space-between;padding:4px 30px 0 52px;pointer-events:none;color:var(--label)}
+.nt-status time{font-size:17px;font-weight:600;letter-spacing:-.02em;width:54px;text-align:center}
+.nt-status .ic{display:flex;align-items:center;gap:6px}
+.nt-status svg{display:block;fill:currentColor}
+.nt-homebar{position:absolute;left:50%;bottom:8px;width:139px;height:5px;margin-left:-69.5px;border-radius:3px;background:var(--label);z-index:20;pointer-events:none}
+
+/* full screen on a phone: the page is the app (the real status bar and home indicator are the phone's own) */
+.nt-wrap.bare .nt-fit{width:100%!important;height:100%!important}
+.nt-wrap.bare .nt-device{position:absolute;inset:0;width:auto;height:auto;padding:0;border-radius:0;box-shadow:none;background:none;transform:none!important}
+.nt-wrap.bare .nt-side,.nt-wrap.bare .nt-island,.nt-wrap.bare .nt-status,.nt-wrap.bare .nt-homebar{display:none}
+.nt-wrap.bare .nt-screen{width:100%;height:100%;border-radius:0;--st:max(env(safe-area-inset-top),6px);--sb:max(env(safe-area-inset-bottom),12px)}
+
+/* the two views, pushed like a navigation stack */
+.nt-view{position:absolute;inset:0;overflow:hidden;background:var(--bg);transition:transform .5s cubic-bezier(.32,.72,0,1)}
+.nt-list{background:var(--listbg)}
+.nt-list::after{content:"";position:absolute;inset:0;background:var(--dim);opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.32,.72,0,1);z-index:30}
+.nt-note{transform:translateX(100%);box-shadow:-10px 0 30px rgba(0,0,0,.12)}
+.nt-screen.at-note .nt-list{transform:translateX(-30%)}
+.nt-screen.at-note .nt-list::after{opacity:1}
+.nt-screen.at-note .nt-note{transform:none}
+.nt-screen.dragging .nt-view,.nt-screen.dragging .nt-list::after,.nt-screen.instant .nt-view,.nt-screen.instant .nt-list::after{transition:none}
+
+.nt-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  padding:calc(var(--st) + 56px) 0 calc(var(--sb) + 84px)}
+.nt-scroll::-webkit-scrollbar{display:none}
+/* the soft scroll edges under the floating bars */
+.nt-view::before,.nt-edge-b{content:"";position:absolute;left:0;right:0;z-index:9;pointer-events:none}
+.nt-view::before{top:0;height:calc(var(--st) + 74px);background:linear-gradient(var(--bg) 0,var(--bg) 62%,transparent)}
+.nt-list::before{background:linear-gradient(var(--listbg) 0,var(--listbg) 62%,transparent)}
+.nt-edge-b{bottom:0;height:calc(var(--sb) + 104px);background:linear-gradient(transparent,var(--bg) 62%)}
+.nt-list .nt-edge-b{background:linear-gradient(transparent,var(--listbg) 62%)}
+
+/* floating glass controls */
+.nt-glass{background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(190%);backdrop-filter:blur(14px) saturate(190%);
+  box-shadow:inset 0 .5px 0 var(--glass-edge),inset 0 0 0 .5px var(--glass-line),var(--glass-shadow)}
+.nt-bar{position:absolute;left:16px;right:16px;z-index:10;display:flex;align-items:center;gap:8px;pointer-events:none}
+.nt-bar>*{pointer-events:auto}
+.nt-top{top:calc(var(--st) + 4px);height:44px}
+.nt-bottom{bottom:calc(var(--sb) + 4px);height:48px}
+.nt-bar .sp{flex:1}
+.nt-circle{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:var(--tint);flex:none}
+.nt-bottom .nt-circle{width:48px;height:48px;border-radius:24px}
+.nt-pill{height:44px;border-radius:22px;display:flex;align-items:center;padding:0 4px;color:var(--tint);flex:none}
+.nt-bottom .nt-pill{height:48px;border-radius:24px;padding:0 6px}
+.nt-pill button{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.nt-wrap svg{display:block}
+.nt-icon{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.nt-circle:active,.nt-pill button:active{opacity:.55}
+.nt-title{position:absolute;left:0;right:0;text-align:center;font-size:17px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none}
+.nt-screen.scrolled .nt-list .nt-title{opacity:1}
+
+/* the list of notes */
+.nt-large{margin:0 20px 14px;font-size:34px;line-height:41px;font-weight:700;letter-spacing:.01em}
+.nt-count{margin:0 20px 18px;font-size:15px;color:var(--label2)}
+.nt-sec{margin:0 0 22px}
+.nt-sec h2{margin:0 20px 8px;font-size:20px;line-height:25px;font-weight:700;letter-spacing:.01em}
+.nt-group{margin:0 16px;padding:0;list-style:none;background:var(--card);border-radius:26px;overflow:hidden}
+.nt-group li+li .nt-row{background:linear-gradient(var(--sep),var(--sep)) 20px 0/calc(100% - 20px) .5px no-repeat}
+.nt-row{display:block;width:100%;padding:11px 20px 12px;text-align:left;color:var(--label)}
+.nt-group .nt-row:active{background:var(--fill)}
+.nt-row b{display:block;font-size:17px;line-height:22px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nt-row span{display:block;margin-top:1px;font-size:15px;line-height:20px;color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nt-row span em{font-style:normal;color:var(--label);opacity:.85;margin-right:6px}
+.nt-empty{margin:60px 20px;text-align:center;font-size:17px;color:var(--label2)}
+.nt-search{flex:1;height:48px;border-radius:24px;display:flex;align-items:center;gap:6px;padding:0 14px;color:var(--label2)}
+.nt-search input{flex:1;min-width:0;height:100%;border:0;outline:0;background:none;font:inherit;font-size:17px;color:var(--label);letter-spacing:-.01em}
+.nt-search input::placeholder{color:var(--label2)}
+.nt-search .nt-icon{width:20px;height:20px;stroke-width:2.1}
+
+/* a note */
+.nt-doc{padding:0 20px;-webkit-user-select:text;user-select:text}
+.nt-date{margin:2px 0 14px;text-align:center;font-size:13px;line-height:18px;color:var(--label2)}
+.nt-doc h1{margin:0 0 4px;font-size:28px;line-height:34px;font-weight:700;letter-spacing:.005em}
+.nt-doc p{margin:0 0 22px;font-size:17px;line-height:22px;letter-spacing:-.012em;word-wrap:break-word}
+.nt-doc p:last-child{margin-bottom:0}
+.nt-doc a{color:var(--tint)}
+
+/* the "…" menu and the little confirmations */
+.nt-menu{position:absolute;right:16px;top:calc(var(--st) + 54px);z-index:40;min-width:236px;padding:6px;border-radius:24px;opacity:0;transform:scale(.6);transform-origin:calc(100% - 20px) 0;pointer-events:none;
+  transition:opacity .18s,transform .28s cubic-bezier(.32,.72,0,1)}
+.nt-menu.open{opacity:1;transform:none;pointer-events:auto}
+.nt-screen .nt-menu{background:var(--glass);-webkit-backdrop-filter:blur(30px) saturate(190%);backdrop-filter:blur(30px) saturate(190%)}
+.nt-menu a,.nt-menu button{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;padding:11px 14px;border-radius:16px;font-size:17px;line-height:22px;color:var(--label);text-decoration:none;text-align:left}
+.nt-menu a:hover,.nt-menu button:hover{background:var(--fill)}
+.nt-menu .nt-icon{width:20px;height:20px;stroke:var(--label)}
+.nt-menu hr{margin:4px 14px;border:0;border-top:.5px solid var(--sep)}
+.nt-toast{position:absolute;left:50%;bottom:calc(var(--sb) + 66px);z-index:41;transform:translate(-50%,10px);padding:11px 18px;border-radius:22px;font-size:15px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .25s,transform .35s cubic-bezier(.32,.72,0,1);color:var(--label)}
+.nt-toast.on{opacity:1;transform:translate(-50%,0)}
+.nt-wrap :focus-visible{outline:2px solid var(--tint);outline-offset:2px}

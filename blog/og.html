@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="robots" content="noindex" />
+<title>og · blog</title>
+<!-- Social card for /blog: the real Notes phone (blog/notes.js) with the latest post. Regenerate blog/og.png with a
+     1200×630 screenshot of this page (see README). -->
+<link rel="stylesheet" href="/blog/notes.css" />
+<style>
+@font-face{font-family:'Archivo';src:url(/fonts/Archivo-var.woff2) format('woff2');font-weight:300 700;font-stretch:100% 125%}
+@font-face{font-family:'JetBrains Mono';src:url(/fonts/JetBrainsMono-var.woff2) format('woff2');font-weight:400 700}
+html,body{margin:0;width:1200px;height:630px;overflow:hidden;color:#ecebe6;background:#07080a}
+/* the phone, cropped by the bottom edge of the card */
+#phone{position:absolute;left:150px;top:44px;width:380px;height:760px}
+.t{position:absolute;left:620px;right:64px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center}
+.k{font:500 15px 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#a8abb1}
+.t h1{margin:18px 0 0;font:700 50px/1.08 -apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;letter-spacing:-.02em}
+.t p{margin:20px 0 0;font:400 24px/1.4 -apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;color:#cfcac0}
+.u{margin-top:34px;font:500 15px/1 'JetBrains Mono',monospace;letter-spacing:.08em;color:#a8abb1}
+.u span{color:#ffc93c}
+</style>
+</head>
+<body>
+  <div id="phone"></div>
+  <div class="t">
+    <div class="k">Blog · Nirav Surabhi</div>
+    <h1>I’m writing this on the walk back from class</h1>
+    <p>On cutting everything that wasn’t work, and what my roommate said about it.</p>
+    <div class="u"><span>●</span> niravsurabhi.com/blog</div>
+  </div>
+<script type="module">
+import { readPosts, mountNotes } from '/blog/notes.js';
+const html = await (await fetch('/blog/index.html')).text();
+mountNotes(document.getElementById('phone'), readPosts(new DOMParser().parseFromString(html, 'text/html')), { scheme: 'dark', bare: false });
+</script>
+</body>
+</html>
