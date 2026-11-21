@@ -62,7 +62,7 @@
   for (var i = 0; i < files.length; i++) { var l = document.createElement('link'); l.rel = 'preload'; l.as = 'fetch'; l.crossOrigin = 'anonymous'; l.href = 'drive/assets/' + files[i]; document.head.appendChild(l); }
 })();
 </script>
-<noscript><style>.dest{display:block}.stop{padding-top:28px;height:auto}body{overflow:visible;height:auto;touch-action:auto}.foot,.tail{display:block}#loader,#dash,#map,#routeline,#drive,.scrollhint,#soundBtn{display:none}.hero-in h1,.hero-in .lead{color:#17191d;text-shadow:none}.stop.hero{min-height:0;padding-top:110px}</style></noscript>
+<noscript><style>.dest{display:block}.stop{padding-top:28px;height:auto}body{overflow:visible;height:auto;touch-action:auto}.foot,.tail{display:block}#loader,#dash,#map,#drive,.scrollhint,#soundBtn{display:none}.hero-in h1,.hero-in .lead{color:#17191d;text-shadow:none}.stop.hero{min-height:0;padding-top:110px}</style></noscript>
 </head>
 <body>
 <canvas id="drive" aria-hidden="true"></canvas>
@@ -113,7 +113,6 @@
   </div>
 </aside>
 <p id="lookhint" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5a7 7 0 1 0 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 5v4.2h-4.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Drag to look around<span class="opt"> · click the sign for the full story</span><span class="tap"> · tap the sign</span></p>
-<div id="routeline" aria-hidden="true"><i id="routeBar"></i><div id="routeDots"></div></div>
 
 <main id="route">
   <a id="top"></a>
@@ -132,7 +131,7 @@
     <article class="dest sec" id="p-armsim">
       <p class="k"><b>01</b> · Robotics · Machine learning</p>
       <h2>Language-guided 3D targeting</h2>
-      <p class="lead">Tell a robot arm “the cube left of the red ball,” and it finds that point in 3D and reaches for it. I built it in MuJoCo around the SO-101 arm, then used it to answer a training question: is reinforcement learning worth more than simply more fine-tuning?</p>
+      <dl class="brief"><div><dt>Goal</dt><dd>Let someone tell a robot arm what to reach for in plain words, and learn which kind of training gets it there.</dd></div><div><dt>What I did</dt><dd>I built the simulation around a real low-cost arm and trained a vision-language model to find the spot from the arm’s own cameras.</dd></div><div><dt>Result</dt><dd>In simulation it lands within 2 cm 93.7% of the time, and more ordinary training beat reinforcement learning by about 21 points.</dd></div></dl>
       <button class="shot blk" type="button" data-lb="img/armsim-scene.webp" data-cap="What the arm sees: the left image of the head stereo pair, from a validation scene"><img src="img/armsim-scene.webp" alt="Simulated head-camera view of the SO-101 arm over colored blocks" loading="lazy" width="640" height="480" /></button>
       <div class="stats blk">
         <div><b>93.7%</b><span>within 2 cm, fine-tuned model (best seed)</span></div>
@@ -157,7 +156,7 @@
     <article class="dest sec" id="p-marschair">
       <p class="k"><b>02</b> · Robotics · Purdue MARS Lab</p>
       <h2>MARSChair</h2>
-      <p class="lead">A robot that sets up a conference room. In simulation, a mobile base brings tables out of storage, down a corridor and into place, then tucks two chairs under each one.</p>
+      <dl class="brief"><div><dt>Goal</dt><dd>Take a job nobody wants off people’s hands: setting up a conference room’s tables and chairs.</dd></div><div><dt>What I did</dt><dd>In Purdue’s MARS Lab I designed a $989 attachment for the lab’s robot and wrote the simulation and planning software that drives it.</dd></div><div><dt>Result</dt><dd>In simulation it set up the room in 100 of 100 randomized runs, with tables within half a centimeter; the hardware is designed, not yet built.</dd></div></dl>
       <figure class="blk">
         <div class="shot dark"><video data-src="img/mars/rows.mp4" data-poster="img/mars/rows.webp" data-loop muted loop playsinline preload="none" aria-label="Simulation recording: the robot setting out rows of tables and chairs"></video></div>
         <figcaption class="cap">A recorded run of the “rows” layout in MuJoCo. The scale model on the island replays a run of the same layout, pose for pose: two tables and four chairs, 25 minutes of simulated time in about half a minute.</figcaption>
@@ -187,7 +186,7 @@
     <article class="dest sec" id="p-hopper">
       <p class="k"><b>03</b> · Robotics · NASA RASC-AL 2027</p>
       <h2>HOPPER</h2>
-      <p class="lead">A six-legged lunar rover that walks, and jumps when walking isn’t enough. I built the parametric CAD, the MuJoCo simulation and the design sweep for Purdue’s RASC-AL team.</p>
+      <dl class="brief"><div><dt>Goal</dt><dd>Reach lunar terrain a wheeled rover cannot, for NASA’s 2027 university design competition.</dd></div><div><dt>What I did</dt><dd>For Purdue’s team I built the CAD, the physics simulation, and a search across more than 1,800 candidate designs.</dd></div><div><dt>Result</dt><dd>The chosen six-legged rover walks, climbs 30° slopes and jumps 2.3 m in simulation; it is a concept, with the proposal due February 2027.</dd></div></dl>
       <figure class="blk">
         <div class="shot dark"><video src="img/hopper/demo.mp4" data-poster="img/hopper/render.webp" controls muted playsinline preload="none" aria-label="Simulation recording: the rover walking, jumping and landing"></video></div>
         <figcaption class="cap">Walk, crouch, jump, land: the selected design in MuJoCo under lunar gravity. The rover on the plinth replays a run recorded from the same simulation; in that run it walks at 0.42 m/s and jumps 2.28 m.</figcaption>
@@ -218,7 +217,7 @@
     <article class="dest sec" id="p-neurons">
       <p class="k"><b>04</b> · Machine learning · Interpretability</p>
       <h2>Steering a model by its neurons</h2>
-      <p class="lead">Nudge 344 neurons in a small language model while it writes the first six tokens of an answer, and the whole answer comes out about a third shorter. I tested that the strict way, then handed the model the switch.</p>
+      <dl class="brief"><div><dt>Goal</dt><dd>Find out whether a language model’s behavior can be changed precisely from the inside, without retraining it.</dd></div><div><dt>What I did</dt><dd>I found 344 neurons in a 4-billion-parameter model that set how long its answers run, and tested the edit under sealed, blind-graded conditions.</dd></div><div><dt>Result</dt><dd>Answers came out 37% shorter with accuracy within a point; each test still missed one preset bar, and I report that as the result.</dd></div></dl>
       <button class="shot dark blk" type="button" data-lb="img/ml/self-steer-demo.webp" data-cap="The demo: Qwen asks for a mode it doesn't have, Claude builds “eli5” in 3.77 s, and Qwen switches it on for its answer"><img src="img/ml/self-steer-demo.webp" alt="Chat interface in which the model requests a new mode and uses it" loading="lazy" width="1200" height="1114" /></button>
       <details class="more"><summary>The full story</summary>
       <h3>Lazy Genius</h3>
@@ -267,7 +266,7 @@
     <article class="dest sec" id="p-robotics">
       <p class="k"><b>05</b> · Robotics · Mechanical</p>
       <h2>Absolute Zero, FTC #12096</h2>
-      <p class="lead">Four seasons as captain. Every mechanism modeled in Fusion 360, then built, broken, and rebuilt.</p>
+      <dl class="brief"><div><dt>Goal</dt><dd>Win FIRST Tech Challenge matches with a robot our team designed and built from nothing.</dd></div><div><dt>What I did</dt><dd>As captain for four seasons I designed every mechanism in CAD, built them, and wrote the autonomous and driver code.</dd></div><div><dt>Result</dt><dd>We advanced to the Chesapeake championship.</dd></div></dl>
       <button class="shot blk" type="button" data-lb="img/ftc/ftc-final.webp" data-cap="The competition robot, team 12096"><img src="img/ftc/ftc-final.webp" alt="The 12096 competition robot on the field" loading="lazy" width="760" height="570" /></button>
       <div class="stats three blk">
         <div><b>4</b><span>seasons as captain</span></div>
@@ -290,7 +289,7 @@
     <article class="dest sec" id="p-engine">
       <p class="k"><b>06</b> · Mechanical · Side build</p>
       <h2>LEGO vacuum engine</h2>
-      <p class="lead">A single-cylinder engine I built from LEGO that runs on the suction of a vacuum cleaner.</p>
+      <dl class="brief"><div><dt>Goal</dt><dd>Understand how an engine’s valves and timing really work by building one that runs.</dd></div><div><dt>What I did</dt><dd>I built a single-cylinder engine out of LEGO, powered by the suction of a vacuum cleaner.</dd></div><div><dt>Result</dt><dd>It runs with no motors at all: one cylinder and 90° valve timing.</dd></div></dl>
       <div class="vid blk">
         <video src="img/lego/engine.mp4" data-poster="img/lego/engine.jpg" controls playsinline preload="none" aria-label="Video of the LEGO vacuum engine running"></video>
         <div>
@@ -312,7 +311,7 @@
     <article class="dest sec" id="p-research">
       <p class="k"><b>07</b> · Research · Fluid mechanics</p>
       <h2>Passive vortex propulsion in air</h2>
-      <p class="lead">My first-author IEEE paper. A rigid fin in a cylinder’s wake gets pushed forward by it: the first time this was shown in air.</p>
+      <dl class="brief"><div><dt>Goal</dt><dd>See whether a vehicle could win back energy from the swirling air it leaves behind, the way fish do in water.</dd></div><div><dt>What I did</dt><dd>I designed and built a wind rig and its force sensor, ran 20 trials, and wrote the paper as first author.</dd></div><div><dt>Result</dt><dd>The fin was pushed forward with 3.1 N of net thrust (p < 0.001), the first time this was shown in air, and IEEE published it.</dd></div></dl>
       <figure class="flow blk">
         <canvas id="flowCanvas" width="1050" height="400" aria-label="Live flow simulation of the selected configuration"></canvas>
         <div class="conds" role="group" aria-label="Test configuration">
@@ -354,7 +353,7 @@
     <article class="dest sec" id="p-software">
       <p class="k"><b>08</b> · Software</p>
       <h2>Software I’ve shipped</h2>
-      <p class="lead">Outside the lab I build apps and tools, usually because I wanted one. These are out in the world.</p>
+      <dl class="brief"><div><dt>Goal</dt><dd>Fix problems I kept running into myself, and ship the fix so other people can use it.</dd></div><div><dt>What I did</dt><dd>I designed, built and released eight apps and tools, most of them on my own.</dd></div><div><dt>Result</dt><dd>They are in public use: a Mac app that sets up your work, an iPhone app that makes phone calls for you, and open-source tools for AI agents.</dd></div></dl>
       <details class="more"><summary>All eight, with links</summary>
       <div class="cards blk">
         <article class="card" id="charya">
@@ -420,6 +419,7 @@
     <article class="dest sec" id="p-more">
       <p class="k"><b>09</b> · More projects</p>
       <h2>The one that hit 30,000 users in a month, and the rest</h2>
+      <dl class="brief"><div><dt>Goal</dt><dd>Build things people actually want to use, and learn what it takes to run them.</dd></div><div><dt>What I did</dt><dd>I built a real-time webcam game scored by machine learning: the client, the matchmaking, and the model service.</dd></div><div><dt>Result</dt><dd>It reached 30,000 users in its first month.</dd></div></dl>
       <article class="card big blk">
         <img src="img/shot-chad.webp" alt="Chad vs. Chud game screen" loading="lazy" />
         <div class="tx">
@@ -447,6 +447,7 @@
     <article class="dest sec" id="p-about">
       <p class="k"><b>10</b> · About</p>
       <h2>Nirav Surabhi</h2>
+      <dl class="brief"><div><dt>Goal</dt><dd>I want to build robots that do useful physical work, and I am looking for an engineering internship for summer 2027.</dd></div><div><dt>What I did</dt><dd>I study mechanical engineering at Purdue (class of 2030), do robotics research in the MARS Lab, and build and ship projects on my own.</dd></div><div><dt>Result</dt><dd>So far: a first-author IEEE paper, four seasons as a robotics captain, a CAD internship, and software in public use.</dd></div></dl>
       <div class="me-row blk">
         <img src="img/face.webp" alt="Portrait of Nirav Surabhi" loading="lazy" />
         <p class="lead" style="margin:0">Mechanical engineering at Purdue, class of 2030. I build robots, test them in simulation, and train the models that tell them where to go.</p>
@@ -471,7 +472,7 @@
     <article class="dest sec" id="p-guitar">
       <p class="k"><b>11</b> · Away from the bench</p>
       <h2>Classical guitar</h2>
-      <p class="lead">When I’m not in CAD or a simulator, I’m working a piece up to performance. That discipline carries back into the engineering.</p>
+      <dl class="brief"><div><dt>Goal</dt><dd>Stay good at something that cannot be rushed.</dd></div><div><dt>What I did</dt><dd>I study classical guitar and work each piece up to performance.</dd></div><div><dt>Result</dt><dd>The habit of slow, deliberate practice carries straight back into the engineering.</dd></div></dl>
       <ul class="creds blk">
         <li><span>Award</span><span><b>1st place</b>, Aguado competition</span></li>
         <li><span>Ensemble</span><span>Member, <b>All-Virginia Guitar Ensemble</b></span></li>

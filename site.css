@@ -34,6 +34,12 @@ ul,ol{list-style:none}
 .sec h2{margin-top:10px;font:600 clamp(30px,3vw,40px)/1.05 var(--sans);letter-spacing:-.022em;text-wrap:balance}
 .sec h3{margin-top:34px;font:600 20px/1.2 var(--sans);letter-spacing:-.01em}
 .sec .lead{margin-top:14px;font-size:18px;line-height:1.48;color:var(--ink2);text-wrap:pretty}
+/* every project opens with three plain lines: why, what I did, how it came out */
+.brief{margin:16px 0 0;display:grid;gap:12px}
+.brief>div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:4px 14px;align-items:baseline}
+.brief dt{font:600 13px/1.4 var(--sans);color:var(--accent-ink)}
+.brief dd{margin:0;font-size:16.5px;line-height:1.45;color:var(--ink);text-wrap:pretty}
+#contact .brief dt{color:#ff9a66}
 .sec p{color:var(--ink2);font-size:15.5px;text-wrap:pretty}
 .sec p b,.sec li b{color:var(--ink);font-weight:600}
 .sec p a,.sec li a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line3);text-underline-offset:3px}
@@ -304,15 +310,8 @@ body.looking{cursor:grabbing;user-select:none;-webkit-user-select:none}
 .btn.snd[aria-pressed="true"] .w1,.btn.snd[aria-pressed="true"] .w2{display:inline}
 .btn.snd[aria-pressed="true"] .x{display:none}
 .btn.snd[aria-pressed="true"]{background:#17191d;color:#fff;border-color:#17191d}
-#routeline{position:fixed;left:0;right:0;bottom:0;height:3px;z-index:16;background:rgba(15,17,20,.25);pointer-events:none;opacity:0;transition:opacity .6s}
-body.ready #routeline{opacity:1}
-#routeBar{position:absolute;inset:0;background:#ff6a1f;transform-origin:left;transform:scaleX(0)}
-#routeDots button{position:absolute;bottom:-2px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px rgba(15,17,20,.5);pointer-events:auto;padding:0}
-#routeDots button::before{content:"";position:absolute;inset:-9px}
-#routeDots button.on{background:#ff6a1f}
 @media(max-width:900px){.tripcard{display:none}.cluster{width:132px;height:132px}.mapinfo{display:none}#mapCanvas{width:132px;height:132px}}
-@media(max-width:620px){.dest.open{left:0;right:0;top:auto;bottom:0;width:auto;height:min(76dvh,calc(100dvh - 110px));border-radius:20px 20px 0 0;border-bottom:0;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));animation:sheetin .32s var(--ease)}body.reading #map,body.reading #routeline{display:none}.cluster{width:96px;height:96px}#dash{top:62px;bottom:auto;right:10px}#map{left:10px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}#mapCanvas{width:104px;height:104px}.btn.snd span{display:none}.btn.snd{padding:0 9px}#modes{top:60px;left:10px;transform:none}#modes button{height:32px;padding:0 10px;font-size:13px}#lookhint{bottom:auto;top:104px;left:12px;transform:translate(0,8px)}body.inspect:not(.looked):not(.reading) #lookhint{transform:none}#lookhint .opt{display:none}#lookhint .tap{display:inline}}
-
+@media(max-width:620px){.dest.open{left:0;right:0;top:auto;bottom:0;width:auto;height:min(76dvh,calc(100dvh - 110px));border-radius:20px 20px 0 0;border-bottom:0;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));animation:sheetin .32s var(--ease)}body.reading #map{display:none}.cluster{width:96px;height:96px}#dash{top:62px;bottom:auto;right:10px}#map{left:10px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}#mapCanvas{width:104px;height:104px}.btn.snd span{display:none}.btn.snd{padding:0 9px}#modes{top:60px;left:10px;transform:none}#modes button{height:32px;padding:0 10px;font-size:13px}#lookhint{bottom:auto;top:104px;left:12px;transform:translate(0,8px)}body.inspect:not(.looked):not(.reading) #lookhint{transform:none}#lookhint .opt{display:none}#lookhint .tap{display:inline}}
 /* loader */
 #loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--bg);transition:opacity 1s var(--ease),visibility 1s}
 #loader.done{opacity:0;visibility:hidden;pointer-events:none}
@@ -326,7 +325,7 @@ body.ready #routeline{opacity:1}
 .ld .rowl{margin-top:11px;font-size:13.5px;color:var(--ink3)}
 
 /* without WebGL: the same page, as a page */
-body.no3d #drive,body.no3d #dash,body.no3d #routeline,body.no3d .scrollhint,body.no3d #map,body.no3d #lookhint,body.no3d #soundBtn{display:none}
+body.no3d #drive,body.no3d #dash,body.no3d .scrollhint,body.no3d #map,body.no3d #lookhint,body.no3d #soundBtn{display:none}
 /* ---------------------------------------------------------------- the classic view
    The same work as an ordinary page, given the same care as the road: the opening frame of the drive as its cover, each
    project set beside a picture of its exhibit taken on the road, and room to read. */
@@ -356,6 +355,10 @@ body.no3d .dest{display:block;width:auto;max-width:600px;padding:0;border:0;bord
 body.no3d .sec .k{font-size:14.5px}
 body.no3d .sec h2{margin-top:14px;font-size:clamp(34px,3.8vw,60px);line-height:1.01;letter-spacing:-.036em}
 body.no3d .sec .lead{margin-top:20px;font-size:clamp(17.5px,1.4vw,20.5px);line-height:1.55}
+body.no3d .brief{margin-top:24px;gap:16px}
+body.no3d .brief>div{grid-template-columns:104px minmax(0,1fr)}
+body.no3d .brief dt{font-size:14px}
+body.no3d .brief dd{font-size:clamp(17px,1.35vw,19.5px);line-height:1.5}
 body.no3d .sec .stats b{font-size:clamp(24px,2.1vw,31px)}
 body.no3d .sec .stats>div{padding-top:18px;padding-bottom:18px}
 body.no3d details.more{margin-top:28px;border-top:0}
@@ -398,6 +401,7 @@ body.no3d .foot a{color:rgba(255,255,255,.85);text-decoration-color:rgba(255,255
   body.no3d .stop:not(.hero):nth-of-type(odd) .still{order:0}
   body.no3d .still{position:relative;top:auto;border-radius:16px}
   body.no3d .dest{max-width:none}
+  .brief>div,body.no3d .brief>div{grid-template-columns:minmax(0,1fr);gap:2px}
   body.no3d .stop.hero{padding:0 18px;align-items:flex-end;background:linear-gradient(180deg,rgba(12,14,18,.4) 0%,rgba(12,14,18,0) 26%,rgba(12,14,18,0) 46%,rgba(12,14,18,.86) 100%),url(img/stops/hero.webp) 61% 100%/auto 122% #1a1d22}
   body.no3d .hero-in{padding:0 0 34px}
   body.no3d .sec .stats{grid-template-columns:repeat(2,1fr)}

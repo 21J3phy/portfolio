@@ -61,12 +61,15 @@ const GRASS = ['grass', 0.3, 10.2, 1.2];
 const MIX = {
   engine: 7.0,          // on top of ENGINE_RMS and the level law
   exhaust: 1.5,         // exhaust-outlet recordings against under-bonnet ones (they are mostly bass, so they need the help)
-  road: 1.4,            // tyre roar
+  road: 1.0,            // tyre roar
   grit: 0.6,            // crunch of the shoulder under slow tyres
   scrub: 1.0,           // tyres working sideways
   pads: 0.25,           // brake pads rubbing just before the car stops
-  wind: 1.0,
-  breeze: 1.75,
+  wind: 0.2,            // air past the camera at speed (it was drowning the engine)
+  breeze: 3.2,          // the light wind at a standstill, as a multiple of that
+  intake: 5.8,          // the engine breathing in under load: a roar that pulses with each cylinder
+  pulse: 0.9,           // the low beat of the exhaust under the recordings: each firing, and the unevenness between them
+  whine: 0.05,          // gears, faintly, in the lower ones
   sea: 0.38,
   grass: 0.3,
   gulls: 0.75,
@@ -92,7 +95,7 @@ export function createSound(options = {}) {
   let ctx = null, ready = false, wanted = false, loading = null, volume = 0.8, suspendTimer = 0;
   let hidden = typeof document !== 'undefined' && !options.context && document.hidden;
   let G = null;                                   // the graph, once built
-  const mix = { engine: 1, road: 1, wind: 1, ambience: 1, foley: 1 };   // live multipliers, for auditioning layers on their own
+  const mix = { engine: 1, road: 1, wind: 1, ambience: 1, foley: 1, loops: 1, intake: 1, pulse: 1 };   // live multipliers, for auditioning layers on their own
   const warned = new Set();
   const warn = (what, e) => { if (!warned.has(what)) { warned.add(what); console.warn('sound: ' + what + ' unavailable', e && e.message || e || ''); } };
 
@@ -196,6 +199,28 @@ export function createSound(options = {}) {
       if (layers.length) g.chains.push({ on: load === 'on' ? 1 : 0, layers });
     }
 
+    // What a recording played faster or slower cannot do by itself: stay exactly on pitch through a gear, pulse with
+    // each firing, and change character with load. Three made layers sit under the recordings and follow the revs
+    // sample for sample.
+    //  - intake: noise through a band that climbs with the revs, its level beating at the firing rate (four a cycle)
+    //  - pulse: the exhaust's low beat: the firing frequency and the half and quarter of it (no two cylinders fire
+    //    alike, which is what makes an idle sound like an idle), a little rough, kept below a few hundred hertz
+    //  - whine: straight-cut-ish gear noise, very quiet
+    const osc = (type, f) => { const o = ctx.createOscillator(); o.type = type; o.frequency.value = f; g.oscs.push(o); return o; };
+    g.oscs = [];
+    g.fire = [osc('sine', 25), osc('sine', 12.5), osc('sine', 6.25)]; g.pFire = g.fire.map(o => P(o.frequency));
+    g.intakeBP = filter('bandpass', 700, 0.9); g.intakeAM = gain(0.5); g.intake = gain(0);
+    chain(looped(made.noise, 0.77, 5.1), g.intakeBP, g.intakeAM, g.intake, g.eng);
+    { const depth = gain(0.45); g.fire[0].connect(depth); depth.connect(g.intakeAM.gain); }             // 0.5 ± 0.45 at the firing rate
+    g.pIntake = P(g.intake.gain); g.pIntakeF = P(g.intakeBP.frequency);
+    g.pulse = gain(0); g.pulseLP = filter('lowpass', 260, 0.7);
+    { const shape = ctx.createWaveShaper(), n = 1024, curve = new Float32Array(n); for (let i = 0; i < n; i++) { const x = i / (n - 1) * 2 - 1; curve[i] = Math.tanh(2.4 * x) + 0.18 * x * x; } shape.curve = curve;   // rounds the beat off and adds its overtones
+      const sum = gain(1); for (const [o, lv] of [[g.fire[0], 0.6], [g.fire[1], 0.42], [g.fire[2], 0.2]]) { const gn = gain(lv); o.connect(gn); gn.connect(sum); }
+      const rough = gain(0.25); chain(looped(made.noise, 0.5, 2.2), filter('lowpass', 90, 0.7), rough); rough.connect(sum);
+      chain(sum, shape, g.pulseLP, g.pulse, g.exh); }
+    g.pPulse = P(g.pulse.gain); g.pPulseLP = P(g.pulseLP.frequency);
+    g.whineO = osc('triangle', 400); g.whine = gain(0); chain(g.whineO, filter('bandpass', 1400, 1.2), g.whine, g.car); g.pWhine = P(g.whine.gain); g.pWhineF = P(g.whineO.frequency);
+
     // road: tyre roar (a band that climbs with speed), the broad wash around it, the low rumble of the surface, and grit when slow
     g.road = gain(1); g.road.connect(g.car);
     const tyre = looped(made.noise, 1, 0.3);
@@ -272,7 +297,7 @@ export function createSound(options = {}) {
 
     // engine. load: how much of the working-hard recordings to use. Near idle there is no such thing as load, only idle.
     const load = thr * step(800, 1250, rpm), lr = Math.log(Math.max(rpm, 100));
-    const levelDb = 6 * Math.log2(Math.max(rpm, 300) / 6500) - 11 * (1 - load) * step(900, 2200, rpm) + 2.5 * thr * (1 - step(800, 1250, rpm));
+    const levelDb = 6 * Math.log2(Math.max(rpm, 300) / 6500) - 8 * (1 - load) * step(900, 2200, rpm) + 2.5 * thr * (1 - step(800, 1250, rpm));
     to(g.pEng, MIX.engine * mix.engine * Math.pow(10, levelDb / 20) * step(200, 600, rpm), tau);
     to(g.pExh, MIX.exhaust * (0.45 + 0.55 * behind), tau); to(g.pBay, 0.95 - 0.5 * behind, tau);
     to(g.pExhLP, 1400 * Math.pow(5, behind), tau);                                   // from the front the exhaust is only its low end
@@ -283,13 +308,21 @@ export function createSound(options = {}) {
       for (let j = 0; j < n; j++) {
         const l = L[j], w = (j === i ? Math.cos(t * 1.5708) : j === i + 1 && n > 1 ? Math.sin(t * 1.5708) : 0) * part, rate = clamp(rpm / l.rpm, 0.3, 2.5);
         if (w > 0 || l.w > 0) { if (l.w > 0) to(l.rate, rate, 0.02); else { l.rate.v = rate; l.rate.p.setValueAtTime(rate, now); } }   // a silent loop jumps to speed, a sounding one glides
-        to(l.gain, w, away ? 0.25 : 0.03); l.w = w;
+        to(l.gain, w * mix.loops, away ? 0.25 : 0.03); l.w = w;
       }
     }
 
+    // the made layers, on the same revs
+    const fire = Math.max(rpm, 300) / 30, running = step(200, 600, rpm);
+    to(g.pFire[0], fire, 0.012); to(g.pFire[1], fire / 2, 0.012); to(g.pFire[2], fire / 4, 0.012);
+    to(g.pIntake, MIX.intake * mix.intake * mix.engine * running * (0.05 + 0.95 * load * load) * step(1200, 5200, rpm) * (1.15 - 0.6 * behind), 0.04); to(g.pIntakeF, 420 + 0.17 * rpm, 0.05);
+    to(g.pPulse, MIX.pulse * mix.pulse * mix.engine * running * (0.5 + 0.5 * load) * (1.9 - 1.6 * step(800, 2600, rpm)) * (0.88 + 0.12 * wander(clock * 7.3)), 0.03); to(g.pPulseLP, 150 + 0.06 * rpm, 0.05);
+    to(g.pWhine, MIX.whine * mix.engine * step(1.5, 8, v) * (1 - step(16, 30, v)) * (0.4 + 0.6 * load), 0.08); to(g.pWhineF, clamp(rpm * 0.31, 150, 2600), 0.03);
+
     // road
     const u = v / 27, low = step(0.2, 1.5, v), road = MIX.road * mix.road;
-    to(g.pRoar, road * 0.9 * Math.pow(u, 1.4), 0.08); to(g.pRoarF, 420 + 21 * v, 0.1);
+    const surface = 1 + 0.14 * wander(clock * 2.3 + v * 0.05) + 0.07 * wander(clock * 9.1);   // no stretch of road is quite like the last
+    to(g.pRoar, road * 0.9 * Math.pow(u, 1.4) * surface, 0.08); to(g.pRoarF, 420 + 21 * v, 0.1);
     to(g.pRumble, road * 1.6 * u * low, 0.08); to(g.pWash, road * 0.45 * Math.pow(u, 1.5), 0.08); to(g.pWashF, 900 + 60 * v, 0.1);
     to(g.pGrit, MIX.grit * mix.road * low * (1 - step(4, 10, v)) * (s.blinker ? 1 : 0.4), 0.1); to(g.pGritRate, 0.5 + 0.22 * v, 0.1);
     const skid = step(8, 11, s.decel) * step(2, 6, v);
@@ -298,7 +331,7 @@ export function createSound(options = {}) {
     to(g.pRev, s.reverse ? MIX.reverse * mix.road * step(0.2, 1.5, v) * 0.5 : 0, 0.08); to(g.pRevF, clamp(330 * v, 200, 2400), 0.05);
 
     // wind: air past the camera (square of speed) over a breeze that comes and goes
-    const breeze = 0.55 + 0.3 * wander(clock * 0.13) + 0.15 * wander(clock * 0.47 + 9), rush = u * u, wl = MIX.wind * mix.wind;
+    const breeze = 0.55 + 0.3 * wander(clock * 0.13) + 0.15 * wander(clock * 0.47 + 9), rush = u * u * step(6, 22, v), wl = MIX.wind * mix.wind;
     for (let e = 0; e < 2; e++) {
       const gust = 1 + 0.22 * wander(clock * (0.9 + 0.3 * e) + 40 * e) * step(4, 20, v);
       to(g.pWindG[e], wl * (1.4 * rush * gust + MIX.breeze * 0.5 * breeze * (1 + 0.3 * wander(clock * 0.31 + 17 * e))), 0.12);
@@ -351,7 +384,7 @@ export function createSound(options = {}) {
   async function start() {
     const names = [...new Set([...ENGINE.map(e => e[0]), ...Object.values(SHOTS).map(e => e[0]), ...GULLS.map(e => e[0]), 'footsteps', SEA[0], GRASS[0]])];
     const decoded = await Promise.all(names.map(load)), files = {}; names.forEach((n, i) => { files[n] = decoded[i]; });
-    try { G = build(files); for (const [n, off] of G.starts) n.start(0, off % n.buffer.duration); G.starts = null; ready = true; }
+    try { G = build(files); for (const [n, off] of G.starts) n.start(0, off % n.buffer.duration); G.starts = null; for (const o of G.oscs) o.start(); ready = true; }
     catch (e) { warn('audio graph', e); }
   }
   const fadeTo = (v, secs) => { if (!G) return; const t = ctx.currentTime, p = G.fade.gain; p.cancelScheduledValues(t); p.setTargetAtTime(v, t, secs / 3); };

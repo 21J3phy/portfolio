@@ -6,6 +6,9 @@ import * as THREE from 'three';
 import { Builder, box, cyl, defineMaterial } from '../models/kit.js';
 const clamp = THREE.MathUtils.clamp;
 
+/** How many places the driver looks from at a stop, where it is not one. (drive/main.js gives each stop room for them.) */
+export const VIEWS = { marschair: 2, software: 2 };
+
 defineMaterial('exhibit:oak', () => new THREE.MeshStandardMaterial({ color: 0xc8a57a, roughness: 0.58 }));
 defineMaterial('exhibit:concrete', () => new THREE.MeshStandardMaterial({ color: 0xa9a59d, roughness: 0.85 }));
 const load = name => import('../models/' + name + '.js').catch(e => { console.warn('model', name, e); return {}; });
@@ -30,7 +33,8 @@ function readCard(st) {
   const card = st.el.querySelector('.dest') || st.el, txt = sel => card.querySelector(sel)?.textContent.replace(/\s+/g, ' ').trim() || '';
   const media = card.querySelector('img[src], video[data-poster], img[data-src]');
   return {
-    kicker: txt('.k'), n: card.querySelector('.k b')?.textContent.trim() || st.n, title: txt('h2'), lead: txt('.lead') || txt('p:not(.k):not(.cap)'),   // (a card with no opening paragraph lends its first one)
+    kicker: txt('.k'), n: card.querySelector('.k b')?.textContent.trim() || st.n, title: txt('h2'), lead: txt('.lead'),
+    brief: [...card.querySelectorAll('.brief > div')].map(d => [d.querySelector('dt')?.textContent.trim() || '', d.querySelector('dd')?.textContent.replace(/\s+/g, ' ').trim() || '']),
     stats: [...card.querySelectorAll('.stats > div')].slice(0, 4).map(d => ({ v: d.querySelector('b')?.textContent.replace(/\s+/g, ' ').trim() || '', l: d.querySelector('span')?.textContent.replace(/\s+/g, ' ').trim() || '' })),
     rows: [...card.querySelectorAll('.contact > *')].slice(0, 4).map(r => ({ l: r.querySelector('.lab')?.textContent.trim() || '', v: r.querySelector('.v')?.textContent.replace(/\s+/g, ' ').trim() || '' })),
     image: media ? media.getAttribute('src') && media.tagName === 'IMG' ? media.getAttribute('src') : media.dataset.poster || media.dataset.src || '' : '',
@@ -42,22 +46,37 @@ function drawSign(c, d, img) {
   c.textBaseline = 'alphabetic'; c.textAlign = 'left';
   c.font = `600 38px ${sans}`; c.fillStyle = accent; c.fillText(d.n, M, 104); const nw = c.measureText(d.n + ' ').width;
   c.fillStyle = faint; c.font = `500 38px ${sans}`; c.fillText(d.kicker.replace(d.n, '').trim(), M + nw, 104);
-  c.fillStyle = ink; c.font = `600 100px ${sans}`; let y = 216;
-  for (const l of wrap(c, d.title, W - 2 * M, 2)) { c.fillText(l, M, y); y += 104; }
-  const top = y - 50, hasBottom = d.stats.length || d.rows.length, bottom = hasBottom ? 712 : 900, colW = img ? 800 : W - 2 * M;
-  c.fillStyle = soft; c.font = `400 47px ${sans}`; y = top + 48;
-  for (const l of wrap(c, d.lead, colW, Math.max(1, Math.floor((bottom - top) / 64)))) { c.fillText(l, M, y); y += 64; }
-  if (img) {
-    // the card's first picture, cropped to fill its window
-    const x = 940, w = W - M - x, h = Math.min(bottom - top - 6, 430), r = Math.max(w / img.width, h / img.height), sw = w / r, sh = h / r;
-    c.save(); c.beginPath(); c.roundRect(x, top, w, h, 20); c.clip(); c.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, x, top, w, h); c.restore();
-    c.strokeStyle = 'rgba(23,25,29,.16)'; c.lineWidth = 2; c.beginPath(); c.roundRect(x, top, w, h, 20); c.stroke();
+  const big = d.brief.length ? 86 : 100; c.fillStyle = ink; c.font = `600 ${big}px ${sans}`; let y = d.brief.length ? 204 : 216;
+  for (const l of wrap(c, d.title, W - 2 * M, 2)) { c.fillText(l, M, y); y += big + 4; }
+  const top = y - 50, hasBottom = d.stats.length || d.rows.length, bottom = hasBottom ? 742 : 912;
+  if (d.brief.length) {
+    // three plain lines: why, what, how it came out. The label on the left, the sentence beside it.
+    // (set as large as will fit what there is to say)
+    const x = M + 250, w = W - M - x; let size = 54, lh, rows, used;
+    do { size -= 2; lh = Math.round(size * 1.27); c.font = `400 ${size}px ${sans}`; rows = d.brief.map(([k, v]) => [k, wrap(c, v, w, 4)]); used = rows.reduce((a, [, l]) => a + l.length * lh, 0) + (rows.length - 1) * 18; } while (used > bottom - top - 36 && size > 30);
+    const gap = Math.min(40, 18 + (bottom - top - 36 - used) / Math.max(1, rows.length - 1));
+    y = top + 30 + size;
+    for (const [k, lines] of rows) {
+      c.fillStyle = accent; c.font = `600 ${Math.round(size * 0.78)}px ${sans}`; c.fillText(k, M, y);
+      c.fillStyle = ink; c.font = `400 ${size}px ${sans}`; for (const l of lines) { c.fillText(l, x, y); y += lh; }
+      y += gap;
+    }
+  } else {
+    const colW = img ? 800 : W - 2 * M;
+    c.fillStyle = soft; c.font = `400 47px ${sans}`; y = top + 48;
+    for (const l of wrap(c, d.lead, colW, Math.max(1, Math.floor((bottom - top) / 64)))) { c.fillText(l, M, y); y += 64; }
+    if (img) {
+      // the card's first picture, cropped to fill its window
+      const x = 940, w = W - M - x, h = Math.min(bottom - top - 6, 430), r = Math.max(w / img.width, h / img.height), sw = w / r, sh = h / r;
+      c.save(); c.beginPath(); c.roundRect(x, top, w, h, 20); c.clip(); c.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, x, top, w, h); c.restore();
+      c.strokeStyle = 'rgba(23,25,29,.16)'; c.lineWidth = 2; c.beginPath(); c.roundRect(x, top, w, h, 20); c.stroke();
+    }
   }
-  if (hasBottom) { c.fillStyle = 'rgba(23,25,29,.16)'; c.fillRect(M, d.rows.length ? 742 : 748, W - 2 * M, 2); }
+  if (hasBottom) { c.fillStyle = 'rgba(23,25,29,.16)'; c.fillRect(M, d.rows.length ? 742 : 768, W - 2 * M, 2); }
   const cw = (W - 2 * M) / Math.max(d.stats.length, 1);
   d.stats.forEach((s, i) => {
-    const x = M + i * cw; c.fillStyle = ink; c.font = `600 70px ${sans}`; c.fillText(s.v, x, 838);
-    c.fillStyle = soft; c.font = `400 30px ${sans}`; wrap(c, s.l, cw - 34, 2).forEach((l, k) => c.fillText(l, x, 886 + k * 37));
+    const x = M + i * cw; c.fillStyle = ink; c.font = `600 62px ${sans}`; c.fillText(s.v, x, 846);
+    c.fillStyle = soft; c.font = `400 28px ${sans}`; wrap(c, s.l, cw - 34, 2).forEach((l, k) => c.fillText(l, x, 890 + k * 34));
   });
   d.rows.forEach((r, i) => {   // two by two: an address needs the width
     const x = M + (i % 2) * (W - 2 * M) / 2, y0 = 806 + Math.floor(i / 2) * 92; c.fillStyle = soft; c.font = `400 28px ${sans}`; c.fillText(r.l, x, y0);
@@ -70,7 +89,7 @@ function makeSign(st) {
   const g = new THREE.Group(), d = readCard(st), cv = document.createElement('canvas'); [cv.width, cv.height] = SIGN.px;
   const c = cv.getContext('2d'); drawSign(c, d, null);
   const map = new THREE.CanvasTexture(cv); map.colorSpace = THREE.SRGBColorSpace; map.anisotropy = 16;
-  if (d.image) { const im = new Image(); im.onload = () => { drawSign(c, d, im); map.needsUpdate = true; }; im.src = d.image; }
+  if (d.image && !d.brief.length) { const im = new Image(); im.onload = () => { drawSign(c, d, im); map.needsUpdate = true; }; im.src = d.image; }   // (a board with the three lines has no room for a picture, and the thing itself is standing next to it)
   // a printed board: lit by the day like everything else, with a little of its own light so it reads in the shade
   const face = new THREE.Mesh(new THREE.PlaneGeometry(SIGN.w, SIGN.h), new THREE.MeshStandardMaterial({ map, roughness: 0.6, metalness: 0, emissive: 0xffffff, emissiveMap: map, emissiveIntensity: 0.3 }));
   face.position.set(0, SIGN.mid, 0.031); face.name = 'placard'; face.userData.stop = st; face.receiveShadow = true;
@@ -109,7 +128,8 @@ export function buildExhibits(scene, route, stops, { tier = 'high', shoulderAt, 
     let e = list.find(x => x.st === st); if (!e) { e = { st, groups: [], updates: [], ready: false }; list.push(e); }
     g.visible = false; e.groups.push(g); return [g, e];
   }
-  // How the driver looks a thing over, which is different for each: the places he goes, in order, in the exhibit's own
+  // How the driver looks a thing over, which is different for each. Most get one look; where there are two different
+  // things to see (the MARS lab's model and its robot, the desk's terminal and its phone) he goes to both. The places he goes, in order, in the exhibit's own
   // frame ([x, z]: +z toward the arriving car, +x toward the drop; the sign is on the -x side). At each he faces `look`
   // and the view closes in on it: `low` has him get down to it, `r` is how far back the view stands (else it is sized
   // to the thing), `el` how high (radians), `side` which way round from him it sits, `off` a nudge to where it aims,
@@ -122,8 +142,8 @@ export function buildExhibits(scene, route, stops, { tier = 'high', shoulderAt, 
     const [g, e] = at('armsim') || [], arm = g && await make(M.armsim, 'default');
     if (arm) {
       put(g, arm);
-      // down to the bench to watch it reach, then round the end to see it from the side
-      tour(e, g, [{ at: [-0.15, 1.15], look: arm, low: true, r: 1.7 }, { at: [1.3, 0.1], via: [[1.1, 1.0]], look: arm, r: 1.8, side: -1, el: 0.42 }], [[1.1, 1.1]]);
+      // down to the bench, to watch it reach
+      tour(e, g, [{ at: [-0.15, 1.15], look: arm, low: true, r: 1.7 }]);
       const A = M.armsim, targets = A.TARGETS || [], keys = ['pan', 'lift', 'elbow', 'wflex', 'wroll'], home = A.HOME || {};
       const screen = arm.getObjectByName('armScreen'); let last = -1;
       const draw = (label, stage) => canvasTex(800, 500, (c) => {
@@ -180,8 +200,8 @@ export function buildExhibits(scene, route, stops, { tier = 'high', shoulderAt, 
       const u = hop.userData, ext = u.extent, mid = ext ? (ext.min.z + ext.max.z) / 2 : 0, holder = new THREE.Group();
       hop.position.set(0, 0, -mid); holder.add(hop); shadows(hop); g.add(holder); e.focus = u.body || hop;   // it walks and jumps down the road, toward whoever is watching
       if (ext) e.reach = (ext.max.z - ext.min.z) / 2 + 0.9;
-      // from in front as it comes at him, then round to its side and down to the legs
-      const R = e.reach || 3; tour(e, g, [{ at: [-0.6, R + 0.35], look: e.focus, r: 3.4, el: 0.26 }, { at: [1.85, 0.2], via: [[1.8, R]], look: e.focus, low: true, r: 2.6, side: -1 }], [[1.8, R]]);
+      // from in front, as it walks and jumps toward him
+      const R = e.reach || 3; tour(e, g, [{ at: [-0.6, R + 0.35], look: e.focus, r: 3.4, el: 0.26 }]);
       const loop = u.duration + 2.2; e.state = { phase: '' };
       e.updates.push(time => { const t = time % loop, s = Math.min(u.duration, t); u.setTime(s); hop.visible = t < loop - 0.18; e.state.phase = u.phaseAt?.(s) || ''; });
     }
@@ -195,8 +215,7 @@ export function buildExhibits(scene, route, stops, { tier = 'high', shoulderAt, 
       for (const x of [-1.5, 1.5]) frame.add(box(0.14, 3.2, 0.14), 'blackMetal', { position: [x, 1.6, -0.12] });
       frame.add(box(3.4, 0.1, 0.1), 'blackMetal', { position: [0, 1.25, -0.12] });
       put(g, frame.build()); put(g, wall, 0, 2.45, 0, 0, k); g.scale.setScalar(0.52); g0.add(g);
-      // the whole board from a step back, then up close to the numbers on its right
-      tour(e, g0, [{ at: [-0.5, 2.0], look: wall, r: 2.5, el: 0.1 }, { at: [0.35, 1.15], look: wall, r: 1.25, el: 0.06, off: [0.5, -0.05, 0], side: -1 }]);
+      tour(e, g0, [{ at: [-0.5, 2.0], look: wall, r: 2.4, el: 0.1 }]);
       let lastAt = 0; e.updates.push(time => { if (Math.abs(time - lastAt) > 0.09) { lastAt = time; wall.userData.draw?.(time); } });
     }
   });
@@ -207,19 +226,19 @@ export function buildExhibits(scene, route, stops, { tier = 'high', shoulderAt, 
     if (bot) {
       const mat = new THREE.Mesh(new THREE.BoxGeometry(1.83, 0.016, 1.83), new THREE.MeshStandardMaterial({ color: 0x5f6268, roughness: 0.95 })); mat.position.y = 0.008; mat.receiveShadow = true; g.add(mat);
       e.focus = put(g, bot, 0, 0.016, 0, 0.5);
-      // it is small and on the floor: down to it from the front, round to its side, then behind it
-      tour(e, g, [{ at: [-0.35, 1.2], look: bot, low: true, r: 1.25 }, { at: [1.2, -0.2], via: [[1.25, 1.05]], look: bot, low: true, r: 1.2, side: -1 }, { at: [0.1, -1.3], via: [[1.2, -1.15]], look: bot, r: 1.5, el: 0.5 }], [[1.3, -1.15], [1.3, 1.1]]);
+      // it is small and on the floor: down to it
+      tour(e, g, [{ at: [-0.35, 1.2], look: bot, low: true, r: 1.25 }]);
       const turret = bot.getObjectByName('turret'), fly = bot.getObjectByName('flywheel'), rollers = bot.getObjectByName('intakeRollers');
       e.updates.push((time, dt) => { if (turret) turret.rotation.y = Math.sin(time * 0.35) * 0.9; if (fly) fly.rotation.x += dt * 30; if (rollers) rollers.rotation.x += dt * 6; });
     }
   });
   add('engine', async () => {
     const [g, e] = at('engine', { d: 7.9 }) || [], lego = g && await make(M.legoengine, 'default');
-    if (lego) { put(g, plinth(0.9, 0.95, 0.6)); e.focus = put(g, lego, 0, 0.95, 0, Math.PI); tour(e, g, [{ at: [-0.2, 1.05], look: lego, r: 0.85, el: 0.3 }, { at: [1.05, 0.0], via: [[0.95, 0.85]], look: lego, r: 0.8, el: 0.24, side: -1 }, { at: [0.05, -1.0], via: [[0.95, -0.85]], look: lego, r: 0.85, el: 0.34 }], [[1.0, -0.85], [1.0, 0.9]]); let th = 0; e.updates.push((time, dt) => { th += dt * Math.PI * 2 * 2.2; M.legoengine.setCrank?.(lego, th); }); }
+    if (lego) { put(g, plinth(0.9, 0.95, 0.6)); e.focus = put(g, lego, 0, 0.95, 0, Math.PI); tour(e, g, [{ at: [-0.2, 1.05], look: lego, r: 0.85, el: 0.3 }]); let th = 0; e.updates.push((time, dt) => { th += dt * Math.PI * 2 * 2.2; M.legoengine.setCrank?.(lego, th); }); }
   });
   add('research', async () => {
     const [g, e] = at('research', { d: 8.5 }) || [], rig = g && await make(M.windtunnel, 'default');
-    if (rig) { put(g, rig); tour(e, g, [{ at: [-0.4, 1.2], look: rig, low: true, r: 1.9 }, { at: [1.75, 0.05], via: [[1.5, 1.05]], look: rig, r: 1.8, el: 0.3, side: -1 }], [[1.5, 1.1]]); const fan = rig.getObjectByName('fanBlades'), fin = rig.getObjectByName('fin'); e.updates.push((time, dt) => { if (fan) fan.rotation.x += dt * 38; if (fin) fin.rotation.y = Math.sin(time * 5.2) * 0.22; }); }
+    if (rig) { put(g, rig); tour(e, g, [{ at: [-0.4, 1.2], look: rig, low: true, r: 1.9 }]); const fan = rig.getObjectByName('fanBlades'), fin = rig.getObjectByName('fin'); e.updates.push((time, dt) => { if (fan) fan.rotation.x += dt * 38; if (fin) fin.rotation.y = Math.sin(time * 5.2) * 0.22; }); }
   });
 
   // ---------- 08 software: a desk with a view; Silk in the terminal, SpareMe on the phone
@@ -246,17 +265,17 @@ export function buildExhibits(scene, route, stops, { tier = 'high', shoulderAt, 
   // ---------- 09 more: the workshop end of things
   add('more', async () => {
     const [g, e] = at('more', { d: 9.0 }) || [];
-    if (g) { const [shelf, cart, boxes] = await Promise.all([make(M.labkit, 'createShelving'), make(M.labkit, 'createToolCart'), make(M.labkit, 'createFloorBoxes')]); put(g, shelf, -0.55, 0, 0); put(g, cart, 0.85, 0, 0.05); put(g, boxes, 0.75, 0, 1.0, -0.3); tour(e, g, [{ at: [-0.75, 1.3], look: shelf, r: 2.3, el: 0.2 }, { at: [-0.1, 1.75], look: cart, low: true, r: 1.7, el: 0.34, side: -1 }]); }
+    if (g) { const [shelf, cart, boxes] = await Promise.all([make(M.labkit, 'createShelving'), make(M.labkit, 'createToolCart'), make(M.labkit, 'createFloorBoxes')]); put(g, shelf, -0.55, 0, 0); put(g, cart, 0.85, 0, 0.05); put(g, boxes, 0.75, 0, 1.0, -0.3); tour(e, g, [{ at: [-0.75, 1.3], look: shelf, r: 2.3, el: 0.2 }]); }
   });
   // ---------- 10 about: a bike against the rail (four years as a bike mechanic)
   add('about', async () => {
     const st = by.about, [g, e] = st ? at('about', { d: shoulderAt(st.s) - 0.62, turn: -Math.PI / 2 }) : [];
-    if (g) { const [bike, pack] = await Promise.all([make(M.labkit, 'createBike'), make(M.labkit, 'createBackpack')]); put(g, bike, 0, 0, 0.12, 0); put(g, pack, 1.35, 0, 0.3, 0.4); tour(e, g, [{ at: [1.6, 1.25], look: pack, low: true, r: 1.1, side: -1, el: 0.5 }, { at: [-0.1, 1.45], look: bike, r: 2.2, el: 0.24, side: -1 }]); }
+    if (g) { const [bike, pack] = await Promise.all([make(M.labkit, 'createBike'), make(M.labkit, 'createBackpack')]); put(g, bike, 0, 0, 0.12, 0); put(g, pack, 1.35, 0, 0.3, 0.4); tour(e, g, [{ at: [-0.1, 1.45], look: bike, r: 2.2, el: 0.24, side: -1 }]); }
   });
   // ---------- 11 guitar
   add('guitar', async () => {
     const [g, e] = at('guitar', { d: 8.0 }) || [];
-    if (g) { const [guitar, stool] = await Promise.all([make(M.props, 'createGuitar'), make(M.props, 'createStool')]); put(g, guitar, 0, 0, 0, 0.2); put(g, stool, 0.75, 0, -0.1); tour(e, g, [{ at: [-0.3, 1.2], look: guitar, low: true, r: 1.35 }, { at: [0.2, -1.05], via: [[1.4, 0.85], [1.4, -0.7]], look: guitar, r: 1.5, el: 0.36 }], [[1.4, -0.7], [1.4, 0.9]]); }
+    if (g) { const [guitar, stool] = await Promise.all([make(M.props, 'createGuitar'), make(M.props, 'createStool')]); put(g, guitar, 0, 0, 0, 0.2); put(g, stool, 0.75, 0, -0.1); tour(e, g, [{ at: [-0.3, 1.2], look: guitar, low: true, r: 1.35 }]); }
   });
 
   const tmp = new THREE.Vector3();

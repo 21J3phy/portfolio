@@ -1,0 +1,23 @@
+<!doctype html><meta charset="utf-8"><title>sound levels</title>
+<script type="module">
+// Renders the sound offline in a few steady states with layers switched on and off, and reports each one's level (dB RMS).
+import { createSound } from '../drive/sound.js';
+const state = o => ({ dt: 0.03, rpm: 760, throttle: 0, speed: 0, reverse: false, brake: 0, decel: 0, lateral: 0, blinker: false, view: { dist: 6.5, pan: 0, behind: 1 }, sea: { pan: 0.4, gain: 0.7 }, ...o });
+async function level(st, mix) {
+  const sr = 44100, ctx = new OfflineAudioContext(2, sr * 3, sr), snd = createSound({ context: ctx });
+  Object.assign(snd.mix, { engine: 0, road: 0, wind: 0, ambience: 0, foley: 0, intake: 1, pulse: 1 }, mix);
+  await snd.enable(); for (let i = 0; i < 40; i++) snd.update(state(st));
+  const buf = await ctx.startRendering(), a = buf.getChannelData(0), b = buf.getChannelData(1); let sum = 0, pk = 0, n = 0;
+  for (let i = Math.floor(sr * 1.5); i < a.length; i++) { sum += a[i] * a[i] + b[i] * b[i]; pk = Math.max(pk, Math.abs(a[i]), Math.abs(b[i])); n += 2; }
+  return [+(10 * Math.log10(sum / n + 1e-12)).toFixed(1), +(20 * Math.log10(pk + 1e-9)).toFixed(1)];
+}
+window.__level = (st, mix) => level(st, mix);
+window.__levels = async () => {
+  const S = { idle: {}, cruise: { rpm: 2900, throttle: 0.3, speed: 26 }, pull: { rpm: 4600, throttle: 1, speed: 20 }, fast: { rpm: 3300, throttle: 0.45, speed: 36 } }, out = {};
+  for (const [k, st] of Object.entries(S)) out[k] = {
+    recordings: await level(st, { engine: 1, intake: 0, pulse: 0 }), withIntake: await level(st, { engine: 1, intake: 1, pulse: 0 }), withPulse: await level(st, { engine: 1, intake: 0, pulse: 1 }), engineAll: await level(st, { engine: 1 }),
+    road: await level(st, { road: 1 }), wind: await level(st, { wind: 1 }), ambience: await level(st, { ambience: 1 }), everything: await level(st, { engine: 1, road: 1, wind: 1, ambience: 1 }) };
+  return JSON.stringify(out);
+};
+window.__drive = { advance() {} };
+</script>

@@ -48,6 +48,13 @@ There are three ways to see it, switched by the control at the top (`setMode` in
   at something the view goes in past his shoulder to a close view of that thing, from his side of it; there a drag
   goes round it (pinch, or ctrl + wheel, moves in and out). He walks as fast as the film is run and faces the way
   he is going (`planWalk`, `walkAt`, `stepSeq`, `placePerson`). With reduced motion he stays in his seat.
+- **Every project opens with three plain lines**, written for someone deciding in a minute whether to read on: the
+  goal (why), what I did, and the result (`<dl class="brief">` in `index.html`). The signs print them, the Classic
+  view leads with them, and the full technical write-up sits underneath for anyone who wants it.
+- **Most stops get one look; two where there are two different things to see** (the MARS lab's model and its robot,
+  the desk's terminal and its phone: `VIEWS` in `drive/exhibits.js`). A stop is only as long as it has things to
+  look at (`stage()` in `drive/main.js`).
+- **Parked, the whole car is in the turnout**, its road side 0.7 m beyond the edge of the pavement (`BAY`, `laneAt`).
 - **What the page says about a project is on a sign, not on the screen.** Every exhibit faces down the road, at
   whoever is arriving, and its sign stands beside it, in line with its front and facing the same way. It is printed
   from the page's own markup: the heading, the opening
@@ -61,8 +68,7 @@ There are three ways to see it, switched by the control at the top (`setMode` in
 - The **dashboard** shows it: speedometer, gear and revs, a brake lamp, elevation and trip distance. The **map** in
   the other corner is the road from above, turned so the car points up: mountain on one side, sea on the other, the
   driven part in orange, the destinations numbered, with the next stop, its distance, the distance left and the
-  stops passed beside it (`drive/minimap.js`). It steps aside while a write-up is open over its corner. The line along the
-  bottom is the whole route; its dots jump to a destination.
+  stops passed beside it (`drive/minimap.js`). It steps aside while a write-up is open over its corner. 
 - **Sound** is off until the Sound button is pressed (a browser will not play any before a click anyway), and
   neither the code nor the recordings load until then: `drive/sound.js`, `drive/assets/audio/`.
 - **The opening**: the page loads looking at the car from the front. The first stretch of scroll walks the camera
@@ -96,11 +102,18 @@ There are three ways to see it, switched by the control at the top (`setMode` in
   **MIT**), with eight of the library's own recorded takes: walk, run, two idles, sitting, a hand-at-the-chin
   "thinking it over", and two crouching ones for looking at something closely. Any of the library's 40 adults can be swapped in: open `dev/tools/convert_driver.html` in a
   browser with the FBX files beside it, then run `dev/tools/pack_driver.mjs` on what it exports.
+- **The engine and gearbox** are modelled as far as the dials and the sound need (`powertrain` in `drive/main.js`):
+  a 2012 Civic Si's six ratios and final drive, so the revs are what that car's would be at this speed in this
+  gear; it changes up early on a light foot, changes down as it slows, slips its clutch pulling away, idles at rest.
+  Left to drive itself the car pulls away through the gears to about 58 mph and brakes into the next stop.
 - **Sound**: thirty CC0 recordings (1.7 MB), credited one by one in `drive/assets/audio/CREDITS.md`. The engine is a
   real naturally aspirated inline four held steady on a dyno (a Mercedes 190E 2.3-16, not a Civic: it was the only
   free set recorded at known engine speeds, on and off load, from both the exhaust and under the bonnet). Each loop
   plays at the ratio of the car's revs to its own measured revs and crossfades with its neighbours; throttle fades
   between the on-load and off-load sets; where the camera is decides how much exhaust and how much engine bay.
+  Under the recordings sit three made layers that follow the revs exactly: the intake's roar under load, pulsing
+  with each cylinder; the low beat of the exhaust and the unevenness between firings that makes an idle sound like
+  an idle; and a faint gear whine. `dev/soundlevels.html` renders the mix offline and reports each layer's level.
   Tyre roar, wind and the indicator are synthesised; door, handbrake, footsteps, gulls and the sea are recordings.
   Levels are the `MIX` table at the top of `drive/sound.js`.
 - Guardrail, posts, lane paint, signs, boulders and scrub are procedural; so are the project models (`models/`).
