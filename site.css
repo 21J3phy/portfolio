@@ -203,14 +203,141 @@ button.shot{cursor:zoom-in}
 
 /* ============================================================ the drive */
 #drive{position:fixed;inset:0;width:100vw;height:100vh;height:100lvh;z-index:0;pointer-events:none;background:#b9c4cf}
-.top{position:fixed;inset:0 0 auto;z-index:20;display:flex;align-items:center;gap:8px;padding:16px clamp(14px,2.2vw,28px);pointer-events:none}
+/* ---------- the instruments ----------
+   Everything that floats over the road is made as car hardware, after the dash of the Civic it is driven in: moulded
+   black faceplates, hard buttons with backlit legends and a lamp that lights when they are in, liquid-crystal windows
+   for anything that is read, a knurled knob for the sound, a push-button start, and two dials in a machined bezel. */
+:root{--plastic:linear-gradient(180deg,#303238 0%,#1c1d21 44%,#121316 100%);--keyup:linear-gradient(180deg,#474a51 0%,#2c2e33 46%,#1d1e22 54%,#141518 100%);--keydn:linear-gradient(180deg,#0f1012 0%,#1a1b1f 55%,#24262b 100%);--led:#ff4a1c;--lcdink:#dcebff;--legend:#f3efe8;--safe:env(safe-area-inset-bottom,0px)}
+/* a faceplate: the moulding the buttons and windows sit in */
+.face{display:flex;align-items:center;gap:5px;padding:6px;border-radius:11px;border:1px solid #040405;background:var(--plastic);box-shadow:inset 0 1px 0 rgba(255,255,255,.17),inset 0 -1px 0 rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,255,255,.035),0 1px 0 rgba(255,255,255,.05),0 14px 30px rgba(0,0,0,.5),0 2px 5px rgba(0,0,0,.5)}
+/* a hard button: it stands proud, its legend is lit from behind, and it goes in when pressed */
+.key{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:7px;height:34px;padding:0 13px;border-radius:6px;border:1px solid #030304;background:var(--keyup);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -2px 2px rgba(0,0,0,.5),0 2px 3px rgba(0,0,0,.65);font:600 10.5px/1 var(--sans);font-stretch:110%;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;color:var(--legend);text-shadow:0 0 7px rgba(255,232,206,.5);cursor:pointer;-webkit-user-select:none;user-select:none;transition:transform .07s,box-shadow .07s,color .15s,text-shadow .15s}
+.key:hover{color:#fff;text-shadow:0 0 10px rgba(255,232,206,.95)}
+.key:active,.key[aria-pressed="true"]{transform:translateY(1.5px);background:var(--keydn);box-shadow:inset 0 2px 5px rgba(0,0,0,.8),inset 0 -1px 0 rgba(255,255,255,.07),0 0 0 rgba(0,0,0,0)}
+.key .led{flex:none;width:13px;height:3px;border-radius:2px;background:#33100a;box-shadow:inset 0 1px 1px rgba(0,0,0,.7)}
+.key[aria-pressed="true"] .led{background:var(--led);box-shadow:0 0 7px 1px rgba(255,74,28,.85),inset 0 -1px 0 rgba(120,20,0,.5)}
+.key.cv{background:linear-gradient(180deg,#f4f1ea 0%,#d7d3ca 46%,#bcb8ae 54%,#a8a49b 100%);border-color:#0a0a0b;color:#17181b;text-shadow:0 1px 0 rgba(255,255,255,.6);box-shadow:inset 0 1px 0 #fff,inset 0 -2px 2px rgba(0,0,0,.25),0 2px 3px rgba(0,0,0,.65)}
+.key.cv:hover{color:#000;text-shadow:0 1px 0 rgba(255,255,255,.8)}
+.key.cv:active{background:linear-gradient(180deg,#a8a49b,#cfcbc2)}
+/* a window: back-lit liquid crystal behind glass */
+.lcd{position:relative;display:block;border-radius:5px;border:1px solid #000;background:linear-gradient(180deg,#04070b 0%,#0a121b 62%,#0d1823 100%);box-shadow:inset 0 2px 7px rgba(0,0,0,.95),inset 0 0 0 1px rgba(255,255,255,.04),0 1px 0 rgba(255,255,255,.1);color:var(--lcdink);text-shadow:0 0 7px rgba(116,178,255,.6)}
+.lcd::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(118deg,rgba(255,255,255,.085) 0%,rgba(255,255,255,0) 30%),repeating-linear-gradient(0deg,rgba(0,0,0,.2) 0 1px,rgba(0,0,0,0) 1px 3px)}
+/* the bar: the name in a window, the three ways to see it on three buttons, the sound on a knob */
+.top{position:fixed;inset:0 0 auto;z-index:20;display:flex;align-items:center;gap:8px;padding:14px clamp(14px,2.2vw,28px);pointer-events:none}
 .top>*{pointer-events:auto}
-.brand{display:flex;align-items:center;gap:11px;height:44px;padding:0 16px 0 10px;border-radius:12px;background:rgba(250,248,244,.92);border:1px solid var(--line2)}
-.brand svg{width:26px;height:26px;flex:none}
-.brand b{display:block;font:600 15px/1.1 var(--sans);letter-spacing:-.005em}
-.brand small{display:block;margin-top:3px;font:400 12px/1 var(--sans);color:var(--ink3)}
 .top .sp{flex:1}
-@media(max-width:620px){.top{padding:12px;gap:6px}.brand{height:40px;padding:0 12px 0 8px;gap:9px}.brand svg{width:22px;height:22px}.brand small{display:none}.brand b{font-size:14px;white-space:nowrap}.btn{height:36px;padding:0 11px;font-size:13px}.top .opt{display:none}}
+.brand .lcd{display:flex;align-items:center;gap:12px;height:34px;padding:0 14px}
+.brand b{font:650 12.5px/1 var(--sans);font-stretch:112%;letter-spacing:.11em;text-transform:uppercase;white-space:nowrap}
+.brand small{padding-left:12px;border-left:1px solid rgba(160,200,255,.25);font:400 12px/1.3 var(--sans);color:rgba(200,224,255,.72);white-space:nowrap}
+.nav{gap:6px}
+.knobwrap{display:flex;align-items:center;gap:7px;padding:0 6px 0 3px}
+.knobwrap small{font:600 9px/1 var(--sans);font-stretch:110%;letter-spacing:.12em;text-transform:uppercase;color:rgba(243,239,232,.62)}
+.knob{position:relative;flex:none;width:34px;height:34px;border-radius:50%;border:0;padding:0;background:repeating-conic-gradient(#565960 0deg 4deg,#141518 4deg 9deg);box-shadow:0 3px 6px rgba(0,0,0,.75),0 0 0 1px #000,0 0 0 2.5px #1d1e22,0 0 0 3.5px rgba(255,255,255,.07);cursor:pointer;transform:rotate(-135deg);transition:transform .45s var(--ease)}
+.knob::before{content:"";position:absolute;inset:4px;border-radius:50%;background:conic-gradient(from 30deg,#6a6d75,#24262b 22%,#55585f 48%,#18191c 74%,#6a6d75);box-shadow:inset 0 1px 1px rgba(255,255,255,.4),inset 0 -2px 3px rgba(0,0,0,.65),0 0 0 1px #000}
+.knob::after{content:"";position:absolute;left:50%;top:6px;width:2.6px;height:8px;margin-left:-1.3px;border-radius:2px;background:var(--legend);box-shadow:0 0 5px rgba(255,232,206,.8)}
+.knob[aria-pressed="true"]{transform:rotate(38deg)}
+.knob[aria-pressed="true"]::after{background:var(--led);box-shadow:0 0 6px 1px rgba(255,74,28,.9)}
+#modes{position:fixed;z-index:21;top:14px;left:50%;transform:translateX(-50%);display:none}
+#modes .key{flex-direction:column;gap:6px;height:36px;padding:1px 14px 0}
+/* the two dials */
+.inst{position:relative;flex:none;border-radius:50%;padding:5px;background:conic-gradient(from 200deg,#f1f2f4 0deg,#7d8189 40deg,#1b1c20 95deg,#9b9fa7 160deg,#2a2c31 215deg,#c9ccd1 285deg,#f1f2f4 360deg);box-shadow:0 0 0 1px #000,0 0 0 4px #17181b,0 0 0 5px rgba(255,255,255,.08),0 18px 44px rgba(0,0,0,.6)}
+.inst::after{content:"";position:absolute;inset:5px;border-radius:50%;pointer-events:none;background:linear-gradient(160deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,0) 34%);box-shadow:inset 0 0 0 1px #000,inset 0 3px 10px rgba(0,0,0,.8),inset 0 0 30px rgba(0,0,0,.5)}
+.inst>svg,.inst>canvas{display:block;width:100%;height:100%;border-radius:50%}
+.cluster,#mapDial{width:190px;height:190px}
+#dash,#map{position:fixed;bottom:calc(clamp(14px,2.4vh,26px) + var(--safe));z-index:15;display:flex;align-items:flex-end;gap:12px;pointer-events:none;opacity:0}
+#dash{right:clamp(14px,2vw,28px);transition:opacity .6s}
+#map{left:clamp(14px,2vw,28px);transition:opacity .45s,transform .45s}
+body.ready #dash,body.ready #map{opacity:1}
+body.ready #dash.hide{opacity:0}
+body.ready #map.hide{opacity:0;transform:translateY(8px)}
+/* the speedometer: a needle on a hub over a lit scale, revs on the inner arc up to the red line, and a window at the foot of the dial for the gear and the figure */
+.cluster .lit{fill:none;stroke:rgba(255,74,28,.5);stroke-width:1.1}
+.cluster .tick{stroke:rgba(255,255,255,.42);stroke-width:1}
+.cluster .tick.mid{stroke:rgba(255,255,255,.74);stroke-width:1.2}
+.cluster .tick.maj{stroke:#fff;stroke-width:2.1}
+.cluster .num{fill:#fff;font:600 9.5px var(--sans);font-stretch:108%;text-anchor:middle;dominant-baseline:central}
+.cluster .tnum{fill:rgba(255,255,255,.45);font:500 6.2px var(--sans);text-anchor:middle;dominant-baseline:central}
+.cluster .ttick{stroke:rgba(255,255,255,.42);stroke-width:.9}
+.cluster .spdtrack{fill:none;stroke:rgba(255,255,255,.09);stroke-width:2}
+.cluster #spd{fill:none;stroke:var(--led);stroke-width:2.4;stroke-dasharray:240;stroke-dashoffset:240}
+.cluster .rpmtrack{fill:none;stroke:rgba(255,255,255,.12);stroke-width:4.5}
+.cluster .red{fill:none;stroke:#e2311c;stroke-width:4.5;opacity:.9}
+.cluster #rpm{fill:none;stroke:#f4f1ea;stroke-width:4.5;stroke-dasharray:151;stroke-dashoffset:151}
+.cluster .needle{filter:drop-shadow(1.5px 3px 2px rgba(0,0,0,.65))}
+.cluster .win{fill:#070c12;stroke:#000;stroke-width:1}
+.cluster .div{stroke:rgba(160,200,255,.28);stroke-width:.7}
+.cluster #gear{fill:var(--lcdink);font:650 13px var(--sans);text-anchor:middle;dominant-baseline:central}
+.cluster #mph,.cluster #ldPct{fill:var(--lcdink);font:650 19px var(--sans);font-stretch:108%;letter-spacing:-.02em}
+.cluster #mph{text-anchor:end}
+.cluster #ldPct{text-anchor:middle}
+.cluster .unit{fill:rgba(200,224,255,.7);font:500 6.4px var(--sans);letter-spacing:.04em}
+.cluster #brakeLamp{fill:rgba(255,60,40,.14);stroke:rgba(255,255,255,.16);stroke-width:.6}
+.cluster #brakeLamp.on{fill:#ff3b28;stroke:#ff8a7a;filter:drop-shadow(0 0 4px #ff3b28)}
+/* the read-outs beside them: a window in its own moulding */
+.tripcard,.mapinfo{margin-bottom:6px;padding:5px}
+.tripcard .lcd,.mapinfo .lcd{padding:10px 14px;font:400 12px/1.3 var(--sans)}
+.face .lcd small{display:block;font:500 10.5px/1.2 var(--sans);color:rgba(200,224,255,.66)}
+.face .rowt{display:flex;gap:18px}
+.face .rowt span{display:block;margin-top:4px;font:600 14px/1.1 var(--sans);font-stretch:106%;white-space:nowrap}
+.mapinfo .lcd{min-width:172px}
+.mapinfo b{display:block;margin-top:4px;font:600 14.5px/1.2 var(--sans)}
+.mapinfo #nextDist{display:block;margin-top:3px;font:650 23px/1.05 var(--sans);font-stretch:110%;letter-spacing:-.02em}
+.mapinfo #nextDist:empty{display:none}
+.mapinfo .rowt{margin-top:10px;padding-top:9px;border-top:1px solid rgba(160,200,255,.2)}
+/* prompts: what the keys and the scroll do, said once, on a strip of the same display; the ones that can be pressed are buttons */
+kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;margin:0 1px;padding:0 5px 2px;border-radius:5px;border:1px solid #000;background:linear-gradient(180deg,#4b4e55,#2a2c31);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 2px 0 #08090a,0 3px 3px rgba(0,0,0,.5);font:600 11px/1 var(--sans);color:var(--legend);text-shadow:none}
+#lookhint,#freehint{position:fixed;left:50%;z-index:14;align-items:center;gap:9px;height:42px;margin:0;padding:0 16px;border-radius:9px;border:4px solid #1b1c20;outline:1px solid #030304;background:linear-gradient(180deg,#04070b 0%,#0a121b 62%,#0d1823 100%);box-shadow:inset 0 2px 7px rgba(0,0,0,.95),0 0 0 1px rgba(255,255,255,.06),0 12px 28px rgba(0,0,0,.5);color:var(--lcdink);text-shadow:0 0 7px rgba(116,178,255,.6);font:500 13px/1 var(--sans);white-space:nowrap}
+#lookhint{display:flex;bottom:calc(28px + var(--safe));transform:translate(-50%,10px);opacity:0;pointer-events:none;transition:opacity .4s,transform .4s}
+#lookhint svg{width:17px;height:17px}
+body.inspect:not(.looked):not(.reading) #lookhint{opacity:1;transform:translate(-50%,0)}
+#lookhint .tap{display:none}
+#freehint{display:none;bottom:calc(28px + var(--safe));gap:5px;transform:translateX(-50%);pointer-events:none}
+body.free #freehint{display:flex}
+body.free #lookhint{display:none}
+/* Parked at a stop with the scroll at rest, the page says that scrolling carries on: a stopped car reads as the end otherwise. Pressing it does the scrolling. */
+#morehint{position:fixed;left:50%;z-index:14;bottom:calc(84px + var(--safe));flex-direction:column;gap:7px;height:46px;padding:2px 20px 0;border-radius:8px;font-size:11px;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -2px 2px rgba(0,0,0,.5),0 0 0 5px #1b1c20,0 0 0 6px #030304,0 14px 30px rgba(0,0,0,.55);transform:translate(-50%,12px);opacity:0;pointer-events:none;transition:opacity .35s,transform .35s var(--ease)}
+#morehint.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#morehint.on:active{transform:translate(-50%,1.5px)}
+#morehint .led{width:22px;animation:blink 1.5s steps(1) infinite}
+@keyframes blink{0%,55%{background:var(--led);box-shadow:0 0 7px 1px rgba(255,74,28,.85)}56%,100%{background:#33100a;box-shadow:inset 0 1px 1px rgba(0,0,0,.7)}}
+body.reading #morehint,body.free #morehint,body.no3d #morehint,body.atend #morehint{display:none}
+#outBtn{position:fixed;z-index:16;left:50%;bottom:calc(84px + var(--safe));transform:translateX(-50%);display:flex;align-items:center;gap:9px;height:46px;padding:0 18px 0 20px;border-radius:8px;border:1px solid #0a0a0b;background:linear-gradient(180deg,#f4f1ea 0%,#d7d3ca 46%,#bcb8ae 54%,#a8a49b 100%);color:#17181b;font:600 11.5px/1 var(--sans);font-stretch:110%;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 0 #fff,inset 0 -2px 2px rgba(0,0,0,.25),0 0 0 5px #1b1c20,0 0 0 6px #030304,0 14px 30px rgba(0,0,0,.55)}
+#outBtn:active{transform:translate(-50%,1.5px);background:linear-gradient(180deg,#a8a49b,#cfcbc2)}
+#outBtn[hidden]{display:none}
+#pad{display:none}
+#pad button[data-key="c"]{display:none}
+body.onfoot #pad button[data-key="c"]{display:inline-block}
+@media(pointer:coarse){body.free #freehint{display:none}body.free #pad{display:block}#pad>div{position:fixed;z-index:16;bottom:calc(140px + var(--safe));display:flex;gap:12px}#pad>div:first-child{left:14px}#pad>div:last-child{right:14px}#pad button{min-width:66px;height:66px;padding:0 14px;border-radius:50%;border:1px solid #030304;background:radial-gradient(circle at 50% 28%,#4a4d54,#1b1c20 62%,#101113);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 -3px 5px rgba(0,0,0,.55),0 0 0 4px #17181b,0 0 0 5px #030304,0 10px 20px rgba(0,0,0,.5);color:var(--legend);font:600 11px/1 var(--sans);font-stretch:110%;letter-spacing:.08em;text-transform:uppercase;text-shadow:0 0 7px rgba(255,232,206,.5);touch-action:none;-webkit-user-select:none;user-select:none}#pad button:active{background:radial-gradient(circle at 50% 70%,#2a2c31,#101113 70%);box-shadow:inset 0 3px 6px rgba(0,0,0,.8),0 0 0 4px #17181b,0 0 0 5px #030304}}
+/* the wait: the key has been turned. The dial's needle climbs as the road loads, and the window under it says what is loading. */
+#loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden;background:#090a0c;color:#fff;transition:opacity 1s var(--ease),visibility 1s}
+#loader::before{content:"";position:absolute;inset:-48px;background:url(img/stops/hero.webp) 100% 50%/cover;filter:blur(30px) brightness(.32) saturate(1.1)}
+#loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.ld{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px}
+.ldgauge{width:min(300px,62vw);height:min(300px,62vw)}
+.ldgauge .needle{transition:transform .7s cubic-bezier(.3,1.3,.5,1);transform-box:view-box;transform-origin:100px 100px}
+.ldpanel{padding:5px}
+.ldpanel .lcd{width:min(300px,72vw);padding:12px 16px 14px;text-align:center}
+.ldpanel b{display:block;font:650 13px/1 var(--sans);font-stretch:112%;letter-spacing:.14em;text-transform:uppercase}
+.ldpanel small{margin-top:8px;font-size:12px!important}
+.ld .barl{margin-top:12px;height:6px;border-radius:1px;background:repeating-linear-gradient(90deg,rgba(160,200,255,.14) 0 8px,rgba(0,0,0,0) 8px 11px);overflow:hidden}
+.ld #loadbar{width:0;height:100%;background:repeating-linear-gradient(90deg,var(--led) 0 8px,rgba(0,0,0,0) 8px 11px);filter:drop-shadow(0 0 4px rgba(255,74,28,.9));transition:width .5s var(--ease)}
+#slow{opacity:0;pointer-events:none;transition:opacity .6s}
+#loader.slow #slow{opacity:1;pointer-events:auto}
+@media(max-aspect-ratio:9/10){#loader::before{background-image:url(img/stops/hero-tall.webp);background-position:50% 0%}}
+@media(max-width:1180px){#modes{top:66px}}
+@media(max-width:900px){.top .brand small,.tripcard,.mapinfo{display:none}.cluster:not(.ldgauge),#mapDial{width:140px;height:140px}.cluster:not(.ldgauge) .tnum,.cluster:not(.ldgauge) .ttick{display:none}}
+@media(max-width:620px){
+  .top{padding:10px;gap:6px}.top .opt{display:none}.face{padding:5px}.key{height:32px;padding:0 11px}.brand .lcd{height:32px;padding:0 12px}.brand b{font-size:11.5px}.knob{width:32px;height:32px}.knobwrap small{display:none}.knobwrap{padding:0 2px}
+  #modes{top:60px;left:10px;transform:none}#modes .key{height:34px;padding:1px 8px 0;font-size:9.5px;letter-spacing:.07em}
+  .inst{padding:3.5px}.inst::after{inset:3.5px}.cluster:not(.ldgauge){width:108px;height:108px}#mapDial{width:108px;height:108px}
+  .cluster:not(.ldgauge) .tick:not(.maj){display:none}.cluster:not(.ldgauge) .num{font-size:11px}
+  .cluster .readout{transform-box:view-box;transform-origin:100px 139px;transform:translateY(4px) scale(1.5)}.cluster:not(.ldgauge) .tnum,.cluster #brakeLamp{display:none}
+  #dash{top:58px;bottom:auto;right:12px}#map{left:12px;bottom:calc(14px + var(--safe))}
+  body.reading #map{display:none}
+  #lookhint{bottom:auto;top:112px;left:10px;height:38px;padding:0 12px;transform:translate(0,8px)}body.inspect:not(.looked):not(.reading) #lookhint{transform:none}#lookhint .opt{display:none}#lookhint .tap{display:inline}
+  #morehint{bottom:calc(24px + var(--safe));left:auto;right:16px;transform:translate(0,12px)}#morehint.on{transform:none}#morehint.on:active{transform:translateY(1.5px)}
+}
+@media(max-width:620px){.btn{height:36px;padding:0 11px;font-size:13px}}
 
 #route{position:relative;z-index:2;pointer-events:none}
 /* On the road the page does not scroll: wheel, touch and keys run the film (drive/main.js), and the sections fold away. Without the road it is an ordinary page again. */
@@ -228,7 +355,7 @@ body.no3d{overflow:visible;height:auto;overscroll-behavior:auto;touch-action:aut
 .dest.open{touch-action:pan-y;display:block;position:fixed;z-index:18;left:clamp(12px,2vw,26px);top:76px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:min(540px,calc(100vw - 24px));overflow:auto;overscroll-behavior:contain;animation:panelin .28s var(--ease)}
 @keyframes panelin{from{opacity:0;transform:translateX(-14px)}}
 @keyframes sheetin{from{transform:translateY(40px);opacity:0}}
-.dest .shut{position:sticky;top:0;float:right;z-index:3;width:34px;height:34px;margin:-6px -6px 0 8px;border-radius:10px;border:1px solid var(--line2);background:rgba(250,248,244,.96);color:var(--ink);font:400 22px/1 var(--sans);cursor:pointer}
+.dest .shut{position:sticky;top:0;float:right;z-index:3;width:34px;height:34px;margin:-6px -6px 0 8px;border-radius:50%;border:1px solid var(--line2);background:rgba(250,248,244,.96);color:var(--ink);font:400 22px/1 var(--sans);cursor:pointer}
 body.no3d .dest .shut{display:none}
 body.onsign{cursor:pointer}
 .hero-in{position:relative;pointer-events:auto;width:min(640px,100%)}
@@ -238,16 +365,16 @@ body.onsign{cursor:pointer}
 .hero-in h1{margin-top:18px;font:700 clamp(54px,min(8.4vw,14.5vh),136px)/.86 var(--sans);font-stretch:116%;letter-spacing:-.045em;color:#fff;text-shadow:0 2px 34px rgba(9,11,15,.3)}
 .hero-in h1 span{display:block}
 .hero-in .lead{margin-top:clamp(18px,2.8vh,28px);max-width:29em;font-size:clamp(16.5px,1.45vw,21px);line-height:1.45;color:rgba(255,255,255,.9);text-wrap:pretty}
-.cta{margin-top:clamp(20px,3.2vh,32px);display:flex;flex-wrap:wrap;align-items:center;gap:10px}
-.btn.go{gap:10px;height:50px;padding:0 20px 0 24px;border:0;border-radius:14px;background:var(--accent);color:#fff;font:600 16px/1 var(--sans);box-shadow:0 10px 32px rgba(226,84,10,.36);cursor:pointer}
-.btn.go:hover{background:#f2631a;transform:translateY(-1px)}
-.btn.go svg{width:18px;height:18px;transition:transform .25s var(--ease)}
-.btn.go:hover svg{transform:translateX(4px)}
-.btn.glass{height:50px;padding:0 20px;border-radius:14px;border-color:rgba(255,255,255,.36);background:rgba(14,16,20,.42);color:#fff;font-size:15px}
-.btn.glass:hover{background:rgba(255,255,255,.16);border-color:#fff}
-.hero-in .links{display:flex;gap:18px;margin-left:12px;font:500 14.5px/1 var(--sans)}
-.hero-in .links a{padding:8px 0 6px;color:rgba(255,255,255,.84);border-bottom:1px solid rgba(255,255,255,.3);transition:color .18s,border-color .18s}
-.hero-in .links a:hover{color:#fff;border-color:#fff}
+.cta{margin-top:clamp(20px,3.2vh,32px);display:flex;flex-wrap:wrap;align-items:center;gap:20px}
+/* the way in is a push-button start: a chromed ring, a lit collar that breathes, a black cap */
+.startbtn{position:relative;flex:none;width:104px;height:104px;padding:7px;border:0;border-radius:50%;background:conic-gradient(from 200deg,#f4f5f6 0deg,#80848c 40deg,#1b1c20 95deg,#a2a6ae 160deg,#2a2c31 215deg,#cdd0d5 285deg,#f4f5f6 360deg);box-shadow:0 0 0 1px #000,0 0 0 5px #17181b,0 0 0 6px rgba(255,255,255,.1),0 16px 34px rgba(0,0,0,.6);cursor:pointer;transition:transform .08s}
+.startbtn span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 50% 24%,#4a4d54 0%,#1d1e22 56%,#0c0d0f 100%);box-shadow:inset 0 0 0 2px #050506,inset 0 0 0 4.5px var(--led),inset 0 0 16px 4px rgba(255,74,28,.5),inset 0 2px 2px rgba(255,255,255,.2);animation:startglow 2.6s ease-in-out infinite}
+@keyframes startglow{50%{box-shadow:inset 0 0 0 2px #050506,inset 0 0 0 4.5px #ff7d50,inset 0 0 26px 8px rgba(255,74,28,.8),inset 0 2px 2px rgba(255,255,255,.2)}}
+.startbtn b{font:700 15px/1 var(--sans);font-stretch:112%;letter-spacing:.14em;text-indent:.14em;text-transform:uppercase;color:#fff;text-shadow:0 0 10px rgba(255,160,120,.95)}
+.startbtn small{font:600 7px/1 var(--sans);font-stretch:108%;letter-spacing:.13em;text-indent:.13em;text-transform:uppercase;color:rgba(243,239,232,.78)}
+.startbtn:hover b{text-shadow:0 0 14px #ffb193,0 0 4px #fff}
+.startbtn:active{transform:scale(.965)}
+.startbtn:active span{background:radial-gradient(circle at 50% 70%,#2c2e33 0%,#141518 60%,#0a0b0c 100%)}
 .scrollhint,.pagehint{align-items:center;gap:10px;margin-top:clamp(16px,2.6vh,26px);color:rgba(255,255,255,.68);font:400 13.5px/1.3 var(--sans)}
 .scrollhint{display:flex}
 body.no3d .only-tour{display:none}
@@ -258,10 +385,9 @@ body.no3d .only-tour{display:none}
   .stop.hero::before{background:linear-gradient(0deg,rgba(9,11,15,.86) 0%,rgba(9,11,15,.62) 36%,rgba(9,11,15,0) 62%)}
   .hero-in h1{margin-top:14px;font-size:clamp(50px,16.5vw,76px)}
   .hero-in .lead{font-size:16px;line-height:1.42}
-  .cta{gap:8px}
-  .btn.go{flex:1 1 auto;height:52px}
-  .btn.glass{height:52px}
-  .hero-in .links{flex-basis:100%;margin:6px 0 0;gap:22px}
+  .cta{gap:16px}
+  .startbtn{width:94px;height:94px}
+  .herokeys{flex-wrap:wrap;max-width:calc(100% - 112px)}
   .scrollhint,.pagehint{margin-top:14px}
 }
 @keyframes wheel{50%{transform:translateY(6px);opacity:.3}}
@@ -271,6 +397,9 @@ body.no3d .only-tour{display:none}
 body.atend:not(.reading) .foot{display:block;position:fixed;z-index:14;left:50%;bottom:calc(30px + env(safe-area-inset-bottom,0px));margin:0;transform:translateX(-50%);width:min(520px,calc(100vw - 24px));font-size:12.5px;animation:fadein .5s}\n@keyframes fadein{from{opacity:0}}
 @media(max-width:1180px){body.atend:not(.reading) .foot{bottom:calc(190px + env(safe-area-inset-bottom,0px))}}
 .foot a{color:var(--ink2);text-decoration:underline;text-decoration-color:var(--line3);text-underline-offset:3px}
+/* (at the end of the road the credits come up on the same display as the rest of the instruments) */
+body.atend:not(.reading):not(.no3d) .foot{padding:13px 18px;border-radius:9px;border:4px solid #1b1c20;outline:1px solid #030304;background:linear-gradient(180deg,#04070b 0%,#0a121b 62%,#0d1823 100%);box-shadow:inset 0 2px 7px rgba(0,0,0,.95),0 0 0 1px rgba(255,255,255,.06),0 12px 28px rgba(0,0,0,.5);color:rgba(200,224,255,.78)}
+body.atend:not(.reading):not(.no3d) .foot a{color:#dcebff;text-decoration-color:rgba(160,200,255,.45)}
 details.more{margin-top:22px;border-top:1px solid var(--line2)}
 details.more>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 2px;cursor:pointer;font:600 15px/1.2 var(--sans);list-style:none}
 details.more>summary::-webkit-details-marker{display:none}
@@ -280,81 +409,16 @@ details.more>summary:hover::after{border-color:var(--ink)}
 details.more>.blk:first-of-type{margin-top:16px}
 
 /* the dashboard */
-#dash{position:fixed;right:clamp(12px,2vw,26px);bottom:calc(clamp(12px,2.4vh,26px) + env(safe-area-inset-bottom,0px));z-index:15;display:flex;align-items:flex-end;gap:10px;pointer-events:none;opacity:0;transition:opacity .6s}
-body.ready #dash{opacity:1}
-body.ready #dash.hide{opacity:0}
-.cluster{position:relative;width:188px;height:188px;border-radius:50%;background:radial-gradient(circle at 50% 38%,rgba(40,44,52,.92),rgba(12,13,16,.94) 70%);box-shadow:0 0 0 1.5px rgba(255,255,255,.14) inset,0 10px 40px rgba(0,0,0,.45)}
-.cluster svg{display:block;width:100%;height:100%}
-.cluster .tick{stroke:rgba(255,255,255,.5);stroke-width:1.4}
-.cluster .tick.maj{stroke:#fff;stroke-width:2}
-.cluster .num{fill:rgba(255,255,255,.82);font:500 9.5px var(--sans);text-anchor:middle;dominant-baseline:middle}
-.cluster #needle{stroke:#ff6a1f;stroke-width:3;stroke-linecap:round;transition:none}
-.cluster .hub{fill:#16181c;stroke:rgba(255,255,255,.5);stroke-width:1.2}
-.cluster #mph{fill:#fff;font:600 34px var(--sans);text-anchor:middle;letter-spacing:-.02em}
-.cluster .unit{fill:rgba(255,255,255,.6);font:500 9px var(--sans);text-anchor:middle;letter-spacing:.08em}
-.cluster #gear{fill:#fff;font:600 13px var(--sans);text-anchor:middle}
-.cluster .rpmtrack{fill:none;stroke:rgba(255,255,255,.14);stroke-width:5;stroke-linecap:round}
-.cluster #rpm{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-dasharray:151;stroke-dashoffset:151}
-.cluster #brakeLamp{fill:rgba(255,60,40,.18)} .cluster #brakeLamp.on{fill:#ff3b28;filter:drop-shadow(0 0 4px #ff3b28)}
-.tripcard{min-width:168px;margin-bottom:10px;padding:11px 14px;border-radius:14px;background:rgba(14,15,18,.84);color:#fff;font:400 12px/1.35 var(--sans);box-shadow:0 10px 40px rgba(0,0,0,.35)}
-.tripcard small{display:block;color:rgba(255,255,255,.58);font-size:11px}
-.tripcard b{display:block;font:600 14.5px/1.25 var(--sans)}
-.tripcard .rowt{display:flex;gap:14px}
-.mapinfo .rowt{display:flex;gap:14px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.14)}
-.tripcard .rowt span,.mapinfo .rowt span{display:block;font:600 13px/1.2 var(--sans)}
-#map{position:fixed;left:clamp(12px,2vw,26px);bottom:calc(clamp(12px,2.4vh,26px) + env(safe-area-inset-bottom,0px));z-index:15;display:flex;align-items:flex-end;gap:10px;pointer-events:none;opacity:0;transition:opacity .45s,transform .45s}
-body.ready #map{opacity:1}
-body.ready #map.hide{opacity:0;transform:translateY(8px)}
-#mapCanvas{width:168px;height:168px;border-radius:50%;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 14px 44px rgba(0,0,0,.4)}
-.mapinfo{min-width:168px;margin-bottom:10px;padding:11px 14px;border-radius:14px;background:rgba(14,15,18,.84);color:#fff;font:400 12px/1.35 var(--sans);box-shadow:0 10px 40px rgba(0,0,0,.35)}
-.mapinfo small{display:block;color:rgba(255,255,255,.58);font-size:11px}
-.mapinfo b{display:block;font:600 14.5px/1.25 var(--sans)}
-#modes{position:fixed;z-index:21;top:16px;left:50%;transform:translateX(-50%);display:none;padding:3px;border-radius:12px;background:rgba(250,248,244,.94);border:1px solid var(--line2)}
 body.can3d #modes,body.no3d:not(.nogl) #modes{display:flex}
-#modes button{height:36px;padding:0 14px;border:0;border-radius:9px;background:none;font:500 14px/1 var(--sans);color:var(--ink2);cursor:pointer;white-space:nowrap}
-#modes button[aria-pressed="true"]{background:#17191d;color:#fff}
-@media(max-width:1180px){#modes{top:68px}}
-#outBtn{position:fixed;z-index:16;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);height:46px;padding:0 20px;border:0;border-radius:14px;background:#17191d;color:#fff;font:600 16px/1 var(--sans);cursor:pointer;box-shadow:0 10px 40px rgba(0,0,0,.35)}
-#outBtn[hidden]{display:none}
-kbd{display:inline-block;min-width:1.5em;margin:0 2px;padding:3px 5px;border-radius:5px;background:rgba(255,255,255,.16);font:600 12px/1 var(--sans);text-align:center}
-#freehint{position:fixed;left:50%;bottom:calc(34px + env(safe-area-inset-bottom,0px));z-index:14;margin:0;padding:8px 14px;border-radius:12px;background:rgba(15,17,20,.7);color:#fff;font:500 13.5px/1.3 var(--sans);transform:translateX(-50%);display:none;pointer-events:none;white-space:nowrap}
-body.free #freehint{display:block}
-body.free #lookhint{display:none}
 #aim{display:none;position:fixed;left:50%;top:50%;z-index:13;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:#fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.55);pointer-events:none}
 body.locked #aim{display:block}
-#pad button[data-key="c"]{display:none}
-body.onfoot #pad button[data-key="c"]{display:inline-block}
-#pad{display:none}
-@media(pointer:coarse){body.free #freehint{display:none}body.free #pad{display:block}#pad>div{position:fixed;z-index:16;bottom:calc(128px + env(safe-area-inset-bottom,0px));display:flex;gap:10px}#pad>div:first-child{left:12px}#pad>div:last-child{right:12px}#pad button{min-width:64px;height:64px;padding:0 14px;border:0;border-radius:18px;background:rgba(15,17,20,.72);color:#fff;font:600 16px/1 var(--sans);touch-action:none;-webkit-user-select:none;user-select:none}}
 body.free .scrollhint,body.no3d #outBtn,body.no3d #pad,body.no3d #freehint,body.no3d #aim{display:none}
-#lookhint{position:fixed;left:50%;bottom:calc(34px + env(safe-area-inset-bottom,0px));z-index:14;display:flex;align-items:center;gap:8px;margin:0;padding:9px 14px;border-radius:12px;background:rgba(15,17,20,.7);color:#fff;font:500 13.5px/1 var(--sans);transform:translate(-50%,10px);opacity:0;pointer-events:none;transition:opacity .4s,transform .4s}
-#lookhint svg{width:17px;height:17px}
-body.inspect:not(.looked):not(.reading) #lookhint{opacity:1;transform:translate(-50%,0)}
-#lookhint .tap{display:none}
 body.inspect{cursor:grab}
 body.looking{cursor:grabbing;user-select:none;-webkit-user-select:none}
-.btn.snd{gap:7px;padding:0 12px;cursor:pointer;font:inherit;font-weight:500}
-.btn.snd svg{width:18px;height:18px}
-.btn.snd .w1,.btn.snd .w2{display:none}
-.btn.snd[aria-pressed="true"] .w1,.btn.snd[aria-pressed="true"] .w2{display:inline}
-.btn.snd[aria-pressed="true"] .x{display:none}
-.btn.snd[aria-pressed="true"]{background:#17191d;color:#fff;border-color:#17191d}
-@media(max-width:900px){.tripcard{display:none}.cluster{width:132px;height:132px}.mapinfo{display:none}#mapCanvas{width:132px;height:132px}}
-@media(max-width:620px){.dest.open{left:0;right:0;top:auto;bottom:0;width:auto;height:min(76dvh,calc(100dvh - 110px));border-radius:20px 20px 0 0;border-bottom:0;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));animation:sheetin .32s var(--ease)}body.reading #map{display:none}.cluster{width:96px;height:96px}#dash{top:62px;bottom:auto;right:10px}#map{left:10px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}#mapCanvas{width:104px;height:104px}.btn.snd span{display:none}.btn.snd{padding:0 9px}#modes{top:60px;left:10px;transform:none}#modes button{height:32px;padding:0 10px;font-size:13px}#lookhint{bottom:auto;top:104px;left:12px;transform:translate(0,8px)}body.inspect:not(.looked):not(.reading) #lookhint{transform:none}#lookhint .opt{display:none}#lookhint .tap{display:inline}}
-/* loader */
-#loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--bg);transition:opacity 1s var(--ease),visibility 1s}
-#loader.done{opacity:0;visibility:hidden;pointer-events:none}
-#slow{margin-top:26px;opacity:0;pointer-events:none;transition:opacity .6s}
-#loader.slow #slow{opacity:1;pointer-events:auto}
-.ld{width:min(440px,82vw)}
-.ld h1{font:600 clamp(34px,6vw,52px)/.98 var(--sans);letter-spacing:-.03em}
-.ld p{margin-top:10px;font-size:16px;color:var(--ink2)}
-.ld .barl{margin-top:26px;height:2px;border-radius:1px;background:var(--line2);overflow:hidden}
-.ld #loadbar{height:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
-.ld .rowl{margin-top:11px;font-size:13.5px;color:var(--ink3)}
+@media(max-width:620px){.dest.open{left:0;right:0;top:auto;bottom:0;width:auto;height:min(76dvh,calc(100dvh - 110px));border-radius:20px 20px 0 0;border-bottom:0;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));animation:sheetin .32s var(--ease)}}
 
 /* without WebGL: the same page, as a page */
-body.no3d #drive,body.no3d #dash,body.no3d .scrollhint,body.no3d #map,body.no3d #lookhint,body.no3d #soundBtn{display:none}
+body.no3d #drive,body.no3d #dash,body.no3d .scrollhint,body.no3d #map,body.no3d #lookhint,body.no3d .knobwrap{display:none}
 /* ---------------------------------------------------------------- the classic view
    The same work as an ordinary page, given the same care as the road: the opening frame of the drive as its cover, each
    project set beside a picture of its exhibit taken on the road, and room to read. */

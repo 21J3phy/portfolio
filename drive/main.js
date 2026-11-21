@@ -53,7 +53,7 @@ const samples = Math.max(0, ...Array.from(sampleCounts).filter(n => n <= (tier =
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.12, 20000);
 const progressEl = $('#loadbar'), labelEl = $('#loadlabel');
-let loadedParts = 0; const progress = label => { loadedParts++; if (progressEl) progressEl.style.transform = `scaleX(${Math.min(1, loadedParts / 5)})`; if (label && labelEl) labelEl.textContent = label; };
+let loadedParts = 0; const progress = label => { loadedParts++; const k = Math.min(1, loadedParts / 5); if (progressEl) progressEl.style.width = k * 100 + '%'; $('#ldNeedle')?.setAttribute('transform', `rotate(${-120 + 240 * k} 100 100)`); const pc = $('#ldPct'); if (pc) pc.textContent = Math.round(k * 100) + '%'; if (label && labelEl) labelEl.textContent = label; };
 
 // The car is the biggest download, so it starts first; the road is laid while it comes. What stands at the
 // destinations is not built yet (see the end of this file).
@@ -427,6 +427,7 @@ function setMode(m) {
   activity();
 }
 for (const b of $$('#modes button')) b.addEventListener('click', () => setMode(b.dataset.mode));
+const more = $('#morehint'); more?.addEventListener('click', () => { if (mode === 'tour') push(520); });
 $('[data-start]')?.addEventListener('click', () => { if (mode === 'tour') { vs.auto = true; vs.touched = performance.now(); } });
 addEventListener('keydown', e => {
   if (mode !== 'free' || e.metaKey || e.ctrlKey || e.altKey || e.target.closest?.('.dest.open, input, textarea, select')) return;
@@ -696,7 +697,7 @@ function updateSound(dt) {
 }
 
 // ------------------------------------------------------------------ the dashboard
-const dash = { needle: $('#needle'), mph: $('#mph'), gear: $('#gear'), rpm: $('#rpm'), next: $('#nextStop'), dist: $('#nextDist'), trip: $('#trip'), alt: $('#alt'), el: $('#dash'), shown: -1, brake: $('#brakeLamp'), map: $('#map'), togo: $('#togo'), stopn: $('#stopN') };
+const dash = { spd: $('#spd'), needle: $('#needle'), mph: $('#mph'), gear: $('#gear'), rpm: $('#rpm'), next: $('#nextStop'), dist: $('#nextDist'), trip: $('#trip'), alt: $('#alt'), el: $('#dash'), shown: -1, brake: $('#brakeLamp'), map: $('#map'), togo: $('#togo'), stopn: $('#stopN') };
 const minimap = $('#mapCanvas') ? createMinimap($('#mapCanvas'), route, stops) : null;
 // (only what changed is written: every write to the page costs a style pass, and most frames nothing changes)
 const shownAs = {}, show = (key, v, apply) => { if (shownAs[key] !== v) { shownAs[key] = v; apply(v); } };
@@ -704,6 +705,7 @@ function updateDash() {
   const v = Math.abs(drive.v), mph = v * 2.23694;
   show('needle', Math.round((-120 + Math.min(mph, 140) / 140 * 240) * 5) / 5, a => dash.needle?.setAttribute('transform', `rotate(${a} 100 100)`));
   show('mph', Math.round(mph), n => { if (dash.mph) dash.mph.textContent = n; });
+  show('spd', Math.round((240 - Math.min(mph, 140) / 140 * 240) * 2) / 2, o => { if (dash.spd) dash.spd.style.strokeDashoffset = String(o); });
   const rpm = clamp(drive.revs / 7200, 0.08, 1);
   show('gear', drive.gear === 0 ? (seq.st || man.on ? 'P' : 'N') : drive.gear < 0 ? 'R' : String(drive.gear), t => { if (dash.gear) dash.gear.textContent = t; });
   show('rpm', Math.round(151 * (1 - rpm) * 2) / 2, o => { if (dash.rpm) dash.rpm.style.strokeDashoffset = String(o); });
@@ -759,6 +761,10 @@ function frame(dtFixed) {
     show('heroY', Math.round(Math.min(tl.u, innerHeight * 0.6)), y => { const k = y / (innerHeight * 0.2); hero.style.transform = `translate3d(0,${-y * 0.5}px,0)`; hero.style.opacity = k >= 1 ? '' : String(1 - k * k); hero.style.visibility = k >= 1 ? 'hidden' : ''; });
     show('atend', tl.u > vs.max - 60, on => document.body.classList.toggle('atend', on));
     intro.k = clamp(tl.u / introY, 0, 1);
+    // parked at a stop with the scroll at rest: say that scrolling carries on (1: he is still in the car, 2: he is out)
+    if (more) { let at = null; for (const x of stops) if (x.i && vs.pos >= x.y0 - 1 && vs.pos < x.y1 - 6) { at = x; break; }
+      const inCar = at && vs.pos < at.y0 + 30, rest = performance.now() - vs.touched, idle = at && !panel.open && !vs.auto && Math.abs(vs.vel) < 4 && tl.u < vs.max - 60 && rest > (inCar ? 900 : 3200);
+      show('more', idle ? (inCar ? 1 : 2) : 0, v => { more.classList.toggle('on', !!v); if (v) more.lastChild.textContent = (coarse ? 'Keep swiping up' : 'Keep scrolling') + (v === 1 ? ' to get out' : ' to carry on'); }); }
     film = timeline(tl.u);
     stepCar(dt, film.s);
   }
