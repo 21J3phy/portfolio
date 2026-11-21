@@ -1,0 +1,64 @@
+<!doctype html><meta charset="utf-8"><title>convert</title>
+<script type="importmap">{ "imports": { "three": "/npm/node_modules/three/build/three.module.js", "three/addons/": "/npm/node_modules/three/examples/jsm/" } }</script>
+<script type="module">
+import * as THREE from 'three';
+import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+const mgr = new THREE.LoadingManager(); mgr.setURLModifier(u => /\.(tga|png|jpe?g|bmp|dds)$/i.test(u) ? 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' : u);
+const fbx = new FBXLoader(mgr);
+const C = window.__conv = { THREE };
+C.load = async () => { C.av = await fbx.loadAsync('src/avatar.fbx'); return true; };
+C.inspect = () => {
+  const out = { meshes: [], bones: 0, anim: C.av.animations.length, root: [C.av.scale.toArray(), C.av.rotation.toArray().slice(0, 3)] };
+  C.av.traverse(o => { if (o.isBone) out.bones++; if (o.isMesh) out.meshes.push([o.name, o.type, o.geometry.attributes.position.count, [].concat(o.material).map(m => m.name + ':' + m.type + (m.transparent ? ':T' : '')).join('|'), o.skeleton ? o.skeleton.bones.length : 0]); });
+  const b = new THREE.Box3().setFromObject(C.av); out.box = [b.min.toArray().map(v => +v.toFixed(1)), b.max.toArray().map(v => +v.toFixed(1))];
+  out.top = C.av.children.map(c => c.name + ':' + c.type);
+  const bones = []; C.av.traverse(o => { if (o.isBone) bones.push(o.name); }); out.boneNames = bones.slice(0, 70).join(' ');
+  return out;
+};
+C.anim = async name => { const o = await fbx.loadAsync('src/' + name + '.fbx'); return o.animations.map(c => ({ name: c.name, dur: +c.duration.toFixed(2), tracks: c.tracks.length, first: c.tracks.slice(0, 6).map(t => t.name + '[' + t.times.length + ']'), pos: c.tracks.filter(t => t.name.endsWith('.position')).map(t => { const v = t.values, n = v.length / 3; let mn = [1e9, 1e9, 1e9], mx = [-1e9, -1e9, -1e9]; for (let i = 0; i < n; i++) for (let k = 0; k < 3; k++) { mn[k] = Math.min(mn[k], v[i * 3 + k]); mx[k] = Math.max(mx[k], v[i * 3 + k]); } return t.name + ' range ' + mn.map((m, k) => (mx[k] - m).toFixed(1)).join(','); }).filter(s => !/range 0\.0,0\.0,0\.0/.test(s)).slice(0, 8) })); };
+
+// ---- the real thing: avatar + chosen motions -> one .glb, posted back to the server
+C.run = async () => {
+  const av = C.av; const tl = new THREE.TextureLoader();
+  const tex = async u => { const t = await tl.loadAsync(u); t.colorSpace = THREE.SRGBColorSpace; t.flipY = true; return t; };
+  const [body, head] = await Promise.all([tex('src/body.png'), tex('src/head.png')]);
+  av.traverse(o => { if (o.isMesh) o.material = [].concat(o.material).map(m => { const n = new THREE.MeshStandardMaterial({ map: /head/.test(m.name) ? head : body, roughness: /head/.test(m.name) ? 0.62 : 0.86, metalness: 0 }); n.name = m.name.replace(/^m\d+_/, ''); return n; }); });
+  [...av.children].forEach(c => { if (c.isLight) av.remove(c); });
+  const bones = new Set(); av.traverse(o => { if (o.isBone) bones.add(o.name); });
+  const face = /Masseter|Lip|Caninus|Eye|Mouth|Cheek|Jaw|Tongue|Eyebrow|Nose/;
+  const keepPos = /^(Bip01|Bip01_Pelvis|Bip01_Spine|Bip01_[LR]_Thigh|Bip01_[LR]_Clavicle)\.position$/;
+  const spec = { walk: { loop: true, travel: true }, run: { loop: true, travel: true }, idle: { from: 0, to: 9 }, look: { from: 0, to: 9 }, sit: { from: 1, to: 8 }, think: { from: 0, to: 7 }, crouch_idle: { from: 0, to: 6, as: 'crouch' }, crouch_gestic: { from: 0, to: 7, as: 'inspect' } };
+  const clips = [], report = {};
+  for (const [name, o] of Object.entries(spec)) {
+    const src = (await fbx.loadAsync('src/' + name + '.fbx')).animations[0], tracks = [];
+    const t0 = o.from || 0, t1 = Math.min(o.to ?? src.duration, src.duration);
+    for (const tr of src.tracks) {
+      const [node, prop] = [tr.name.slice(0, tr.name.lastIndexOf('.')), tr.name.slice(tr.name.lastIndexOf('.') + 1)];
+      if (!bones.has(node) || face.test(node) || prop === 'scale' || (prop === 'position' && !keepPos.test(tr.name))) continue;
+      const size = prop === 'position' ? 3 : 4, idx = []; tr.times.forEach((t, i) => { if (t >= t0 - 1e-4 && t <= t1 + 1e-4) idx.push(i); });
+      const times = new Float32Array(idx.map(i => tr.times[i] - tr.times[idx[0]])), vals = new Float32Array(idx.length * size);
+      idx.forEach((i, k) => { for (let c = 0; c < size; c++) vals[k * size + c] = tr.values[i * size + c]; });
+      const n = idx.length;
+      if (tr.name === 'Bip01.position' && o.travel) {
+        // take the walking out of the walk: the page moves him, the cycle only has to bob and sway
+        const dz = vals[(n - 1) * 3 + 2] - vals[2], dx = vals[(n - 1) * 3] - vals[0]; report[name] = { cycle: +times[n - 1].toFixed(3), speed: +(Math.hypot(dz, dx) / 100 / times[n - 1]).toFixed(3) };
+        for (let k = 0; k < n; k++) { const u = k / (n - 1); vals[k * 3 + 2] -= dz * u; vals[k * 3] -= dx * u; }
+      }
+      if (!o.loop) {
+        // ease the last half second back into the first frame so the trimmed take repeats without a jump
+        const blend = Math.min(n - 1, 15), qa = new THREE.Quaternion(), qb = new THREE.Quaternion();
+        for (let j = 0; j < blend; j++) { const k = n - blend + j, u = (j + 1) / blend, e = u * u * (3 - 2 * u);
+          if (size === 4) { qa.fromArray(vals, k * 4); qb.fromArray(vals, 0); qa.slerp(qb, e).toArray(vals, k * 4); } else for (let c = 0; c < 3; c++) vals[k * 3 + c] += (vals[c] - vals[k * 3 + c]) * e; }
+      }
+      tracks.push(size === 4 ? new THREE.QuaternionKeyframeTrack(tr.name, times, vals) : new THREE.VectorKeyframeTrack(tr.name, times, vals));
+    }
+    const clip = new THREE.AnimationClip(o.as || name, -1, tracks); clips.push(clip); report[name] = { ...(report[name] || {}), dur: +clip.duration.toFixed(2), tracks: tracks.length };
+  }
+  av.scale.setScalar(0.01); av.updateMatrixWorld(true);
+  const glb = await new GLTFExporter().parseAsync(av, { binary: true, animations: clips, onlyVisible: false });
+  const r = await fetch('/__shot?name=driver_raw', { method: 'POST', body: glb });
+  return JSON.stringify({ bytes: glb.byteLength, status: r.status, report });
+};
+window.__drive = { advance() {} };
+</script>
