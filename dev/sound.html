@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sound audition</title>
+<style>
+  :root { color-scheme: light dark; --bg: #f6f5f2; --fg: #1b1b1a; --dim: #6b6a66; --line: #d9d7d0; --card: #fff; --accent: #c2410c; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #151514; --fg: #ecebe7; --dim: #9a988f; --line: #33322f; --card: #1e1e1c; --accent: #fb923c; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px 16px 64px; background: var(--bg); color: var(--fg); font: 15px/1.45 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+  main { max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  p { margin: 0 0 16px; color: var(--dim); max-width: 64ch; }
+  h2 { font-size: 13px; font-weight: 600; margin: 0 0 10px; color: var(--dim); }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin: 0 0 12px; }
+  .row { display: grid; grid-template-columns: 120px 1fr 64px; gap: 12px; align-items: center; margin: 6px 0; }
+  .row output { text-align: right; font-variant-numeric: tabular-nums; color: var(--dim); }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+  button { font: inherit; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; }
+  button:hover { border-color: var(--dim); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  button:disabled { opacity: 0.45; cursor: default; }
+  label.check { display: inline-flex; gap: 6px; align-items: center; margin-right: 16px; }
+  #status { font-variant-numeric: tabular-nums; color: var(--dim); margin-top: 10px; min-height: 1.4em; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 700px) { .cols { grid-template-columns: 1fr; } .row { grid-template-columns: 96px 1fr 56px; } }
+</style>
+<main>
+  <h1>Sound audition</h1>
+  <p>Everything the drive can sound like, on sliders. Press Start (browsers only allow sound after a click), then move things, or run the scripted drive: idle, away through the gears to about 60 mph, lift, brake hard to a stop, handbrake, door, six footsteps, door.</p>
+
+  <section>
+    <div class="buttons">
+      <button class="primary" id="start">Start</button>
+      <button id="auto" disabled>Auto drive (40 s)</button>
+      <label class="check" style="margin-left:8px"><input type="checkbox" id="link" checked> rpm follows speed in gear</label>
+      <select id="gear"><option>1<option>2<option selected>3<option>4<option>5<option>6</select>
+    </div>
+    <div class="row" style="margin-top:12px"><span>Volume</span><input type="range" id="volume" min="0" max="1" step="0.01" value="0.8"><output id="volumeOut">0.80</output></div>
+    <div id="status">Not started.</div>
+  </section>
+
+  <div class="cols">
+    <section>
+      <h2>Car</h2>
+      <div id="car"></div>
+      <label class="check"><input type="checkbox" id="blinker"> Indicator</label>
+      <label class="check"><input type="checkbox" id="reverse"> Reverse</label>
+    </section>
+    <section>
+      <h2>Camera and surroundings</h2>
+      <div id="cam"></div>
+    </section>
+  </div>
+
+  <section>
+    <h2>One-shots</h2>
+    <div class="buttons">
+      <button data-ev="doorOpen">Door open</button><button data-ev="doorClose">Door close</button>
+      <button data-ev="footstep">Footstep</button><button id="walk">Six footsteps</button>
+      <button data-ev="shift">Shift</button><button data-ev="handbrake">Handbrake</button>
+      <button id="hardstop">Hard stop from 60 mph</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Layers (untick to mute, to hear the others alone)</h2>
+    <div id="layers"></div>
+  </section>
+</main>
+
+<script type="module">
+import { createSound } from '../drive/sound.js';
+
+const sound = createSound();
+const $ = id => document.getElementById(id);
+// The state object handed to sound.update() every frame, the same shape the site uses.
+const s = { dt: 0, rpm: 750, throttle: 0, speed: 0, reverse: false, brake: 0, decel: 0, lateral: 0, view: { dist: 6.5, pan: 0, behind: 1 }, sea: { pan: 0.5, gain: 0.6 }, blinker: false };
+
+// sliders: [label, where it lives, min, max, step, how to show it]
+const SLIDERS = {
+  car: [
+    ['Engine rpm', [s, 'rpm'], 0, 7200, 10, v => v.toFixed(0)],
+    ['Throttle', [s, 'throttle'], 0, 1, 0.01, v => v.toFixed(2)],
+    ['Speed', [s, 'speed'], 0, 40, 0.1, v => v.toFixed(1) + ' m/s'],
+    ['Brake pedal', [s, 'brake'], 0, 1, 0.01, v => v.toFixed(2)],
+    ['Deceleration', [s, 'decel'], 0, 12, 0.1, v => v.toFixed(1)],
+    ['Cornering', [s, 'lateral'], 0, 10, 0.1, v => v.toFixed(1)],
+  ],
+  cam: [
+    ['Distance', [s.view, 'dist'], 2, 20, 0.1, v => v.toFixed(1) + ' m'],
+    ['Car left/right', [s.view, 'pan'], -1, 1, 0.01, v => v.toFixed(2)],
+    ['Behind the car', [s.view, 'behind'], 0, 1, 0.01, v => v.toFixed(2)],
+    ['Sea left/right', [s.sea, 'pan'], -1, 1, 0.01, v => v.toFixed(2)],
+    ['Open to the sea', [s.sea, 'gain'], 0, 1, 0.01, v => v.toFixed(2)],
+  ],
+};
+const bound = [];
+for (const [where, list] of Object.entries(SLIDERS)) for (const [label, [obj, key], min, max, step, fmt] of list) {
+  const row = document.createElement('div'); row.className = 'row';
+  const name = document.createElement('span'); name.textContent = label;
+  const input = Object.assign(document.createElement('input'), { type: 'range', min, max, step, value: obj[key] });
+  const out = document.createElement('output'); out.textContent = fmt(obj[key]);
+  input.addEventListener('input', () => { obj[key] = +input.value; out.textContent = fmt(obj[key]); if (key === 'speed') linkRpm(); });
+  row.append(name, input, out); $(where).append(row); bound.push({ obj, key, input, out, fmt });
+}
+const refresh = () => { for (const b of bound) { if (+b.input.value !== b.obj[b.key]) b.input.value = b.obj[b.key]; b.out.textContent = b.fmt(b.obj[b.key]); } $('blinker').checked = s.blinker; $('reverse').checked = s.reverse; };
+$('blinker').addEventListener('change', e => { s.blinker = e.target.checked; });
+$('reverse').addEventListener('change', e => { s.reverse = e.target.checked; });
+
+// 2012 Civic Si gearing, so a speed slider gives a believable engine speed
+const GEARS = [3.267, 1.880, 1.355, 1.028, 0.825, 0.659], FINAL = 4.76, TYRE = 1.964;
+const rpmAt = (speed, gear) => speed / TYRE * 60 * GEARS[gear - 1] * FINAL;
+function linkRpm() { if ($('link').checked && !auto) s.rpm = Math.min(7200, Math.max(750, rpmAt(s.speed, +$('gear').value))); }
+$('gear').addEventListener('change', () => { sound.event('shift'); linkRpm(); });
+$('link').addEventListener('change', linkRpm);
+
+for (const k of Object.keys(sound.mix)) {
+  const l = document.createElement('label'); l.className = 'check';
+  const c = Object.assign(document.createElement('input'), { type: 'checkbox', checked: true });
+  c.addEventListener('change', () => { sound.mix[k] = c.checked ? 1 : 0; });
+  l.append(c, k[0].toUpperCase() + k.slice(1)); $('layers').append(l);
+}
+$('volume').addEventListener('input', e => { sound.volume = +e.target.value; $('volumeOut').textContent = sound.volume.toFixed(2); });
+for (const b of document.querySelectorAll('[data-ev]')) b.addEventListener('click', () => sound.event(b.dataset.ev, { gain: 1, pan: 0 }));
+$('walk').addEventListener('click', () => { for (let i = 0; i < 6; i++) setTimeout(() => sound.event('footstep', { gain: 1 - i * 0.08, pan: 0.3 - i * 0.12 }), i * 540); });
+
+// ── the scripted drive ──
+// A pure function of time: fills in the state for time t and reports which one-shots fall due between the last call and
+// this one. The site will do the same job from its real car; this is only so the whole thing can be heard in one go.
+const lerp = (a, b, t) => a + (b - a) * Math.min(1, Math.max(0, t));
+const EVENTS = [[26.3, 'handbrake'], [28.5, 'doorOpen'], [29.6, 'footstep', 1.0, 0.25], [30.15, 'footstep', 0.92, 0.15], [30.7, 'footstep', 0.84, 0.05], [31.25, 'footstep', 0.76, -0.05], [31.8, 'footstep', 0.68, -0.15], [32.35, 'footstep', 0.6, -0.25], [33.4, 'doorClose']];
+// each leg: [until, gear, acceleration m/s², throttle]; a gear change takes 0.35 s with the throttle shut
+const LEGS = [[6.2, 1, 3.4, 0.75], [9.65, 2, 2.6, 0.8], [14.1, 3, 1.9, 0.85]];
+function makeDrive() {
+  let last = 0, speed = 0, rpm = 750, cursor = 0, gear = 1, shifted = 0;
+  return function drive(t, s, fire) {
+    const dt = Math.max(0, t - last); last = t;
+    let throttle = 0, brake = 0, decel = 0, lateral = 0, clutch = false;
+    if (t < 3) { speed = 0; clutch = true; }
+    else if (t < 14.45) {                                         // away through the gears
+      const leg = LEGS.find(l => t < l[0] + 0.35) || LEGS[2], g = leg[1], shifting = t >= leg[0];
+      if (g !== gear && !shifting) gear = g;
+      if (shifting) { if (shifted !== g) { shifted = g; fire('shift'); gear = g + 1; } throttle = 0; speed -= 0.4 * dt; }
+      else { throttle = t < 3.6 ? lerp(0.25, leg[3], (t - 3) / 0.6) : leg[3]; speed += leg[2] * dt * (t < 3.5 ? (t - 3) * 2 : 1); }
+    } else if (t < 19) { gear = 4; throttle = 0.3; speed = lerp(speed, 26.8, dt * 2); lateral = 6.5 * Math.max(0, Math.sin((t - 15.6) / 2.6 * Math.PI)) * (t > 15.6 && t < 18.2 ? 1 : 0); }
+    else if (t < 22) { throttle = 0; decel = 1.2; speed -= decel * dt; }                             // lift: engine braking
+    else if (speed > 0) { brake = t < 22.3 ? lerp(0, 1, (t - 22) / 0.15) : 0.85; decel = t < 22.7 ? 9.6 : 7.4; if (speed < 1.5) { decel = 3; brake = 0.4; } speed = Math.max(0, speed - decel * dt); }
+    if (t >= 19 && rpmAt(speed, gear) < 1300) clutch = true;
+    // engine speed: geared to the road, except when the clutch is in (falls to idle) or slipping at the start
+    const geared = rpmAt(speed, gear), target = clutch ? 750 : Math.max(geared, t < 5 ? lerp(1500, 2100, (t - 3) / 0.5) : 0);
+    rpm += (target - rpm) * Math.min(1, dt * (clutch ? 3 : shifted && t < 15 && Math.abs(target - rpm) > 300 ? 9 : 14));
+    s.rpm = Math.max(700, rpm); s.throttle = throttle; s.speed = speed; s.brake = brake; s.decel = speed > 0 ? decel : 0; s.lateral = lateral; s.reverse = false;
+    s.blinker = (t > 1.5 && t < 5.2) || (t > 21.6 && t < 27.6);
+    // camera: chase view while moving, drifting out and round to the side once stopped
+    const parked = t < 2 ? 1 - t / 2 : t > 25.5 ? Math.min(1, (t - 25.5) / 2.5) : 0;
+    s.view.dist = lerp(6.5, 14, parked); s.view.behind = lerp(1, 0.35, parked); s.view.pan = lerp(0.25 * Math.sin(t * 0.7) * (lateral > 0 ? 1 : 0.2), 0.3, parked);
+    s.sea.pan = lerp(0.55, 0.35, parked); s.sea.gain = lerp(0.6, 1, parked);
+    while (cursor < EVENTS.length && EVENTS[cursor][0] <= t) { const e = EVENTS[cursor++]; fire(e[1], { gain: e[2] ?? 1, pan: e[3] ?? 0 }); }
+    return t >= 40;
+  };
+}
+window.__audition = { makeDrive, state: s, sound };   // for automated checks
+
+let auto = null, autoT = 0, prev = performance.now(), cost = 0, hard = 0;
+$('auto').addEventListener('click', () => { if (auto) { auto = null; $('auto').textContent = 'Auto drive (40 s)'; } else { auto = makeDrive(); autoT = 0; $('auto').textContent = 'Stop auto drive'; } });
+$('hardstop').addEventListener('click', () => { auto = null; $('auto').textContent = 'Auto drive (40 s)'; s.speed = 27; s.throttle = 0; $('gear').value = 4; hard = 1; });
+
+$('start').addEventListener('click', async () => {
+  if (sound.on) { sound.disable(); $('start').textContent = 'Start'; $('status').textContent = 'Stopped.'; return; }
+  $('status').textContent = 'Loading recordings…'; $('start').disabled = true;
+  await sound.enable();
+  $('start').disabled = false; $('start').textContent = 'Stop'; $('auto').disabled = false;
+  if (!sound.supported) $('status').textContent = 'This browser has no Web Audio.';
+});
+
+function frame(nowMs) {
+  s.dt = (nowMs - prev) / 1000; prev = nowMs;
+  if (auto) { autoT += Math.min(s.dt, 0.1); if (auto(autoT, s, (n, o) => sound.event(n, o))) { auto = null; $('auto').textContent = 'Auto drive (40 s)'; } refresh(); }
+  else if (hard) { s.brake = 0.9; s.decel = s.speed > 20 ? 9.5 : 7.5; s.speed = Math.max(0, s.speed - s.decel * Math.min(s.dt, 0.1)); linkRpm(); if (s.rpm < 1300) s.rpm = 750; if (s.speed === 0) { hard = 0; s.brake = 0; s.decel = 0; } refresh(); }
+  if (sound.on) { const t0 = performance.now(); sound.update(s); cost += (performance.now() - t0 - cost) * 0.05;
+    $('status').textContent = `${auto ? 'Auto drive ' + autoT.toFixed(1) + ' s · ' : ''}${s.rpm.toFixed(0)} rpm · ${(s.speed * 2.237).toFixed(0)} mph · update ${cost.toFixed(3)} ms`; }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</html>

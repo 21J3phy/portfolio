@@ -1,0 +1,20 @@
+<!doctype html><meta charset="utf-8"><title>driver</title>
+<style>html,body{margin:0;background:#8a96a3}canvas{display:block}</style>
+<script type="importmap">{ "imports": { "three": "../vendor/three/three.module.js", "three/addons/": "../vendor/three/addons/" } }</script>
+<script type="module">
+import * as THREE from 'three';
+import { loadPerson } from '../drive/person.js';
+const q = new URLSearchParams(location.search);
+const r = new THREE.WebGLRenderer({ antialias: true }); r.setSize(innerWidth, innerHeight); document.body.appendChild(r.domElement); r.shadowMap.enabled = true;
+r.toneMapping = THREE.ACESFilmicToneMapping;
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x9aa6b3);
+scene.add(new THREE.HemisphereLight(0xdde8f5, 0x6a5d50, 1.6)); const sun = new THREE.DirectionalLight(0xffe6c8, 3.4); sun.position.set(3, 5, 4); sun.castShadow = true; scene.add(sun);
+const g = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), new THREE.MeshStandardMaterial({ color: 0x55585c })); g.rotation.x = -Math.PI / 2; g.receiveShadow = true; scene.add(g);
+const cam = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, 0.1, 50);
+const p = await loadPerson(); scene.add(p.group);
+const yaw = +(q.get('yaw') ?? 30) * Math.PI / 180, d = +(q.get('d') ?? 4.2), h = +(q.get('h') ?? 1.2);
+cam.position.set(Math.sin(yaw) * d, h, Math.cos(yaw) * d); cam.lookAt(0, +(q.get('ly') ?? 0.95), 0);
+const sit = +(q.get('sit') ?? 0), speed = +(q.get('v') ?? 0), study = +(q.get('study') ?? 0), down = +(q.get('down') ?? 0);
+window.__p = { p, step(t = 0.3, n = 20) { for (let i = 0; i < n; i++) p.update(t / n, sit, speed, study, t / n, down); r.render(scene, cam); } };
+window.__p.step(+(q.get('t') ?? 1.0), 40); window.__drive = window.__p; window.__drive.advance = () => r.render(scene, cam);
+</script>
