@@ -7,7 +7,7 @@ import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
 const mgr = new THREE.LoadingManager(); mgr.setURLModifier(u => /\.(tga|png|jpe?g|bmp|dds)$/i.test(u) ? 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' : u);
 const fbx = new FBXLoader(mgr);
 const C = window.__conv = { THREE };
-C.load = async () => { C.av = await fbx.loadAsync('src/avatar.fbx'); return true; };
+C.load = async () => { C.av = await fbx.loadAsync('me/Male_Adult_20.fbx'); return true; };
 C.inspect = () => {
   const out = { meshes: [], bones: 0, anim: C.av.animations.length, root: [C.av.scale.toArray(), C.av.rotation.toArray().slice(0, 3)] };
   C.av.traverse(o => { if (o.isBone) out.bones++; if (o.isMesh) out.meshes.push([o.name, o.type, o.geometry.attributes.position.count, [].concat(o.material).map(m => m.name + ':' + m.type + (m.transparent ? ':T' : '')).join('|'), o.skeleton ? o.skeleton.bones.length : 0]); });
@@ -19,10 +19,10 @@ C.inspect = () => {
 C.anim = async name => { const o = await fbx.loadAsync('src/' + name + '.fbx'); return o.animations.map(c => ({ name: c.name, dur: +c.duration.toFixed(2), tracks: c.tracks.length, first: c.tracks.slice(0, 6).map(t => t.name + '[' + t.times.length + ']'), pos: c.tracks.filter(t => t.name.endsWith('.position')).map(t => { const v = t.values, n = v.length / 3; let mn = [1e9, 1e9, 1e9], mx = [-1e9, -1e9, -1e9]; for (let i = 0; i < n; i++) for (let k = 0; k < 3; k++) { mn[k] = Math.min(mn[k], v[i * 3 + k]); mx[k] = Math.max(mx[k], v[i * 3 + k]); } return t.name + ' range ' + mn.map((m, k) => (mx[k] - m).toFixed(1)).join(','); }).filter(s => !/range 0\.0,0\.0,0\.0/.test(s)).slice(0, 8) })); };
 
 // ---- the real thing: avatar + chosen motions -> one .glb, posted back to the server
-C.run = async () => {
+C.run = async (HP = { side: 3.3, front: 4.4, top: 3.4, under: 3.6, fwd: 1.1, chin: 0.17, v0: 0.12, vh: 0.37 }) => {
   const av = C.av; const tl = new THREE.TextureLoader();
   const tex = async u => { const t = await tl.loadAsync(u); t.colorSpace = THREE.SRGBColorSpace; t.flipY = true; return t; };
-  const [body, head] = await Promise.all([tex('src/body.png'), tex('src/head.png')]);
+  const [body, head] = await Promise.all([tex('me/body.png'), tex('me/head.png')]);
   av.traverse(o => { if (o.isMesh) o.material = [].concat(o.material).map(m => { const n = new THREE.MeshStandardMaterial({ map: /head/.test(m.name) ? head : body, roughness: /head/.test(m.name) ? 0.62 : 0.86, metalness: 0 }); n.name = m.name.replace(/^m\d+_/, ''); return n; }); });
   [...av.children].forEach(c => { if (c.isLight) av.remove(c); });
   const bones = new Set(); av.traverse(o => { if (o.isBone) bones.add(o.name); });
@@ -55,7 +55,77 @@ C.run = async () => {
     }
     const clip = new THREE.AnimationClip(o.as || name, -1, tracks); clips.push(clip); report[name] = { ...(report[name] || {}), dur: +clip.duration.toFixed(2), tracks: tracks.length };
   }
-  av.scale.setScalar(0.01); av.updateMatrixWorld(true);
+  // ---- make him Nirav's build
+  av.updateMatrixWorld(true);
+  const mesh = []; av.traverse(o => { if (o.isSkinnedMesh) mesh.push(o); }); const sk = mesh[0], g = sk.geometry, P = g.attributes.position, SI = g.attributes.skinIndex, SW = g.attributes.skinWeight, names = sk.skeleton.bones.map(b => b.name);
+  const bone = n => sk.skeleton.bones.find(b => b.name === n), wp = n => bone(n).getWorldPosition(new THREE.Vector3()), toLocal = sk.matrixWorld.clone().invert(), toWorld = sk.matrixWorld;
+  // baggy jeans: the cloth round each leg stands further off it, most of all from the knee down
+  const legs = ['L', 'R'].map(s => [wp(`Bip01_${s}_Thigh`), wp(`Bip01_${s}_Calf`), wp(`Bip01_${s}_Foot`), names.indexOf(`Bip01_${s}_Thigh`), names.indexOf(`Bip01_${s}_Calf`)]);
+  const v = new THREE.Vector3(), a = new THREE.Vector3(), ab = new THREE.Vector3(), q = new THREE.Vector3(); let moved = 0;
+  for (let i = 0; i < P.count; i++) {
+    for (const [hip, knee, foot, it, ic] of legs) {
+      let wt = 0, wc = 0; for (let k = 0; k < 4; k++) { const b = SI.getComponent(i, k), w = SW.getComponent(i, k); if (b === it) wt += w; else if (b === ic) wc += w; }
+      if (wt + wc < 0.05) continue;
+      v.fromBufferAttribute(P, i).applyMatrix4(toWorld);
+      const [p0, p1] = wc > wt ? [knee, foot] : [hip, knee]; ab.subVectors(p1, p0); const t = THREE.MathUtils.clamp(a.subVectors(v, p0).dot(ab) / ab.lengthSq(), 0, 1); q.copy(p0).addScaledVector(ab, t);
+      const grow = 1 + (0.2 * wt + 0.34 * wc) * (wc > wt ? 1 : 0.55 + 0.45 * t);
+      v.sub(q).multiplyScalar(grow).add(q).applyMatrix4(toLocal); P.setXYZ(i, v.x, v.y, v.z); moved++;
+    }
+  }
+  // and the sleeves stand off the forearms a little, as cloth does
+  for (const sd of ['L', 'R']) { const p0 = wp(`Bip01_${sd}_Forearm`), p1 = wp(`Bip01_${sd}_Hand`), fi = names.indexOf(`Bip01_${sd}_Forearm`); ab.subVectors(p1, p0);
+    for (let i = 0; i < P.count; i++) { let w = 0; for (let k = 0; k < 4; k++) if (SI.getComponent(i, k) === fi) w += SW.getComponent(i, k); if (w < 0.05) continue;
+      v.fromBufferAttribute(P, i).applyMatrix4(toWorld); const t = THREE.MathUtils.clamp(a.subVectors(v, p0).dot(ab) / ab.lengthSq(), 0, 1); q.copy(p0).addScaledVector(ab, t);
+      v.sub(q).multiplyScalar(1 + 0.24 * w * (1 - 0.55 * THREE.MathUtils.smoothstep(t, 0.8, 1))).add(q).applyMatrix4(toLocal); P.setXYZ(i, v.x, v.y, v.z); } }
+  P.needsUpdate = true;
+  // A full-face helmet on the head bone: white, a black stripe with gold pinstripes over the crown, a mirrored visor.
+  // The shell is a sphere whose poles are at the ears, so the stripe and the visor are plain bands in its texture.
+  const headBone = bone('Bip01_Head'), hb = new THREE.Box3(), hi = names.indexOf('Bip01_Head');
+  for (let i = 0; i < P.count; i++) { let w = 0; for (let k = 0; k < 4; k++) if (SI.getComponent(i, k) === hi) w += SW.getComponent(i, k); if (w > 0.95) hb.expandByPoint(v.fromBufferAttribute(P, i).applyMatrix4(toWorld)); }
+  const hc = hb.getCenter(new THREE.Vector3()), hs = hb.getSize(new THREE.Vector3());
+  const CUT = -0.8, HA = hs.x / 2 + HP.side, HD = hs.z / 2 + HP.front, HH = hs.y + HP.top + HP.under, HB = HH / (1 - CUT), HC = new THREE.Vector3(hc.x, hb.max.y + HP.top - HB, hc.z + HP.fwd);
+  const sm = (e0, e1, x) => { const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
+  const NT = 44, NP = 72, hp = [], huv = [], hix = [];
+  for (let i = 0; i <= NT; i++) for (let j = 0; j <= NP; j++) {
+    const th = i / NT * Math.PI, ps = (j / NP * 2 - 1) * Math.PI, x = Math.cos(th), y0 = Math.sin(th) * Math.sin(ps), z = Math.sin(th) * Math.cos(ps), y = Math.max(CUT, y0);
+    const chin = 1 + HP.chin * sm(0.05, -0.5, y) * sm(0.0, 0.6, z), tuck = 1 - 0.09 * sm(-0.3, CUT, y) * (1 - sm(0.0, 0.6, z)), brow = 1 - 0.05 * sm(0.3, 0.75, y) * sm(0.0, 0.6, z);
+    hp.push(HC.x + x * HA * tuck, HC.y + y * HB, HC.z + z * HD * chin * tuck * brow); huv.push(j / NP, i / NT);
+  }
+  for (let i = 0; i < NT; i++) for (let j = 0; j < NP; j++) { const a0 = i * (NP + 1) + j, b0 = a0 + 1, c0 = a0 + NP + 1, d0 = c0 + 1; hix.push(a0, b0, c0, b0, d0, c0); }
+  const shell = new THREE.BufferGeometry(); shell.setAttribute('position', new THREE.Float32BufferAttribute(hp, 3)); shell.setAttribute('uv', new THREE.Float32BufferAttribute(huv, 2)); shell.setIndex(hix); shell.computeVertexNormals();
+  { const N = shell.attributes.normal, n0 = new THREE.Vector3(), n1 = new THREE.Vector3();   // one normal across the seam at the back, and one at each ear
+    for (let i = 0; i <= NT; i++) { const a0 = i * (NP + 1), b0 = a0 + NP; n0.fromBufferAttribute(N, a0).add(n1.fromBufferAttribute(N, b0)).normalize(); N.setXYZ(a0, n0.x, n0.y, n0.z); N.setXYZ(b0, n0.x, n0.y, n0.z); }
+    for (let j = 0; j <= NP; j++) { N.setXYZ(j, 1, 0, 0); N.setXYZ(NT * (NP + 1) + j, -1, 0, 0); } }
+  // its paint, and a second image saying where it is lacquer, rubber or mirror
+  const TW = 2048, TH = 1024, mk = () => { const c = document.createElement('canvas'); c.width = TW; c.height = TH; return c; }, cc = mk(), cr = mk(), gc = cc.getContext('2d'), gr = cr.getContext('2d'), ic = gc.createImageData(TW, TH), ir = gr.createImageData(TW, TH);
+  const mixc = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t, a[3] + (b[3] - a[3]) * t, a[4] + (b[4] - a[4]) * t];
+  // colour r g b, then roughness and metalness
+  const WHITE = [240, 239, 234, 0.26, 0], BLACK = [16, 17, 19, 0.3, 0], GOLD = [203, 161, 72, 0.3, 0.35], RUBBER = [10, 10, 11, 0.72, 0], VISOR = [70, 80, 104, 0.07, 1], GREY = [58, 61, 66, 0.45, 0.6];
+  for (let py = 0; py < TH; py++) for (let px = 0; px < TW; px++) {
+    const th = (py + 0.5) / TH * Math.PI, ps = ((px + 0.5) / TW * 2 - 1) * Math.PI, x = Math.cos(th), ax = Math.abs(x), sn = Math.sin(th), y = sn * Math.sin(ps), z = sn * Math.cos(ps), e = 0.004;
+    let c = WHITE;
+    const band = 1 - sm(-1.75, -1.6, ps) * (1 - sm(HP.v0 - 0.05, HP.v0, ps));   // the stripe runs from the brow over the crown and down the back, not across the chin bar
+    c = mixc(c, GOLD, band * sm(0.118 - e, 0.118 + e, ax) * (1 - sm(0.152 - e, 0.152 + e, ax)));
+    c = mixc(c, BLACK, band * (1 - sm(0.082 - e, 0.082 + e, ax)));
+    // vents in the chin bar
+    if (z > 0 && y < -0.3) { const vy = Math.abs(y + 0.5), vx = Math.abs(ax - 0.17); c = mixc(c, RUBBER, (1 - sm(0.02, 0.027, vy)) * (1 - sm(0.085, 0.095, vx))); }
+    // the visor: a band across the eyes that narrows to its pivots
+    const f = Math.pow(Math.abs(ps - HP.v0) / HP.vh, 5) + Math.pow(ax / 0.9, 7), front = z > -0.2 ? 1 : 0;
+    c = mixc(c, RUBBER, front * (1 - sm(1.3, 1.4, f)));
+    c = mixc(c, VISOR, front * (1 - sm(0.97, 1.03, f)));
+    c = mixc(c, GREY, sm(0.978, 0.982, ax));                                    // the pivot covers
+    c = mixc(c, RUBBER, 1 - sm(CUT + 0.075, CUT + 0.09, y));                    // the rim and the underside
+    const o = (py * TW + px) * 4;
+    ic.data[o] = c[0]; ic.data[o + 1] = c[1]; ic.data[o + 2] = c[2]; ic.data[o + 3] = 255;
+    ir.data[o] = 255; ir.data[o + 1] = c[3] * 255; ir.data[o + 2] = c[4] * 255; ir.data[o + 3] = 255;
+  }
+  gc.putImageData(ic, 0, 0); gr.putImageData(ir, 0, 0);
+  const hmap = new THREE.CanvasTexture(cc); hmap.colorSpace = THREE.SRGBColorSpace; hmap.wrapS = THREE.RepeatWrapping; const hrm = new THREE.CanvasTexture(cr); hrm.wrapS = THREE.RepeatWrapping;
+  const helmet = new THREE.Mesh(shell, new THREE.MeshStandardMaterial({ map: hmap, roughnessMap: hrm, metalnessMap: hrm, roughness: 1, metalness: 1 })); helmet.name = 'helmet'; helmet.material.name = 'helmet';
+  headBone.updateWorldMatrix(true, false); helmet.applyMatrix4(headBone.matrixWorld.clone().invert()); headBone.add(helmet);
+  // six feet tall
+  const tall = new THREE.Box3().setFromObject(sk).getSize(new THREE.Vector3()).y; report.build = { was: +tall.toFixed(1), legVerts: moved, head: hs.toArray().map(n => +n.toFixed(1)), helmet: [HA, HB, HD].map(n => +n.toFixed(1)) };
+  av.scale.setScalar(182.9 / tall * 0.01); av.updateMatrixWorld(true);
   const glb = await new GLTFExporter().parseAsync(av, { binary: true, animations: clips, onlyVisible: false });
   const r = await fetch('/__shot?name=driver_raw', { method: 'POST', body: glb });
   return JSON.stringify({ bytes: glb.byteLength, status: r.status, report });

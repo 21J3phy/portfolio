@@ -40,6 +40,7 @@ try { renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPrefer
 const DPR = { max: tier === 'high' ? 1.75 : 1.5, budget: tier === 'high' ? 3.2e6 : 1.3e6, cap: Infinity };
 const pickDpr = () => Math.max(1, Math.min(devicePixelRatio, DPR.max, DPR.cap, Math.sqrt(DPR.budget / (innerWidth * innerHeight))));
 renderer.setPixelRatio(pickDpr()); renderer.setSize(innerWidth, innerHeight, false);
+renderer.localClippingEnabled = true;
 renderer.toneMapping = { aces: THREE.ACESFilmicToneMapping, neutral: THREE.NeutralToneMapping, agx: THREE.AgXToneMapping }[query.get('tm')] ?? THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = +(query.get('ex') || 0.82);
 renderer.debug.checkShaderErrors = query.has('debug');   // (checking makes every shader compile block the page)
@@ -89,10 +90,10 @@ const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.
 bloom.materialHighPassFilter.fragmentShader = bloom.materialHighPassFilter.fragmentShader.replace('vec4 texel = texture2D( tDiffuse, vUv );', 'vec4 texel = texture2D( tDiffuse, vUv ); texel.rgb = min( texel.rgb, vec3( 2.6 ) );');
 if (halfFloat) composer.addPass(bloom);
 const lens = new ShaderPass({
-  uniforms: { tDiffuse: { value: null }, time: { value: 0 }, speed: { value: 0 } },
+  uniforms: { tDiffuse: { value: null }, time: { value: 0 }, speed: { value: 0 }, grade: { value: new THREE.Vector2(+(query.get('sat') || 1.12), +(query.get('con') || 0.26)) } },
   vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
   fragmentShader: /* glsl */`
-    uniform sampler2D tDiffuse; uniform float time, speed; varying vec2 vUv;
+    uniform sampler2D tDiffuse; uniform float time, speed; uniform vec2 grade; varying vec2 vUv;
     float h(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233)) + time) * 43758.5453); }
     void main() {
       vec2 c = vUv - 0.5; float r2 = dot(c, c);
@@ -102,6 +103,8 @@ const lens = new ShaderPass({
       gl_FragColor = vec4(col, 1.0);
       #include <tonemapping_fragment>
       #include <colorspace_fragment>
+      // the print: a little more colour and a gentle S-curve, so the haze in the photograph does not flatten the frame
+      vec3 g = clamp(gl_FragColor.rgb, 0.0, 1.0); g = mix(vec3(dot(g, vec3(0.2126, 0.7152, 0.0722))), g, grade.x); gl_FragColor.rgb = mix(g, g * g * (3.0 - 2.0 * g), grade.y);
       gl_FragColor.rgb *= 1.0 - 0.42 * smoothstep(0.12, 0.72, r2);
       gl_FragColor.rgb += (h(vUv * vec2(1920.0, 1080.0)) - 0.5) * 0.022;
     }`,
@@ -137,7 +140,7 @@ const ease = k => k * k * (3 - 2 * k) * 0.6 + k * 0.4;
 // a leg of road: pull away through the gears, cruise, brake to the mark
 const LEG_A = 0.4, LEG_B = 0.34, LEG_V = 1 / (1 - LEG_A / 2 - LEG_B / 2);
 const legAt = k => k < LEG_A ? LEG_V * k * k / (2 * LEG_A) : k > 1 - LEG_B ? 1 - LEG_V * (1 - k) * (1 - k) / (2 * LEG_B) : LEG_V * (k - LEG_A / 2);
-const vs = { pos: 0, target: 0, vel: 0, max: 1, dir: 1, cutNow: true, touched: 0 };
+const vs = { pos: 0, target: 0, vel: 0, max: 1, dir: 1, cutNow: true, touched: 0, auto: false };
 function measure() {
   introY = Math.max(1, innerHeight * 0.62);
   let from = introY, fromS = stops[0].s;
@@ -146,8 +149,9 @@ function measure() {
 }
 /** Jump the film to u: a cut, not a fast-forward. */
 function cutTo(u) { vs.pos = vs.target = clamp(u, 0, vs.max); vs.vel = 0; vs.cutNow = true; }
-const push = d => { if (!d) return; vs.dir = Math.sign(d); vs.target = clamp(vs.target + d, 0, vs.max); vs.touched = performance.now(); };
+const push = d => { if (!d) return; vs.dir = Math.sign(d); vs.auto = false; vs.target = clamp(vs.target + d, 0, vs.max); vs.touched = performance.now(); };
 function stepScroll(dt) {
+  if (vs.auto) { vs.dir = 1; vs.target = Math.min(introY + 8, Math.max(vs.target, vs.pos) + 430 * dt); if (vs.pos > introY + 3) vs.auto = false; }   // the start button: the opening plays at its own pace
   // on the road, the car carries on by itself to the next destination (forwards only: backing up is done by hand),
   // and scrolling harder cannot take it past the stop it is driving to
   let cap = 1400;
@@ -411,7 +415,7 @@ function setMode(m) {
   document.body.classList.toggle('no3d', m === 'page'); document.body.classList.toggle('free', m === 'free');
   for (const b of $$('#modes button')) b.setAttribute('aria-pressed', String(b.dataset.mode === m));
   for (const c of ['inspect', 'looking', 'onsign', 'atend']) document.body.classList.remove(c); for (const k of ['inspect', 'signhover', 'atend']) delete shownAs[k];
-  if (m === 'page') { $('#loader')?.remove(); if (sound?.on) $('#soundBtn')?.click(); hero.style.transform = ''; hero.style.visibility = ''; delete shownAs.heroY; scrollTo(0, 0); }
+  if (m === 'page') { $('#loader')?.remove(); if (sound?.on) $('#soundBtn')?.click(); hero.style.transform = ''; hero.style.visibility = ''; hero.style.opacity = ''; delete shownAs.heroY; scrollTo(0, 0); }
   else {
     scrollTo(0, 0);
     if (m === 'tour') {
@@ -423,6 +427,7 @@ function setMode(m) {
   activity();
 }
 for (const b of $$('#modes button')) b.addEventListener('click', () => setMode(b.dataset.mode));
+$('[data-start]')?.addEventListener('click', () => { if (mode === 'tour') { vs.auto = true; vs.touched = performance.now(); } });
 addEventListener('keydown', e => {
   if (mode !== 'free' || e.metaKey || e.ctrlKey || e.altKey || e.target.closest?.('.dest.open, input, textarea, select')) return;
   const k = e.key.toLowerCase();
@@ -445,12 +450,14 @@ const CHASE = { pos: [-6.3, 0, 2.0], look: [6, 0, 1.05], fov: 47 };
 // The opening. The page loads on the car from the front; scrolling walks the camera round it to the chase position
 // (out over the drop: that is the sunlit side, and the other way round looks straight into the sun), and only then
 // does the car pull away.
-const OPEN = { a0: Math.atan2(5.1, 11.5), a1: Math.PI, r0: 12.6, h0: 1.25, look0: [-2.2, -3.0, 0.78], look0tall: [-0.4, 0, 3.3], mid: [0, 0, 0.8], fov0: 30 };
+// It is a car photographer's three-quarter: low, close, a long lens. On a phone it comes round to the nose, so the car
+// fills the width above the words.
+const OPEN = { a0: 0.62, a0tall: 0.28, lat: 5.0, a1: Math.PI, r0: 10, r0tall: 9.7, h0: 0.72, look0: [0, 0, 0.74], look0tall: [0, 0, -0.85], mid: [0, 0, 0.8], fov0: 27, shift: 0.175, rise: 0.06 };
 const intro = { k: 0, set: false, pos: [0, 0, 0], look: [0, 0, 0], fov: 30 };
 function opening(e) {
-  const a = lerp(OPEN.a0, OPEN.a1, e), r = lerp(OPEN.r0, Math.hypot(CHASE.pos[0], CHASE.pos[1]), smooth(0, 0.62, e)), h = lerp(OPEN.h0, CHASE.pos[2], e) + Math.sin(Math.PI * e) * 0.25;
-  intro.pos[0] = Math.cos(a) * r; intro.pos[1] = Math.sin(a) * r; intro.pos[2] = h;
-  const k1 = smooth(0, 0.45, e), k2 = smooth(0.66, 1, e), l0 = camera.aspect < 0.9 ? OPEN.look0tall : OPEN.look0;   // on a phone the car sits under the words, not beside them
+  const tall = camera.aspect < 0.9, a = lerp(tall ? OPEN.a0tall : OPEN.a0, OPEN.a1, e), r = lerp(tall ? OPEN.r0tall : OPEN.r0 * Math.max(1, 1.5 / camera.aspect), Math.hypot(CHASE.pos[0], CHASE.pos[1]), smooth(0, 0.62, e)), h = lerp(OPEN.h0, CHASE.pos[2], e) + Math.sin(Math.PI * e) * 0.25;
+  intro.pos[0] = Math.cos(a) * r; intro.pos[1] = OPEN.lat * Math.tanh(Math.sin(a) * r / OPEN.lat); intro.pos[2] = h;   // (it stays this side of the guardrail: from beyond it, down low, the rail is all it would see)
+  const k1 = smooth(0, 0.45, e), k2 = smooth(0.66, 1, e), l0 = tall ? OPEN.look0tall : OPEN.look0;   // on a phone the car sits above the words, not beside them
   for (let i = 0; i < 3; i++) intro.look[i] = lerp(lerp(l0[i], OPEN.mid[i], k1), CHASE.look[i], k2);
   intro.fov = lerp(OPEN.fov0, CHASE.fov, smooth(0.12, 0.6, e));
 }
@@ -501,8 +508,10 @@ function directCamera(dt) {
   camera.lookAt(v3b);
   // on a narrow screen fit the wider of the frame's needs by opening the lens; on a wide one leave room for the card
   const portrait = camera.aspect < 0.9; camera.fov = clamp(camState.fov * (portrait ? 1.55 : 1), 20, 82);
-  camState.off = lerp(camState.off, side() && w > 0.5 ? -innerWidth * 0.2 * (1 - smooth(0.05, 0.7, e)) : 0, 1 - Math.exp(-dt * 6));   // (the opening leaves room for the name)
-  if (Math.abs(camState.off) > 1) camera.setViewOffset(innerWidth, innerHeight, camState.off, 0, innerWidth, innerHeight); else camera.clearViewOffset();
+  // (the opening leaves room for the name: the car is slid to the right of the frame, and up a little, without turning the camera)
+  const ko = w > 0.5 ? 1 - smooth(0.05, 0.7, e) : 0, kq = camState.ready2 ? 1 - Math.exp(-dt * 6) : 1; camState.ready2 = true;
+  camState.off = lerp(camState.off, side() && !portrait ? -innerWidth * OPEN.shift * ko : 0, kq); camState.offY = lerp(camState.offY || 0, side() && !portrait ? innerHeight * OPEN.rise * ko : 0, kq);
+  if (Math.abs(camState.off) > 1 || Math.abs(camState.offY) > 1) camera.setViewOffset(innerWidth, innerHeight, camState.off, camState.offY, innerWidth, innerHeight); else camera.clearViewOffset();
   camera.updateProjectionMatrix();
 }
 
@@ -712,6 +721,7 @@ function updateDash() {
   if (dash.map) {
     const covered = intro.k < 0.6 || !!panel.open;
     show('maphide', covered, on => dash.map.classList.toggle('hide', on));
+    show('dashhide', intro.k < 0.6, on => dash.el?.classList.toggle('hide', on));
     if (!covered) minimap?.draw(drive.s, route.at(drive.s, Q).heading, nxt ? nxt.i : -1);
   }
 }
@@ -746,7 +756,7 @@ function frame(dtFixed) {
     stepScroll(dt); tl.snapped = vs.cutNow || !tl.set; vs.cutNow = false; if (tl.snapped) camState.ready = false;
     tl.u = vs.pos; tl.set = true; const ft = tl.u * FILM; tl.dFilm = tl.snapped ? 0 : Math.abs(ft - tl.film); tl.film = ft;
     // the name and the buttons ride up out of the way as the film starts; the credits come up when it ends
-    show('heroY', Math.round(Math.min(tl.u, innerHeight * 1.4)), y => { hero.style.transform = `translate3d(0,${-y}px,0)`; hero.style.visibility = y >= innerHeight * 1.4 ? 'hidden' : ''; });
+    show('heroY', Math.round(Math.min(tl.u, innerHeight * 0.6)), y => { const k = y / (innerHeight * 0.2); hero.style.transform = `translate3d(0,${-y * 0.5}px,0)`; hero.style.opacity = k >= 1 ? '' : String(1 - k * k); hero.style.visibility = k >= 1 ? 'hidden' : ''; });
     show('atend', tl.u > vs.max - 60, on => document.body.classList.toggle('atend', on));
     intro.k = clamp(tl.u / introY, 0, 1);
     film = timeline(tl.u);
@@ -755,6 +765,8 @@ function frame(dtFixed) {
   if (mode === 'free' && man.on) stepMan(dt); else { stepSeq(dt, film); placePerson(dt); }
   directCamera(dt);
   world.update(camera, car.position);
+  if (person) { let k = 1; if (person.group.parent === scene) { v3.copy(person.group.position); v3.y += 1.5 - seq.low * 0.55; k = smooth(1.5, 2.05, v3.distanceTo(camera.position)); } person.fade(k); }   // (in a close look past his shoulder, his head is not left in the way)
+  if (person) { const f = person.floor; if (person.group.parent === car) { f.normal.set(0, 1, 0).applyQuaternion(car.quaternion); f.constant = -f.normal.dot(v3.copy(car.position).addScaledVector(f.normal, 0.25)); } else f.constant = 1e5; }   // (seated, his legs stop at the car's floor)
   const live = exhibits.update(simTime, dt, drive.s, camera);   // (what stands at the stops runs on its own clock, scrolled or not)
   lens.uniforms.time.value = simTime % 10; lens.uniforms.speed.value = reduce || window.__drive?.cam ? 0 : smooth(0.35, 1, Math.abs(drive.v) / VMAX);
   updateDash(); updateSound(dt);
