@@ -62,56 +62,52 @@
   for (var i = 0; i < files.length; i++) { var l = document.createElement('link'); l.rel = 'preload'; l.as = 'fetch'; l.crossOrigin = 'anonymous'; l.href = 'drive/assets/' + files[i]; document.head.appendChild(l); }
 })();
 </script>
-<noscript><style>.dest{display:block}.stop{padding-top:28px;height:auto}body{overflow:visible;height:auto;touch-action:auto}.foot,.tail{display:block}#loader,#dash,#map,#drive,.scrollhint,#soundBtn{display:none}.hero-in,.hero-in h1,.hero-in .lead,.hero-in .links a{color:#17191d}.stop.hero{min-height:0;padding-top:110px;padding-bottom:0}.stop.hero::before,.hero-in .go,.eyebrow{display:none}</style></noscript>
+<noscript><style>.dest{display:block}.stop{padding-top:28px;height:auto}body{overflow:visible;height:auto;touch-action:auto}.foot,.tail{display:block}#loader,#dash,#map,#drive,.scrollhint,#soundBtn{display:none}.hero-in,.hero-in h1,.hero-in .lead,.hero-in .links a{color:#17191d}.stop.hero{min-height:0;padding-top:110px;padding-bottom:0}.stop.hero::before,.startbtn,.eyebrow{display:none}</style></noscript>
 </head>
 <body>
 <canvas id="drive" aria-hidden="true"></canvas>
 
 <header class="top">
-  <a class="brand" href="#top" aria-label="Nirav Surabhi">
-    <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="18" cy="32" r="9" fill="none" stroke="#17191d" stroke-width="4"/><circle cx="36" cy="22" r="6" fill="#f06a14"/><circle cx="51" cy="42" r="6" fill="#4fb4ff"/></svg>
-    <span><b>Nirav Surabhi</b><small>Robotics and machine learning · Purdue ’30</small></span>
-  </a>
+  <a class="face brand" href="#top" aria-label="Nirav Surabhi, top of the page"><span class="lcd"><b>Nirav Surabhi</b><small>Robotics and machine learning · Purdue ’30</small></span></a>
   <span class="sp"></span>
-  <button class="btn snd" id="soundBtn" type="button" aria-pressed="false" title="Engine, road and sea"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.2L12 5.6v12.8l-4.8-3.9H4z" fill="currentColor"/><path class="w1" d="M15.2 9.2a4 4 0 0 1 0 5.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="w2" d="M17.8 6.8a7.4 7.4 0 0 1 0 10.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="x" d="M15.5 9.5l5 5m0-5l-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Sound</span></button>
-  <a class="btn opt" href="/blog">Blog</a>
-  <a class="btn opt" href="#contact">Contact</a>
-  <a class="btn primary" href="Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+  <nav class="face nav" aria-label="Site"><span class="knobwrap"><button class="knob snd" id="soundBtn" type="button" aria-pressed="false" aria-label="Sound" title="Engine, road and sea"></button><small>Vol</small></span><a class="key opt" href="/blog">Blog</a><a class="key opt" href="#contact">Contact</a><a class="key cv" href="Resume.pdf" target="_blank" rel="noopener">Résumé</a></nav>
 </header>
 
 <aside id="dash" aria-hidden="true">
-  <div class="tripcard">
-    <div class="rowt"><div><small>Elevation</small><span id="alt">0 ft</span></div><div><small>Trip</small><span id="trip">0.00 mi</span></div></div>
-  </div>
-  <div class="cluster">
+  <div class="face tripcard"><div class="lcd"><div class="rowt"><div><small>Elevation</small><span id="alt">0 ft</span></div><div><small>Trip</small><span id="trip">0.00 mi</span></div></div></div></div>
+  <div class="inst cluster">
     <svg viewBox="0 0 200 200">
-      <line class="tick maj" x1="30.7" y1="140.0" x2="22.1" y2="145.0"/><text class="num" x="41.1" y="134.0">0</text><line class="tick" x1="18.1" y1="118.7" x2="12.3" y2="120.0"/><line class="tick maj" x1="20.2" y1="94.0" x2="10.3" y2="93.3"/><text class="num" x="32.2" y="94.9">20</text><line class="tick" x1="21.8" y1="69.3" x2="16.2" y2="67.1"/><line class="tick maj" x1="37.5" y1="50.1" x2="29.6" y2="43.9"/><text class="num" x="46.8" y="57.6">40</text><line class="tick" x1="52.7" y1="30.6" x2="49.3" y2="25.6"/><line class="tick maj" x1="76.4" y1="23.6" x2="73.5" y2="14.0"/><text class="num" x="80.0" y="35.0">60</text><line class="tick" x1="100.0" y1="16.0" x2="100.0" y2="10.0"/><line class="tick maj" x1="123.6" y1="23.6" x2="126.5" y2="14.0"/><text class="num" x="120.0" y="35.0">80</text><line class="tick" x1="147.3" y1="30.6" x2="150.7" y2="25.6"/><line class="tick maj" x1="162.5" y1="50.1" x2="170.4" y2="43.9"/><text class="num" x="153.2" y="57.6">100</text><line class="tick" x1="178.2" y1="69.3" x2="183.8" y2="67.1"/><line class="tick maj" x1="179.8" y1="94.0" x2="189.7" y2="93.3"/><text class="num" x="167.8" y="94.9">120</text><line class="tick" x1="181.9" y1="118.7" x2="187.7" y2="120.0"/><line class="tick maj" x1="169.3" y1="140.0" x2="177.9" y2="145.0"/><text class="num" x="158.9" y="134.0">140</text>
-      <path class="rpmtrack" d="M 56.5 143.5 A 61.5 61.5 0 1 1 143.5 143.5" pathLength="151"/>
-      <path id="rpm" d="M 56.5 143.5 A 61.5 61.5 0 1 1 143.5 143.5" pathLength="151"/>
-      <text id="gear" x="100" y="76">P</text>
-      <text id="mph" x="100" y="150">0</text><text class="unit" x="100" y="164">MPH</text>
-      <circle id="brakeLamp" cx="100" cy="178" r="3.5"/>
-      <line id="needle" x1="100" y1="108" x2="100" y2="22" transform="rotate(-120 100 100)"/>
-      <circle class="hub" cx="100" cy="100" r="6.5"/>
+      <defs><radialGradient id="gFace" cx="50%" cy="38%" r="66%"><stop offset="0" stop-color="#2b2e34"/><stop offset=".55" stop-color="#121317"/><stop offset="1" stop-color="#040506"/></radialGradient><radialGradient id="gHub" cx="36%" cy="28%" r="78%"><stop offset="0" stop-color="#7b7f87"/><stop offset=".45" stop-color="#23252a"/><stop offset="1" stop-color="#060607"/></radialGradient><linearGradient id="gNdl" x1="0" x2="1"><stop offset="0" stop-color="#ff9a6b"/><stop offset=".5" stop-color="#ff4a1c"/><stop offset="1" stop-color="#a82405"/></linearGradient></defs>
+      <circle cx="100" cy="100" r="100" fill="url(#gFace)"/>
+      <circle class="lit" cx="100" cy="100" r="97.4"/>
+      <path class="spdtrack" d="M 18.1 147.3 A 94.6 94.6 0 1 1 181.9 147.3"/>
+      <line class="tick maj" x1="27.7" y1="141.8" x2="20.3" y2="146.0"/><text class="num" x="36.3" y="136.8">0</text><line class="tick" x1="17.2" y1="132.5" x2="14.4" y2="133.6"/><line class="tick mid" x1="15.2" y1="119.4" x2="10.3" y2="120.5"/><line class="tick" x1="11.2" y1="106.7" x2="8.3" y2="106.9"/><line class="tick maj" x1="16.7" y1="93.8" x2="8.3" y2="93.1"/><text class="num" x="26.7" y="94.5">20</text><line class="tick" x1="13.2" y1="80.2" x2="10.3" y2="79.5"/><line class="tick mid" x1="19.0" y1="68.2" x2="14.4" y2="66.4"/><line class="tick" x1="22.9" y1="55.5" x2="20.3" y2="54.0"/><line class="tick maj" x1="34.7" y1="47.9" x2="28.1" y2="42.6"/><text class="num" x="42.5" y="54.2">40</text><line class="tick" x1="39.5" y1="34.8" x2="37.4" y2="32.6"/><line class="tick mid" x1="51.0" y1="28.1" x2="48.2" y2="24.0"/><line class="tick" x1="61.4" y1="19.8" x2="60.1" y2="17.1"/><line class="tick maj" x1="75.4" y1="20.2" x2="72.9" y2="12.1"/><text class="num" x="78.3" y="29.8">60</text><line class="tick" x1="86.7" y1="12.0" x2="86.3" y2="9.0"/><line class="tick mid" x1="100.0" y1="13.0" x2="100.0" y2="8.0"/><line class="tick" x1="113.3" y1="12.0" x2="113.7" y2="9.0"/><line class="tick maj" x1="124.6" y1="20.2" x2="127.1" y2="12.1"/><text class="num" x="121.7" y="29.8">80</text><line class="tick" x1="138.6" y1="19.8" x2="139.9" y2="17.1"/><line class="tick mid" x1="149.0" y1="28.1" x2="151.8" y2="24.0"/><line class="tick" x1="160.5" y1="34.8" x2="162.6" y2="32.6"/><line class="tick maj" x1="165.3" y1="47.9" x2="171.9" y2="42.6"/><text class="num" x="157.5" y="54.2">100</text><line class="tick" x1="177.1" y1="55.5" x2="179.7" y2="54.0"/><line class="tick mid" x1="181.0" y1="68.2" x2="185.6" y2="66.4"/><line class="tick" x1="186.8" y1="80.2" x2="189.7" y2="79.5"/><line class="tick maj" x1="183.3" y1="93.8" x2="191.7" y2="93.1"/><text class="num" x="173.3" y="94.5">120</text><line class="tick" x1="188.8" y1="106.7" x2="191.7" y2="106.9"/><line class="tick mid" x1="184.8" y1="119.4" x2="189.7" y2="120.5"/><line class="tick" x1="182.8" y1="132.5" x2="185.6" y2="133.6"/><line class="tick maj" x1="172.3" y1="141.8" x2="179.7" y2="146.0"/><text class="num" x="163.7" y="136.8">140</text>
+      <path id="spd" d="M 18.1 147.3 A 94.6 94.6 0 1 1 181.9 147.3" pathLength="240"/>
+      <path class="rpmtrack" d="M 56.5 143.5 A 61.5 61.5 0 1 1 143.5 143.5" pathLength="151"/><path class="red" d="M 158.2 119.8 A 61.5 61.5 0 0 1 143.5 143.5"/><path id="rpm" d="M 56.5 143.5 A 61.5 61.5 0 1 1 143.5 143.5" pathLength="151"/><line class="ttick" x1="60.8" y1="139.2" x2="58.6" y2="141.4"/><line class="ttick" x1="45.0" y1="107.2" x2="41.9" y2="107.6"/><text class="tnum" x="50.2" y="106.6">1</text><line class="ttick" x1="51.9" y1="72.2" x2="49.3" y2="70.7"/><text class="tnum" x="56.5" y="74.9">2</text><line class="ttick" x1="78.8" y1="48.7" x2="77.6" y2="45.9"/><text class="tnum" x="80.8" y="53.6">3</text><line class="ttick" x1="114.4" y1="46.4" x2="115.2" y2="43.4"/><text class="tnum" x="113.0" y="51.5">4</text><line class="ttick" x1="144.0" y1="66.2" x2="146.5" y2="64.3"/><text class="tnum" x="139.8" y="69.4">5</text><line class="ttick" x1="155.5" y1="100.0" x2="158.6" y2="100.0"/><text class="tnum" x="150.2" y="100.0">6</text><line class="ttick" x1="144.0" y1="133.8" x2="146.5" y2="135.7"/>
+      <g class="readout"><rect class="win" x="66" y="127" width="68" height="25" rx="3.5"/><text id="gear" x="77" y="139.8">P</text><line class="div" x1="88" y1="131" x2="88" y2="148"/><text id="mph" x="119.5" y="146.6">0</text><text class="unit" x="121.5" y="146.6">mph</text></g>
+      <circle id="brakeLamp" cx="100" cy="161.5" r="2.8"/>
+      <g id="needle" class="needle" transform="rotate(-120 100 100)"><path fill="url(#gNdl)" d="M 97.5 114 L 102.5 114 L 100.8 14 L 99.2 14 Z"/></g>
+      <circle cx="100" cy="100" r="10.5" fill="url(#gHub)" stroke="#000" stroke-width=".8"/><circle cx="100" cy="100" r="3.6" fill="#0a0b0c"/>
     </svg>
   </div>
 </aside>
-<div id="modes" role="group" aria-label="How to see it">
-  <button type="button" data-mode="tour" aria-pressed="true" title="Scroll and the car takes you round">Tour</button>
-  <button type="button" data-mode="free" aria-pressed="false" title="Drive it yourself">Free drive</button>
-  <button type="button" data-mode="page" aria-pressed="false" title="An ordinary page, no road">Classic</button>
+<div id="modes" class="face" role="group" aria-label="How to see it">
+  <button class="key" type="button" data-mode="tour" aria-pressed="true" title="Scroll and the car takes you round"><i class="led"></i>Tour</button>
+  <button class="key" type="button" data-mode="free" aria-pressed="false" title="Drive it yourself"><i class="led"></i>Free drive</button>
+  <button class="key" type="button" data-mode="page" aria-pressed="false" title="An ordinary page, no road"><i class="led"></i>Classic</button>
 </div>
 <button id="outBtn" type="button" hidden>Get out <kbd>E</kbd></button>
 <p id="freehint" aria-hidden="true"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or the arrow keys drive · <kbd>E</kbd> gets out</p>
 <i id="aim" aria-hidden="true"></i>
 <div id="pad" aria-hidden="true"><div><button type="button" data-key="a">◀</button><button type="button" data-key="d">▶</button></div><div><button type="button" data-key="c">Crouch</button><button type="button" data-key="s">Brake</button><button type="button" data-key="w">Go</button></div></div>
 <aside id="map" class="hide" aria-hidden="true">
-  <canvas id="mapCanvas" width="336" height="336"></canvas>
-  <div class="mapinfo">
-    <small>Next stop</small><b id="nextStop">01 Arm sim</b><small id="nextDist"></small>
+  <div class="inst" id="mapDial"><canvas id="mapCanvas" width="360" height="360"></canvas></div>
+  <div class="face mapinfo"><div class="lcd">
+    <small>Next stop</small><b id="nextStop">01 Arm sim</b><span id="nextDist"></span>
     <div class="rowt"><div><small>To go</small><span id="togo">0.00 mi</span></div><div><small>Stops</small><span id="stopN">0 / 12</span></div></div>
-  </div>
+  </div></div>
 </aside>
+<button id="morehint" class="key" type="button" tabindex="-1" aria-hidden="true"><i class="led"></i><span>Keep scrolling</span></button>
 <p id="lookhint" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5a7 7 0 1 0 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 5v4.2h-4.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Drag to look around<span class="opt"> · click the sign for the full story</span><span class="tap"> · tap the sign</span></p>
 
 <main id="route">
@@ -122,10 +118,9 @@
       <h1>Nirav <span>Surabhi</span></h1>
       <p class="lead">I build robots, test them in simulation, and train the models that tell them where to go. Mechanical engineering at Purdue, class of 2030.</p>
       <div class="cta">
-        <button class="btn go only-tour" type="button" data-start>Start the drive<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <button class="btn go only-page" type="button" data-goto="tour">Take the drive<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <a class="btn glass" href="Resume.pdf" target="_blank" rel="noopener">Résumé</a>
-        <span class="links"><a href="mailto:niravsurabhi@gmail.com">Email</a><a href="https://github.com/21J3phy" target="_blank" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/niravss" target="_blank" rel="noopener">LinkedIn</a></span>
+        <button class="startbtn only-tour" type="button" data-start aria-label="Start the drive"><span><b>Start</b><small>the drive</small></span></button>
+        <button class="startbtn only-page" type="button" data-goto="tour" aria-label="Take the drive"><span><b>Drive</b><small>take the road</small></span></button>
+        <div class="face herokeys"><a class="key cv" href="Resume.pdf" target="_blank" rel="noopener">Résumé</a><a class="key" href="mailto:niravsurabhi@gmail.com">Email</a><a class="key" href="https://github.com/21J3phy" target="_blank" rel="noopener">GitHub</a><a class="key" href="https://www.linkedin.com/in/niravss" target="_blank" rel="noopener">LinkedIn</a></div>
       </div>
       <p class="scrollhint"><i></i>Or just scroll. The car drives itself between stops.</p>
       <p class="only-page pagehint">The same work, as a road you drive along.</p>
@@ -520,11 +515,20 @@
 
 <div id="loader" aria-hidden="true">
   <div class="ld">
-    <h1>Nirav Surabhi</h1>
-    <p>Robotics and machine learning</p>
-    <div class="barl"><div id="loadbar"></div></div>
-    <div class="rowl" id="loadlabel">Warming up the car</div>
-    <button class="btn" id="slow" type="button" onclick="pageOnly()">Taking a while? Read it as a page</button>
+    <div class="inst cluster ldgauge">
+      <svg viewBox="0 0 200 200">
+      <defs><radialGradient id="lFace" cx="50%" cy="38%" r="66%"><stop offset="0" stop-color="#2b2e34"/><stop offset=".55" stop-color="#121317"/><stop offset="1" stop-color="#040506"/></radialGradient><radialGradient id="lHub" cx="36%" cy="28%" r="78%"><stop offset="0" stop-color="#7b7f87"/><stop offset=".45" stop-color="#23252a"/><stop offset="1" stop-color="#060607"/></radialGradient><linearGradient id="lNdl" x1="0" x2="1"><stop offset="0" stop-color="#ff9a6b"/><stop offset=".5" stop-color="#ff4a1c"/><stop offset="1" stop-color="#a82405"/></linearGradient></defs>
+      <circle cx="100" cy="100" r="100" fill="url(#lFace)"/>
+      <circle class="lit" cx="100" cy="100" r="97.4"/>
+      <path class="spdtrack" d="M 18.1 147.3 A 94.6 94.6 0 1 1 181.9 147.3"/>
+      <line class="tick maj" x1="27.7" y1="141.8" x2="20.3" y2="146.0"/><text class="num" x="36.3" y="136.8">0</text><line class="tick" x1="15.4" y1="127.5" x2="12.5" y2="128.4"/><line class="tick mid" x1="13.5" y1="109.1" x2="8.5" y2="109.6"/><line class="tick" x1="11.5" y1="90.7" x2="8.5" y2="90.4"/><line class="tick maj" x1="20.6" y1="74.2" x2="12.5" y2="71.6"/><text class="num" x="30.1" y="77.3">20</text><line class="tick" x1="22.9" y1="55.5" x2="20.3" y2="54.0"/><line class="tick mid" x1="35.3" y1="41.8" x2="31.6" y2="38.4"/><line class="tick" x1="47.7" y1="28.0" x2="45.9" y2="25.6"/><line class="tick maj" x1="66.0" y1="23.7" x2="62.6" y2="16.0"/><text class="num" x="70.1" y="32.9">40</text><line class="tick" x1="81.5" y1="12.9" x2="80.9" y2="10.0"/><line class="tick mid" x1="100.0" y1="13.0" x2="100.0" y2="8.0"/><line class="tick" x1="118.5" y1="12.9" x2="119.1" y2="10.0"/><line class="tick maj" x1="134.0" y1="23.7" x2="137.4" y2="16.0"/><text class="num" x="129.9" y="32.9">60</text><line class="tick" x1="152.3" y1="28.0" x2="154.1" y2="25.6"/><line class="tick mid" x1="164.7" y1="41.8" x2="168.4" y2="38.4"/><line class="tick" x1="177.1" y1="55.5" x2="179.7" y2="54.0"/><line class="tick maj" x1="179.4" y1="74.2" x2="187.5" y2="71.6"/><text class="num" x="169.9" y="77.3">80</text><line class="tick" x1="188.5" y1="90.7" x2="191.5" y2="90.4"/><line class="tick mid" x1="186.5" y1="109.1" x2="191.5" y2="109.6"/><line class="tick" x1="184.6" y1="127.5" x2="187.5" y2="128.4"/><line class="tick maj" x1="172.3" y1="141.8" x2="179.7" y2="146.0"/><text class="num" x="163.7" y="136.8">100</text>
+      <rect class="win" x="68" y="127" width="64" height="25" rx="3.5"/><text id="ldPct" x="100" y="146.6">0%</text>
+      <g id="ldNeedle" class="needle" transform="rotate(-120 100 100)"><path fill="url(#lNdl)" d="M 97.5 114 L 102.5 114 L 100.8 14 L 99.2 14 Z"/></g>
+      <circle cx="100" cy="100" r="10.5" fill="url(#lHub)" stroke="#000" stroke-width=".8"/><circle cx="100" cy="100" r="3.6" fill="#0a0b0c"/>
+    </svg>
+    </div>
+    <div class="face ldpanel"><div class="lcd"><b>Nirav Surabhi</b><small id="loadlabel">Warming up the car</small><div class="barl"><div id="loadbar"></div></div></div></div>
+    <button class="key" id="slow" type="button" onclick="pageOnly()">Taking a while? Read it as a page</button>
   </div>
 </div>
 

@@ -77,6 +77,16 @@ There are three ways to see it, switched by the control at the top (`setMode` in
   scroll walks the camera
   round it, out over the drop on the sunlit side, to a chase position behind it; only when the camera is there does
   the car pull away (`OPEN`, `opening()` and `intro` in `drive/main.js`). A fast flick still plays the move.
+- **Everything that floats over the road is made as car hardware** (`/* the instruments */` in `site.css`), after
+  the dash of the Civic it is driven in: moulded black faceplates (`.face`), hard buttons with backlit legends and
+  a lamp that lights when they are in (`.key`), liquid-crystal windows for anything that is read (`.lcd`), a knurled
+  knob for the sound, a push-button start for the drive, and two dials in a chromed bezel (`.inst`). The speedometer
+  is an SVG in `index.html`: a needle on a hub over a lit scale, revs on the inner arc up to a red line, and a window
+  at the foot of the dial for the gear and the figure. The map is drawn by `drive/minimap.js` as a navigation display
+  (the way ahead in orange, what is behind in grey, a compass rim). The loading screen is the same dial with its
+  needle climbing as the road loads, over the opening frame out of focus.
+- **Parked at a stop**, if the scroll rests, a "Keep scrolling to get out" cue comes up (after about a second in the
+  car, about three once he is out; "Keep swiping up" on touch). Clicking it scrolls on. `#morehint`, set in `frame`.
 - On the road the camera is a driving game's chase camera: behind and a little above the car, pulling back and
   opening the lens with speed. It stays there as the car parks; when the driver gets out it hands over to the
   camera behind him, and back when he sits down again.

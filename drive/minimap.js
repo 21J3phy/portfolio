@@ -1,5 +1,6 @@
 // The map in the corner: the road from above, turned so the car always points up, the way a driving game draws it.
-// The mountain is on one side and the sea on the other; the part already driven is orange; destinations are numbered.
+// The mountain is on one side and the sea on the other; the way ahead is orange and what is behind is grey, as a
+// navigation display draws a route; destinations are numbered, and a compass rim turns with the car.
 
 const STEP = 5;   // metres between the points the road is drawn through
 
@@ -27,34 +28,41 @@ export function createMinimap(canvas, route, stops) {
         if (open && to === n) { const x = X[n] + RX[n] * off + (X[n] - X[n - 1]) * 120, z = Z[n] + RZ[n] * off + (Z[n] - Z[n - 1]) * 120; g.lineTo(px(x, z), py(x, z)); }
       };
       g.save(); g.clearRect(0, 0, W, W);
-      g.beginPath(); g.arc(W / 2, W / 2, W / 2 - S, 0, Math.PI * 2); g.clip();
-      g.fillStyle = '#12161b'; g.fillRect(0, 0, W, W);
+      g.beginPath(); g.arc(W / 2, W / 2, W / 2, 0, Math.PI * 2); g.clip();
+      g.fillStyle = '#101317'; g.fillRect(0, 0, W, W);
       g.lineCap = 'round'; g.lineJoin = 'round';
-      // the mountain on the driver's left, the sea on the right
-      line(i0, i1, -152); g.strokeStyle = '#4a3b30'; g.lineWidth = 300 * SCALE; g.stroke();
-      line(i0, i1, 154); g.strokeStyle = '#1d3a52'; g.lineWidth = 300 * SCALE; g.stroke();
-      line(i0, i1, 7); g.strokeStyle = '#3d4a4f'; g.lineWidth = 9 * SCALE; g.stroke();          // the shoulder and the drop's edge
-      // the road, then the part already driven
-      line(i0, i1, 0); g.strokeStyle = '#0b0d10'; g.lineWidth = 8.5 * S; g.stroke();
-      line(i0, i1, 0); g.strokeStyle = '#d9dcdf'; g.lineWidth = 4.6 * S; g.stroke();
-      const here = Math.min(i1, Math.floor(s / STEP));
-      if (here > i0) { line(i0, here, 0, false); g.lineTo(CX, CY); g.strokeStyle = '#ff7a3d'; g.lineWidth = 4.6 * S; g.stroke(); }
-      // destinations
+      // the mountain on the driver's left, the sea on the right, the shoulder between
+      line(i0, i1, -152); g.strokeStyle = '#2c2a27'; g.lineWidth = 300 * SCALE; g.stroke();
+      line(i0, i1, -30); g.strokeStyle = '#34312d'; g.lineWidth = 34 * SCALE; g.stroke();          // the foot of the slope, a shade lighter
+      line(i0, i1, 154); g.strokeStyle = '#143247'; g.lineWidth = 300 * SCALE; g.stroke();
+      line(i0, i1, 12); g.strokeStyle = '#1b4460'; g.lineWidth = 8 * SCALE; g.stroke();           // surf along the foot of the drop
+      line(i0, i1, 6); g.strokeStyle = '#23262b'; g.lineWidth = 9 * SCALE; g.stroke();
+      // the road: a dark bed, the stretch behind in grey, the way ahead in the accent
+      line(i0, i1, 0); g.strokeStyle = 'rgba(0,0,0,.75)'; g.lineWidth = 9 * S; g.stroke();
+      line(i0, i1, 0); g.strokeStyle = '#7d848c'; g.lineWidth = 4.4 * S; g.stroke();
+      const here = Math.max(i0, Math.min(i1, Math.ceil(s / STEP)));
+      if (here < i1) { g.beginPath(); g.moveTo(CX, CY); for (let i = here; i <= i1; i++) g.lineTo(px(X[i], Z[i]), py(X[i], Z[i])); if (i1 === n) { const x = X[n] + (X[n] - X[n - 1]) * 120, z = Z[n] + (Z[n] - Z[n - 1]) * 120; g.lineTo(px(x, z), py(x, z)); } g.strokeStyle = '#ff7a3d'; g.lineWidth = 4.4 * S; g.stroke(); }
+      // destinations: the next one lit, the ones behind dimmed
       g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = `600 ${9.5 * S}px Archivo, system-ui, sans-serif`;
       for (const m of marks) {
         const x = px(m.x, m.z), y = py(m.x, m.z); if (x < -20 || y < -20 || x > W + 20 || y > W + 20) continue;
-        const on = m.i === next;
-        g.beginPath(); g.arc(x, y, (on ? 9.5 : 8) * S, 0, Math.PI * 2); g.fillStyle = on ? '#ff7a3d' : m.i < next || next < 0 ? '#8d949b' : '#f3f1ec'; g.fill();
+        const on = m.i === next, past = m.i < next || next < 0;
+        if (on) { g.beginPath(); g.arc(x, y, 14 * S, 0, Math.PI * 2); g.fillStyle = 'rgba(255,122,61,.22)'; g.fill(); }
+        g.beginPath(); g.arc(x, y, (on ? 9.5 : 8) * S, 0, Math.PI * 2); g.fillStyle = on ? '#ff7a3d' : past ? '#565c64' : '#f6f3ed'; g.fill();
         g.lineWidth = 1.6 * S; g.strokeStyle = '#0b0d10'; g.stroke();
-        g.fillStyle = on ? '#fff' : '#12161b'; g.fillText(m.n, x, y + 0.5 * S);
+        g.fillStyle = on ? '#fff' : past ? '#c9cdd2' : '#12161b'; g.fillText(m.n, x, y + 0.5 * S);
       }
-      // the car
-      g.translate(CX, CY); g.beginPath(); g.moveTo(0, -9 * S); g.lineTo(6.2 * S, 7 * S); g.lineTo(0, 3.6 * S); g.lineTo(-6.2 * S, 7 * S); g.closePath();
+      // the car, with a soft pool of light under it
+      const glow = g.createRadialGradient(CX, CY, 0, CX, CY, 26 * S); glow.addColorStop(0, 'rgba(255,255,255,.2)'); glow.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = glow; g.fillRect(CX - 26 * S, CY - 26 * S, 52 * S, 52 * S);
+      g.translate(CX, CY); g.beginPath(); g.moveTo(0, -9.5 * S); g.lineTo(6.6 * S, 7.4 * S); g.lineTo(0, 3.8 * S); g.lineTo(-6.6 * S, 7.4 * S); g.closePath();
       g.fillStyle = '#fff'; g.fill(); g.lineWidth = 1.6 * S; g.strokeStyle = '#0b0d10'; g.stroke();
       g.restore();
-      // north, on the rim
-      const na = heading, nx = W / 2 + Math.sin(na) * (W / 2 - 11 * S), ny = W / 2 - Math.cos(na) * (W / 2 - 11 * S);
-      g.fillStyle = 'rgba(255,255,255,.72)'; g.font = `600 ${9 * S}px Archivo, system-ui, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('N', nx, ny);
+      // a compass rim: a tick every 30 degrees, and north named
+      g.save(); g.translate(W / 2, W / 2); g.rotate(-heading);
+      for (let k = 0; k < 12; k++) { g.rotate(Math.PI / 6); g.fillStyle = 'rgba(255,255,255,.34)'; g.fillRect(-0.6 * S, -W / 2 + 2 * S, 1.2 * S, (k % 3 === 2 ? 6 : 3.5) * S); }
+      g.restore();
+      const nx = W / 2 - Math.sin(heading) * (W / 2 - 15 * S), ny = W / 2 - Math.cos(heading) * (W / 2 - 15 * S);
+      g.fillStyle = '#ff7a3d'; g.font = `700 ${9.5 * S}px Archivo, system-ui, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('N', nx, ny);
       return true;
     },
   };
