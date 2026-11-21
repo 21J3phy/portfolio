@@ -304,8 +304,14 @@ body.looking{cursor:grabbing;user-select:none;-webkit-user-select:none}
 .btn.snd[aria-pressed="true"] .w1,.btn.snd[aria-pressed="true"] .w2{display:inline}
 .btn.snd[aria-pressed="true"] .x{display:none}
 .btn.snd[aria-pressed="true"]{background:#17191d;color:#fff;border-color:#17191d}
+#routeline{position:fixed;left:0;right:0;bottom:0;height:3px;z-index:16;background:rgba(15,17,20,.25);pointer-events:none;opacity:0;transition:opacity .6s}
+body.ready #routeline{opacity:1}
+#routeBar{position:absolute;inset:0;background:#ff6a1f;transform-origin:left;transform:scaleX(0)}
+#routeDots button{position:absolute;bottom:-2px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px rgba(15,17,20,.5);pointer-events:auto;padding:0}
+#routeDots button::before{content:"";position:absolute;inset:-9px}
+#routeDots button.on{background:#ff6a1f}
 @media(max-width:900px){.tripcard{display:none}.cluster{width:132px;height:132px}.mapinfo{display:none}#mapCanvas{width:132px;height:132px}}
-@media(max-width:620px){.dest.open{left:0;right:0;top:auto;bottom:0;width:auto;height:min(76dvh,calc(100dvh - 110px));border-radius:20px 20px 0 0;border-bottom:0;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));animation:sheetin .32s var(--ease)}body.reading #map{display:none}.cluster{width:96px;height:96px}#dash{top:62px;bottom:auto;right:10px}#map{left:10px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}#mapCanvas{width:104px;height:104px}.btn.snd span{display:none}.btn.snd{padding:0 9px}#modes{top:60px;left:10px;transform:none}#modes button{height:32px;padding:0 10px;font-size:13px}#lookhint{bottom:auto;top:104px;left:12px;transform:translate(0,8px)}body.inspect:not(.looked):not(.reading) #lookhint{transform:none}#lookhint .opt{display:none}#lookhint .tap{display:inline}}
+@media(max-width:620px){.dest.open{left:0;right:0;top:auto;bottom:0;width:auto;height:min(76dvh,calc(100dvh - 110px));border-radius:20px 20px 0 0;border-bottom:0;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));animation:sheetin .32s var(--ease)}body.reading #map,body.reading #routeline{display:none}.cluster{width:96px;height:96px}#dash{top:62px;bottom:auto;right:10px}#map{left:10px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}#mapCanvas{width:104px;height:104px}.btn.snd span{display:none}.btn.snd{padding:0 9px}#modes{top:60px;left:10px;transform:none}#modes button{height:32px;padding:0 10px;font-size:13px}#lookhint{bottom:auto;top:104px;left:12px;transform:translate(0,8px)}body.inspect:not(.looked):not(.reading) #lookhint{transform:none}#lookhint .opt{display:none}#lookhint .tap{display:inline}}
 
 /* loader */
 #loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--bg);transition:opacity 1s var(--ease),visibility 1s}
@@ -320,7 +326,7 @@ body.looking{cursor:grabbing;user-select:none;-webkit-user-select:none}
 .ld .rowl{margin-top:11px;font-size:13.5px;color:var(--ink3)}
 
 /* without WebGL: the same page, as a page */
-body.no3d #drive,body.no3d #dash,body.no3d .scrollhint,body.no3d #map,body.no3d #lookhint,body.no3d #soundBtn{display:none}
+body.no3d #drive,body.no3d #dash,body.no3d #routeline,body.no3d .scrollhint,body.no3d #map,body.no3d #lookhint,body.no3d #soundBtn{display:none}
 /* ---------------------------------------------------------------- the classic view
    The same work as an ordinary page, given the same care as the road: the opening frame of the drive as its cover, each
    project set beside a picture of its exhibit taken on the road, and room to read. */

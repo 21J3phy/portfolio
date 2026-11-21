@@ -133,8 +133,8 @@ const vs = { pos: 0, target: 0, vel: 0, max: 1, dir: 1, cutNow: true, touched: 0
 function measure() {
   introY = Math.max(1, innerHeight * 0.62);
   let from = introY, fromS = stops[0].s;
-  for (const st of stops.slice(1)) { st.from = from; st.fromS = fromS; st.y0 = from + LEG; st.y1 = st.y0 + HALT * (['marschair', 'software'].includes(st.id) ? 1 : 0.68); st.last = st === stops.at(-1); from = st.y1; fromS = st.s - PARK; }
-  vs.max = stops.at(-1).y0 + (stops.at(-1).y1 - stops.at(-1).y0) * BEAT.end;     // the road ends at the last stop: he stays by its sign
+  for (const st of stops.slice(1)) { st.from = from; st.fromS = fromS; st.y0 = from + LEG; st.y1 = st.y0 + HALT; st.last = st === stops.at(-1); from = st.y1; fromS = st.s - PARK; }
+  vs.max = stops.at(-1).y0 + HALT * BEAT.end;     // the road ends at the last stop: he stays by its sign
 }
 /** Jump the film to u: a cut, not a fast-forward. */
 function cutTo(u) { vs.pos = vs.target = clamp(u, 0, vs.max); vs.vel = 0; vs.cutNow = true; }
@@ -210,13 +210,7 @@ const wheelR = car.userData.wheelRadius || 0.31, wheelbase = car.userData.dimens
 const VMAX = 58;   // m/s: about 130 mph, where the dial ends
 function nearestStop(s) { let best = stops[0], d = Infinity; for (const st of stops) { const k = Math.abs(s - (st.i ? st.s - PARK : st.s)); if (k < d) { d = k; best = st; } } return [best, d]; }
 // pulled onto the shoulder at a destination, in the lane between them
-const laneAt = s => {
-  const [, distance] = nearestStop(s);
-  // Leave a metre beside the open driver's door. Start steering back before the turnout narrows.
-  const parked = ROAD.half + 2.3;
-  const offset = (parked - ROAD.lane) * (1 - smooth(3, 23, distance));
-  return Math.min(ROAD.lane + offset, world.shoulderAt(s) - 1.35);
-};
+const laneAt = s => { const [st, d] = nearestStop(s); return st.i === 0 ? ROAD.lane + 1.6 * (1 - smooth(4, 26, d)) : ROAD.lane + 2.5 * (1 - smooth(1.5, 12, d)); };
 // The car is where the film says it is. Its speed is how fast that is changing, which is how fast the page is being
 // scrolled: that is what the speedometer, the gears, the nose dipping under braking and the brake lamps all read.
 function stepCar(dt, sT) {
@@ -368,7 +362,7 @@ function stepMan(dt) {
 let mode = 'tour';
 function goStop(st) {
   if (mode === 'free') { if (man.on) endMan(); drive.s = st.i ? st.s - PARK : st.s; drive.lane = laneAt(drive.s); drive.v = 0; free.yaw = 0; free.st = null; free.q = 0; camState.ready = false; }
-  else cutTo(st.i ? st.y0 + (st.y1 - st.y0) * (st.last ? BEAT.end : BEAT.sign[1] + 0.03) : 0);
+  else cutTo(st.i ? st.y0 + HALT * (st.last ? BEAT.end : BEAT.sign[1] + 0.03) : 0);
 }
 function setMode(m) {
   if (m === mode) return; const was = mode; mode = m;
@@ -594,7 +588,7 @@ addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
 // dragging looks around from where he stands; a pinch (or ctrl + wheel) moves the camera in and out; a click on the
 // sign opens the write-up. Scrolling stays scrolling.
 {
-  const ui = '.dest, .top, #dash, #map, #lightbox, a, button, summary, video, input, textarea, select, label';
+  const ui = '.dest, .top, #dash, #map, #routeline, #lightbox, a, button, summary, video, input, textarea, select, label';
   const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
   const signUnder = e => { ndc.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera); const hit = ray.intersectObject(scene.getObjectByName('exhibits'), true).find(h => h.object.visible); return hit && hit.object.name === 'placard' && hit.distance < 14 ? hit.object.userData.stop : null; };
   addEventListener('pointerdown', e => { if (e.button || e.target.closest?.(ui)) return; look.drag = { id: e.pointerId, x: e.clientX, y: e.clientY, can: document.body.classList.contains('inspect') }; look.moved = 0; if (look.drag.can) document.body.classList.add('looking'); });
@@ -640,7 +634,7 @@ function updateSound(dt) {
   if (!sound?.on) return;
   const v = Math.abs(drive.v), a = route.at(drive.s, Q), h = heard, along = drive.a * Math.sign(drive.v || 1);
   h.dt = dt; h.speed = v; h.reverse = drive.v < -0.05; h.brake = drive.brake; h.decel = Math.max(0, -along); h.lateral = v * v * Math.abs(a.curvature);
-  h.rpm = drive.rpm * 6750;
+  h.rpm = 750 + (drive.rpm - 0.12) / 0.88 * 6000;
   h.throttle = v < 0.2 ? 0 : clamp(Math.max(along / 8.5, along > -0.6 ? 0.14 + a.grade * 2.5 + v / VMAX * 0.25 : 0), 0, 1);
   h.blinker = v > 0.4 && (Math.abs(laneAt(drive.s) - drive.lane) > 0.12 || Math.abs(laneAt(drive.s + drive.v * 1.6) - laneAt(drive.s)) > 0.06);
   v3.subVectors(camera.position, car.position); h.view.dist = v3.length(); h.view.behind = clamp(0.5 - 0.5 * (v3.x * a.t.x + v3.z * a.t.z) / (Math.hypot(v3.x, v3.z) || 1), 0, 1);
@@ -653,25 +647,21 @@ function updateSound(dt) {
 }
 
 // ------------------------------------------------------------------ the dashboard
-const dash = { needle: $('#needle'), mph: $('#mph'), gear: $('#gear'), rpm: $('#rpm'), next: $('#nextStop'), dist: $('#nextDist'), trip: $('#trip'), alt: $('#alt'), el: $('#dash'), shown: -1, brake: $('#brakeLamp'), map: $('#map'), togo: $('#togo'), stopn: $('#stopN') };
+const dash = { needle: $('#needle'), mph: $('#mph'), gear: $('#gear'), rpm: $('#rpm'), next: $('#nextStop'), dist: $('#nextDist'), trip: $('#trip'), alt: $('#alt'), bar: $('#routeBar'), el: $('#dash'), shown: -1, brake: $('#brakeLamp'), map: $('#map'), togo: $('#togo'), stopn: $('#stopN') };
 const minimap = $('#mapCanvas') ? createMinimap($('#mapCanvas'), route, stops) : null;
-const GEAR_RATIOS = [0, 3.45, 2.05, 1.48, 1.1, 0.87, 0.71];
 const GEARS = [0, 9, 17, 26, 36, 47, 62];   // m/s where each gear ends
+{
+  const dots = $('#routeDots');   // (a click is a cut to that stop, not a fast-forward through the ones between)
+  if (dots) for (const st of stops) { const b = document.createElement('button'); b.type = 'button'; b.style.left = (st.s / route.length * 100) + '%'; b.title = st.label || 'Start'; b.setAttribute('aria-label', 'Drive to ' + (st.label || 'the start')); b.addEventListener('click', () => goStop(st)); dots.appendChild(b); st.dot = b; }
+}
 // (only what changed is written: every write to the page costs a style pass, and most frames nothing changes)
 const shownAs = {}, show = (key, v, apply) => { if (shownAs[key] !== v) { shownAs[key] = v; apply(v); } };
 function updateDash() {
   const v = Math.abs(drive.v), mph = v * 2.23694;
   show('needle', Math.round((-120 + Math.min(mph, 140) / 140 * 240) * 5) / 5, a => dash.needle?.setAttribute('transform', `rotate(${a} 100 100)`));
   show('mph', Math.round(mph), n => { if (dash.mph) dash.mph.textContent = n; });
-  // Hold the gear across small speed fluctuations. Shaft speed follows wheel speed
-  // through the selected ratio, so an upshift drops revs in proportion to the ratio change.
-  let g = Math.max(1, drive.gear);
-  while (g < 6 && v > GEARS[g]) g++;
-  while (g > 1 && v < GEARS[g - 1] * 0.78) g--;
-  const ratio = drive.v < 0 ? 3.15 : GEAR_RATIOS[g];
-  const shaftRpm = v * 60 / (2 * Math.PI * wheelR) * 4.3 * ratio;
-  const launchSlip = 500 * smooth(0.1, 2, v) * (1 - smooth(2, 6, v));
-  const rpm = clamp((Math.max(750, shaftRpm) + launchSlip) / 6750, 750 / 6750, 1);
+  let g = 1; while (g < 6 && v > GEARS[g]) g++;
+  const rpm = v < 0.2 ? 0.12 : clamp(0.22 + (v - GEARS[g - 1]) / (GEARS[g] - GEARS[g - 1]) * 0.62 + Math.max(0, drive.a) * 0.012, 0.12, 1);
   drive.gear = v < 0.2 ? 0 : g; drive.rpm = rpm;
   show('gear', v < 0.2 ? 'P' : drive.v < 0 ? 'R' : 'D' + g, t => { if (dash.gear) dash.gear.textContent = t; });
   show('rpm', Math.round(151 * (1 - rpm) * 2) / 2, o => { if (dash.rpm) dash.rpm.style.strokeDashoffset = String(o); });
@@ -682,6 +672,7 @@ function updateDash() {
   show('dist', nxt ? (ft > 950 ? (m / 1609.34).toFixed(2) + ' mi' : Math.round(ft / 10) * 10 + ' ft') : '', t => { if (dash.dist) dash.dist.textContent = t; });
   show('trip', (drive.trip / 1609.34).toFixed(2) + ' mi', t => { if (dash.trip) dash.trip.textContent = t; });
   show('alt', Math.round((route.at(drive.s, Q).p.y + 235) * 3.28084), n => { if (dash.alt) dash.alt.textContent = n.toLocaleString() + ' ft'; });
+  show('bar', Math.round(drive.s / route.length * 2000) / 2000, k => { if (dash.bar) dash.bar.style.transform = `scaleX(${k})`; });
   // the map: hidden while the opening plays and while a write-up is open over its corner
   const end = stops.at(-1).s - PARK, left = Math.max(0, end - drive.s);
   show('togo', (left / 1609.34).toFixed(2) + ' mi', t => { if (dash.togo) dash.togo.textContent = t; });
@@ -691,6 +682,8 @@ function updateDash() {
     show('maphide', covered, on => dash.map.classList.toggle('hide', on));
     if (!covered) minimap?.draw(drive.s, route.at(drive.s, Q).heading, nxt ? nxt.i : -1);
   }
+  const [cur, d] = nearestStop(drive.s);
+  show('dot', d < 30 ? cur.i : -1, i => { for (const st of stops) st.dot?.classList.toggle('on', st.i === i); });
 }
 
 // ------------------------------------------------------------------ resize
@@ -784,4 +777,4 @@ document.body.classList.add('can3d'); if (query.get('mode') === 'free' || query.
 dispatchEvent(new Event('drive:ready'));
 activity();
 // dev hook: step the loop by hand (headless browsers barely tick requestAnimationFrame)
-window.__drive = { scene, camera, renderer, drive, route, stops, car, world, exhibits, camState, intro, OPEN, seq, look, panel, openPanel, freeDrive: free, man, keys, freeAct, setMode, get mode() { return mode; }, get person() { return person; }, get sound() { return sound; }, composer, bloom, lens, built: () => exhibits.buildAll(), advance(sec, step = 1 / 30) { for (let t = 0; t < sec; t += step) frame(step); }, vs, cutTo, push, HALT, LEG, BEAT, goto(i, settle = 0.2, q = 0.37) { const st = stops[i]; cutTo(i ? st.y0 + (st.y1 - st.y0) * q : 0); for (let t = 0; t < settle * 30; t++) frame(1 / 30); }, run(px, rate = 600, step = 1 / 30) { for (let left = Math.abs(px); left > 0; left -= rate * step) { push(Math.sign(px) * Math.min(left, rate * step)); frame(step); } } };
+window.__drive = { scene, camera, renderer, drive, route, stops, car, world, exhibits, camState, intro, OPEN, seq, look, panel, openPanel, freeDrive: free, man, keys, freeAct, setMode, get mode() { return mode; }, get person() { return person; }, get sound() { return sound; }, composer, bloom, lens, built: () => exhibits.buildAll(), advance(sec, step = 1 / 30) { for (let t = 0; t < sec; t += step) frame(step); }, vs, cutTo, push, HALT, LEG, BEAT, goto(i, settle = 0.2, q = 0.37) { const st = stops[i]; cutTo(i ? st.y0 + HALT * q : 0); for (let t = 0; t < settle * 30; t++) frame(1 / 30); }, run(px, rate = 600, step = 1 / 30) { for (let left = Math.abs(px); left > 0; left -= rate * step) { push(Math.sign(px) * Math.min(left, rate * step)); frame(step); } } };

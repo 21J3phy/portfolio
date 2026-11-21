@@ -61,12 +61,12 @@ const GRASS = ['grass', 0.3, 10.2, 1.2];
 const MIX = {
   engine: 7.0,          // on top of ENGINE_RMS and the level law
   exhaust: 1.5,         // exhaust-outlet recordings against under-bonnet ones (they are mostly bass, so they need the help)
-  road: 0.95,            // tyre roar
+  road: 1.4,            // tyre roar
   grit: 0.6,            // crunch of the shoulder under slow tyres
   scrub: 1.0,           // tyres working sideways
   pads: 0.25,           // brake pads rubbing just before the car stops
-  wind: 0.22,
-  breeze: 0.35,
+  wind: 1.0,
+  breeze: 1.75,
   sea: 0.38,
   grass: 0.3,
   gulls: 0.75,
@@ -185,11 +185,7 @@ export function createSound(options = {}) {
     // engine: every loop plays all the time; update() moves their speeds and levels
     g.eng = gain(0); g.shift = gain(1); chain(g.eng, g.shift, filter('highpass', 28), g.car); g.pEng = P(g.eng.gain);
     g.exh = gain(0); g.exhLP = filter('lowpass', 6000, 0.5); chain(g.exh, filter('highpass', 40), filter('lowshelf', 110, 0.707, -5), g.exhLP, g.eng);
-    g.bay = gain(0);
-    const intake = filter('peaking', 440, 0.85);
-    chain(g.bay, intake, g.eng);
-    g.intakeHz = P(intake.frequency);
-    g.intakeDb = P(intake.gain);
+    g.bay = gain(0); g.bay.connect(g.eng);
     g.pExh = P(g.exh.gain); g.pBay = P(g.bay.gain); g.pExhLP = P(g.exhLP.frequency);
     g.chains = [];
     for (const mic of ['exh', 'bay']) for (const load of ['off', 'on']) {
@@ -265,7 +261,7 @@ export function createSound(options = {}) {
     const g = G, away = s.dt > 0.5, dt = clamp(s.dt, 0, 0.1), now = S.now = ctx.currentTime, clock = S.clock += dt;
     // Coming back after a pause (hidden tab): let everything glide to where it should be rather than jump, and trigger nothing.
     const tau = away ? 0.25 : 0.035, k = 1 - Math.exp(-dt / 0.045);
-    const shaftRpm = S.rpm += (clamp(s.rpm, 0, 9000) - S.rpm) * (away ? 1 : k);
+    const rpm = S.rpm += (clamp(s.rpm, 0, 9000) - S.rpm) * (away ? 1 : k);
     const thr = S.thr += (clamp(s.throttle, 0, 1) - S.thr) * (away ? 1 : 1 - Math.exp(-dt / (s.throttle > S.thr ? 0.05 : 0.11)));
     const v = s.speed, d = Math.max(2.5, s.view.dist), behind = clamp(s.view.behind, 0, 1);
 
@@ -275,16 +271,11 @@ export function createSound(options = {}) {
     to(g.pCarPan, clamp(s.view.pan, -1, 1) * 0.75, tau);
 
     // engine. load: how much of the working-hard recordings to use. Near idle there is no such thing as load, only idle.
-    const idleVariation = 12 * wander(clock * 2.7) * (1 - step(850, 1200, shaftRpm));
-    const rpm = shaftRpm + idleVariation;
     const load = thr * step(800, 1250, rpm), lr = Math.log(Math.max(rpm, 100));
-    // Emphasize upper firing harmonics in the recorded intake when the throttle opens.
-    to(g.intakeHz, clamp(rpm / 30 * 6, 210, 1350), 0.055);
-    to(g.intakeDb, -1.5 + 6 * load, 0.045);
-    const levelDb = 4.5 * Math.log2(Math.max(rpm, 300) / 6500) - 11 * (1 - load) * step(900, 2200, rpm) + 2.5 * thr * (1 - step(800, 1250, rpm));
+    const levelDb = 6 * Math.log2(Math.max(rpm, 300) / 6500) - 11 * (1 - load) * step(900, 2200, rpm) + 2.5 * thr * (1 - step(800, 1250, rpm));
     to(g.pEng, MIX.engine * mix.engine * Math.pow(10, levelDb / 20) * step(200, 600, rpm), tau);
     to(g.pExh, MIX.exhaust * (0.45 + 0.55 * behind), tau); to(g.pBay, 0.95 - 0.5 * behind, tau);
-    to(g.pExhLP, (1150 + 1450 * load) * Math.pow(4, behind), tau);                                   // from the front the exhaust is only its low end
+    to(g.pExhLP, 1400 * Math.pow(5, behind), tau);                                   // from the front the exhaust is only its low end
     for (let c = 0; c < g.chains.length; c++) {
       const ch = g.chains[c], L = ch.layers, n = L.length, part = Math.sqrt(ch.on ? load : 1 - load);
       let i = 0; while (i < n - 2 && lr > L[i + 1].lr) i++;

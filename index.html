@@ -62,7 +62,7 @@
   for (var i = 0; i < files.length; i++) { var l = document.createElement('link'); l.rel = 'preload'; l.as = 'fetch'; l.crossOrigin = 'anonymous'; l.href = 'drive/assets/' + files[i]; document.head.appendChild(l); }
 })();
 </script>
-<noscript><style>.dest{display:block}.stop{padding-top:28px;height:auto}body{overflow:visible;height:auto;touch-action:auto}.foot,.tail{display:block}#loader,#dash,#map,#drive,.scrollhint,#soundBtn{display:none}.hero-in h1,.hero-in .lead{color:#17191d;text-shadow:none}.stop.hero{min-height:0;padding-top:110px}</style></noscript>
+<noscript><style>.dest{display:block}.stop{padding-top:28px;height:auto}body{overflow:visible;height:auto;touch-action:auto}.foot,.tail{display:block}#loader,#dash,#map,#routeline,#drive,.scrollhint,#soundBtn{display:none}.hero-in h1,.hero-in .lead{color:#17191d;text-shadow:none}.stop.hero{min-height:0;padding-top:110px}</style></noscript>
 </head>
 <body>
 <canvas id="drive" aria-hidden="true"></canvas>
@@ -113,6 +113,7 @@
   </div>
 </aside>
 <p id="lookhint" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5a7 7 0 1 0 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 5v4.2h-4.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Drag to look around<span class="opt"> · click the sign for the full story</span><span class="tap"> · tap the sign</span></p>
+<div id="routeline" aria-hidden="true"><i id="routeBar"></i><div id="routeDots"></div></div>
 
 <main id="route">
   <a id="top"></a>
@@ -131,7 +132,7 @@
     <article class="dest sec" id="p-armsim">
       <p class="k"><b>01</b> · Robotics · Machine learning</p>
       <h2>Language-guided 3D targeting</h2>
-      <p class="lead">I wanted a robot to understand instructions like “pick up the cube left of the red ball.” I built a simulated SO-101 arm and compared two ways to train a vision-language model to locate the target. With supervised fine-tuning, the model placed 92–94% of its predictions within 2 cm on held-out simulated scenes across two training seeds.</p>
+      <p class="lead">Tell a robot arm “the cube left of the red ball,” and it finds that point in 3D and reaches for it. I built it in MuJoCo around the SO-101 arm, then used it to answer a training question: is reinforcement learning worth more than simply more fine-tuning?</p>
       <button class="shot blk" type="button" data-lb="img/armsim-scene.webp" data-cap="What the arm sees: the left image of the head stereo pair, from a validation scene"><img src="img/armsim-scene.webp" alt="Simulated head-camera view of the SO-101 arm over colored blocks" loading="lazy" width="640" height="480" /></button>
       <div class="stats blk">
         <div><b>93.7%</b><span>within 2 cm, fine-tuned model (best seed)</span></div>
@@ -146,7 +147,7 @@
       </div>
       <p class="cap">In-distribution scenes, error under 20 mm, in simulation. The model’s numbers are on a frozen confirmation set, scored once; the color + stereo baseline is on the development set, so the two aren’t a head-to-head. Learned models were scored on the point they output, without moving the arm.</p>
       <p class="honest blk"><b>Still sealed.</b> The final test is blind: 430 encrypted prediction files, scored on free Kaggle GPUs under rules written down in advance. I haven’t opened the results yet.</p>
-      <p class="tags blk"><b>Built with</b> MuJoCo, Python, OpenCV stereo, inverse kinematics, Qwen2-VL, QLoRA, GRPO. The arm in the tour solves the real SO-101 inverse kinematics for each target.</p>
+      <p class="tags blk"><b>Built with</b> MuJoCo, Python, OpenCV stereo, inverse kinematics, Qwen2-VL, QLoRA, GRPO. The arm in the room solves the real SO-101 inverse kinematics for each target.</p>
       </details>
     </article>
   </section>
@@ -156,7 +157,7 @@
     <article class="dest sec" id="p-marschair">
       <p class="k"><b>02</b> · Robotics · Purdue MARS Lab</p>
       <h2>MARSChair</h2>
-      <p class="lead">Setting up a conference room means moving both rolling tables and chairs that drag on carpet. I designed a passive attachment for a mobile robot and wrote the planner that guides each piece from storage into place. The final design completed 18 of 18 room setups in simulation and awaits a hardware trial.</p>
+      <p class="lead">A robot that sets up a conference room. In simulation, a mobile base brings tables out of storage, down a corridor and into place, then tucks two chairs under each one.</p>
       <figure class="blk">
         <div class="shot dark"><video data-src="img/mars/rows.mp4" data-poster="img/mars/rows.webp" data-loop muted loop playsinline preload="none" aria-label="Simulation recording: the robot setting out rows of tables and chairs"></video></div>
         <figcaption class="cap">A recorded run of the “rows” layout in MuJoCo. The scale model on the island replays a run of the same layout, pose for pose: two tables and four chairs, 25 minutes of simulated time in about half a minute.</figcaption>
@@ -186,7 +187,7 @@
     <article class="dest sec" id="p-hopper">
       <p class="k"><b>03</b> · Robotics · NASA RASC-AL 2027</p>
       <h2>HOPPER</h2>
-      <p class="lead">A lunar rover needs a way past obstacles its legs cannot step over. For Purdue’s RASC-AL team, I built a shared CAD and simulation model to compare walking and jumping designs under the same constraints. Of 1,741 simulated variants, 669 met every requirement in the sweep.</p>
+      <p class="lead">A six-legged lunar rover that walks, and jumps when walking isn’t enough. I built the parametric CAD, the MuJoCo simulation and the design sweep for Purdue’s RASC-AL team.</p>
       <figure class="blk">
         <div class="shot dark"><video src="img/hopper/demo.mp4" data-poster="img/hopper/render.webp" controls muted playsinline preload="none" aria-label="Simulation recording: the rover walking, jumping and landing"></video></div>
         <figcaption class="cap">Walk, crouch, jump, land: the selected design in MuJoCo under lunar gravity. The rover on the plinth replays a run recorded from the same simulation; in that run it walks at 0.42 m/s and jumps 2.28 m.</figcaption>
@@ -217,7 +218,7 @@
     <article class="dest sec" id="p-neurons">
       <p class="k"><b>04</b> · Machine learning · Interpretability</p>
       <h2>Steering a model by its neurons</h2>
-      <p class="lead">Can a language model give shorter answers without losing accuracy? I changed the activity of 344 neurons during the first six tokens of each answer and tested the effect with blind graders. Answers came out roughly a third shorter, but neither sealed test met all its success criteria.</p>
+      <p class="lead">Nudge 344 neurons in a small language model while it writes the first six tokens of an answer, and the whole answer comes out about a third shorter. I tested that the strict way, then handed the model the switch.</p>
       <button class="shot dark blk" type="button" data-lb="img/ml/self-steer-demo.webp" data-cap="The demo: Qwen asks for a mode it doesn't have, Claude builds “eli5” in 3.77 s, and Qwen switches it on for its answer"><img src="img/ml/self-steer-demo.webp" alt="Chat interface in which the model requests a new mode and uses it" loading="lazy" width="1200" height="1114" /></button>
       <details class="more"><summary>The full story</summary>
       <h3>Lazy Genius</h3>
@@ -256,7 +257,7 @@
         <a class="btn" href="https://github.com/21J3phy/self-steer" target="_blank" rel="noopener">Self-steer on GitHub</a>
         <a class="btn" href="https://github.com/21J3phy/self-steer/blob/main/paper/self-steer.pdf" target="_blank" rel="noopener">Read the paper</a>
       </div>
-      <p class="tags blk"><b>Built with</b> MLX, PyTorch, MCP, pre-registered and blind-graded tests. The roadside display plots the real recipe: every dot is one of the 344 neurons, at its layer and index.</p>
+      <p class="tags blk"><b>Built with</b> MLX, PyTorch, MCP, pre-registered and blind-graded tests. The display in the room plots the real recipe: every dot is one of the 344 neurons, at its layer and index.</p>
       </details>
     </article>
   </section>
@@ -266,7 +267,7 @@
     <article class="dest sec" id="p-robotics">
       <p class="k"><b>05</b> · Robotics · Mechanical</p>
       <h2>Absolute Zero, FTC #12096</h2>
-      <p class="lead">Our FTC team needed a robot that could aim autonomously and still respond quickly to its driver. Over four seasons as captain, I designed and built its mechanisms and wrote the Java code that turned encoder and gyro readings into motion. Our team advanced to the Chesapeake championship.</p>
+      <p class="lead">Four seasons as captain. Every mechanism modeled in Fusion 360, then built, broken, and rebuilt.</p>
       <button class="shot blk" type="button" data-lb="img/ftc/ftc-final.webp" data-cap="The competition robot, team 12096"><img src="img/ftc/ftc-final.webp" alt="The 12096 competition robot on the field" loading="lazy" width="760" height="570" /></button>
       <div class="stats three blk">
         <div><b>4</b><span>seasons as captain</span></div>
@@ -289,7 +290,7 @@
     <article class="dest sec" id="p-engine">
       <p class="k"><b>06</b> · Mechanical · Side build</p>
       <h2>LEGO vacuum engine</h2>
-      <p class="lead">I wanted to see whether a household vacuum could power a LEGO piston engine. I built a single-cylinder mechanism with a valve timed a quarter-turn from the crank. The flywheel carried the piston through each change of direction, keeping the engine running on suction.</p>
+      <p class="lead">A single-cylinder engine I built from LEGO that runs on the suction of a vacuum cleaner.</p>
       <div class="vid blk">
         <video src="img/lego/engine.mp4" data-poster="img/lego/engine.jpg" controls playsinline preload="none" aria-label="Video of the LEGO vacuum engine running"></video>
         <div>
@@ -300,7 +301,7 @@
             <div><b>90°</b><span>valve timing</span></div>
             <div><b>0</b><span>motors</span></div>
           </div>
-          <p class="cap">The roadside model is a reconstruction from this video.</p>
+          <p class="cap">The model on the window ledge is a reconstruction from this video.</p>
         </div>
       </div>
     </article>
@@ -311,7 +312,7 @@
     <article class="dest sec" id="p-research">
       <p class="k"><b>07</b> · Research · Fluid mechanics</p>
       <h2>Passive vortex propulsion in air</h2>
-      <p class="lead">I wanted to know whether a fin could extract forward thrust from the wake behind a cylinder in air. I built a wind rig and measured force on a freely pivoting fin against fin-only and cylinder-only controls. The fin produced forward thrust in all 20 wake trials, averaging 3.1 N, and I published the experiment as first author in IEEE proceedings.</p>
+      <p class="lead">My first-author IEEE paper. A rigid fin in a cylinder’s wake gets pushed forward by it: the first time this was shown in air.</p>
       <figure class="flow blk">
         <canvas id="flowCanvas" width="1050" height="400" aria-label="Live flow simulation of the selected configuration"></canvas>
         <div class="conds" role="group" aria-label="Test configuration">
@@ -353,61 +354,63 @@
     <article class="dest sec" id="p-software">
       <p class="k"><b>08</b> · Software</p>
       <h2>Software I’ve shipped</h2>
-      <p class="lead">I build software for recurring tasks that take people away from their work. For Charya, I wrote a Mac app that learns which apps and documents someone opens together and sets them up for the next session. It reached 94 downloads in its first week.</p>
+      <p class="lead">Outside the lab I build apps and tools, usually because I wanted one. These are out in the world.</p>
       <details class="more"><summary>All eight, with links</summary>
       <div class="cards blk">
         <article class="card" id="charya">
           <div class="th"><img class="fit" src="img/apps/charya-icon.webp" alt="" loading="lazy" /></div>
           <div><h4>Charya <small>Mac app · solo</small></h4>
-            <p>Opening the same apps and documents for each class took time every morning. I built a Mac menu-bar app that learns those combinations and lets the user undo a setup in one click. Charya reached 94 downloads in its first week.</p>
-            <p class="n">1,358 tests · Routine learning evaluated on 100 simulated people over 100 days</p>
+            <p>A menu-bar app that learns your routine and sets your Mac up before you sit down: the apps, pages and documents for each class or task, with an undo. The learner is a transparent counting model, not a language model, and I tune it against a simulator that plays 100 made-up people for 100 days through the real decision code.</p>
+            <p class="n">751 commits in its first 30 days · 1,358 tests · 94 downloads in week one (October 2026)</p>
             <div class="mt"><a href="https://getcharya.com" target="_blank" rel="noopener">getcharya.com</a></div></div>
         </article>
         <article class="card" id="deadlinefloat">
           <div class="th"><img src="img/apps/deadlinefloat.webp" alt="" loading="lazy" /></div>
           <div><h4>DeadlineFloat <small>Mac app · solo</small></h4>
-            <p>I wanted to see how much time was left before my next meeting without switching apps. I built a native Mac timeline that puts Google Calendar at the screen edge. Users can see the day at a glance and drag an event to reschedule it.</p>
+            <p>Your Google Calendar as a ruler down the edge of your screen, with a needle for now. Hover and it opens into your day; drag an event to move it. Native SwiftUI with no third-party packages, signed and notarized, and a license server that is two stateless functions and no database.</p>
             <p class="n">Version 1.3, October 2026</p>
             <div class="mt"><a href="https://deadlinefloat.vercel.app" target="_blank" rel="noopener">deadlinefloat.vercel.app</a></div></div>
         </article>
         <article class="card" id="spareme">
           <div class="th"><img src="img/shot-spareme.webp" alt="" loading="lazy" /></div>
           <div><h4>SpareMe <small>iPhone app · solo</small></h4>
-            <p>Routine calls often take more time on hold than in conversation. I built an iPhone app that calls on the user’s behalf and lets them listen, give instructions, or take over. SpareMe shipped on the App Store in August 2026.</p>
+            <p>An AI that makes the phone calls you dread. Give it a number and one line of intent: it dials, works the phone tree, waits on hold, talks to the representative and hands back a written outcome. You watch a live transcript and can type it an instruction, listen in, or take the call over. SwiftUI app, Node and TypeScript backend on Twilio and OpenAI, per-minute billing through StoreKit.</p>
+            <p class="n">On the App Store since August 2026</p>
             <div class="mt"><a href="https://apps.apple.com/us/app/spareme-ai-phone-delegate/id6793629023" target="_blank" rel="noopener">App Store</a><a href="https://getspareme.com" target="_blank" rel="noopener">getspareme.com</a></div></div>
         </article>
         <article class="card" id="silk">
           <div class="th"><img src="img/shot-silk.webp" alt="" loading="lazy" /></div>
           <div><h4>Silk <small>open source · solo</small></h4>
-            <p>Teams need a way for AI agents to exchange messages while their owners control who can reach them. I built an encrypted relay with owner approval and a tamper-evident record of delivery. In testing, the relay handled 7,825 messages per second on one laptop and retained every acknowledged write across 20 forced crashes.</p>
+            <p>Messaging between AI agents, with people in control: your agent can message someone else’s only after their owner says yes. End-to-end encrypted with a post-quantum hybrid handshake, every event on a public tamper-evident ledger, and proof-of-work postage on unsolicited contact. A public relay is live, and it is listed in the MCP Registry.</p>
+            <p class="n">7,825 messages/s on one laptop · 0 of 72,766 acknowledged writes lost across 20 forced crashes</p>
             <div class="mt"><a href="https://github.com/21J3phy/silk" target="_blank" rel="noopener">GitHub</a><a href="https://silk-relay.vercel.app/benchmarks" target="_blank" rel="noopener">Benchmarks</a></div></div>
         </article>
         <article class="card" id="oh">
           <div class="th"><img src="img/shot-oh.webp" alt="" loading="lazy" /></div>
           <div><h4>Oh <small>open source · solo</small></h4>
-            <p>Engineers often have to interrupt a teammate to learn why a piece of code works a certain way. I built a tool that indexes coding-agent sessions and scrubs secrets locally. A developer can ask about a decision and follow the citation back to its source.</p>
+            <p>Shared memory for AI coding agents. It captures Claude Code and Codex sessions, scrubs secrets locally, and answers “why is this code like this?” over MCP, with citations, without interrupting whoever wrote it.</p>
             <div class="mt"><a href="https://github.com/21J3phy/Oh" target="_blank" rel="noopener">GitHub</a><a href="https://www.npmjs.com/package/oh-brain" target="_blank" rel="noopener">npm</a></div></div>
         </article>
         <article class="card" id="hammercard">
           <div class="th"><img src="img/apps/hammercard.webp" alt="" loading="lazy" /></div>
           <div><h4>HammerCard <small>with Soumil Bhandari</small></h4>
-            <p>Purdue students needed a quick way to share a résumé and contact details in person. I built the payment and card-publishing systems for HammerCard with Soumil Bhandari. A single tap on the NFC card opens the student’s published page.</p>
+            <p>NFC business cards for Purdue students: tap the card and your page opens, with your contact, résumé and links. I built the payment and card-publishing stack. No framework: static pages and a handful of functions.</p>
             <div class="mt"><a href="https://hammercard.org" target="_blank" rel="noopener">hammercard.org</a></div></div>
         </article>
         <article class="card" id="khali">
           <div class="th"><img src="img/shot-khali.webp" alt="" loading="lazy" /></div>
           <div><h4>Khali <small>iPhone app · co-founder</small></h4>
-            <p>Readers should be able to check the reporting behind a short news item. I co-founded Khali and worked with a small team on its iPhone app and publishing pipeline. The app shipped with the original reporting one tap from each story.</p>
+            <p>Short-form news that keeps the central claim and the original reporting one tap away. Built with a small team: a SwiftUI app on a Node and Python pipeline.</p>
             <div class="mt"><a href="https://apps.apple.com/us/app/khali/id6759009203" target="_blank" rel="noopener">App Store</a></div></div>
         </article>
         <article class="card" id="omarchy">
           <div class="th"><img src="img/apps/pomodoro.webp" alt="" loading="lazy" /></div>
           <div><h4>Omarchy widgets <small>open source · Linux</small></h4>
-            <p>I wanted my Linux laptop to protect a focus session and stay awake while a coding agent was working. I built two desktop widgets, a workspace timer and an activity-aware sleep control. The timer keeps me in one workspace until it rings, and an active agent can finish a job with the lid closed.</p>
+            <p>Two small desktop widgets: a toaster-shaped pomodoro timer that locks you to your workspace until it pops, and one that keeps the laptop awake, lid closed, while coding agents are still working.</p>
             <div class="mt"><a href="https://github.com/21J3phy/omarchy-pomodoro" target="_blank" rel="noopener">Pomodoro</a><a href="https://github.com/21J3phy/omarchy-agent-stay-awake" target="_blank" rel="noopener">Stay awake</a></div></div>
         </article>
       </div>
-      <p class="cap blk">On the roadside desk: Silk in the terminal, SpareMe on the phone, and the blog in Notes.</p>
+      <p class="cap blk">On the desk in the room: Silk in the terminal, SpareMe on the phone, and the blog in Notes.</p>
       </details>
     </article>
   </section>
@@ -416,8 +419,7 @@
     <figure class="still"><img src="img/stops/more.webp" alt="More projects, as it stands beside the road in the drive" loading="lazy" decoding="async" width="1600" height="1000" /><figcaption>Stop 09 on the drive</figcaption></figure>
     <article class="dest sec" id="p-more">
       <p class="k"><b>09</b> · More projects</p>
-      <h2>Building a live webcam game</h2>
-      <p class="lead">I wanted two players to be able to start a live webcam match and get an immediate score. I built the matchmaking service, video connection, and machine-learning scoring backend for Chad vs. Chud. The game reached 30,000 users in its first month and peaked at over 100 concurrent players.</p>
+      <h2>The one that hit 30,000 users in a month, and the rest</h2>
       <article class="card big blk">
         <img src="img/shot-chad.webp" alt="Chad vs. Chud game screen" loading="lazy" />
         <div class="tx">
@@ -447,7 +449,7 @@
       <h2>Nirav Surabhi</h2>
       <div class="me-row blk">
         <img src="img/face.webp" alt="Portrait of Nirav Surabhi" loading="lazy" />
-        <p class="lead" style="margin:0">I want to build robots that can do useful physical work in everyday spaces. I study mechanical engineering at Purdue and design mechanisms, simulate their behavior, and write the software that controls them. At the MARS Lab, that work produced a mobile robot design that can set up a conference room in simulation.</p>
+        <p class="lead" style="margin:0">Mechanical engineering at Purdue, class of 2030. I build robots, test them in simulation, and train the models that tell them where to go.</p>
       </div>
       <details class="more"><summary>Experience</summary>
       <p class="lab2 blk">Experience</p>
@@ -469,7 +471,7 @@
     <article class="dest sec" id="p-guitar">
       <p class="k"><b>11</b> · Away from the bench</p>
       <h2>Classical guitar</h2>
-      <p class="lead">I want to bring live classical guitar to people who may have trouble getting to a concert. I organize concerts at local senior centers and perform with the All-Virginia Guitar Ensemble. My playing earned first place in the Aguado competition.</p>
+      <p class="lead">When I’m not in CAD or a simulator, I’m working a piece up to performance. That discipline carries back into the engineering.</p>
       <ul class="creds blk">
         <li><span>Award</span><span><b>1st place</b>, Aguado competition</span></li>
         <li><span>Ensemble</span><span>Member, <b>All-Virginia Guitar Ensemble</b></span></li>
@@ -483,8 +485,8 @@
     <figure class="still"><img src="img/stops/contact.webp" alt="Contact, as it stands beside the road in the drive" loading="lazy" decoding="async" width="1600" height="1000" /><figcaption>Stop 12 on the drive</figcaption></figure>
     <article class="dest sec" id="p-contact">
       <p class="k"><b>12</b> · Contact</p>
-      <h2>Work with me</h2>
-      <p class="lead">I’m looking for a summer 2027 engineering internship in robotics, mechanical design, or applied machine learning. If your team is working on a problem in one of those areas, I’d like to hear about it.</p>
+      <h2>Let’s open a door.</h2>
+      <p class="lead">Hiring an engineering intern for summer 2027, running a lab, or building something hard? I’d like to hear about it.</p>
       <div class="contact blk">
         <a href="mailto:niravsurabhi@gmail.com"><span class="lab">Email</span><span class="v">niravsurabhi@gmail.com</span></a>
         <a href="https://www.linkedin.com/in/niravss" target="_blank" rel="noopener"><span class="lab">LinkedIn</span><span class="v">/in/niravss</span></a>

@@ -44,17 +44,10 @@ function drawSign(c, d, img) {
   c.fillStyle = faint; c.font = `500 38px ${sans}`; c.fillText(d.kicker.replace(d.n, '').trim(), M + nw, 104);
   c.fillStyle = ink; c.font = `600 100px ${sans}`; let y = 216;
   for (const l of wrap(c, d.title, W - 2 * M, 2)) { c.fillText(l, M, y); y += 104; }
-  const top = y - 50, hasBottom = d.stats.length || d.rows.length, bottom = hasBottom ? 712 : 900;
-  // On a text-heavy board, give the result the space normally used for the photo.
-  c.font = `400 42px ${sans}`;
-  const lineHeight = 52, capacity = Math.floor((bottom - top) / lineHeight);
-  const narrow = wrap(c, d.lead, 800, Infinity);
-  const showPhoto = img && narrow.length <= capacity;
-  const lines = showPhoto ? narrow : wrap(c, d.lead, W - 2 * M, Infinity);
-  c.fillStyle = soft;
-  y = top + 42;
-  for (const line of lines) { c.fillText(line, M, y); y += lineHeight; }
-  if (showPhoto) {
+  const top = y - 50, hasBottom = d.stats.length || d.rows.length, bottom = hasBottom ? 712 : 900, colW = img ? 800 : W - 2 * M;
+  c.fillStyle = soft; c.font = `400 47px ${sans}`; y = top + 48;
+  for (const l of wrap(c, d.lead, colW, Math.max(1, Math.floor((bottom - top) / 64)))) { c.fillText(l, M, y); y += 64; }
+  if (img) {
     // the card's first picture, cropped to fill its window
     const x = 940, w = W - M - x, h = Math.min(bottom - top - 6, 430), r = Math.max(w / img.width, h / img.height), sw = w / r, sh = h / r;
     c.save(); c.beginPath(); c.roundRect(x, top, w, h, 20); c.clip(); c.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, x, top, w, h); c.restore();
@@ -130,7 +123,7 @@ export function buildExhibits(scene, route, stops, { tier = 'high', shoulderAt, 
     if (arm) {
       put(g, arm);
       // down to the bench to watch it reach, then round the end to see it from the side
-      tour(e, g, [{ at: [-0.15, 1.15], look: arm, low: true, r: 1.7 }]);
+      tour(e, g, [{ at: [-0.15, 1.15], look: arm, low: true, r: 1.7 }, { at: [1.3, 0.1], via: [[1.1, 1.0]], look: arm, r: 1.8, side: -1, el: 0.42 }], [[1.1, 1.1]]);
       const A = M.armsim, targets = A.TARGETS || [], keys = ['pan', 'lift', 'elbow', 'wflex', 'wroll'], home = A.HOME || {};
       const screen = arm.getObjectByName('armScreen'); let last = -1;
       const draw = (label, stage) => canvasTex(800, 500, (c) => {
@@ -188,7 +181,7 @@ export function buildExhibits(scene, route, stops, { tier = 'high', shoulderAt, 
       hop.position.set(0, 0, -mid); holder.add(hop); shadows(hop); g.add(holder); e.focus = u.body || hop;   // it walks and jumps down the road, toward whoever is watching
       if (ext) e.reach = (ext.max.z - ext.min.z) / 2 + 0.9;
       // from in front as it comes at him, then round to its side and down to the legs
-      const R = e.reach || 3; tour(e, g, [{ at: [-0.6, R + 0.35], look: e.focus, r: 3.4, el: 0.26 }]);
+      const R = e.reach || 3; tour(e, g, [{ at: [-0.6, R + 0.35], look: e.focus, r: 3.4, el: 0.26 }, { at: [1.85, 0.2], via: [[1.8, R]], look: e.focus, low: true, r: 2.6, side: -1 }], [[1.8, R]]);
       const loop = u.duration + 2.2; e.state = { phase: '' };
       e.updates.push(time => { const t = time % loop, s = Math.min(u.duration, t); u.setTime(s); hop.visible = t < loop - 0.18; e.state.phase = u.phaseAt?.(s) || ''; });
     }
@@ -203,7 +196,7 @@ export function buildExhibits(scene, route, stops, { tier = 'high', shoulderAt, 
       frame.add(box(3.4, 0.1, 0.1), 'blackMetal', { position: [0, 1.25, -0.12] });
       put(g, frame.build()); put(g, wall, 0, 2.45, 0, 0, k); g.scale.setScalar(0.52); g0.add(g);
       // the whole board from a step back, then up close to the numbers on its right
-      tour(e, g0, [{ at: [-0.5, 2.0], look: wall, r: 2.5, el: 0.1 }]);
+      tour(e, g0, [{ at: [-0.5, 2.0], look: wall, r: 2.5, el: 0.1 }, { at: [0.35, 1.15], look: wall, r: 1.25, el: 0.06, off: [0.5, -0.05, 0], side: -1 }]);
       let lastAt = 0; e.updates.push(time => { if (Math.abs(time - lastAt) > 0.09) { lastAt = time; wall.userData.draw?.(time); } });
     }
   });
@@ -215,18 +208,18 @@ export function buildExhibits(scene, route, stops, { tier = 'high', shoulderAt, 
       const mat = new THREE.Mesh(new THREE.BoxGeometry(1.83, 0.016, 1.83), new THREE.MeshStandardMaterial({ color: 0x5f6268, roughness: 0.95 })); mat.position.y = 0.008; mat.receiveShadow = true; g.add(mat);
       e.focus = put(g, bot, 0, 0.016, 0, 0.5);
       // it is small and on the floor: down to it from the front, round to its side, then behind it
-      tour(e, g, [{ at: [-0.35, 1.2], look: bot, low: true, r: 1.25 }]);
+      tour(e, g, [{ at: [-0.35, 1.2], look: bot, low: true, r: 1.25 }, { at: [1.2, -0.2], via: [[1.25, 1.05]], look: bot, low: true, r: 1.2, side: -1 }, { at: [0.1, -1.3], via: [[1.2, -1.15]], look: bot, r: 1.5, el: 0.5 }], [[1.3, -1.15], [1.3, 1.1]]);
       const turret = bot.getObjectByName('turret'), fly = bot.getObjectByName('flywheel'), rollers = bot.getObjectByName('intakeRollers');
       e.updates.push((time, dt) => { if (turret) turret.rotation.y = Math.sin(time * 0.35) * 0.9; if (fly) fly.rotation.x += dt * 30; if (rollers) rollers.rotation.x += dt * 6; });
     }
   });
   add('engine', async () => {
     const [g, e] = at('engine', { d: 7.9 }) || [], lego = g && await make(M.legoengine, 'default');
-    if (lego) { put(g, plinth(0.9, 0.95, 0.6)); e.focus = put(g, lego, 0, 0.95, 0, Math.PI); tour(e, g, [{ at: [-0.2, 1.05], look: lego, r: 0.85, el: 0.3 }]); let th = 0; e.updates.push((time, dt) => { th += dt * Math.PI * 2 * 2.2; M.legoengine.setCrank?.(lego, th); }); }
+    if (lego) { put(g, plinth(0.9, 0.95, 0.6)); e.focus = put(g, lego, 0, 0.95, 0, Math.PI); tour(e, g, [{ at: [-0.2, 1.05], look: lego, r: 0.85, el: 0.3 }, { at: [1.05, 0.0], via: [[0.95, 0.85]], look: lego, r: 0.8, el: 0.24, side: -1 }, { at: [0.05, -1.0], via: [[0.95, -0.85]], look: lego, r: 0.85, el: 0.34 }], [[1.0, -0.85], [1.0, 0.9]]); let th = 0; e.updates.push((time, dt) => { th += dt * Math.PI * 2 * 2.2; M.legoengine.setCrank?.(lego, th); }); }
   });
   add('research', async () => {
     const [g, e] = at('research', { d: 8.5 }) || [], rig = g && await make(M.windtunnel, 'default');
-    if (rig) { put(g, rig); tour(e, g, [{ at: [-0.4, 1.2], look: rig, low: true, r: 1.9 }]); const fan = rig.getObjectByName('fanBlades'), fin = rig.getObjectByName('fin'); e.updates.push((time, dt) => { if (fan) fan.rotation.x += dt * 38; if (fin) fin.rotation.y = Math.sin(time * 5.2) * 0.22; }); }
+    if (rig) { put(g, rig); tour(e, g, [{ at: [-0.4, 1.2], look: rig, low: true, r: 1.9 }, { at: [1.75, 0.05], via: [[1.5, 1.05]], look: rig, r: 1.8, el: 0.3, side: -1 }], [[1.5, 1.1]]); const fan = rig.getObjectByName('fanBlades'), fin = rig.getObjectByName('fin'); e.updates.push((time, dt) => { if (fan) fan.rotation.x += dt * 38; if (fin) fin.rotation.y = Math.sin(time * 5.2) * 0.22; }); }
   });
 
   // ---------- 08 software: a desk with a view; Silk in the terminal, SpareMe on the phone
@@ -253,17 +246,17 @@ export function buildExhibits(scene, route, stops, { tier = 'high', shoulderAt, 
   // ---------- 09 more: the workshop end of things
   add('more', async () => {
     const [g, e] = at('more', { d: 9.0 }) || [];
-    if (g) { const [shelf, cart, boxes] = await Promise.all([make(M.labkit, 'createShelving'), make(M.labkit, 'createToolCart'), make(M.labkit, 'createFloorBoxes')]); put(g, shelf, -0.55, 0, 0); put(g, cart, 0.85, 0, 0.05); put(g, boxes, 0.75, 0, 1.0, -0.3); tour(e, g, [{ at: [-0.75, 1.3], look: shelf, r: 2.3, el: 0.2 }]); }
+    if (g) { const [shelf, cart, boxes] = await Promise.all([make(M.labkit, 'createShelving'), make(M.labkit, 'createToolCart'), make(M.labkit, 'createFloorBoxes')]); put(g, shelf, -0.55, 0, 0); put(g, cart, 0.85, 0, 0.05); put(g, boxes, 0.75, 0, 1.0, -0.3); tour(e, g, [{ at: [-0.75, 1.3], look: shelf, r: 2.3, el: 0.2 }, { at: [-0.1, 1.75], look: cart, low: true, r: 1.7, el: 0.34, side: -1 }]); }
   });
   // ---------- 10 about: a bike against the rail (four years as a bike mechanic)
   add('about', async () => {
     const st = by.about, [g, e] = st ? at('about', { d: shoulderAt(st.s) - 0.62, turn: -Math.PI / 2 }) : [];
-    if (g) { const [bike, pack] = await Promise.all([make(M.labkit, 'createBike'), make(M.labkit, 'createBackpack')]); put(g, bike, 0, 0, 0.12, 0); put(g, pack, 1.35, 0, 0.3, 0.4); tour(e, g, [{ at: [-0.1, 1.45], look: bike, r: 2.2, el: 0.24, side: -1 }]); }
+    if (g) { const [bike, pack] = await Promise.all([make(M.labkit, 'createBike'), make(M.labkit, 'createBackpack')]); put(g, bike, 0, 0, 0.12, 0); put(g, pack, 1.35, 0, 0.3, 0.4); tour(e, g, [{ at: [1.6, 1.25], look: pack, low: true, r: 1.1, side: -1, el: 0.5 }, { at: [-0.1, 1.45], look: bike, r: 2.2, el: 0.24, side: -1 }]); }
   });
   // ---------- 11 guitar
   add('guitar', async () => {
     const [g, e] = at('guitar', { d: 8.0 }) || [];
-    if (g) { const [guitar, stool] = await Promise.all([make(M.props, 'createGuitar'), make(M.props, 'createStool')]); put(g, guitar, 0, 0, 0, 0.2); put(g, stool, 0.75, 0, -0.1); tour(e, g, [{ at: [-0.3, 1.2], look: guitar, low: true, r: 1.35 }]); }
+    if (g) { const [guitar, stool] = await Promise.all([make(M.props, 'createGuitar'), make(M.props, 'createStool')]); put(g, guitar, 0, 0, 0, 0.2); put(g, stool, 0.75, 0, -0.1); tour(e, g, [{ at: [-0.3, 1.2], look: guitar, low: true, r: 1.35 }, { at: [0.2, -1.05], via: [[1.4, 0.85], [1.4, -0.7]], look: guitar, r: 1.5, el: 0.36 }], [[1.4, -0.7], [1.4, 0.9]]); }
   });
 
   const tmp = new THREE.Vector3();
