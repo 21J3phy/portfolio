@@ -219,7 +219,9 @@ body{overflow:hidden;height:100vh;height:100dvh;overscroll-behavior:none;touch-a
 body.no3d{overflow:visible;height:auto;overscroll-behavior:auto;touch-action:auto}
 .stop{position:relative;padding:0 clamp(14px,5vw,76px)}
 .stop:not(.hero){height:0}
-.stop.hero{padding-top:0;min-height:100vh;min-height:100svh;display:flex;align-items:center;scroll-margin-top:0}
+.stop.hero{padding-top:0;padding-bottom:clamp(34px,8.5vh,92px);min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;scroll-margin-top:0;color:#fff}
+/* The opening frame. The car has the right of it and the words the lower left, over the road; soft shades from the left and from below keep them readable whatever the sky is doing. */
+.stop.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(92% 96% at 0% 100%,rgba(9,11,15,.78) 0%,rgba(9,11,15,.5) 38%,rgba(9,11,15,0) 72%),linear-gradient(0deg,rgba(9,11,15,.34) 0%,rgba(9,11,15,0) 30%)}
 /* On the road the write-ups are not on the page: each is printed on a sign beside its exhibit, and opens as a panel only when the sign is clicked. */
 .dest{display:none;pointer-events:auto;width:min(540px,100%);padding:clamp(20px,2.6vw,32px);border-radius:18px;background:rgba(246,243,237,.965);border:1px solid var(--line2);box-shadow:0 2px 6px rgba(15,17,20,.10),0 24px 70px rgba(15,17,20,.28)}
 .dest.sec{max-width:none}
@@ -229,13 +231,39 @@ body.no3d{overflow:visible;height:auto;overscroll-behavior:auto;touch-action:aut
 .dest .shut{position:sticky;top:0;float:right;z-index:3;width:34px;height:34px;margin:-6px -6px 0 8px;border-radius:10px;border:1px solid var(--line2);background:rgba(250,248,244,.96);color:var(--ink);font:400 22px/1 var(--sans);cursor:pointer}
 body.no3d .dest .shut{display:none}
 body.onsign{cursor:pointer}
-.hero-in{pointer-events:auto;width:min(600px,100%);padding-top:40px}
-.hero-in h1{font:600 clamp(48px,7.4vw,104px)/.92 var(--sans);letter-spacing:-.04em;color:#fff;text-shadow:0 2px 30px rgba(10,14,20,.45)}
-.hero-in .lead{margin-top:22px;max-width:27em;font-size:clamp(17px,1.5vw,21px);line-height:1.45;color:#fff;text-shadow:0 1px 16px rgba(10,14,20,.6);text-wrap:pretty}
-.hero-in .links{margin-top:26px;display:flex;flex-wrap:wrap;gap:8px}
-.scrollhint{display:inline-flex;align-items:center;gap:10px;margin-top:44px;padding:10px 16px;border-radius:12px;background:rgba(15,17,20,.62);color:#fff;font:500 14.5px/1 var(--sans)}
-.scrollhint i{width:16px;height:24px;border-radius:9px;border:1.5px solid #fff;position:relative}
-.scrollhint i::after{content:"";position:absolute;left:50%;top:5px;width:2px;height:5px;margin-left:-1px;border-radius:1px;background:#fff;animation:wheel 1.6s ease-in-out infinite}
+.hero-in{position:relative;pointer-events:auto;width:min(640px,100%)}
+.eyebrow{display:flex;align-items:center;gap:10px;font:500 14px/1 var(--sans);color:rgba(255,255,255,.92)}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(226,84,10,.28)}
+.eyebrow span{padding-left:10px;border-left:1px solid rgba(255,255,255,.36);color:rgba(255,255,255,.7)}
+.hero-in h1{margin-top:18px;font:700 clamp(54px,min(8.4vw,14.5vh),136px)/.86 var(--sans);font-stretch:116%;letter-spacing:-.045em;color:#fff;text-shadow:0 2px 34px rgba(9,11,15,.3)}
+.hero-in h1 span{display:block}
+.hero-in .lead{margin-top:clamp(18px,2.8vh,28px);max-width:29em;font-size:clamp(16.5px,1.45vw,21px);line-height:1.45;color:rgba(255,255,255,.9);text-wrap:pretty}
+.cta{margin-top:clamp(20px,3.2vh,32px);display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.btn.go{gap:10px;height:50px;padding:0 20px 0 24px;border:0;border-radius:14px;background:var(--accent);color:#fff;font:600 16px/1 var(--sans);box-shadow:0 10px 32px rgba(226,84,10,.36);cursor:pointer}
+.btn.go:hover{background:#f2631a;transform:translateY(-1px)}
+.btn.go svg{width:18px;height:18px;transition:transform .25s var(--ease)}
+.btn.go:hover svg{transform:translateX(4px)}
+.btn.glass{height:50px;padding:0 20px;border-radius:14px;border-color:rgba(255,255,255,.36);background:rgba(14,16,20,.42);color:#fff;font-size:15px}
+.btn.glass:hover{background:rgba(255,255,255,.16);border-color:#fff}
+.hero-in .links{display:flex;gap:18px;margin-left:12px;font:500 14.5px/1 var(--sans)}
+.hero-in .links a{padding:8px 0 6px;color:rgba(255,255,255,.84);border-bottom:1px solid rgba(255,255,255,.3);transition:color .18s,border-color .18s}
+.hero-in .links a:hover{color:#fff;border-color:#fff}
+.scrollhint,.pagehint{align-items:center;gap:10px;margin-top:clamp(16px,2.6vh,26px);color:rgba(255,255,255,.68);font:400 13.5px/1.3 var(--sans)}
+.scrollhint{display:flex}
+body.no3d .only-tour{display:none}
+.scrollhint i{flex:none;width:14px;height:22px;border-radius:8px;border:1.5px solid rgba(255,255,255,.72);position:relative}
+.scrollhint i::after{content:"";position:absolute;left:50%;top:4px;width:2px;height:5px;margin-left:-1px;border-radius:1px;background:#fff;animation:wheel 1.6s ease-in-out infinite}
+@media(max-width:620px){
+  .stop.hero{padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
+  .stop.hero::before{background:linear-gradient(0deg,rgba(9,11,15,.86) 0%,rgba(9,11,15,.62) 36%,rgba(9,11,15,0) 62%)}
+  .hero-in h1{margin-top:14px;font-size:clamp(50px,16.5vw,76px)}
+  .hero-in .lead{font-size:16px;line-height:1.42}
+  .cta{gap:8px}
+  .btn.go{flex:1 1 auto;height:52px}
+  .btn.glass{height:52px}
+  .hero-in .links{flex-basis:100%;margin:6px 0 0;gap:22px}
+  .scrollhint,.pagehint{margin-top:14px}
+}
 @keyframes wheel{50%{transform:translateY(6px);opacity:.3}}
 .tail{display:none;position:relative;z-index:2;height:70vh}
 .foot{position:relative;z-index:2;margin:0 clamp(14px,5vw,76px) 24px;pointer-events:auto;width:min(540px,calc(100% - 28px));padding:16px 20px;border-radius:14px;background:rgba(246,243,237,.95);border:1px solid var(--line2);font-size:13px;line-height:1.55;color:var(--ink3)}
@@ -254,6 +282,7 @@ details.more>.blk:first-of-type{margin-top:16px}
 /* the dashboard */
 #dash{position:fixed;right:clamp(12px,2vw,26px);bottom:calc(clamp(12px,2.4vh,26px) + env(safe-area-inset-bottom,0px));z-index:15;display:flex;align-items:flex-end;gap:10px;pointer-events:none;opacity:0;transition:opacity .6s}
 body.ready #dash{opacity:1}
+body.ready #dash.hide{opacity:0}
 .cluster{position:relative;width:188px;height:188px;border-radius:50%;background:radial-gradient(circle at 50% 38%,rgba(40,44,52,.92),rgba(12,13,16,.94) 70%);box-shadow:0 0 0 1.5px rgba(255,255,255,.14) inset,0 10px 40px rgba(0,0,0,.45)}
 .cluster svg{display:block;width:100%;height:100%}
 .cluster .tick{stroke:rgba(255,255,255,.5);stroke-width:1.4}
@@ -335,14 +364,8 @@ body.no3d #route{max-width:none;margin:0}
 body.no3d .only-page{display:flex}
 body.no3d #progress{display:block;position:fixed;inset:0 0 auto;height:3px;z-index:30;background:var(--accent);transform-origin:0 50%;transform:scaleX(0)}
 /* cover */
-body.no3d .stop.hero{min-height:100vh;min-height:100svh;height:auto;padding:0 clamp(20px,6vw,96px);align-items:center;color:#fff;background:linear-gradient(90deg,rgba(12,14,18,.5) 0%,rgba(12,14,18,.12) 46%,rgba(12,14,18,0) 62%),linear-gradient(180deg,rgba(12,14,18,.3) 0%,rgba(12,14,18,0) 22%,rgba(12,14,18,0) 70%,rgba(12,14,18,.5) 100%),url(img/stops/hero.webp) 0% 62%/auto 126% #1a1d22}
-body.no3d .hero-in{width:min(600px,100%);padding:40px 0 0}
-body.no3d .hero-in h1{color:#fff;text-shadow:0 2px 40px rgba(0,0,0,.35)}
-body.no3d .hero-in .lead{color:rgba(255,255,255,.93);font-size:clamp(18px,1.7vw,23px);max-width:31em;text-shadow:0 1px 18px rgba(0,0,0,.5)}
-.drivecta{align-items:center;gap:14px;flex-wrap:wrap;margin-top:22px;color:rgba(255,255,255,.78);font:400 14.5px/1.3 var(--sans)}
-.drivecta .btn{gap:8px;height:44px;padding:0 18px;border:0;border-radius:12px;background:var(--accent);color:#fff;font:600 15px/1 var(--sans);cursor:pointer}
-.drivecta .btn svg{width:18px;height:18px;transition:transform .25s var(--ease)}
-.drivecta .btn:hover svg{transform:translateX(3px)}
+body.no3d .stop.hero{height:auto;padding-left:clamp(20px,6vw,96px);padding-right:clamp(20px,6vw,96px);background:url(img/stops/hero.webp) 100% 50%/cover #1a1d22}
+@media(max-aspect-ratio:9/10){body.no3d .stop.hero{background-image:url(img/stops/hero-tall.webp);background-position:50% 0%}}
 /* a project: a picture of it on one side, the write-up on the other, turn and turn about */
 body.no3d .stop:not(.hero){display:grid;grid-template-columns:minmax(0,1.28fr) minmax(0,1fr);gap:clamp(28px,5vw,84px);align-items:start;max-width:1460px;height:auto;margin:0 auto;padding:clamp(64px,11vh,136px) clamp(20px,6vw,96px);scroll-margin-top:0}
 body.no3d .stop:not(.hero):nth-of-type(odd){grid-template-columns:minmax(0,1fr) minmax(0,1.28fr)}
@@ -402,8 +425,7 @@ body.no3d .foot a{color:rgba(255,255,255,.85);text-decoration-color:rgba(255,255
   body.no3d .still{position:relative;top:auto;border-radius:16px}
   body.no3d .dest{max-width:none}
   .brief>div,body.no3d .brief>div{grid-template-columns:minmax(0,1fr);gap:2px}
-  body.no3d .stop.hero{padding:0 18px;align-items:flex-end;background:linear-gradient(180deg,rgba(12,14,18,.4) 0%,rgba(12,14,18,0) 26%,rgba(12,14,18,0) 46%,rgba(12,14,18,.86) 100%),url(img/stops/hero.webp) 61% 100%/auto 122% #1a1d22}
-  body.no3d .hero-in{padding:0 0 34px}
+  body.no3d .stop.hero{padding-left:18px;padding-right:18px}
   body.no3d .sec .stats{grid-template-columns:repeat(2,1fr)}
   body.no3d .sec .stats>div:nth-child(3){padding-left:0;border-left:0}
   body.no3d .sec .stats>div:nth-child(n+3){border-top:1px solid var(--line)}

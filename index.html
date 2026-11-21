@@ -62,7 +62,7 @@
   for (var i = 0; i < files.length; i++) { var l = document.createElement('link'); l.rel = 'preload'; l.as = 'fetch'; l.crossOrigin = 'anonymous'; l.href = 'drive/assets/' + files[i]; document.head.appendChild(l); }
 })();
 </script>
-<noscript><style>.dest{display:block}.stop{padding-top:28px;height:auto}body{overflow:visible;height:auto;touch-action:auto}.foot,.tail{display:block}#loader,#dash,#map,#drive,.scrollhint,#soundBtn{display:none}.hero-in h1,.hero-in .lead{color:#17191d;text-shadow:none}.stop.hero{min-height:0;padding-top:110px}</style></noscript>
+<noscript><style>.dest{display:block}.stop{padding-top:28px;height:auto}body{overflow:visible;height:auto;touch-action:auto}.foot,.tail{display:block}#loader,#dash,#map,#drive,.scrollhint,#soundBtn{display:none}.hero-in,.hero-in h1,.hero-in .lead,.hero-in .links a{color:#17191d}.stop.hero{min-height:0;padding-top:110px;padding-bottom:0}.stop.hero::before,.hero-in .go,.eyebrow{display:none}</style></noscript>
 </head>
 <body>
 <canvas id="drive" aria-hidden="true"></canvas>
@@ -118,11 +118,17 @@
   <a id="top"></a>
   <section class="stop hero" data-stop="start" data-label="">
     <div class="hero-in">
-      <h1>Nirav Surabhi</h1>
+      <p class="eyebrow"><i></i>Portfolio<span>12 stops on one road</span></p>
+      <h1>Nirav <span>Surabhi</span></h1>
       <p class="lead">I build robots, test them in simulation, and train the models that tell them where to go. Mechanical engineering at Purdue, class of 2030.</p>
-      <div class="links"><a class="btn primary" href="Resume.pdf" target="_blank" rel="noopener">Résumé</a><a class="btn" href="mailto:niravsurabhi@gmail.com">Email</a><a class="btn" href="https://github.com/21J3phy" target="_blank" rel="noopener">GitHub</a><a class="btn" href="https://www.linkedin.com/in/niravss" target="_blank" rel="noopener">LinkedIn</a></div>
-      <p class="scrollhint"><i></i>Scroll to set off. The car drives itself between stops.</p>
-      <p class="only-page drivecta"><button class="btn" type="button" data-goto="tour">Take the drive instead<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span>The same work, as a road you drive along.</span></p>
+      <div class="cta">
+        <button class="btn go only-tour" type="button" data-start>Start the drive<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="btn go only-page" type="button" data-goto="tour">Take the drive<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <a class="btn glass" href="Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+        <span class="links"><a href="mailto:niravsurabhi@gmail.com">Email</a><a href="https://github.com/21J3phy" target="_blank" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/niravss" target="_blank" rel="noopener">LinkedIn</a></span>
+      </div>
+      <p class="scrollhint"><i></i>Or just scroll. The car drives itself between stops.</p>
+      <p class="only-page pagehint">The same work, as a road you drive along.</p>
     </div>
   </section>
 

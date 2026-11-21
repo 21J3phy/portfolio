@@ -71,7 +71,10 @@ There are three ways to see it, switched by the control at the top (`setMode` in
   stops passed beside it (`drive/minimap.js`). It steps aside while a write-up is open over its corner. 
 - **Sound** is off until the Sound button is pressed (a browser will not play any before a click anyway), and
   neither the code nor the recordings load until then: `drive/sound.js`, `drive/assets/audio/`.
-- **The opening**: the page loads looking at the car from the front. The first stretch of scroll walks the camera
+- **The opening** is a title frame: a low three-quarter shot of the car on the right (nose-on above the words on a
+  phone), the name and one line lower left over the road, and a "Start the drive" button that plays the same move
+  scrolling does. The gauges and the map stay hidden until the car is about to pull away. The first stretch of
+  scroll walks the camera
   round it, out over the drop on the sunlit side, to a chase position behind it; only when the camera is there does
   the car pull away (`OPEN`, `opening()` and `intro` in `drive/main.js`). A fast flick still plays the move.
 - On the road the camera is a driving game's chase camera: behind and a little above the car, pulling back and
@@ -98,14 +101,16 @@ There are three ways to see it, switched by the control at the top (`setMode` in
   over.
 - **The car**: "2012 Honda Civic Si Coupe" by Ddiaz Design (sketchfab.com/ddiaz-design), **CC BY-NC-SA 4.0**,
   repainted white. Keep the credit in the page footer.
-- **The driver**: avatar `Male_Adult_17` from Microsoft's Rocketbox library (github.com/microsoft/Microsoft-Rocketbox,
-  **MIT**), with eight of the library's own recorded takes: walk, run, two idles, sitting, a hand-at-the-chin
-  "thinking it over", and two crouching ones for looking at something closely. Any of the library's 40 adults can be swapped in: open `dev/tools/convert_driver.html` in a
-  browser with the FBX files beside it, then run `dev/tools/pack_driver.mjs` on what it exports.
-- **The engine and gearbox** are modelled as far as the dials and the sound need (`powertrain` in `drive/main.js`):
-  a 2012 Civic Si's six ratios and final drive, so the revs are what that car's would be at this speed in this
-  gear; it changes up early on a light foot, changes down as it slows, slips its clutch pulling away, idles at rest.
-  Left to drive itself the car pulls away through the gears to about 58 mph and brakes into the next stop.
+- **The driver** is dressed like me: six feet, a black Purdue hoodie, baggy light jeans and white Sambas, and a
+  white full-face helmet with a mirrored visor (so no face has to pass for mine). Underneath he is avatar
+  `Male_Adult_20` from Microsoft's Rocketbox
+  library (github.com/microsoft/Microsoft-Rocketbox, **MIT**), with eight of the library's own recorded takes (walk,
+  run, two idles, sitting, "thinking it over", and two crouching ones). `dev/tools/paint_driver.py` repaints his two
+  textures (skin, the hoodie and its lettering, the denim, the shoes); `dev/tools/convert_driver.html`, opened
+  in a browser with the FBX files beside it, loosens the jeans and sleeves, builds the helmet (shell and paint) on
+  the head bone, sets his height and exports glTF; `dev/tools/pack_driver.mjs` compresses it. Two things in
+  `drive/person.js` keep him out of the way: seated, nothing of him is drawn below the car's floor, and when the
+  camera comes in past his shoulder for a close look at an exhibit he thins out to nothing.
 - **Sound**: thirty CC0 recordings (1.7 MB), credited one by one in `drive/assets/audio/CREDITS.md`. The engine is a
   real naturally aspirated inline four held steady on a dyno (a Mercedes 190E 2.3-16, not a Civic: it was the only
   free set recorded at known engine speeds, on and off load, from both the exhaust and under the bonnet). Each loop
@@ -143,7 +148,7 @@ There are three ways to see it, switched by the control at the top (`setMode` in
 ## Performance
 
 About 7.2 MB of files in all before sound, roughly 6 MB over the wire once the host compresses the scripts: textures
-2.6 MB, the car 1.2 MB, the driver 0.85 MB, three.js 0.8 MB, the sky 0.7 MB. Sound adds its recordings only if it
+2.6 MB, the car 1.2 MB, the driver 0.9 MB, three.js 0.8 MB, the sky 0.7 MB. Sound adds its recordings only if it
 is switched on. What keeps it quick:
 
 - **Loading**: the page head preloads every module and every file the first frame needs, so they download in
